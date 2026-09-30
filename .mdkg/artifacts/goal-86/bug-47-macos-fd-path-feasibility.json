@@ -1,0 +1,40 @@
+{
+  "kind": "goal86-bug47-node-only-directory-descriptor-feasibility",
+  "version": 1,
+  "recorded_at": "2026-09-25",
+  "qid": "root:bug-47",
+  "outcome": "MACOS_DEV_FD_DIRECTORY_CHILD_PATH_NOT_TRAVERSABLE",
+  "scope": "Two local synthetic Node.js probes of one possible descriptor-path technique; not a Bug47 exploit reproduction or remedy",
+  "environment": {
+    "source_head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "node": "v26.0.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "filesystem_authority_sha256": "826cdb2f9e57b5e224bfe1c06ca1ea46820b9642810ae7b2b472f050dcea606e"
+  },
+  "probes": [
+    {
+      "question": "Can a held directory descriptor be traversed through /dev/fd/<fd>/item before or after replacing its original pathname?",
+      "setup": "Owned /private/tmp tree with trusted/item and outside/item; open trusted with O_RDONLY|O_DIRECTORY|O_NOFOLLOW, then rename trusted and replace that pathname with a link to outside.",
+      "held_fd_is_directory": true,
+      "before_swap_child_read": "ENOENT",
+      "after_swap_child_read": "ENOENT"
+    },
+    {
+      "question": "Is /dev/fd/<fd> itself a usable directory path for normal Node filesystem traversal?",
+      "setup": "Owned /private/tmp directory with item; keep its O_RDONLY|O_DIRECTORY|O_NOFOLLOW descriptor open in the same process.",
+      "held_fd_is_directory": true,
+      "stat_dev_fd_path_is_directory": true,
+      "readdir_dev_fd_path": "ENOTDIR",
+      "readlink_dev_fd_path": "EINVAL"
+    }
+  ],
+  "fixture_custody": "Both uniquely created /private/tmp/mdkg-bug47-fd-probe-* trees were removed in finally blocks. A subsequent max-depth-one directory check found no matching roots.",
+  "interpretation": "On this macOS/Node combination, substituting /dev/fd/<directory-fd>/child for openat is not a usable traversal primitive. This does not establish that every Node-only design is impossible, nor does it prove Linux behavior or Bug47 exploitability.",
+  "not_performed": [
+    "No source patch, candidate package build, Git action or provider action.",
+    "No Linux executor, native addon, system-tool bridge, hosted CI or blocked security context.",
+    "No synchronized outside-root attack or full Bug47 remediation test."
+  ],
+  "release_effect": "Bug47 remains an unresolved 0.6.0 publication blocker. Dec97's deferral is not a waiver."
+}

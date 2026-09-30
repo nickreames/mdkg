@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "test487-owned-qualification-cleanup",
+  "recorded_at": "2026-09-29T04:58:54.721Z",
+  "removed_containers": [
+    "mdkg-g86-arm64-qualification-20260929",
+    "mdkg-g86-amd64-qualification-20260929",
+    "mdkg-g86-arm64-scale-20260929",
+    "mdkg-g86-amd64-scale-20260929",
+    "mdkg-g86-arm64-runtime-20260929",
+    "mdkg-g86-amd64-runtime-20260929",
+    "mdkg-g86-arm64-supplement-20260929",
+    "mdkg-g86-amd64-supplement-20260929",
+    "mdkg-g86-amd64-scale-retry-20260929"
+  ],
+  "removed_anonymous_volumes": [
+    "fddc8ac99a5bd3ce2418d170344d0d0de1e0c17a2cbaa3d13dc4e015a5ee22b9",
+    "05186b36f3a04515753b71c3482e126971b962f90bfd8044393f5bd9ae40443e",
+    "6fea2d4f7e735ebea33e747fc45be7b57a41450991a0b42bc0d7e0bc5507f368",
+    "49e817739b3499d9dc24ff5fe92487d3ea10255380be9007eaf1f6bf03d67299",
+    "3d6170cb28fd9e58c652dbc2ad194eb7b97d301596e287f9760937f0ffccb868",
+    "53ec76cc0b049ac50207360dd854f04595a95b880638efae989244fd97eedddd",
+    "9cc69289bcf5768ad519d122e96c2d4e789364a8c75a04e64875cde3a743fa55",
+    "dce55a541995ff33a2ae956bc8a365f2a45d2ce2989eae64b035feb34fe0d3cd",
+    "bb8d97580656d3d425275eaf2e0a322e06c539757404f7b6030cca664aadd4db"
+  ],
+  "removed_images": [
+    "mdkg-g86-ubuntu24-arm64:20260929",
+    "mdkg-g86-ubuntu24-amd64:20260929",
+    "mdkg-g86-ubuntu24-arm64-runtime:20260929",
+    "mdkg-g86-ubuntu24-amd64-runtime:20260929",
+    "mdkg-g86-ubuntu24-arm64-supplement:20260929",
+    "mdkg-g86-ubuntu24-amd64-supplement:20260929",
+    "mdkg-g86-ubuntu24-amd64-scale-retry:20260929"
+  ],
+  "removed_temporary_roots": [
+    "/private/tmp/mdkg-docker-g86-jYNiGN",
+    "/private/tmp/mdkg-docker-g86-KbCeEJ",
+    "/private/tmp/mdkg-docker-g86-IqXRrR"
+  ],
+  "checks": {
+    "all_containers_stopped_before_removal": true,
+    "all_ownership_labels_verified": true,
+    "complete_raw_receipt_hashes_verified_before_temp_removal": 9,
+    "no_task_labelled_container_or_image_remains": true,
+    "all_temporary_roots_absent": true,
+    "all_nine_exact_anonymous_volumes_absent": true
+  },
+  "preserved": [
+    "Ubuntu pinned base images",
+    "shared build cache",
+    "unrelated containers and images",
+    "unrelated stopped Lima instance",
+    "canonical candidate tarball and captures"
+  ],
+  "evidence_retained": "Sanitized complete family summaries, failure dispositions, exact stream/receipt hashes, runtime downloads manifest, capsule manifests and reproducible driver assertions under .mdkg/artifacts/goal-86",
+  "recovery": "Disposable fixtures and raw synthetic streams were removed, not backed up. Reproduction uses retained source/driver manifests; canonical candidate and original capture remain."
+}

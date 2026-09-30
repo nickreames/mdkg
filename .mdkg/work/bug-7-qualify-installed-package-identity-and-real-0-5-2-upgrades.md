@@ -2,12 +2,12 @@
 id: bug-7
 type: bug
 title: Qualify installed package identity and real 0.5.2 upgrades
-status: progress
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json, .mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json, .mdkg/artifacts/goal-84/bug-35-affected-versions.json, .mdkg/artifacts/goal-86/task-835-local-verification.json, .mdkg/artifacts/goal-86/task-836-local-verification.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json, .mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json, .mdkg/artifacts/goal-84/bug-35-affected-versions.json, .mdkg/artifacts/goal-86/task-835-local-verification.json, .mdkg/artifacts/goal-86/task-836-local-verification.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-package-gates-20260930.json, .mdkg/artifacts/goal-86/successor-private-preview-20260930.json]
 relates: [task-826]
 blocked_by: [task-824, task-826]
 blocks: []
@@ -17,8 +17,21 @@ evidence_refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, chk-595, c
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-17
+updated: 2026-09-30
 ---
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Writer compatibility and portable evidence-bound recovery implementation are locally complete. This bug owns aggregate missing proof only. Give Task309's historical URI ambiguity an exact unsupported-condition disposition; do not invent identity or rewrite history.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
 
 # Current Successor Contract - 2026-09-13
 

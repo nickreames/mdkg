@@ -2,24 +2,79 @@
 id: test-482
 type: test
 title: Installed Node 24.15.0 supported 24 and Node 26 acceptance for mdkg 0.6.0
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json, .mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json, .mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/final-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/candidate-seal-20260930.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json]
 relates: []
 blocked_by: [test-477, test-478, test-479, test-480, test-481, test-483, test-484, test-486, task-839, task-838]
 blocks: []
-refs: [bug-7]
+refs: [bug-7, chk-665]
 context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: [chk-596, chk-600]
 aliases: []
 skills: []
 cases: [test-482-case-1, test-482-case-2, test-482-case-3, test-482-case-4, test-482-case-5]
 created: 2026-09-07
-updated: 2026-09-17
+updated: 2026-09-30
 ---
+
+# Current sealed successor acceptance - 2026-09-30
+
+This record's final acceptance now consumes b5497c5f5e5f022e candidate bytes
+at source b10870355b264355af2be4fc53bb4640851f747b, not the earlier f7/6154
+candidate. The successor-installed-case-acceptance and successor-installed-platform-
+qualification receipts bind this QID's actual bounded cases, three exact platforms,
+source/package/harness hashes and limitations. The exact artifact is sealed in
+candidate-seal-20260930.json; Chk570 records complete local acceptance.
+
+All20 retained installed families are accounted on native macOS ARM64 and Ubuntu24
+ARM64-native/x86_64-emulated; minimum/supported Node24.18.0 operation is counted
+once, with actual24.15/26 early refusal/discovery controls. No Windows, native x64
+performance, hosted/website or consumer-adoption proof is claimed. Earlier failures
+and intermediate passes below remain historical and are not relabeled. Bugs46/47
+remain deferred/unresolved. Goal85 remains paused; no publication authority follows.
+
+# Historical family contracts and intermediate candidate evidence
+
+
+# Final installed family acceptance - 2026-09-30
+
+Exact supported/minimum24.18.0 counted once per platform; actual24.15.0/26.0.0 refuse graph/DB/MCP without effects, help/version remain usable; missing capabilities refuse; verified isolated downloads.
+
+The retained f7cbdc1d tarball passes all amended package cases on native macOS
+ARM64 and Ubuntu24 ARM64/native and x86_64/emulated. Exact SHA256/SHA512,
+package inputs, case ownership and platform/failed-run/supplement provenance are
+recorded in `.mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json`
+and `final-installed-platform-qualification-20260930.json` in that directory.
+Earlier candidates remain historical. Bugs46/47 are deferred/unresolved, not
+fixed or accepted. Windows/hosted CI and native-x64 performance are unqualified.
+Family completion is not Task828 independent security acceptance, Task830 seal
+or publication authority. No package input or protected canonical state changed.
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+2026-09-29 Test480 supplies actual native macOS24.15.0/26.0.0 early refusal
+controls on retained6154e4ea bytes (four graph-operation refusals and two
+help/version positives per unsupported runtime). Complete graph inventories
+remain unchanged. Supported Node24.18.0 is both the minimum and available
+supported local runtime and is counted once across installed family receipts.
+Official runtime/package hashes and owned cleanup are bound in
+`.mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json`.
+Linux matrix and complete family aggregation remain open; this test stays backlog.
+
+Aggregate supported24.18.0/selected24 successes, counting identical runtimes once. Node24.15 and26 are unsupported: require early no-effect refusal, not successful families. This supersedes old title/body matrix; Test487 owns platform completeness.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
 
 # Current Successor Contract - 2026-09-13
 

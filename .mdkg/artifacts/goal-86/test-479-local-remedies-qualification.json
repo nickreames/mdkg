@@ -1,0 +1,1401 @@
+{
+  "schema_version": 1,
+  "kind": "test479-current-installed-remaining-remedies",
+  "owner": "root:test-479",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "compiledInputs": [
+    {
+      "name": "commands/upgrade_approval.test.js",
+      "sha256": "4e01ecd9c3b8ab526696fffd3f3c94bd38d872703e3179c3560e63dde4206666"
+    },
+    {
+      "name": "commands/init_manifest_ownership.test.js",
+      "sha256": "6dc6d2bbf9d99c950e1d91676cf6643ecf9786560de9763e809a2eb6f51b38e7"
+    },
+    {
+      "name": "commands/numeric_allocation.test.js",
+      "sha256": "340964e6512e01697efc9ddda03a5d44fe7be9155dcf81372f3e68df10382d3c"
+    },
+    {
+      "name": "commands/loop_seed_safety.test.js",
+      "sha256": "05a0e904ac9a950c7a748e103316fbf393bbb27ffef9b52d647070d4369a35f7"
+    },
+    {
+      "name": "commands/loop_seed_budget.test.js",
+      "sha256": "11a044d429e5f24f39e6823dd49c62384a4d096ac116026e005755a066413a15"
+    },
+    {
+      "name": "commands/archive_payload_ownership.test.js",
+      "sha256": "1d48e68fa539d86144072111b609cf7d88e7a56142bf0fa409fd6b639bdebf20"
+    },
+    {
+      "name": "commands/mcp_request_admission.test.js",
+      "sha256": "cf53ce37fe41ec5f5a67812645536c24f13778f887721b48ef43a8cc90b9cb86"
+    },
+    {
+      "name": "commands/skill_git_metadata.test.js",
+      "sha256": "a51f4dd679f50fcb95011200d0ad2c04d7bc7530cd2db4b86be9f3dbe6efc01b"
+    },
+    {
+      "name": "core/sqlite_observation.test.js",
+      "sha256": "e361d1ad074114e1034e6408201e0edb0fac9ce78386d6406140109a7dbb209e"
+    },
+    {
+      "name": "core/sqlite_memory_observation.test.js",
+      "sha256": "acf777e19a5470c828ea089e1fda69405bd8175a847287389a075a215b8b9587"
+    },
+    {
+      "name": "helpers/fs.js",
+      "sha256": "5f1088362ae4b1aaa7b9c7e382293043b601dcdf6b665c7a49d6ba95975d7e73"
+    },
+    {
+      "name": "helpers/config.js",
+      "sha256": "6307f81b0c70c5533f01d6fd2813f31950bb5ef4c0aff3c2c0d09af1235137fa"
+    },
+    {
+      "name": "helpers/templates.js",
+      "sha256": "2967c90df8ff2a4ae681d4b497c1348c25a47aaad73a8bf74a97aaf3157d13a9"
+    }
+  ],
+  "driver_sha256": "704dcbcd967bfdbf62d4230dec44157a2e381820fce006d39a82d05d30db451e",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 177274,
+  "completed": [
+    {
+      "family": "commands/upgrade_approval.test.js",
+      "finding_owner": "root:bug-52",
+      "exit_code": 0,
+      "counts": {
+        "tests": 48,
+        "pass": 48,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 7426,
+      "stdout_sha256": "bdb7bb60e5a541a2bc43c72bdc7a0724f7705afc954b09fb0caec13c109b6e07",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - approved recovery refuses substitute tampering before effects (resume)",
+        "ok 2 - approved recovery refuses substitute tampering before effects (recover)",
+        "ok 3 - approved recovery refuses insert tampering before effects (resume)",
+        "ok 4 - approved recovery refuses insert tampering before effects (recover)",
+        "ok 5 - approved recovery refuses remove tampering before effects (resume)",
+        "ok 6 - approved recovery refuses remove tampering before effects (recover)",
+        "ok 7 - approved recovery refuses reorder tampering before effects (resume)",
+        "ok 8 - approved recovery refuses reorder tampering before effects (recover)",
+        "ok 9 - approved recovery refuses file_dependency tampering before effects (resume)",
+        "ok 10 - approved recovery refuses file_dependency tampering before effects (recover)",
+        "ok 11 - approved recovery refuses directory_dependency tampering before effects (resume)",
+        "ok 12 - approved recovery refuses directory_dependency tampering before effects (recover)",
+        "ok 13 - approved recovery refuses replace_dependency tampering before effects (resume)",
+        "ok 14 - approved recovery refuses replace_dependency tampering before effects (recover)",
+        "ok 15 - approved recovery refuses payload_operation tampering before effects (resume)",
+        "ok 16 - approved recovery refuses payload_operation tampering before effects (recover)",
+        "ok 17 - approved recovery refuses payload_dependencies tampering before effects (resume)",
+        "ok 18 - approved recovery refuses payload_dependencies tampering before effects (recover)",
+        "ok 19 - approved recovery refuses payload_extra tampering before effects (resume)",
+        "ok 20 - approved recovery refuses payload_extra tampering before effects (recover)",
+        "ok 21 - approved recovery refuses prototype_key tampering before effects (resume)",
+        "ok 22 - approved recovery refuses prototype_key tampering before effects (recover)",
+        "ok 23 - approved recovery refuses payload_missing tampering before effects (resume)",
+        "ok 24 - approved recovery refuses payload_missing tampering before effects (recover)",
+        "ok 25 - approved recovery refuses plan_hash tampering before effects (resume)",
+        "ok 26 - approved recovery refuses plan_hash tampering before effects (recover)",
+        "ok 27 - unbound schema 1 applying journal refuses resume without writes",
+        "ok 28 - unbound schema 1 applying journal refuses recover without writes",
+        "ok 29 - unbound schema 1 recovering journal refuses resume without writes",
+        "ok 30 - unbound schema 1 recovering journal refuses recover without writes",
+        "ok 31 - unbound schema 1 completed journal refuses resume without writes",
+        "ok 32 - unbound schema 1 completed journal refuses recover without writes",
+        "ok 33 - unbound schema 1 recovered journal refuses resume without writes",
+        "ok 34 - unbound schema 1 recovered journal refuses recover without writes",
+        "ok 35 - unbound schema 2 applying journal refuses resume without writes",
+        "ok 36 - unbound schema 2 applying journal refuses recover without writes",
+        "ok 37 - unbound schema 2 recovering journal refuses resume without writes",
+        "ok 38 - unbound schema 2 recovering journal refuses recover without writes",
+        "ok 39 - unbound schema 2 completed journal refuses resume without writes",
+        "ok 40 - unbound schema 2 completed journal refuses recover without writes",
+        "ok 41 - unbound schema 2 recovered journal refuses resume without writes",
+        "ok 42 - unbound schema 2 recovered journal refuses recover without writes",
+        "ok 43 - terminal shortcuts and completed rollback require the approved payload",
+        "ok 44 - journal self-hashes and a substituted plan hash cannot replace operator approval",
+        "ok 45 - approved intent stays identical across progress and terminal continuation is observational",
+        "ok 46 - application refuses unreviewed or changed in-memory plans before lock or writes",
+        "ok 47 - validation callbacks cannot replace admitted operations",
+        "ok 48 - CLI recovery refuses substituted ordinary-file operations and legacy journals without any effects"
+      ]
+    },
+    {
+      "family": "commands/init_manifest_ownership.test.js",
+      "finding_owner": "root:bug-53",
+      "exit_code": 0,
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 9414,
+      "stdout_sha256": "ffbef5e74f2050e9a99fe42f9d1dadc08bb2f874d39fc2b917689c11aa9b9d70",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - init refuses a hard-linked manifest before effects: default force=false",
+        "ok 2 - init refuses a hard-linked manifest before effects: default force=true",
+        "ok 3 - init refuses a hard-linked manifest before effects: --agent force=false",
+        "ok 4 - init refuses a hard-linked manifest before effects: --agent force=true",
+        "ok 5 - init refuses a hard-linked manifest before effects: --graph-only force=false",
+        "ok 6 - init refuses a hard-linked manifest before effects: --graph-only force=true",
+        "ok 7 - ordinary repeated init retains the manifest inode, mode and owner while refreshing provenance",
+        "ok 8 - manifest writer independently refuses existing linked and non-file targets",
+        "ok 9 - manifest writer rechecks descriptor and pathname custody before-open",
+        "ok 10 - manifest writer rechecks descriptor and pathname custody after-open",
+        "ok 11 - manifest writer rechecks descriptor and pathname custody move-open-inode",
+        "ok 12 - manifest writer creates missing owned parents and a valid exclusive new file"
+      ]
+    },
+    {
+      "family": "commands/numeric_allocation.test.js",
+      "finding_owner": "root:bug-54",
+      "exit_code": 0,
+      "counts": {
+        "tests": 86,
+        "pass": 86,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 17230,
+      "stdout_sha256": "31ffd0681e05e38b80e37f9fb033f93ddbeeb7d421d37404cccdc3fe4450bb12",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - v1 json new refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 2 - v1 json checkpoint refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 3 - v1 json task-done refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 4 - v1 json new refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 5 - v1 json checkpoint refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 6 - v1 json task-done refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 7 - v1 json new refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 8 - v1 json checkpoint refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 9 - v1 json task-done refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 10 - v1 json new refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 11 - v1 json checkpoint refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 12 - v1 json task-done refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 13 - v1 json new refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 14 - v1 json checkpoint refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 15 - v1 json task-done refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 16 - v1 sqlite new refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 17 - v1 sqlite checkpoint refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 18 - v1 sqlite task-done refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 19 - v1 sqlite new refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 20 - v1 sqlite checkpoint refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 21 - v1 sqlite task-done refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 22 - v1 sqlite new refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 23 - v1 sqlite checkpoint refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 24 - v1 sqlite task-done refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 25 - v1 sqlite new refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 26 - v1 sqlite checkpoint refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 27 - v1 sqlite task-done refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 28 - v1 sqlite new refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 29 - v1 sqlite checkpoint refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 30 - v1 sqlite task-done refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 31 - v2 json new refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 32 - v2 json checkpoint refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 33 - v2 json task-done refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 34 - v2 json new refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 35 - v2 json checkpoint refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 36 - v2 json task-done refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 37 - v2 json new refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 38 - v2 json checkpoint refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 39 - v2 json task-done refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 40 - v2 json new refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 41 - v2 json checkpoint refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 42 - v2 json task-done refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 43 - v2 json new refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 44 - v2 json checkpoint refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 45 - v2 json task-done refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 46 - v2 sqlite new refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 47 - v2 sqlite checkpoint refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 48 - v2 sqlite task-done refuses unsafe or exhausted 9007199254740991 before authored effects",
+        "ok 49 - v2 sqlite new refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 50 - v2 sqlite checkpoint refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 51 - v2 sqlite task-done refuses unsafe or exhausted 9007199254740992 before authored effects",
+        "ok 52 - v2 sqlite new refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 53 - v2 sqlite checkpoint refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 54 - v2 sqlite task-done refuses unsafe or exhausted 0009007199254740993 before authored effects",
+        "ok 55 - v2 sqlite new refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 56 - v2 sqlite checkpoint refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 57 - v2 sqlite task-done refuses unsafe or exhausted 1000000000000000000000 before authored effects",
+        "ok 58 - v2 sqlite new refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 59 - v2 sqlite checkpoint refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 60 - v2 sqlite task-done refuses unsafe or exhausted 9999999999999999999999999 before authored effects",
+        "ok 61 - duplicate repair preview terminates on unsafe aliases",
+        "ok 62 - json last safe alias is exact and the following allocation refuses",
+        "ok 63 - sqlite last safe alias is exact and the following allocation refuses",
+        "ok 64 - SQLite refuses invalid/exhausted stored counter 9007199254740992",
+        "ok 65 - SQLite refuses invalid/exhausted stored counter -1",
+        "ok 66 - SQLite refuses invalid/exhausted stored counter 1.5",
+        "ok 67 - SQLite refuses invalid/exhausted stored counter garbage",
+        "ok 68 - SQLite batch rejects a stale later reservation without partial counter writes",
+        "ok 69 - v1 json loop preflights every child before reservations",
+        "ok 70 - v1 sqlite loop preflights every child before reservations",
+        "ok 71 - v2 json loop preflights every child before reservations",
+        "ok 72 - v2 sqlite loop preflights every child before reservations",
+        "ok 73 - json safe leading-zero aliases allocate an unused decimal successor",
+        "ok 74 - sqlite safe leading-zero aliases allocate an unused decimal successor",
+        "ok 75 - json allocation ignores stale numeric maxima when cache refresh is disabled",
+        "ok 76 - sqlite allocation ignores stale numeric maxima when cache refresh is disabled",
+        "ok 77 - task done preflights the actual oversized checkpoint body before completion",
+        "ok 78 - new prospective count limit refuses before writing",
+        "ok 79 - checkpoint prospective count limit refuses before writing",
+        "ok 80 - repair apply refuses 9007199254740991 and releases its lock without staging",
+        "ok 81 - repair apply refuses 9007199254740992 and releases its lock without staging",
+        "ok 82 - repair apply refuses 0009007199254740993 and releases its lock without staging",
+        "ok 83 - Git-stage unsafe add/add repair refuses without changing the unmerged index",
+        "ok 84 - duplicate repair skips occupied safe successors and refuses exhaustion",
+        "ok 85 - invalid rendered node syntax cannot reserve a SQLite alias",
+        "ok 86 - prospective admission retains bundled manifest fallback"
+      ]
+    },
+    {
+      "family": "commands/loop_seed_safety.test.js",
+      "finding_owner": "root:bug-55",
+      "exit_code": 0,
+      "counts": {
+        "tests": 63,
+        "pass": 63,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 13183,
+      "stdout_sha256": "859af8e6fc70f8474ec99293df789bf33b7694dc5add93ba049904038252d47a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - new loop json v1 refuses file-link before effects",
+        "ok 2 - new loop json v1 refuses directory-link before effects",
+        "ok 3 - new loop json v1 refuses ancestor-link before effects",
+        "ok 4 - new loop json v1 refuses dangling-link before effects",
+        "ok 5 - new loop json v1 refuses fifo before effects",
+        "ok 6 - new loop json v1 refuses linked-fifo before effects",
+        "ok 7 - new loop json v1 refuses directory-seed before effects",
+        "ok 8 - new loop json v1 refuses malformed before effects",
+        "ok 9 - new loop json v1 preserves valid suggestions",
+        "ok 10 - new loop json v1 preserves absent suggestions",
+        "ok 11 - new loop json v1 preserves legacy-title-only suggestions",
+        "ok 12 - new loop json v1 preserves no-reindex suggestions",
+        "ok 13 - new loop json v2 refuses file-link before effects",
+        "ok 14 - new loop json v2 refuses directory-link before effects",
+        "ok 15 - new loop json v2 refuses ancestor-link before effects",
+        "ok 16 - new loop json v2 refuses dangling-link before effects",
+        "ok 17 - new loop json v2 refuses fifo before effects",
+        "ok 18 - new loop json v2 refuses linked-fifo before effects",
+        "ok 19 - new loop json v2 refuses directory-seed before effects",
+        "ok 20 - new loop json v2 refuses malformed before effects",
+        "ok 21 - new loop json v2 preserves valid suggestions",
+        "ok 22 - new loop json v2 preserves absent suggestions",
+        "ok 23 - new loop json v2 preserves legacy-title-only suggestions",
+        "ok 24 - new loop json v2 preserves no-reindex suggestions",
+        "ok 25 - new loop sqlite v1 refuses file-link before effects",
+        "ok 26 - new loop sqlite v1 refuses directory-link before effects",
+        "ok 27 - new loop sqlite v1 refuses ancestor-link before effects",
+        "ok 28 - new loop sqlite v1 refuses dangling-link before effects",
+        "ok 29 - new loop sqlite v1 refuses fifo before effects",
+        "ok 30 - new loop sqlite v1 refuses linked-fifo before effects",
+        "ok 31 - new loop sqlite v1 refuses directory-seed before effects",
+        "ok 32 - new loop sqlite v1 refuses malformed before effects",
+        "ok 33 - new loop sqlite v1 preserves valid suggestions",
+        "ok 34 - new loop sqlite v1 preserves absent suggestions",
+        "ok 35 - new loop sqlite v1 preserves legacy-title-only suggestions",
+        "ok 36 - new loop sqlite v1 preserves no-reindex suggestions",
+        "ok 37 - new loop sqlite v2 refuses file-link before effects",
+        "ok 38 - new loop sqlite v2 refuses directory-link before effects",
+        "ok 39 - new loop sqlite v2 refuses ancestor-link before effects",
+        "ok 40 - new loop sqlite v2 refuses dangling-link before effects",
+        "ok 41 - new loop sqlite v2 refuses fifo before effects",
+        "ok 42 - new loop sqlite v2 refuses linked-fifo before effects",
+        "ok 43 - new loop sqlite v2 refuses directory-seed before effects",
+        "ok 44 - new loop sqlite v2 refuses malformed before effects",
+        "ok 45 - new loop sqlite v2 preserves valid suggestions",
+        "ok 46 - new loop sqlite v2 preserves absent suggestions",
+        "ok 47 - new loop sqlite v2 preserves legacy-title-only suggestions",
+        "ok 48 - new loop sqlite v2 preserves no-reindex suggestions",
+        "ok 49 - loop list refuses file-link with no authored effects",
+        "ok 50 - loop list refuses directory-link with no authored effects",
+        "ok 51 - loop list refuses fifo with no authored effects",
+        "ok 52 - loop show refuses file-link with no authored effects",
+        "ok 53 - loop show refuses directory-link with no authored effects",
+        "ok 54 - loop show refuses fifo with no authored effects",
+        "ok 55 - loop fork refuses file-link with no authored effects",
+        "ok 56 - loop fork refuses directory-link with no authored effects",
+        "ok 57 - loop fork refuses fifo with no authored effects",
+        "ok 58 - direct seed selection does not parse unrelated malformed seeds; catalog does",
+        "ok 59 - shared seed catalog enforces file budget without writes",
+        "ok 60 - shared seed catalog enforces total budget without writes",
+        "ok 61 - shared seed catalog enforces count budget without writes",
+        "ok 62 - shared seed catalog enforces entries budget without writes",
+        "ok 63 - shared seed catalog enforces depth budget without writes"
+      ]
+    },
+    {
+      "family": "commands/loop_seed_budget.test.js",
+      "finding_owner": "root:bug-56",
+      "exit_code": 0,
+      "counts": {
+        "tests": 41,
+        "pass": 41,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 25122,
+      "stdout_sha256": "0b17a8c9a3c1ff2606eb88250628fd310234525971c496d5f1ac336c04c7b0f0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - loop list reuses seed provenance once, templates=true",
+        "ok 2 - loop list reuses seed provenance once, templates=false",
+        "ok 3 - loop list reuses one indexed provenance source",
+        "ok 4 - indexed fork bounds fresh bytes after index admission",
+        "ok 5 - indexed provenance bounds fresh bytes after index admission",
+        "ok 6 - indexed show bounds fresh bytes after index admission",
+        "ok 7 - newline-dense in-budget frontmatter body fits a bounded parser heap",
+        "ok 8 - list refuses file overflow without persistent effects",
+        "ok 9 - list refuses total overflow without persistent effects",
+        "ok 10 - list refuses count overflow without persistent effects",
+        "ok 11 - list refuses entries overflow without persistent effects",
+        "ok 12 - list refuses depth overflow without persistent effects",
+        "ok 13 - provenance refuses file overflow without persistent effects",
+        "ok 14 - provenance refuses total overflow without persistent effects",
+        "ok 15 - provenance refuses count overflow without persistent effects",
+        "ok 16 - provenance refuses entries overflow without persistent effects",
+        "ok 17 - provenance refuses depth overflow without persistent effects",
+        "ok 18 - plan refuses file overflow without persistent effects",
+        "ok 19 - plan refuses total overflow without persistent effects",
+        "ok 20 - plan refuses count overflow without persistent effects",
+        "ok 21 - plan refuses entries overflow without persistent effects",
+        "ok 22 - plan refuses depth overflow without persistent effects",
+        "ok 23 - next refuses file overflow without persistent effects",
+        "ok 24 - next refuses total overflow without persistent effects",
+        "ok 25 - next refuses count overflow without persistent effects",
+        "ok 26 - next refuses entries overflow without persistent effects",
+        "ok 27 - next refuses depth overflow without persistent effects",
+        "ok 28 - new refuses file overflow without persistent effects",
+        "ok 29 - new refuses total overflow without persistent effects",
+        "ok 30 - new refuses count overflow without persistent effects",
+        "ok 31 - new refuses entries overflow without persistent effects",
+        "ok 32 - new refuses depth overflow without persistent effects",
+        "ok 33 - loop show safe --json respects selected seed byte admission",
+        "ok 34 - loop fork safe --scope repo --dry-run --json respects selected seed byte admission",
+        "ok 35 - loop fork safe --scope repo --planning-only --json respects selected seed byte admission",
+        "ok 36 - frontmatter incremental header preserves line and body semantics",
+        "ok 37 - seed and indexed provenance share one unique-input total budget",
+        "ok 38 - seed catalog counts actual bytes, not just descriptor size",
+        "ok 39 - seed selected counts actual bytes, not just descriptor size",
+        "ok 40 - loop list handles a newline-dense seed with bounded parser and purpose-line memory",
+        "ok 41 - imported loop body and local provenance consume the same total budget"
+      ]
+    },
+    {
+      "family": "commands/archive_payload_ownership.test.js",
+      "finding_owner": "root:bug-57",
+      "exit_code": 0,
+      "counts": {
+        "tests": 38,
+        "pass": 38,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 10672,
+      "stdout_sha256": "13d0e210247fc4e30d7dfd5a2776dbd460539911665c178d2df90471ee0d9abc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - compression refuses raw payload owned by nested disabled workspace",
+        "ok 2 - compression refuses cache payload owned by nested disabled workspace",
+        "ok 3 - compression refuses raw payload owned by nested private workspace",
+        "ok 4 - compression refuses cache payload owned by nested private workspace",
+        "ok 5 - compression refuses cache destination own-raw",
+        "ok 6 - compression refuses cache destination own-sidecar",
+        "ok 7 - compression refuses cache destination other-sidecar",
+        "ok 8 - compression refuses cache destination source-cache",
+        "ok 9 - compression refuses cache destination nested-metadata",
+        "ok 10 - compression refuses cache destination non-zip",
+        "ok 11 - compression refuses raw input from sidecar",
+        "ok 12 - compression refuses raw input from cache",
+        "ok 13 - compression refuses raw input from outside-source",
+        "ok 14 - direct compression refuses shared raw claimed by another archive",
+        "ok 15 - direct compression refuses shared cache claimed by another archive",
+        "ok 16 - all compression refuses shared raw claimed by another archive",
+        "ok 17 - all compression refuses shared cache claimed by another archive",
+        "ok 18 - all resource authority is checked before the first payload read",
+        "ok 19 - compression rejects configured runtime storage even inside archive layout",
+        "ok 20 - compression protects the actual template root with \"/\" separators",
+        "ok 21 - compression protects the actual template root with \"\\\\\\\\\" separators",
+        "ok 22 - explicit regular .git input remains regenerable",
+        "ok 23 - explicit regular .mdkg input remains regenerable",
+        "ok 24 - an unselected literal hash filename does not block another archive",
+        "ok 25 - legitimate missing archive regeneration and verification remain supported",
+        "ok 26 - legitimate corrupt archive regeneration and verification remain supported",
+        "ok 27 - legitimate changed-raw archive regeneration and verification remain supported",
+        "ok 28 - legitimate normalized-layout archive regeneration and verification remain supported",
+        "ok 29 - an explicitly supplied external archive-add input remains allowed",
+        "ok 30 - private payload is never opened or copied into a public parent ZIP",
+        "ok 31 - filesystem alias \"private\" cannot bypass a configured nested owner",
+        "ok 32 - filesystem alias \"café\" cannot bypass a configured nested owner",
+        "ok 33 - portable aliases between two missing cache destinations refuse before writes",
+        "ok 34 - POSIX literal backslash cache names do not redirect into another workspace",
+        "ok 35 - separate custom caches in a shared archive directory remain valid",
+        "ok 36 - ancestor and descendant cache targets cannot overlap",
+        "ok 37 - resource spelling inspection is bounded without payload reads or writes",
+        "ok 38 - sidecar payload authority changed after index admission refuses before writes"
+      ]
+    },
+    {
+      "family": "commands/mcp_request_admission.test.js",
+      "finding_owner": "root:bug-58",
+      "exit_code": 0,
+      "counts": {
+        "tests": 35,
+        "pass": 35,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 3252,
+      "stdout_sha256": "10236f2b78ba509020bb50296d80d3f75757d2f8e09800b5d4d01376da1cb3a7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - invalid request envelope 0 returns an error and preserves the stdio session",
+        "ok 2 - invalid request envelope 1 returns an error and preserves the stdio session",
+        "ok 3 - invalid request envelope 2 returns an error and preserves the stdio session",
+        "ok 4 - invalid request envelope 3 returns an error and preserves the stdio session",
+        "ok 5 - invalid request envelope 4 returns an error and preserves the stdio session",
+        "ok 6 - invalid request envelope 5 returns an error and preserves the stdio session",
+        "ok 7 - invalid request envelope 6 returns an error and preserves the stdio session",
+        "ok 8 - invalid request envelope 7 returns an error and preserves the stdio session",
+        "ok 9 - invalid request envelope 8 returns an error and preserves the stdio session",
+        "ok 10 - invalid request envelope 9 returns an error and preserves the stdio session",
+        "ok 11 - invalid request envelope 10 returns an error and preserves the stdio session",
+        "ok 12 - invalid request envelope 11 returns an error and preserves the stdio session",
+        "ok 13 - invalid request envelope 12 returns an error and preserves the stdio session",
+        "ok 14 - invalid request envelope 13 returns an error and preserves the stdio session",
+        "ok 15 - invalid request envelope 14 returns an error and preserves the stdio session",
+        "ok 16 - invalid request envelope 15 returns an error and preserves the stdio session",
+        "ok 17 - invalid request envelope 16 returns an error and preserves the stdio session",
+        "ok 18 - overflow numeric IDs fail request admission instead of becoming null successful IDs",
+        "ok 19 - valid null ID is preserved exactly",
+        "ok 20 - valid 0 ID is preserved exactly",
+        "ok 21 - valid -1 ID is preserved exactly",
+        "ok 22 - valid 1.5 ID is preserved exactly",
+        "ok 23 - valid \"\" ID is preserved exactly",
+        "ok 24 - valid \"string-id\" ID is preserved exactly",
+        "ok 25 - valid notification with undefined params remains silent",
+        "ok 26 - valid notification with {} params remains silent",
+        "ok 27 - valid notification with [] params remains silent",
+        "ok 28 - mixed invalid and valid batch members are independently admitted without nested dispatch",
+        "ok 29 - invalid request cannot dispatch a tool with a malformed ID",
+        "ok 30 - parse limit/error preserves later session requests",
+        "ok 31 - empty batch limit/error preserves later session requests",
+        "ok 32 - batch size limit/error preserves later session requests",
+        "ok 33 - nesting limit/error preserves later session requests",
+        "ok 34 - line size limit/error preserves later session requests",
+        "ok 35 - direct boundary accepts unknown input without dereferencing null or undefined"
+      ]
+    },
+    {
+      "family": "commands/skill_git_metadata.test.js",
+      "finding_owner": "root:bug-59",
+      "exit_code": 0,
+      "counts": {
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 3037,
+      "stdout_sha256": "6854f5b1034130ea960c2c9714be7c4ba09fcf226574a11cd605fa5dd28d12e5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - skill sync refuses .git/hooks with force=false before all effects",
+        "ok 2 - skill sync refuses .GIT/hooks with force=false before all effects",
+        "ok 3 - skill sync refuses .git\\\\hooks with force=false before all effects",
+        "ok 4 - skill sync refuses admin/hooks with force=false before all effects",
+        "ok 5 - skill sync refuses admin with force=false before all effects",
+        "ok 6 - skill sync refuses . with force=false before all effects",
+        "ok 7 - skill sync refuses .git/hooks with force=true before all effects",
+        "ok 8 - skill sync refuses .GIT/hooks with force=true before all effects",
+        "ok 9 - skill sync refuses .git\\\\hooks with force=true before all effects",
+        "ok 10 - skill sync refuses admin/hooks with force=true before all effects",
+        "ok 11 - skill sync refuses admin with force=true before all effects",
+        "ok 12 - skill sync refuses . with force=true before all effects",
+        "ok 13 - worktree native gitfile remains unchanged on mirror refusal",
+        "ok 14 - submodule native gitfile remains unchanged on mirror refusal",
+        "ok 15 - scaffold refuses native metadata without bypassing empty/forced checks",
+        "ok 16 - forced-preflight refuses native metadata without bypassing empty/forced checks",
+        "ok 17 - empty-preflight refuses native metadata without bypassing empty/forced checks",
+        "ok 18 - new CLI rejects unsafe mirrors before canonical or lock-directory writes",
+        "ok 19 - sync CLI rejects unsafe mirrors before canonical or lock-directory writes",
+        "ok 20 - init CLI rejects unsafe mirrors before canonical or lock-directory writes",
+        "ok 21 - nested Git repositories cannot be pruned through a managed stale slug",
+        "ok 22 - upgrade projection planning refuses an actual non-dotgit administrative directory",
+        "ok 23 - approved historical upgrade resume cannot write native metadata",
+        "ok 24 - approved historical upgrade recover cannot write native metadata",
+        "ok 25 - ordinary custom mirrors remain usable in normal repositories",
+        "ok 26 - ordinary custom mirrors remain usable in separate repositories",
+        "ok 27 - ordinary custom mirrors remain usable in worktree repositories",
+        "ok 28 - ordinary custom mirrors remain usable in submodule repositories",
+        "ok 29 - ordinary custom mirrors remain usable in non-git repositories",
+        "ok 30 - native GIT_INDEX_FILE redirection is protected alongside natural Git metadata",
+        "ok 31 - native GIT_OBJECT_DIRECTORY redirection is protected alongside natural Git metadata",
+        "ok 32 - Git environment redirection cannot hide the natural administrative directory",
+        "ok 33 - configured native hooks path is not a mirror destination",
+        "ok 34 - a plan admitted before Git topology changes is refused before journal/lock writes",
+        "ok 35 - portable mirror selectors and literal resource backslashes remain distinct",
+        "ok 36 - nested bare Git repositories cannot be pruned",
+        "ok 37 - non-Git mirrors remain usable with discovery-only GIT_CEILING_DIRECTORIES",
+        "ok 38 - non-Git mirrors remain usable with discovery-only GIT_DISCOVERY_ACROSS_FILESYSTEM",
+        "ok 39 - alternate object stores are protected (environment)",
+        "ok 40 - alternate object stores are protected (file)",
+        "ok 41 - alternate object stores are protected (quoted)",
+        "ok 42 - alternate object stores are protected (chained)",
+        "ok 43 - unknown Git topology refuses before any writes",
+        "ok 44 - invalid alternate path bytes fail closed without reinterpretation",
+        "ok 45 - BOM-prefixed alternate path bytes are preserved (file)",
+        "ok 46 - BOM-prefixed alternate path bytes are preserved (quoted-environment)",
+        "ok 47 - distinct case-sensitive alternate stores retain separate traversal identity"
+      ]
+    },
+    {
+      "family": "core/sqlite_observation.test.js",
+      "finding_owner": "root:bug-60",
+      "exit_code": 0,
+      "counts": {
+        "tests": 61,
+        "pass": 61,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 59952,
+      "stdout_sha256": "389d025438b757fc619b85ff13906073df3e66aa2fc640515f3647111aa870b0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - meta observation uses only an in-memory native connection",
+        "ok 2 - meta observation preserves closed WAL state without creating sidecars",
+        "ok 3 - health observation uses only an in-memory native connection",
+        "ok 4 - health observation preserves closed WAL state without creating sidecars",
+        "ok 5 - numeric observation uses only an in-memory native connection",
+        "ok 6 - numeric observation preserves closed WAL state without creating sidecars",
+        "ok 7 - verify observation uses only an in-memory native connection",
+        "ok 8 - verify observation preserves closed WAL state without creating sidecars",
+        "ok 9 - stats observation uses only an in-memory native connection",
+        "ok 10 - stats observation preserves closed WAL state without creating sidecars",
+        "ok 11 - queueStats observation uses only an in-memory native connection",
+        "ok 12 - queueStats observation preserves closed WAL state without creating sidecars",
+        "ok 13 - queueSummary observation uses only an in-memory native connection",
+        "ok 14 - queueSummary observation preserves closed WAL state without creating sidecars",
+        "ok 15 - queues observation uses only an in-memory native connection",
+        "ok 16 - queues observation preserves closed WAL state without creating sidecars",
+        "ok 17 - queue observation uses only an in-memory native connection",
+        "ok 18 - queue observation preserves closed WAL state without creating sidecars",
+        "ok 19 - messages observation uses only an in-memory native connection",
+        "ok 20 - messages observation preserves closed WAL state without creating sidecars",
+        "ok 21 - message observation uses only an in-memory native connection",
+        "ok 22 - message observation preserves closed WAL state without creating sidecars",
+        "ok 23 - leases observation uses only an in-memory native connection",
+        "ok 24 - leases observation preserves closed WAL state without creating sidecars",
+        "ok 25 - materializer observation uses only an in-memory native connection",
+        "ok 26 - materializer observation preserves closed WAL state without creating sidecars",
+        "ok 27 - snapshot observation uses only an in-memory native connection",
+        "ok 28 - snapshot observation preserves closed WAL state without creating sidecars",
+        "ok 29 - snapshotDump observation uses only an in-memory native connection",
+        "ok 30 - snapshotDump observation preserves closed WAL state without creating sidecars",
+        "ok 31 - snapshotDiff observation uses only an in-memory native connection",
+        "ok 32 - snapshotDiff observation preserves closed WAL state without creating sidecars",
+        "ok 33 - verifyCannotDowngrade observation uses only an in-memory native connection",
+        "ok 34 - verifyCannotDowngrade observation preserves closed WAL state without creating sidecars",
+        "ok 35 - summaryCannotDowngrade observation uses only an in-memory native connection",
+        "ok 36 - summaryCannotDowngrade observation preserves closed WAL state without creating sidecars",
+        "ok 37 - meta missing observation never creates a database",
+        "ok 38 - queueStats missing observation never creates a database",
+        "ok 39 - queueSummary missing observation never creates a database",
+        "ok 40 - leases missing observation never creates a database",
+        "ok 41 - a journal-mode transition after admission must not let an observation create sidecars",
+        "ok 42 - a valid database replacing the pathname during observation is rejected",
+        "ok 43 - explicit snapshot sealing remains functional for closed-wal",
+        "ok 44 - explicit queue mutations remain functional for closed-wal",
+        "ok 45 - explicit work trigger enqueue remains functional for closed-wal",
+        "ok 46 - explicit snapshot sealing remains functional for live-wal",
+        "ok 47 - explicit queue mutations remain functional for live-wal",
+        "ok 48 - explicit work trigger enqueue remains functional for live-wal",
+        "ok 49 - observations leave real live-wal database and sidecar bytes unchanged",
+        "ok 50 - observations leave real orphan-wal database and sidecar bytes unchanged",
+        "ok 51 - observations leave real hot-journal database and sidecar bytes unchanged",
+        "ok 52 - observational admission refuses directory databases without effects",
+        "ok 53 - observational admission refuses symlink databases without effects",
+        "ok 54 - observational admission refuses fifo databases without effects",
+        "ok 55 - observational admission refuses malformed databases without effects",
+        "ok 56 - -wal files and unsafe types are refused before observation",
+        "ok 57 - -shm files and unsafe types are refused before observation",
+        "ok 58 - -journal files and unsafe types are refused before observation",
+        "ok 59 - CLI observations preserve complete closed inventories",
+        "ok 60 - CLI observations preserve complete wal inventories",
+        "ok 61 - CLI observations preserve complete permission-read-only inventories"
+      ]
+    },
+    {
+      "family": "core/sqlite_memory_observation.test.js",
+      "finding_owner": "root:bug-60",
+      "exit_code": 0,
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 159,
+      "stdout_sha256": "30e103206d39e9872f58ad8759903a1c213525bf332c47b1a225d02147ca53db",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - portable SQLite observation opens memory only without OS dispatch or tools",
+        "ok 2 - missing deserialize refuses before source admission or native construction",
+        "ok 3 - missing setAuthorizer refuses before source admission or native construction",
+        "ok 4 - missing enableDefensive refuses before source admission or native construction",
+        "ok 5 - memory observer refuses SQL mutation or capability change: INSERT INTO sample VALUES('changed')",
+        "ok 6 - memory observer refuses SQL mutation or capability change: CREATE TABLE rejected(value TEXT)",
+        "ok 7 - memory observer refuses SQL mutation or capability change: CREATE TEMP TABLE rejected(value TEXT)",
+        "ok 8 - memory observer refuses SQL mutation or capability change: PRAGMA query_only=OFF",
+        "ok 9 - memory observer refuses SQL mutation or capability change: PRAGMA temp_store=FILE",
+        "ok 10 - memory observer refuses SQL mutation or capability change: PRAGMA trusted_schema=ON",
+        "ok 11 - memory observer refuses SQL mutation or capability change: PRAGMA writable_schema=ON",
+        "ok 12 - memory observer refuses SQL mutation or capability change: PRAGMA user_version=4",
+        "ok 13 - memory observer refuses SQL mutation or capability change: PRAGMA foreign_keys=OFF",
+        "ok 14 - memory observer refuses SQL mutation or capability change: SELECT load_extension('absent')",
+        "ok 15 - ATTACH cannot make an external database",
+        "ok 16 - VACUUM INTO cannot make an external database",
+        "ok 17 - memory observation refuses low or unknown available memory without allocating the image",
+        "ok 18 - memory is checked again before the native deserialize copy",
+        "ok 19 - image allocation failure reports clearly and closes both source admissions",
+        "ok 20 - failed native deserialization closes its connection and preserves the source",
+        "ok 21 - truncate during image capture refuses before returning a query",
+        "ok 22 - grow during image capture refuses before returning a query",
+        "ok 23 - same-inode writer change during a query invalidates the snapshot result",
+        "ok 24 - legitimate generated-column builtins remain usable in project databases",
+        "ok 25 - a falsy thrown callback value still fails and releases the connection"
+      ]
+    },
+    {
+      "family": "transport-admission",
+      "finding_owner": "root:bug-45",
+      "exit_code": 0,
+      "duration_ms": 26553,
+      "proof": {
+        "pass": true,
+        "cases": [
+          {
+            "name": "historical clone: legitimate graph assets and private snapshot",
+            "pass": true
+          },
+          {
+            "name": "historical fork: legitimate graph assets and private snapshot",
+            "pass": true
+          },
+          {
+            "name": "historical materialization: legitimate graph assets",
+            "pass": true
+          },
+          {
+            "name": "fresh clone: legitimate graph assets and private snapshot",
+            "pass": true
+          },
+          {
+            "name": "fresh fork: legitimate graph assets and private snapshot",
+            "pass": true
+          },
+          {
+            "name": "fresh materialization: legitimate graph assets",
+            "pass": true
+          },
+          {
+            "name": "historical optional owner labels: clone derives exact config ownership",
+            "pass": true
+          },
+          {
+            "name": "historical optional owner labels: fork derives exact config ownership",
+            "pass": true
+          },
+          {
+            "name": "historical optional owner labels: materialization derives exact config ownership",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path .git/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path .git/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path .git/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path .mdkg/cache/.GiT/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path .mdkg/cache/.GiT/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path .mdkg/cache/.GiT/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path package.json: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path package.json: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured global_index_path package.json: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path .git/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path .git/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path .git/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path .mdkg/cache/.GiT/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path .mdkg/cache/.GiT/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path .mdkg/cache/.GiT/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path package.json: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path package.json: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured sqlite_path package.json: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path .git/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path .git/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path .git/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path .mdkg/cache/.GiT/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path .mdkg/cache/.GiT/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path .mdkg/cache/.GiT/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path package.json: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path package.json: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical configured cache_path package.json: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical legitimate custom cache destinations: clone",
+            "pass": true
+          },
+          {
+            "name": "historical legitimate custom cache destinations: fork",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path .git/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path .git/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path .git/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path .mdkg/cache/.GiT/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path .mdkg/cache/.GiT/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path .mdkg/cache/.GiT/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path package.json: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path package.json: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured global_index_path package.json: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path .git/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path .git/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path .git/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path .mdkg/cache/.GiT/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path .mdkg/cache/.GiT/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path .mdkg/cache/.GiT/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path package.json: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path package.json: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured sqlite_path package.json: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path .git/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path .git/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path .git/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path .mdkg/cache/.GiT/config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path .mdkg/cache/.GiT/config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path .mdkg/cache/.GiT/config: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path package.json: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path package.json: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh configured cache_path package.json: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh legitimate custom cache destinations: clone",
+            "pass": true
+          },
+          {
+            "name": "fresh legitimate custom cache destinations: fork",
+            "pass": true
+          },
+          {
+            "name": "historical git-config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-config: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-config: template preview refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-config: template apply refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-layout: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-layout: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-layout: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-indirection: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-indirection: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical git-indirection: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical nested-git: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical nested-git: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical nested-git: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical nested-git: template preview refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical nested-git: template apply refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical case-git: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical case-git: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical case-git: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical hfs-git: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical hfs-git: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical hfs-git: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical trailing-git: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical trailing-git: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical trailing-git: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unrelated-root: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unrelated-root: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unrelated-root: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unrelated-root: template preview refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unrelated-root: template apply refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unrelated-child: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unrelated-child: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unrelated-child: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical prefix-collision: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical prefix-collision: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical prefix-collision: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical case-collision: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical case-collision: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical case-collision: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unicode-collision: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unicode-collision: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "historical unicode-collision: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-config: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-config: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-config: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-config: template preview refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-config: template apply refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-layout: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-layout: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-layout: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-indirection: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-indirection: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh git-indirection: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh nested-git: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh nested-git: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh nested-git: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh nested-git: template preview refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh nested-git: template apply refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh case-git: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh case-git: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh case-git: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh hfs-git: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh hfs-git: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh hfs-git: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh trailing-git: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh trailing-git: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh trailing-git: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unrelated-root: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unrelated-root: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unrelated-root: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unrelated-root: template preview refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unrelated-root: template apply refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unrelated-child: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unrelated-child: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unrelated-child: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh prefix-collision: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh prefix-collision: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh prefix-collision: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh case-collision: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh case-collision: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh case-collision: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unicode-collision: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unicode-collision: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "fresh unicode-collision: materialize clean refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "disabled owner: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "disabled owner: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "disabled owner: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "unselected owner: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "unselected owner: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "unselected owner: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "wrong-owner owner: clone refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "wrong-owner owner: fork refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "wrong-owner owner: materialize refuses unchanged",
+            "pass": true
+          },
+          {
+            "name": "config-less policy cannot authorize a Git administrative root",
+            "pass": true
+          },
+          {
+            "name": "private producer refuses .mdkg/.git/config",
+            "pass": true
+          },
+          {
+            "name": "public producer refuses .mdkg/.git/config",
+            "pass": true
+          },
+          {
+            "name": "directory clone refuses .mdkg/.git/config",
+            "pass": true
+          },
+          {
+            "name": "private producer refuses .mdkg/assets/.GiT/config",
+            "pass": true
+          },
+          {
+            "name": "public producer refuses .mdkg/assets/.GiT/config",
+            "pass": true
+          },
+          {
+            "name": "directory clone refuses .mdkg/assets/.GiT/config",
+            "pass": true
+          }
+        ],
+        "runtime": "v24.18.0",
+        "platform": "darwin-arm64",
+        "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+        "final_qualification": false
+      }
+    }
+  ],
+  "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+  "canonical_implementation_imports_refused": true,
+  "limitations": [
+    "Native macOS only; other platforms and independent acceptance remain open",
+    "Mixed installed CLI and shipped internal-module regressions, not all public CLI tests",
+    "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  },
+  "pass": true
+}

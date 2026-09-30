@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "reviewed-local-commit",
+  "owner": "root:goal-86",
+  "checkpoint": "root:chk-664",
+  "sha": "36e075b8d64babff04154704a721db4a82926ebe",
+  "parent": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "paths": [
+    "scripts/qualification-artifact.js",
+    "tests/qualification-artifact.test.mjs"
+  ],
+  "reviewed_staged_paths_exact": true,
+  "validation": {
+    "focused_suite_pass": 73,
+    "focused_suite_fail": 0,
+    "immediate_shared_helper_pass": 19,
+    "immediate_shared_helper_fail": 0,
+    "diff_check": true,
+    "independent_bounded_review": "resolved; not Task828"
+  },
+  "source_inputs_changed": false,
+  "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "protected_before": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "protected_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "remaining_dirty_count": 218,
+  "staged_after": "",
+  "upstream": {
+    "remote_url": "git@github.com:nickreames/mdkg.git",
+    "branch": "origin/main",
+    "cached_divergence": "70\t0",
+    "live_verified": false
+  },
+  "not_committed": "Remaining owned source, qualification infrastructure, guidance, mdkg planning/evidence and generated index preserved unstaged; no broad staging.",
+  "authority": "explicit reviewed local commits on canonical main; no push/tag/publication/deployment/provider/remote Git",
+  "published": false
+}

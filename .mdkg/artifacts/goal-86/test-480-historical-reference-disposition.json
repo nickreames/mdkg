@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "owner": "root:test-480",
+  "aggregate": "root:bug-7",
+  "kind": "evidence-bound-unsupported-historical-reference-disposition",
+  "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "historical_commit": "2a8ed49d24e89e92d912968092539f1a53d9effb",
+  "node": ".mdkg/work/task-309-close-goal-10-evidence-and-confirm-publish-ready-not-published.md",
+  "node_sha256": "ec203c4bc774a84a30adb04864ae4fecfad6189e5242658a238aa53a676f3a93",
+  "historical_sha256": "ec203c4bc774a84a30adb04864ae4fecfad6189e5242658a238aa53a676f3a93",
+  "same_bytes": true,
+  "inputs": {
+    "src/graph/validate_graph.ts": "0b2d78be19ee5ced9f585b9b65fa2f01a58a352bbb8eeee45ba47d7091093dae",
+    "src/graph/identity_refs.ts": "4934bb46d6acbd580b58df41cfcc9e9fa26d2bce3c92d968576958dbba5bcab1",
+    ".mdkg/artifacts/goal-84/bug-34-verification.json": "9dbe554eab45cf0e3d025bccb99c180f273205296a6602d4f733a541c78a17d4"
+  },
+  "condition": [
+    "mdkg://goal-10",
+    "mdkg://epic-64"
+  ],
+  "assessment": "Legacy alias-shaped historical evidence is not a valid graph-and-node immutable URI for explicit v2 adoption. The original strings do not uniquely encode stable graph/node identity; migration must fail closed rather than invent one.",
+  "supported_behavior": "Keep legacy graph inspection supported; explicit v2 adoption of this historical input remains unsupported without a separately reviewed authoritative mapping/disposition.",
+  "evidence": {
+    "historical_private_preview": ".mdkg/artifacts/goal-84/bug-34-verification.json#private_graph_preview",
+    "safe_to_apply": false,
+    "migration_applied": false,
+    "current_source_validation": "collectGraphErrors resolves mdkg: references for identity-bearing nodes and reports unresolved or ambiguous identities"
+  },
+  "disposition": "Unsupported historical input, not an instruction to change canonical history and not a newly discovered runtime defect.",
+  "limits": [
+    "Current turn rechecked exact historical bytes and current validation source; it did not rerun the complete private canonical-graph rehearsal.",
+    "Historical preview is not silently relabelled a current-artifact full-graph execution pass. Test480 retains that evidence distinction."
+  ],
+  "mutations": {
+    "canonical_node": false,
+    "migration": false,
+    "identities_synthesized": false
+  }
+}

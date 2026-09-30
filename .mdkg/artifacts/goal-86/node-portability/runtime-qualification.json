@@ -1,0 +1,710 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-86",
+  "work": "root:task-842",
+  "decision": "root:dec-98",
+  "date": "2026-09-28",
+  "status": "LOCAL_CONTRACT_PASS_NOT_RELEASE_READY",
+  "source_revision": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "runtime_contract": {
+    "engines": ">=24.18.0 <25",
+    "verified_positive": "24.18.0",
+    "capabilities": [
+      "DatabaseSync.deserialize",
+      "DatabaseSync.setAuthorizer",
+      "DatabaseSync.enableDefensive",
+      "process.availableMemory"
+    ],
+    "unsupported": "Older Node24 patches and all higher majors; help/version and ordinary unsupported-option diagnostics remain available before capability admission.",
+    "platforms": "Node-only APIs; final macOS/Linux qualification still required; Windows unqualified"
+  },
+  "inputs": [
+    {
+      "path": "src/core/node_runtime.ts",
+      "sha256": "2b3c81bac7443a8629d6f06de95c7e6ce0e5c4588f595bf62763c4f3dd3fafee"
+    },
+    {
+      "path": "src/cli.ts",
+      "sha256": "b8b9838a6f3de7941e03cfb869bc1ca223ecbebaa88655f05651ccee9da26b3b"
+    },
+    {
+      "path": "src/commands/doctor.ts",
+      "sha256": "fd9c8c77e50082700aca2090c16a71c61b4266cb8c4ab8f2bc753ac8b0c0ab46"
+    },
+    {
+      "path": "src/core/sqlite_observation.ts",
+      "sha256": "78c8705ee0865b31382c45c60ff6426dc563d7417635caf0c18943c657409754"
+    },
+    {
+      "path": "tests/commands/node_runtime_admission.test.ts",
+      "sha256": "76705409aa84ae92ca7203f077b702d98eca62e2bb86f3442e8c9c231b930185"
+    },
+    {
+      "path": "package.json",
+      "sha256": "3bde1e4761660a74bd50d7b467f5fae247964ad9811d421c2d05e91cd72d3672"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "da6367ac0f9bc63d4471076a45dfa58492be76e468dc720b8eb8b560aaa5aca4"
+    },
+    {
+      "path": "README.md",
+      "sha256": "adc48187f7f57a41c650febbb916c743fe3608c4308e75846a2a26c3818532ff"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "535488d22940d7fee143b132055e5b7f136826c3cafc489922ee821f91e104ea"
+    },
+    {
+      "path": "docs/src/content/docs/start-here/install.md",
+      "sha256": "d456fd819f7ec152a13c841124d96c6dac243e3129c0dd9378840418325e9b76"
+    },
+    {
+      "path": "docs/start-here/install.md",
+      "sha256": "74136af51ff6b1bf182d237e7e69ee3122beebd3ab7b8fb043c18f673ea95e49"
+    },
+    {
+      "path": "docs/_generated/release-notes.json",
+      "sha256": "d89a7238b77e0ffcf7eae25249b9d6a38dc0cde6defcc9f0a9c927f58175bfa2"
+    },
+    {
+      "path": "mdkg-dev/src/pages/quickstart.astro",
+      "sha256": "c05e292980e6a1c6ca91f80044134afbad5676dc02d58f62517a6b219fe82340"
+    },
+    {
+      "path": "scripts/smoke-mdkg-dev.js",
+      "sha256": "dfeefa4d6f2511f67b7b137a404b158e4a356dee461f1d810b74eabb82d36e2f"
+    },
+    {
+      "path": "scripts/smoke-manifest.json",
+      "sha256": "f41a5c7f5f92e41cc97c17e3787795a49db8bea328ee449b8e1b2ed87c630a82"
+    },
+    {
+      "path": "scripts/release-ladder.js",
+      "sha256": "5b64f43044199e818717f52ace7071a92c8355b14aaaf547a4da50db33e9a11c"
+    },
+    {
+      "path": "scripts/generate-ci-workflow.js",
+      "sha256": "4fab4e318cd52de8a36345185dffa685dde5e42e3249ca06b7416630bba1544e"
+    },
+    {
+      "path": ".github/workflows/release-readiness.yml",
+      "sha256": "0aa57871ea4690141f85c46bc3b56b1d13b4473aa96141a4b4de062d3aa4c106"
+    },
+    {
+      "path": "scripts/assert-publish-ready.js",
+      "sha256": "40c2a9a1c9977bd39d6f041757a190f17b5dafe8f486acfaaadf4971b2624dfc"
+    },
+    {
+      "path": "tests/ci-topology.test.ts",
+      "sha256": "753715a0a10943fbbda6776df6ef86e08eca05ce61c9bc80f461f41c44d36102"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/runtime-installed-probe.cjs",
+      "sha256": "e087b4a5ebf0e69be03750ba2f9fcb57259c14f62b5624d77530d59ec6679622"
+    },
+    {
+      "path": "src/core/project_db_events.ts",
+      "sha256": "f513efea1ba226191bbbc758d9d0132fcb35ca5d71326f84c00c9dce364c6d57"
+    },
+    {
+      "path": "src/core/project_db_queue.ts",
+      "sha256": "60908d81cda539729d1e4eb8f8825a7c97d5a0047ddc7628d4369c7c915ea2e1"
+    },
+    {
+      "path": "src/core/project_db_migrations.ts",
+      "sha256": "f708327a012e4a3c30c238b4a1eebe1e2b0959bbd18a5b504a388b456518e165"
+    },
+    {
+      "path": "src/core/project_db_snapshot.ts",
+      "sha256": "40086394f2b87dd16f0ba3f7c04bb9d2ba68b98eb5222c331c9fc0faa3ced24d"
+    },
+    {
+      "path": "src/graph/sqlite_index.ts",
+      "sha256": "870dd974d92a4dfd98d042df2aa903974541e96b8756a2565a495818415517df"
+    },
+    {
+      "path": "tests/core/sqlite_memory_observation.test.ts",
+      "sha256": "02bfc91735fef6bddfcc4e3d2d90a8b3495a14b5534420c92201d82e2b7e9112"
+    },
+    {
+      "path": "tests/core/sqlite_observation.test.ts",
+      "sha256": "d6b2e7dd9c21966e36defa021c0bae14aa263cd9ee5b4f19754afe0bcb67223a"
+    },
+    {
+      "path": "tests/core/snapshot_containment.test.ts",
+      "sha256": "f402655d8e68652ad99fad73bb1de13f766b7af0f8cc88cddefa221c4e814ef0"
+    }
+  ],
+  "validation": {
+    "failure_before": {
+      "tests": 2,
+      "pass": 0,
+      "fail": 2,
+      "exit_code": 1,
+      "duration_ms": 86.60225,
+      "error": "workspace discovery reached",
+      "command": "npm run build:test && /opt/homebrew/opt/node@24/bin/node --test dist/tests/commands/node_runtime_admission.test.js"
+    },
+    "runtime_and_nearby": {
+      "tests": 67,
+      "pass": 67,
+      "fail": 0,
+      "skip": 0,
+      "duration_ms": 1371.102291,
+      "command": "/opt/homebrew/opt/node@24/bin/node --test dist/tests/commands/node_runtime_admission.test.js dist/tests/commands/cli_option_admission.test.js dist/tests/commands/cli_runtime.test.js dist/tests/commands/doctor.test.js dist/tests/core/sqlite_memory_observation.test.js dist/tests/ci-topology.test.js"
+    },
+    "final_runtime_and_release_contract": {
+      "tests": 27,
+      "pass": 27,
+      "fail": 0,
+      "skip": 0,
+      "duration_ms": 1977.338625,
+      "command": "/opt/homebrew/opt/node@24/bin/node --test dist/tests/commands/node_runtime_admission.test.js dist/tests/ci-topology.test.js dist/tests/release-ladder.test.js"
+    },
+    "public_release_and_goal_contract": {
+      "tests": 23,
+      "pass": 23,
+      "fail": 0,
+      "skip": 0,
+      "duration_ms": 69.020584
+    },
+    "final_affected_subsystem": {
+      "runtime": "24.18.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "tests": 343,
+      "pass": 343,
+      "fail": 0,
+      "skip": 0,
+      "duration_ms": 64410.241791,
+      "exit_code": 0,
+      "command": "npm run build:test && TMPDIR=/private/tmp /opt/homebrew/opt/node@24/bin/node --test dist/tests/core/sqlite_memory_observation.test.js dist/tests/core/sqlite_observation.test.js dist/tests/core/snapshot_containment.test.js dist/tests/core/snapshot_verification.test.js dist/tests/commands/db_index.test.js dist/tests/commands/sqlite_dal.test.js dist/tests/commands/numeric_allocation.test.js dist/tests/commands/writer_admission.test.js dist/tests/graph/sqlite_fingerprint.test.js dist/tests/commands/node_runtime_admission.test.js dist/tests/commands/cli_option_admission.test.js dist/tests/commands/cli_runtime.test.js dist/tests/commands/doctor.test.js dist/tests/ci-topology.test.js dist/tests/release-ladder.test.js tests/public-release.test.mjs tests/publish-readiness-goal-contract.test.mjs"
+    },
+    "graph_preclose": {
+      "errors": 0,
+      "warnings": 3,
+      "warning_classification": "preserved stale imported bundles; no refresh authority"
+    },
+    "final_graph": {
+      "full": {
+        "errors": 0,
+        "warnings": 3,
+        "warning_scope": "preserved stale imports"
+      },
+      "changed_only": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "index": {
+        "fresh": 5,
+        "failures": 0
+      },
+      "diff_check": "pass"
+    },
+    "build": "passed",
+    "command_contract": "passed",
+    "command_matrix": "passed",
+    "docs_generated": "passed",
+    "documentation_examples": {
+      "scanned_files": 63,
+      "checked": 472,
+      "failed": 0
+    },
+    "ci_projection": "passed",
+    "skills": {
+      "checked": 8,
+      "errors": 0,
+      "warnings": 0
+    },
+    "diff_check": "passed",
+    "static_package_readiness": {
+      "status": "passed",
+      "intermediate_failure": "scripts/smoke-loop.js is missing SQLite backend proof",
+      "resolution": "The diagnostic text had changed to SQLite index backend. Gate now requires the actual config.index.backend === sqlite assertion; the installed loop smoke independently passed."
+    },
+    "installed_probe": {
+      "schema_version": 1,
+      "status": "INTERMEDIATE_INSTALLED_PASS_NOT_RELEASE_READY",
+      "runtime": "v24.18.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "tarball": {
+        "sha256": "94970609a4f96f18879f04dd5a68e89b5061fdf85c4adc4ba337171c3d410995",
+        "integrity": "sha512-z5AQ5aLw4vsvcV9EAujcHWD9xqwueKfpHCySSNnT4YS8XPiVfey9U6ZVALCaz/IJ5iFxCG4Ey14nfDmYGjTKJw==",
+        "files": [
+          "CHANGELOG.md",
+          "CLI_COMMAND_MATRIX.md",
+          "CONTRIBUTING.md",
+          "LICENSE",
+          "README.md",
+          "dist/cli.js",
+          "dist/command-contract.json",
+          "dist/commands/archive.js",
+          "dist/commands/bootstrap_instructions.js",
+          "dist/commands/bundle.js",
+          "dist/commands/capability.js",
+          "dist/commands/checkpoint.js",
+          "dist/commands/db.js",
+          "dist/commands/doctor.js",
+          "dist/commands/event.js",
+          "dist/commands/event_support.js",
+          "dist/commands/fix.js",
+          "dist/commands/format.js",
+          "dist/commands/git.js",
+          "dist/commands/goal.js",
+          "dist/commands/graph.js",
+          "dist/commands/graph_identity.js",
+          "dist/commands/guide.js",
+          "dist/commands/handoff.js",
+          "dist/commands/index.js",
+          "dist/commands/init.js",
+          "dist/commands/init_manifest.js",
+          "dist/commands/list.js",
+          "dist/commands/loop.js",
+          "dist/commands/loop_descriptors.js",
+          "dist/commands/mcp.js",
+          "dist/commands/new.js",
+          "dist/commands/next.js",
+          "dist/commands/node_card.js",
+          "dist/commands/option_contract.js",
+          "dist/commands/pack.js",
+          "dist/commands/query_output.js",
+          "dist/commands/search.js",
+          "dist/commands/show.js",
+          "dist/commands/skill.js",
+          "dist/commands/skill_mirror.js",
+          "dist/commands/skill_support.js",
+          "dist/commands/spec.js",
+          "dist/commands/status.js",
+          "dist/commands/subgraph.js",
+          "dist/commands/task.js",
+          "dist/commands/upgrade.js",
+          "dist/commands/upgrade_identity.js",
+          "dist/commands/upgrade_projections.js",
+          "dist/commands/upgrade_transaction.js",
+          "dist/commands/validate.js",
+          "dist/commands/work.js",
+          "dist/commands/workspace.js",
+          "dist/core/config.js",
+          "dist/core/event_limits.js",
+          "dist/core/filesystem_authority.js",
+          "dist/core/migrate.js",
+          "dist/core/node_runtime.js",
+          "dist/core/paths.js",
+          "dist/core/project_db.js",
+          "dist/core/project_db_events.js",
+          "dist/core/project_db_materializer.js",
+          "dist/core/project_db_migrations.js",
+          "dist/core/project_db_queue.js",
+          "dist/core/project_db_queue_contract.js",
+          "dist/core/project_db_snapshot.js",
+          "dist/core/public_skill_projection.js",
+          "dist/core/sqlite_observation.js",
+          "dist/core/template_path.js",
+          "dist/core/version.js",
+          "dist/core/workspace_path.js",
+          "dist/graph/agent_file_types.js",
+          "dist/graph/archive_file.js",
+          "dist/graph/archive_integrity.js",
+          "dist/graph/cache_output.js",
+          "dist/graph/capabilities_index_cache.js",
+          "dist/graph/capabilities_indexer.js",
+          "dist/graph/edges.js",
+          "dist/graph/events_validation.js",
+          "dist/graph/frontmatter.js",
+          "dist/graph/goal_next.js",
+          "dist/graph/goal_scope.js",
+          "dist/graph/identity.js",
+          "dist/graph/identity_acceptance.js",
+          "dist/graph/identity_authoring.js",
+          "dist/graph/identity_history.js",
+          "dist/graph/identity_legacy_lineage.js",
+          "dist/graph/identity_migration.js",
+          "dist/graph/identity_reconcile.js",
+          "dist/graph/identity_reconciliation_plan.js",
+          "dist/graph/identity_refs.js",
+          "dist/graph/identity_snapshot.js",
+          "dist/graph/identity_template.js",
+          "dist/graph/identity_transaction.js",
+          "dist/graph/identity_transport.js",
+          "dist/graph/identity_validation.js",
+          "dist/graph/index_cache.js",
+          "dist/graph/indexer.js",
+          "dist/graph/json_cache_fingerprint.js",
+          "dist/graph/loop_bindings.js",
+          "dist/graph/node.js",
+          "dist/graph/node_body.js",
+          "dist/graph/reindex.js",
+          "dist/graph/selected_goal.js",
+          "dist/graph/skills_index_cache.js",
+          "dist/graph/skills_indexer.js",
+          "dist/graph/sqlite_index.js",
+          "dist/graph/staleness.js",
+          "dist/graph/subgraph_bundle.js",
+          "dist/graph/subgraphs.js",
+          "dist/graph/template_schema.js",
+          "dist/graph/transport_paths.js",
+          "dist/graph/transport_policy.js",
+          "dist/graph/transport_state.js",
+          "dist/graph/validate_graph.js",
+          "dist/graph/visibility.js",
+          "dist/graph/workspace_files.js",
+          "dist/graph/workspace_ownership.js",
+          "dist/init/AGENTS.md",
+          "dist/init/AGENT_START.md",
+          "dist/init/CLAUDE.md",
+          "dist/init/CLI_COMMAND_MATRIX.md",
+          "dist/init/README.md",
+          "dist/init/config.json",
+          "dist/init/core/COLLABORATION.md",
+          "dist/init/core/HUMAN.md",
+          "dist/init/core/SOUL.md",
+          "dist/init/core/core.md",
+          "dist/init/core/guide.md",
+          "dist/init/core/rule-1-mdkg-conventions.md",
+          "dist/init/core/rule-2-context-pack-rules.md",
+          "dist/init/core/rule-3-cli-contract.md",
+          "dist/init/core/rule-4-repo-safety-and-ignores.md",
+          "dist/init/core/rule-5-release-and-versioning.md",
+          "dist/init/core/rule-6-templates-and-schemas.md",
+          "dist/init/init-manifest.json",
+          "dist/init/legacy/0.5.2-before-compact.json",
+          "dist/init/legacy/v0.0.9-init-manifest.json",
+          "dist/init/llms.txt",
+          "dist/init/skills/SKILL.md.example",
+          "dist/init/skills/default/author-mdkg-skill/SKILL.md",
+          "dist/init/skills/default/build-pack-and-execute-task/SKILL.md",
+          "dist/init/skills/default/pursue-mdkg-goal/SKILL.md",
+          "dist/init/skills/default/pursue-mdkg-loop/SKILL.md",
+          "dist/init/skills/default/select-work-and-ground-context/SKILL.md",
+          "dist/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+          "dist/init/skills/public-seed-policy.json",
+          "dist/init/templates/default/archive.md",
+          "dist/init/templates/default/bug.md",
+          "dist/init/templates/default/chk.md",
+          "dist/init/templates/default/dec.md",
+          "dist/init/templates/default/dispute.md",
+          "dist/init/templates/default/edd.md",
+          "dist/init/templates/default/epic.md",
+          "dist/init/templates/default/feat.md",
+          "dist/init/templates/default/feedback.md",
+          "dist/init/templates/default/goal.md",
+          "dist/init/templates/default/loop.md",
+          "dist/init/templates/default/manifest.md",
+          "dist/init/templates/default/prd.md",
+          "dist/init/templates/default/prop.md",
+          "dist/init/templates/default/proposal.md",
+          "dist/init/templates/default/receipt.md",
+          "dist/init/templates/default/rule.md",
+          "dist/init/templates/default/spec.md",
+          "dist/init/templates/default/spike.md",
+          "dist/init/templates/default/task.md",
+          "dist/init/templates/default/test.md",
+          "dist/init/templates/default/work.md",
+          "dist/init/templates/default/work_order.md",
+          "dist/init/templates/loops/backend-api-cli-bloat-audit.loop.md",
+          "dist/init/templates/loops/design-frontend-ux-audit.loop.md",
+          "dist/init/templates/loops/duplicate-code-and-linting-audit.loop.md",
+          "dist/init/templates/loops/security-audit.loop.md",
+          "dist/init/templates/loops/tech-stack-best-practices-audit.loop.md",
+          "dist/init/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          "dist/init/templates/loops/user-story-audit-and-recommendations.loop.md",
+          "dist/init/templates/skills/base.SKILL.md",
+          "dist/init/templates/specs/agent.MANIFEST.md",
+          "dist/init/templates/specs/agent.SPEC.md",
+          "dist/init/templates/specs/api.MANIFEST.md",
+          "dist/init/templates/specs/api.SPEC.md",
+          "dist/init/templates/specs/base.MANIFEST.md",
+          "dist/init/templates/specs/base.SPEC.md",
+          "dist/init/templates/specs/capability.MANIFEST.md",
+          "dist/init/templates/specs/capability.SPEC.md",
+          "dist/init/templates/specs/integration.MANIFEST.md",
+          "dist/init/templates/specs/integration.SPEC.md",
+          "dist/init/templates/specs/model.MANIFEST.md",
+          "dist/init/templates/specs/model.SPEC.md",
+          "dist/init/templates/specs/project.MANIFEST.md",
+          "dist/init/templates/specs/project.SPEC.md",
+          "dist/init/templates/specs/runtime-agent.MANIFEST.md",
+          "dist/init/templates/specs/runtime-agent.SPEC.md",
+          "dist/init/templates/specs/runtime-image.MANIFEST.md",
+          "dist/init/templates/specs/runtime-image.SPEC.md",
+          "dist/init/templates/specs/tool.MANIFEST.md",
+          "dist/init/templates/specs/tool.SPEC.md",
+          "dist/pack/budget.js",
+          "dist/pack/export_json.js",
+          "dist/pack/export_md.js",
+          "dist/pack/export_toon.js",
+          "dist/pack/export_xml.js",
+          "dist/pack/metrics.js",
+          "dist/pack/order.js",
+          "dist/pack/pack.js",
+          "dist/pack/profile.js",
+          "dist/pack/stats.js",
+          "dist/pack/types.js",
+          "dist/pack/verbose_core.js",
+          "dist/templates/builtin.js",
+          "dist/templates/headings.js",
+          "dist/templates/limits.js",
+          "dist/templates/loader.js",
+          "dist/templates/loop_seeds.js",
+          "dist/util/argparse.js",
+          "dist/util/atomic.js",
+          "dist/util/date.js",
+          "dist/util/errors.js",
+          "dist/util/filter.js",
+          "dist/util/git_metadata.js",
+          "dist/util/git_observation.js",
+          "dist/util/git_remote.js",
+          "dist/util/id.js",
+          "dist/util/lock.js",
+          "dist/util/lock_evidence.js",
+          "dist/util/output.js",
+          "dist/util/qid.js",
+          "dist/util/refs.js",
+          "dist/util/sort.js",
+          "dist/util/writer_admission.js",
+          "dist/util/zip.js",
+          "package.json",
+          "scripts/postinstall.js"
+        ]
+      },
+      "positive": [
+        {
+          "command": [
+            "init",
+            "--graph-only"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "new",
+            "task",
+            "Portable installed proof",
+            "--json"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "index"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "validate",
+            "--json"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "db",
+            "init",
+            "--json"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "db",
+            "migrate",
+            "--json"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "db",
+            "verify",
+            "--json"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "db",
+            "stats",
+            "--json"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "installed_observer_tests": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "skip": 0
+      },
+      "unsupported_runtime": "v26.0.0",
+      "negative": [
+        {
+          "command": [
+            "init",
+            "--graph-only"
+          ],
+          "exit_code": 2,
+          "complete_inventory_unchanged": true
+        },
+        {
+          "command": [
+            "index"
+          ],
+          "exit_code": 2,
+          "complete_inventory_unchanged": true
+        },
+        {
+          "command": [
+            "db",
+            "verify",
+            "--json"
+          ],
+          "exit_code": 2,
+          "complete_inventory_unchanged": true
+        },
+        {
+          "command": [
+            "mcp",
+            "serve",
+            "--stdio"
+          ],
+          "exit_code": 2,
+          "complete_inventory_unchanged": true
+        }
+      ],
+      "limitations": [
+        "prepack/postinstall lifecycle intentionally not exercised by this bounded probe",
+        "not final candidate, Linux, Windows, recovery, independent review, coverage or release seal"
+      ],
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-portable-installed-tFTCd8"
+      }
+    },
+    "installed_loop": {
+      "smoke": "loop",
+      "ok": true,
+      "seed_templates": 7,
+      "backend": "sqlite",
+      "temp_root": "/private/tmp/mdkg-loop-smoke-iDZr84",
+      "tarball_sha256": "94970609a4f96f18879f04dd5a68e89b5061fdf85c4adc4ba337171c3d410995",
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-loop-smoke-iDZr84"
+      }
+    },
+    "test_setup_corrections": [
+      "Initial runtime tests expected validation exit3; current CLI correctly uses2. Expectations corrected after checking existing error mapping.",
+      "First installed probe overlapped build:test cleanup and could not find a compiled test driver. Owned fixture removed. Serial rerun passed; no product failure or missing coverage was reclassified.",
+      "A guessed projection-check script did not exist. Supported mdkg skill validate passed8/8 instead."
+    ]
+  },
+  "limits": [
+    "Not full repository, coverage, independent Task828/Test488 review, Test489 recovery, final Linux/macOS installed ladder, or artifact seal acceptance.",
+    "Intermediate tarballs and synthetic fixtures were deleted after captured hashes/results; no final publishable artifact retained.",
+    "Actual Node24.15 binary from an older fixture was unavailable. Refusal is covered by the version matrix on Node24.18; actual Node26 refusal was exercised. No fresh Node24.15 execution is claimed.",
+    "Recovery still contains OS-bound evidence pending Task841; this milestone does not claim all shipped paths are now portable."
+  ],
+  "disposition": {
+    "bugs46_47": "deferred and unresolved under paused Goal87, never accepted or fixed",
+    "goal85": "paused; no publication authority",
+    "goal86": "active, NOT_READY",
+    "next": [
+      "root:task-841",
+      "root:test-489",
+      "root:test-487",
+      "root:test-488",
+      "root:task-828",
+      "root:task-829",
+      "root:task-830"
+    ]
+  },
+  "custody": {
+    "final": {
+      "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "branch": "main",
+      "cached_upstream": "origin/main",
+      "cached_ahead": 69,
+      "cached_behind": 0,
+      "remote_verified": false,
+      "dirty_files": 108,
+      "baseline_changed": [
+        ".github/workflows/release-readiness.yml",
+        ".mdkg/artifacts/goal-86/requirement-coverage.json",
+        ".mdkg/index/mdkg.sqlite",
+        ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+        ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+        "scripts/assert-publish-ready.js",
+        "scripts/generate-ci-workflow.js",
+        "scripts/release-ladder.js",
+        "scripts/smoke-manifest.json",
+        "tests/ci-topology.test.ts",
+        ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+        ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md"
+      ],
+      "source_inputs_match": true,
+      "protected_bookends_match": true,
+      "mutation_lock": false,
+      "git_index_lock": false,
+      "staged": [],
+      "commits": [],
+      "ownership": "Task842 locally done; Goal86 active_node Task841 (not implemented); no standing DB or filesystem writer lease"
+    },
+    "baseline_dirty_files": 82,
+    "source_and_tests_owned": [
+      "src/core/node_runtime.ts",
+      "src/cli.ts",
+      "src/commands/doctor.ts",
+      "src/core/sqlite_observation.ts",
+      "tests/commands/node_runtime_admission.test.ts",
+      "package.json",
+      "package-lock.json",
+      "README.md",
+      "CHANGELOG.md",
+      "docs/src/content/docs/start-here/install.md",
+      "docs/start-here/install.md",
+      "docs/_generated/release-notes.json",
+      "mdkg-dev/src/pages/quickstart.astro",
+      "scripts/smoke-mdkg-dev.js",
+      "scripts/smoke-manifest.json",
+      "scripts/release-ladder.js",
+      "scripts/generate-ci-workflow.js",
+      ".github/workflows/release-readiness.yml",
+      "scripts/assert-publish-ready.js",
+      "tests/ci-topology.test.ts",
+      ".mdkg/artifacts/goal-86/node-portability/runtime-installed-probe.cjs",
+      "src/core/project_db_events.ts",
+      "src/core/project_db_queue.ts",
+      "src/core/project_db_migrations.ts",
+      "src/core/project_db_snapshot.ts",
+      "src/graph/sqlite_index.ts",
+      "tests/core/sqlite_memory_observation.test.ts",
+      "tests/core/sqlite_observation.test.ts",
+      "tests/core/snapshot_containment.test.ts"
+    ],
+    "protected": [
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+      },
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      }
+    ],
+    "staged": [],
+    "commits": [],
+    "remote_actions": [],
+    "runtime_db_mutated": false,
+    "selected_goal_changed": false,
+    "demo_bundle_changed": false
+  },
+  "skill_candidates": []
+}

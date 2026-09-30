@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "kind": "sanitized-linux-qualification-receipt",
+  "original_receipt_sha256": "a15b585fc89c7c55bd96ab67e869689e31ba615ebb7bb614c5297d927e90f905",
+  "original_receipt_bytes": 24763,
+  "condensation": "Complete raw synthetic stream hashes verified; large arrays/inventories are represented by hashes/counts. Reproduction uses the pinned capsule and original test assertions. No raw security reports or consumer data.",
+  "evidence": {
+    "kind": "test487-local-docker-installed-families",
+    "started_at": "2026-09-29T04:19:58.370Z",
+    "completed_at": "2026-09-29T04:20:28.050Z",
+    "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "capsule_manifest_sha256": "092cc3be9b253eece9cafe96ab9a8dbb995dfb0fc86b3ebe27a296663b97af03",
+    "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+    "source_revision": "36e075b8d64babff04154704a721db4a82926ebe",
+    "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+    "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+    "environment": {
+      "platform": "linux",
+      "arch": "x64",
+      "node": "v24.18.0",
+      "uid": 10001,
+      "kernel": "6.12.76-linuxkit",
+      "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "git": "git version 2.43.0",
+      "npm": "11.16.0",
+      "root_filesystem": {
+        "bytes": 1343,
+        "sha256": "f061edfadd8ac491c8f467b9b968e7d80e31d60195df1c99c602711c0174df80"
+      },
+      "fixture_filesystem": "/dev/vda1[/docker/volumes/dce55a541995ff33a2ae956bc8a365f2a45d2ce2989eae64b035feb34fe0d3cd/_data] ext4   rw,relatime,discard",
+      "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+      "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+    },
+    "completed": [
+      {
+        "name": "readonly",
+        "driver": "test-487-docker-readonly.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 23730,
+        "stdout_sha256": "60174fb7f756d9b85b2ef98f9949b30f707455a5decf789b7b456809d5e53e39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "linux-real-readonly-filesystem",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "arch": "x64",
+          "uid": 10001,
+          "cases": {
+            "entry_count": 46,
+            "sha256": "5006c2c6f4d4c26de89d87d306c39eb87fc20b0247e4eae78acb05c96f61be38",
+            "first": {
+              "fixture": "json-legacy",
+              "command": [
+                "status",
+                "--json"
+              ],
+              "pass": true,
+              "refused": false,
+              "semantic_assertion": true
+            },
+            "last": {
+              "fixture": "sqlite-v2",
+              "command": [
+                "new",
+                "task",
+                "Must refuse readonly write"
+              ],
+              "pass": true,
+              "refused": true,
+              "semantic_assertion": false
+            }
+          },
+          "pass": true,
+          "inventory_sha256": "44f77c9ca943b9d69fdfbc02e8ea6f3768c1a4dd3e9a6bc8857ddb2c7ecbe325",
+          "filesystem": "Docker read-only image root; direct write independently returned EROFS",
+          "limitations": [
+            "Warm/fresh JSON and SQLite indexes on a read-only filesystem; this does not establish the cold-cache/read-only cross-product",
+            "Not a fix for deferred Bugs46/47; image/volume and native/emulated identities are in outer receipt"
+          ]
+        },
+        "pass": true,
+        "capsule_after_verified": true
+      },
+      {
+        "name": "capability-umask",
+        "driver": "test-487-installed-capability-umask.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 5055,
+        "stdout_sha256": "f0337a872689666fc27861b886cf3987563149196c8f650e77938c3da11e7598",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test487-installed-capability-umask",
+          "owner": "root:test-487",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "compiledInputs": {
+            "sha256": "df506c7f4f9a7bb3f6817a930704b9bd69e1a92c160c5ca2bd18c7db261dd545",
+            "entry_count": 6
+          },
+          "driver_sha256": "1256c513a779358fb666f13195209d2d7caff8f378b1d28d22f015183f19d433",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "x64",
+          "duration_ms": 4504,
+          "completed": [
+            {
+              "family": "commands/node_runtime_admission.test.js",
+              "test487_cases": [
+                2
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 8,
+                "pass": 8,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 843,
+              "stdout_sha256": "7fab460da9ef4e9b2ff013633129f5112b073f4c6776c3c6440d13cbac3b16ae",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": [
+                "ok 1 - sync unsupported Node refuses before workspace discovery",
+                "ok 2 - sync missing runtime capability refuses explicit roots without filesystem effects",
+                "ok 3 - sync help version and option refusals remain usable on unsupported Node",
+                "ok 4 - async unsupported Node refuses before workspace discovery",
+                "ok 5 - async missing runtime capability refuses explicit roots without filesystem effects",
+                "ok 6 - async help version and option refusals remain usable on unsupported Node",
+                "ok 7 - runtime contract is explicit about stable Node 24 versions and package metadata",
+                "ok 8 - missing built-in SQLite produces a useful capability diagnostic"
+              ]
+            },
+            {
+              "family": "commands/pack_output_containment.test.js",
+              "test487_cases": [
+                6
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 20,
+                "pass": 20,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 1734,
+              "stdout_sha256": "a66230ab629fdeb4b6e6b7fe6ae7737db69bed7a25dad6c0cb569ec0401a6b1c",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 20,
+                "sha256": "a04ed860d09b5b5ec7890b0bea82a551ffaefcb2cf374a6ecb208838c5ccc92e",
+                "first": "ok 1 - default pack rejects outward directory link without writing outside",
+                "last": "ok 20 - explicit replacement preserves private output permissions"
+              }
+            }
+          ],
+          "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+          "original_payload_files": 234,
+          "original_payload_file_manifest_sha256": "f3a4f75dd9391ada5d11ca72c9287b5506f34cbf829ff76b804079f13afcf0a9",
+          "original_payload_bytes_preserved": true,
+          "inert_test_additions": 6,
+          "qualification_only_lockfile_sha256": "da6367ac0f9bc63d4471076a45dfa58492be76e468dc720b8eb8b560aaa5aca4",
+          "instrumented_inventory_sha256": "860ecb9d6638c057a2d18964a74c3752954feb6985685ac839d5e4156be90d3e",
+          "canonical_implementation_imports_refused": true,
+          "limitations": [
+            "This Linux execution only; Linux/platform and independent acceptance remain open",
+            "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+            "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+            "Existing umask022/private-mode controls only; no general ACL/owner preservation claim",
+            "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true,
+        "capsule_after_verified": true
+      }
+    ],
+    "unverified": [],
+    "pass": true,
+    "limitations": [
+      "Platform subset evidence only until aggregate acceptance; not publication readiness or security clearance",
+      "Bugs46/47 deferred/unresolved; Windows and hosted CI unqualified",
+      "Copied fixture adapters are separately hash-bound; no shipped package inputs changed"
+    ]
+  },
+  "failures": [],
+  "scope": "Platform family evidence only; final security, full ladder and artifact seal remain separate. Deferred Bugs46/47 are not fixed."
+}

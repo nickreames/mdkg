@@ -2,12 +2,12 @@
 id: task-826
 type: task
 title: Execute installed mdkg 0.6.0 temporary graph qualification
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-package-gates-20260930.json, .mdkg/artifacts/goal-86/successor-private-preview-20260930.json]
 relates: []
 blocked_by: [task-824, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487]
 blocks: []
@@ -17,10 +17,30 @@ evidence_refs: [chk-600, chk-603]
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-13
+updated: 2026-09-30
 ---
 
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Aggregate accepted family/platform evidence after Tests477-484/486-488 and Test490; never make this task their prerequisite. Complete Bug7's missing-proof obligation afterward.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
+
 # Current Successor Contract - 2026-09-13
+
+2026-09-28 Dec98 amendment: include Test489's portable SQLite/recovery
+installed results through Test487's prerequisite chain. Require Task842's
+actual supported capability/runtime contract; historical versions are not
+automatically qualified. Preserve Bugs46/47 as deferred and unresolved under
+Goal87, not failed-to-record fixes or implicit passing cases. This aggregate
+remains downstream of test execution and never becomes its prerequisite.
 
 This task is aggregate acceptance AFTER tests477-484/486 and test487, not their
 prerequisite. It no longer waits for Bug7: implementation prerequisites are

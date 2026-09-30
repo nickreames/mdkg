@@ -1,0 +1,5095 @@
+{
+  "schema_version": 1,
+  "kind": "test481-current-installed-scale-and-routing",
+  "owner": "root:test-481",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 888805,
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "driver_sha256": "3ac882938132d438d360fcdcf32423dc3fbbb7837fce02e5577d808c21297d75",
+  "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+  "proof": {
+    "schema_version": 1,
+    "runtime": "v24.18.0",
+    "command_timeout_ms": 600000,
+    "installed_cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+    "cases": [
+      {
+        "family": "scale",
+        "backend": "json",
+        "version": "legacy",
+        "state": "warm",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          317,
+          307,
+          307,
+          314,
+          298
+        ],
+        "observational": true
+      },
+      {
+        "family": "scale",
+        "backend": "json",
+        "version": "legacy",
+        "state": "cold",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          276,
+          272,
+          268,
+          272,
+          292
+        ],
+        "observational": true
+      },
+      {
+        "family": "scale",
+        "backend": "json",
+        "version": "v2",
+        "state": "warm",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          274,
+          263,
+          264,
+          266,
+          283
+        ],
+        "observational": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 2010,
+          "persisted_task_identity_count": 2000,
+          "exact_plan_writes": 2013,
+          "event_history_preserved": true,
+          "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+        }
+      },
+      {
+        "family": "scale",
+        "backend": "json",
+        "version": "v2",
+        "state": "cold",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          270,
+          262,
+          260,
+          271,
+          284
+        ],
+        "observational": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 2010,
+          "persisted_task_identity_count": 2000,
+          "exact_plan_writes": 2013,
+          "event_history_preserved": true,
+          "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+        }
+      },
+      {
+        "family": "scale",
+        "backend": "sqlite",
+        "version": "legacy",
+        "state": "warm",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          292,
+          320,
+          284,
+          291,
+          431
+        ],
+        "observational": true
+      },
+      {
+        "family": "scale",
+        "backend": "sqlite",
+        "version": "legacy",
+        "state": "cold",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          267,
+          252,
+          269,
+          261,
+          281
+        ],
+        "observational": true
+      },
+      {
+        "family": "scale",
+        "backend": "sqlite",
+        "version": "v2",
+        "state": "warm",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          270,
+          261,
+          261,
+          265,
+          435
+        ],
+        "observational": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 2010,
+          "persisted_task_identity_count": 2000,
+          "exact_plan_writes": 2013,
+          "event_history_preserved": true,
+          "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+        }
+      },
+      {
+        "family": "scale",
+        "backend": "sqlite",
+        "version": "v2",
+        "state": "cold",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          271,
+          256,
+          262,
+          262,
+          284
+        ],
+        "observational": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 2010,
+          "persisted_task_identity_count": 2000,
+          "exact_plan_writes": 2013,
+          "event_history_preserved": true,
+          "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+        }
+      },
+      {
+        "family": "default-limit",
+        "kind": "node",
+        "bytes": 8388609,
+        "failed_closed": true,
+        "observational": true
+      },
+      {
+        "family": "default-limit",
+        "kind": "event",
+        "bytes": 1048577,
+        "failed_closed": true,
+        "observational": true
+      },
+      {
+        "family": "history-limit",
+        "commits": 2049,
+        "existing_limit": 2048,
+        "failed_closed": true,
+        "observational": true
+      },
+      {
+        "family": "goal-routing",
+        "backend": "json",
+        "version": "legacy",
+        "both_gate_orders": true,
+        "reopened_gate_blocks": true,
+        "goal_state_not_acceptance": true,
+        "evaluate_observational": true,
+        "artifact_recheck_required": true,
+        "publication_executed": false,
+        "git_index_preserved": true,
+        "selection_preserved": true
+      },
+      {
+        "family": "goal-routing",
+        "backend": "json",
+        "version": "v2",
+        "both_gate_orders": true,
+        "reopened_gate_blocks": true,
+        "goal_state_not_acceptance": true,
+        "evaluate_observational": true,
+        "artifact_recheck_required": true,
+        "publication_executed": false,
+        "git_index_preserved": true,
+        "selection_preserved": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 17,
+          "persisted_task_identity_count": 2,
+          "exact_plan_writes": 20,
+          "event_history_preserved": true,
+          "event_history_sha256": null
+        }
+      },
+      {
+        "family": "goal-routing",
+        "backend": "sqlite",
+        "version": "legacy",
+        "both_gate_orders": true,
+        "reopened_gate_blocks": true,
+        "goal_state_not_acceptance": true,
+        "evaluate_observational": true,
+        "artifact_recheck_required": true,
+        "publication_executed": false,
+        "git_index_preserved": true,
+        "selection_preserved": true
+      },
+      {
+        "family": "goal-routing",
+        "backend": "sqlite",
+        "version": "v2",
+        "both_gate_orders": true,
+        "reopened_gate_blocks": true,
+        "goal_state_not_acceptance": true,
+        "evaluate_observational": true,
+        "artifact_recheck_required": true,
+        "publication_executed": false,
+        "git_index_preserved": true,
+        "selection_preserved": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 17,
+          "persisted_task_identity_count": 2,
+          "exact_plan_writes": 20,
+          "event_history_preserved": true,
+          "event_history_sha256": null
+        }
+      }
+    ],
+    "commands": [
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 404,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 307,
+        "stdout_bytes": 195,
+        "stdout_sha256": "62f5d2a4044973e7a14848e851211c7cebc9f1895b595260623eb47b22b10289",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--type",
+          "task",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 317,
+        "stdout_bytes": 1338505,
+        "stdout_sha256": "7daf4a1ee86662338150532891f762421fb790a8bfd047e9cc7c0d8f4961c222",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 307,
+        "stdout_bytes": 939,
+        "stdout_sha256": "e624ba4f17e4d723f9d5211511ddbbc8d8872367059773cb68ce0258c2fd4497",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "search",
+          "Scale fixture 2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 307,
+        "stdout_bytes": 807,
+        "stdout_sha256": "e174e9ed8826b722143bfaf1992ecaaf2761b259535c832e06af76731817be93",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "pack",
+          "task-2000",
+          "--pack-profile",
+          "concise",
+          "--dry-run",
+          "--stats"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 314,
+        "stdout_bytes": 435,
+        "stdout_sha256": "d0c70af1605c7ad57e7d11b549f8c069ef51ddc0e22ed0b448cf5c25fd8b35bd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 298,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--type",
+          "task",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 276,
+        "stdout_bytes": 1338505,
+        "stdout_sha256": "7daf4a1ee86662338150532891f762421fb790a8bfd047e9cc7c0d8f4961c222",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 272,
+        "stdout_bytes": 939,
+        "stdout_sha256": "e624ba4f17e4d723f9d5211511ddbbc8d8872367059773cb68ce0258c2fd4497",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "search",
+          "Scale fixture 2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 268,
+        "stdout_bytes": 807,
+        "stdout_sha256": "e174e9ed8826b722143bfaf1992ecaaf2761b259535c832e06af76731817be93",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "pack",
+          "task-2000",
+          "--pack-profile",
+          "concise",
+          "--dry-run",
+          "--stats"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 272,
+        "stdout_bytes": 435,
+        "stdout_sha256": "d0c70af1605c7ad57e7d11b549f8c069ef51ddc0e22ed0b448cf5c25fd8b35bd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 292,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "8335bbd5-b413-42f7-a2e5-cdeca315d133",
+          "--origin",
+          "992385b9-d294-4253-bff5-db8c7ed823df",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 597,
+        "stdout_bytes": 1904490,
+        "stdout_sha256": "dbd4fe5f9ee4c853f240a3047140ad76f24e709c3bd9eaa3687a2fcd41295eca",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "8335bbd5-b413-42f7-a2e5-cdeca315d133",
+          "--origin",
+          "992385b9-d294-4253-bff5-db8c7ed823df",
+          "--apply",
+          "--plan-hash",
+          "sha256:d202715c2644a3af40477f71f7f215567572fb7ea8b1a76c43aad0743a011adc",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 424975,
+        "stdout_bytes": 62046,
+        "stdout_sha256": "fd2d84be63113075a537a743a11beca83dd52916ec8daa463ddb15f3c5d0141a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 324,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--ws",
+          "root",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 275,
+        "stdout_bytes": 1849597,
+        "stdout_sha256": "42888c433e5433db953dc312286b3e7dee863aeca485bb9c75e223dba50a3197",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 297,
+        "stdout_bytes": 195,
+        "stdout_sha256": "62f5d2a4044973e7a14848e851211c7cebc9f1895b595260623eb47b22b10289",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--type",
+          "task",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 274,
+        "stdout_bytes": 1840505,
+        "stdout_sha256": "e9c2fc1e7faf6e59fad178ffe79814396d42ec897361baf1a2a2bc5268ce6b0f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 263,
+        "stdout_bytes": 1180,
+        "stdout_sha256": "d1392e232c98bb354b9860cbe53eef2d6d920ba1f31344f9d7ae690ce2032aba",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "search",
+          "Scale fixture 2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 264,
+        "stdout_bytes": 1058,
+        "stdout_sha256": "43f36953ffc83987b5008d99cdee16ff96841986efa218b5de487fb9b10743ca",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "pack",
+          "task-2000",
+          "--pack-profile",
+          "concise",
+          "--dry-run",
+          "--stats"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 266,
+        "stdout_bytes": 435,
+        "stdout_sha256": "4bada8a5ea21fd2472781a300eed86771c89361a2faeb25aac81d51d703baaa4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 283,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--type",
+          "task",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 270,
+        "stdout_bytes": 1840505,
+        "stdout_sha256": "e9c2fc1e7faf6e59fad178ffe79814396d42ec897361baf1a2a2bc5268ce6b0f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 262,
+        "stdout_bytes": 1180,
+        "stdout_sha256": "d1392e232c98bb354b9860cbe53eef2d6d920ba1f31344f9d7ae690ce2032aba",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "search",
+          "Scale fixture 2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 260,
+        "stdout_bytes": 1058,
+        "stdout_sha256": "43f36953ffc83987b5008d99cdee16ff96841986efa218b5de487fb9b10743ca",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "pack",
+          "task-2000",
+          "--pack-profile",
+          "concise",
+          "--dry-run",
+          "--stats"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 271,
+        "stdout_bytes": 435,
+        "stdout_sha256": "4bada8a5ea21fd2472781a300eed86771c89361a2faeb25aac81d51d703baaa4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-aDFnnu",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 284,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 375,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 1329,
+        "stdout_bytes": 241,
+        "stdout_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--type",
+          "task",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 292,
+        "stdout_bytes": 1338505,
+        "stdout_sha256": "7daf4a1ee86662338150532891f762421fb790a8bfd047e9cc7c0d8f4961c222",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 320,
+        "stdout_bytes": 939,
+        "stdout_sha256": "e624ba4f17e4d723f9d5211511ddbbc8d8872367059773cb68ce0258c2fd4497",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "search",
+          "Scale fixture 2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 284,
+        "stdout_bytes": 807,
+        "stdout_sha256": "e174e9ed8826b722143bfaf1992ecaaf2761b259535c832e06af76731817be93",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "pack",
+          "task-2000",
+          "--pack-profile",
+          "concise",
+          "--dry-run",
+          "--stats"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 291,
+        "stdout_bytes": 435,
+        "stdout_sha256": "d0c70af1605c7ad57e7d11b549f8c069ef51ddc0e22ed0b448cf5c25fd8b35bd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 431,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--type",
+          "task",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 267,
+        "stdout_bytes": 1338505,
+        "stdout_sha256": "7daf4a1ee86662338150532891f762421fb790a8bfd047e9cc7c0d8f4961c222",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 252,
+        "stdout_bytes": 939,
+        "stdout_sha256": "e624ba4f17e4d723f9d5211511ddbbc8d8872367059773cb68ce0258c2fd4497",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "search",
+          "Scale fixture 2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 269,
+        "stdout_bytes": 807,
+        "stdout_sha256": "e174e9ed8826b722143bfaf1992ecaaf2761b259535c832e06af76731817be93",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "pack",
+          "task-2000",
+          "--pack-profile",
+          "concise",
+          "--dry-run",
+          "--stats"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 261,
+        "stdout_bytes": 435,
+        "stdout_sha256": "d0c70af1605c7ad57e7d11b549f8c069ef51ddc0e22ed0b448cf5c25fd8b35bd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 281,
+        "stdout_bytes": 1722,
+        "stdout_sha256": "62aeb62d46c436a656d528cb803c2493adef7176cd910c6856ce1dc754e1e9e7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "7be1f1c6-d238-4e93-bb42-3a58b732aa23",
+          "--origin",
+          "3397266f-551e-437e-8211-22408ea52977",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 568,
+        "stdout_bytes": 1904490,
+        "stdout_sha256": "ba587d37bec8dfdf533de2ea17f20a890cc915a838c25bfa821bb5d61796f1ea",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "7be1f1c6-d238-4e93-bb42-3a58b732aa23",
+          "--origin",
+          "3397266f-551e-437e-8211-22408ea52977",
+          "--apply",
+          "--plan-hash",
+          "sha256:453e286809a84761a08e3999aa21b7a0110e725c28f2c08307dc7c3115018305",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 420502,
+        "stdout_bytes": 62046,
+        "stdout_sha256": "7e59fee423f010e9369b8810731a9f10256419a53b564e8fcdb381e9e32c7194",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 453,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--ws",
+          "root",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 267,
+        "stdout_bytes": 1849597,
+        "stdout_sha256": "44f7433ee7c0e69f08c5bb76d13509d1329e5e2b1f4520dbf429f46dd0afeb77",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 1316,
+        "stdout_bytes": 241,
+        "stdout_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--type",
+          "task",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 270,
+        "stdout_bytes": 1840505,
+        "stdout_sha256": "3c96aa670be6c1af843cbb80c8814c519c87f9b1648631dbe09eebf9d770ff60",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 261,
+        "stdout_bytes": 1180,
+        "stdout_sha256": "b988ff4c68245b160a4eb9da1df340030b83a49579088186a8dab56855a2bdca",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "search",
+          "Scale fixture 2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 261,
+        "stdout_bytes": 1058,
+        "stdout_sha256": "6ac4de81680930674c7abf24c6f0151ef7ed1173e3825acdd7c3ac98cb25c037",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "pack",
+          "task-2000",
+          "--pack-profile",
+          "concise",
+          "--dry-run",
+          "--stats"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 265,
+        "stdout_bytes": 435,
+        "stdout_sha256": "4bada8a5ea21fd2472781a300eed86771c89361a2faeb25aac81d51d703baaa4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 435,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--type",
+          "task",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 271,
+        "stdout_bytes": 1840505,
+        "stdout_sha256": "3c96aa670be6c1af843cbb80c8814c519c87f9b1648631dbe09eebf9d770ff60",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 256,
+        "stdout_bytes": 1180,
+        "stdout_sha256": "b988ff4c68245b160a4eb9da1df340030b83a49579088186a8dab56855a2bdca",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "search",
+          "Scale fixture 2000",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 262,
+        "stdout_bytes": 1058,
+        "stdout_sha256": "6ac4de81680930674c7abf24c6f0151ef7ed1173e3825acdd7c3ac98cb25c037",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "pack",
+          "task-2000",
+          "--pack-profile",
+          "concise",
+          "--dry-run",
+          "--stats"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 262,
+        "stdout_bytes": 435,
+        "stdout_sha256": "4bada8a5ea21fd2472781a300eed86771c89361a2faeb25aac81d51d703baaa4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-scale-cDZzoV",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 284,
+        "stdout_bytes": 1722,
+        "stdout_sha256": "62aeb62d46c436a656d528cb803c2493adef7176cd910c6856ce1dc754e1e9e7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-limits-HDisy8",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 380,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-limits-HDisy8",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 4,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 84,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d53832604d6b7eeb07adee6f6c940a5a4164d1a6926218f94716987a55baa581"
+      },
+      {
+        "fixture": "mdkg-installed-limits-xCBmhj",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 386,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-limits-xCBmhj",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 2,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 1885,
+        "stdout_sha256": "509e242118026610667d19061d185a42a604a303dbd8e9d1975b06a2a23ca203",
+        "stderr_sha256": "5002867b9a3509203a09b49e3651aad3c32d5776f460545816d69838d6a94c2d"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 373,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "init",
+          "-b",
+          "main"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 11,
+        "stdout_bytes": 108,
+        "stdout_sha256": "b43b75f0e0a2126f6fbd6fcba71abaf3ecaf7e447d5e18b2d48369f3dd99d135",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--show-toplevel"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 66,
+        "stdout_sha256": "dced24a25d101a37188244140dd49e8f319ede00154ed5076a65bc37cd478ebb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--absolute-git-dir"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 71,
+        "stdout_sha256": "06b170a91eb5710fab9a26410ddc63b71eba1ed1e914f0bde4300777e0bd6c9d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.name",
+          "Synthetic Fixture"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.email",
+          "fixture@example.invalid"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "add",
+          "--",
+          ".mdkg",
+          ".gitignore"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 33,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "-c",
+          "commit.gpgsign=false",
+          "commit",
+          "-m",
+          "Synthetic fixture baseline"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 19,
+        "stdout_bytes": 3855,
+        "stdout_sha256": "ed714849501e07c50dd47640b715c9e57b39ea2e9a88f995a9b27c5f6a89607e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 41,
+        "stdout_sha256": "144f8664603b46053c5a8eb2ab1a71cda14f01dcb68dbd7a12f23167f9a844d5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "fast-import",
+          "--quiet"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 29,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "git",
+        "args": [
+          "rev-list",
+          "--count",
+          "9c2462f5aa6cc52402ab3449e562bda697b15c95..HEAD"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 11,
+        "stdout_bytes": 5,
+        "stdout_sha256": "cad2804fe13d85e05f55d86ed71618f54637620700346703d866474aa1130632",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-history-ZuAxlI",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "3b9a362d-67af-4b9c-beae-6b15ad818ca3",
+          "--origin",
+          "e687ccf6-a279-4733-a654-5e20ed1eacbc",
+          "--ancestor",
+          "9c2462f5aa6cc52402ab3449e562bda697b15c95",
+          "--json"
+        ],
+        "exit": 1,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 307,
+        "stdout_bytes": 1843,
+        "stdout_sha256": "b9637bc63d0653a931f6ec28dbab0eeba2d7a6470df4c36d0b3ca491e2d94a2b",
+        "stderr_sha256": "2b833555caad0bf5fa9e3bfb2ed4709b8f869decb8258122ec328c1829a972e2"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 390,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "task",
+          "Implement synthetic audit work",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 133,
+        "stdout_bytes": 288,
+        "stdout_sha256": "906c0438e7f349e0e66cca9b4e41dac52a7c34144ff992a7843c167b543d9e42",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "test",
+          "Independently verify synthetic blocker",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 120,
+        "stdout_bytes": 304,
+        "stdout_sha256": "b6a8dddbf92011de3fad7817e38c1dd136968dcb3d5285675eb247e32a731c38",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "task",
+          "Recheck exact artifact and request publication approval",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 122,
+        "stdout_bytes": 338,
+        "stdout_sha256": "0f06d11db6de4d5b2ee545a57d81fbcd18a3e648e08c6ba3a56dbd1ad90f5f1c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Audit synthetic candidate",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 130,
+        "stdout_bytes": 278,
+        "stdout_sha256": "fd460bf185cc493cf73ffe6a29e24891ce61f0c9ab4e5d394800a77170aaeac3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Verify synthetic blockers",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 124,
+        "stdout_bytes": 278,
+        "stdout_sha256": "34a02b293d0512aba52661eab4f2029be5976d5a196c13c98492a68470d7038e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Future synthetic publication",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 123,
+        "stdout_bytes": 284,
+        "stdout_sha256": "ceb4b41c64fdd76564c52770bec78fdd99119aa446dd301831f589d6017e0e90",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "checkpoint",
+          "Accept synthetic audit",
+          "--status",
+          "backlog",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 124,
+        "stdout_bytes": 278,
+        "stdout_sha256": "65f7f6389a182d384e2f67fe9b73d62c1b410d5318867915780e7bb076a80f27",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "test-1",
+          "--add-blocked-by",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 127,
+        "stdout_bytes": 249,
+        "stdout_sha256": "56b5f1f8c01b8c6ed1d7d6050a9e6aee2635046b96a8ff2929e6accecaf98896",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "task-2",
+          "--add-blocked-by",
+          "chk-1,test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 131,
+        "stdout_bytes": 266,
+        "stdout_sha256": "bcf1c726ac6b909aa7621225ef3e937efd57d0f6e7c9ff01a380503f6e33ffdb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "git",
+        "args": [
+          "init",
+          "-b",
+          "main"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 10,
+        "stdout_bytes": 106,
+        "stdout_sha256": "8aee0b66a6bccc4a4c6d5ad29b90f94af779d98d667d4e1e6be0600b351f1d36",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--show-toplevel"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 64,
+        "stdout_sha256": "34a0e7204879a87e0e293b9f4423d72cc84f8058929baf17cddda326a064fe14",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--absolute-git-dir"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 5,
+        "stdout_bytes": 69,
+        "stdout_sha256": "d57ca0246762ef5bfc2cd4b3c1106a0ef2d860d0f75b65a56afe955a6795f021",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.name",
+          "Synthetic Fixture"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.email",
+          "fixture@example.invalid"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "git",
+        "args": [
+          "add",
+          "--",
+          ".mdkg",
+          ".gitignore"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 35,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "git",
+        "args": [
+          "-c",
+          "commit.gpgsign=false",
+          "commit",
+          "-m",
+          "Synthetic fixture baseline"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 18,
+        "stdout_bytes": 4371,
+        "stdout_sha256": "963caed7fe3b22e00f7f2098d9e3de0d72aaaafe1267e125cbd3040eedd287f9",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 80,
+        "stdout_bytes": 580,
+        "stdout_sha256": "a5921ec20465aa500da2e3edc808fcdb5cd192f9c7767983e54d09ef01b705e3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 1220,
+        "stdout_sha256": "2f50f1c17db22b7e3bde7f6d27f30bdce0049cb2279ff7a29956e384486fd246",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "evaluate",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 746,
+        "stdout_sha256": "9183d9895e4f38188d4d7b75a256f5c5f4c2012a7cce720f94d36da8a62e9b42",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "claim",
+          "goal-1",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 123,
+        "stdout_bytes": 1201,
+        "stdout_sha256": "60d79f1279c887c8735b391a21f7aa2460d07060518033766b433a083e322d1e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "start",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 245,
+        "stdout_sha256": "d94fba4f7ad8a92b8b424978af40f268f2db87ae9b5fecd622e5b9c7986c1b0f",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "task-1",
+          "--checkpoint",
+          "Synthetic implementation proof",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 141,
+        "stdout_bytes": 425,
+        "stdout_sha256": "7d9c2481f8008426894ff7c699c6e5ca6584a6bb09099fbf93f747e213a1aefe",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "chk-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 79,
+        "stdout_bytes": 2300,
+        "stdout_sha256": "1a8a20516d567a6805c66615d002617469d71845674a292bc88d94c40cc55eaf",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "done",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 119,
+        "stdout_bytes": 585,
+        "stdout_sha256": "ff59a527a170ef3faae45054bb899be0254cd78e8c5fcbd91e114e97eedd2cb5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 83,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 85,
+        "stdout_bytes": 1051,
+        "stdout_sha256": "801dd73e5015a8e67c1cd75e7f7b826b86a941ad6fff958ca5b27e274cb9657a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 83,
+        "stdout_bytes": 1229,
+        "stdout_sha256": "00fa62a1c093493a884b8ed28a9fe94eefb0f6f104dd806663ee663705cb3737",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "claim",
+          "goal-2",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 122,
+        "stdout_bytes": 1210,
+        "stdout_sha256": "70cdb8785dc4c5e3b5804d205f8510dd58dd166955709bf3dec9101f199dc20b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "start",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 122,
+        "stdout_bytes": 253,
+        "stdout_sha256": "20d045f4c4564dc022b81ea9b7dd0a9b65d26537cb75bfd889e4bcb451f55674",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 132,
+        "stdout_bytes": 246,
+        "stdout_sha256": "8f34ba793f11bf720d08240574746827c9dce06f7e28aa20c4011ff6d420a969",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "done",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 124,
+        "stdout_bytes": 549,
+        "stdout_sha256": "76be7a667e9b7a23d5b1fcfc2e653f8a337f81c3410a869d5cb6734a6489c043",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 84,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 114,
+        "stdout_bytes": 195,
+        "stdout_sha256": "62f5d2a4044973e7a14848e851211c7cebc9f1895b595260623eb47b22b10289",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 1294,
+        "stdout_sha256": "a7be9293f43194f942ef380cb8e66366dba16655701965fd1a20c4faf5ff34f1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "test-1",
+          "--status",
+          "todo",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 249,
+        "stdout_sha256": "56b5f1f8c01b8c6ed1d7d6050a9e6aee2635046b96a8ff2929e6accecaf98896",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 108,
+        "stdout_bytes": 195,
+        "stdout_sha256": "62f5d2a4044973e7a14848e851211c7cebc9f1895b595260623eb47b22b10289",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 84,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 113,
+        "stdout_bytes": 195,
+        "stdout_sha256": "62f5d2a4044973e7a14848e851211c7cebc9f1895b595260623eb47b22b10289",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 246,
+        "stdout_sha256": "8f34ba793f11bf720d08240574746827c9dce06f7e28aa20c4011ff6d420a969",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 1294,
+        "stdout_sha256": "a7be9293f43194f942ef380cb8e66366dba16655701965fd1a20c4faf5ff34f1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "evaluate",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 79,
+        "stdout_bytes": 631,
+        "stdout_sha256": "4d8e46fbb4f239ea36ba22372830e46c916b81681a3dcdd30990602a5bd196ce",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-Qq01Er",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 115,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 380,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "task",
+          "Implement synthetic audit work",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 159,
+        "stdout_bytes": 288,
+        "stdout_sha256": "906c0438e7f349e0e66cca9b4e41dac52a7c34144ff992a7843c167b543d9e42",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "test",
+          "Independently verify synthetic blocker",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 124,
+        "stdout_bytes": 304,
+        "stdout_sha256": "b6a8dddbf92011de3fad7817e38c1dd136968dcb3d5285675eb247e32a731c38",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "task",
+          "Recheck exact artifact and request publication approval",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 126,
+        "stdout_bytes": 338,
+        "stdout_sha256": "0f06d11db6de4d5b2ee545a57d81fbcd18a3e648e08c6ba3a56dbd1ad90f5f1c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Audit synthetic candidate",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 129,
+        "stdout_bytes": 278,
+        "stdout_sha256": "fd460bf185cc493cf73ffe6a29e24891ce61f0c9ab4e5d394800a77170aaeac3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Verify synthetic blockers",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 126,
+        "stdout_bytes": 278,
+        "stdout_sha256": "34a02b293d0512aba52661eab4f2029be5976d5a196c13c98492a68470d7038e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Future synthetic publication",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 125,
+        "stdout_bytes": 284,
+        "stdout_sha256": "ceb4b41c64fdd76564c52770bec78fdd99119aa446dd301831f589d6017e0e90",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "checkpoint",
+          "Accept synthetic audit",
+          "--status",
+          "backlog",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 278,
+        "stdout_sha256": "65f7f6389a182d384e2f67fe9b73d62c1b410d5318867915780e7bb076a80f27",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "test-1",
+          "--add-blocked-by",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 126,
+        "stdout_bytes": 249,
+        "stdout_sha256": "56b5f1f8c01b8c6ed1d7d6050a9e6aee2635046b96a8ff2929e6accecaf98896",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "task-2",
+          "--add-blocked-by",
+          "chk-1,test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 122,
+        "stdout_bytes": 266,
+        "stdout_sha256": "bcf1c726ac6b909aa7621225ef3e937efd57d0f6e7c9ff01a380503f6e33ffdb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "012fcaf3-1758-4a40-b90d-913b83a63712",
+          "--origin",
+          "2c296d3e-9763-4633-b521-ae321429bdde",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 154,
+        "stdout_bytes": 26066,
+        "stdout_sha256": "4c75637b3ef96ff0bcfc16616096497062eb091ba2d392d2a7b1ee34d9148ce5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "012fcaf3-1758-4a40-b90d-913b83a63712",
+          "--origin",
+          "2c296d3e-9763-4633-b521-ae321429bdde",
+          "--apply",
+          "--plan-hash",
+          "sha256:0d55af45e2eec4e58f568a711e2aa87dc897e7c03ec56a04417e5a5d86495874",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 995,
+        "stdout_bytes": 1578,
+        "stdout_sha256": "b160933234466ab515560999c1d3c375c4c690764b3db51843d5405dda235f9f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 83,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--ws",
+          "root",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 86,
+        "stdout_bytes": 16670,
+        "stdout_sha256": "c0bb44a7de842245a417d766345807f63e00d7fe54d86b2143f3804e1a049c68",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "git",
+        "args": [
+          "init",
+          "-b",
+          "main"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 11,
+        "stdout_bytes": 106,
+        "stdout_sha256": "58333ae1389d738f7fe63310958736eae643ca0a696cdf1d66a801a1263cfab9",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--show-toplevel"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 64,
+        "stdout_sha256": "d577f0a425736b9d1e03ed6e63d9470c384c806131a49cde1eb2f8451eeadbec",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--absolute-git-dir"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 69,
+        "stdout_sha256": "f56e47e5840f25e32c36ccd7cdeeba9889919e5a255a00dea7d70ff0672fe4a9",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.name",
+          "Synthetic Fixture"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.email",
+          "fixture@example.invalid"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "git",
+        "args": [
+          "add",
+          "--",
+          ".mdkg",
+          ".gitignore"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 34,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "git",
+        "args": [
+          "-c",
+          "commit.gpgsign=false",
+          "commit",
+          "-m",
+          "Synthetic fixture baseline"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 19,
+        "stdout_bytes": 4524,
+        "stdout_sha256": "fde39f9f7cccc8bfd862f97c43222850bdee3d8efd15cdb04dd2b21555065696",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 904,
+        "stdout_sha256": "2b59e480e8bc0e1d59d49749fdb4a37648e8f4bd05b6b377b6d778496868ffb0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 895,
+        "stdout_sha256": "95acfaaa89fe8ff3efc2ed17566004170cde276841c81f0eacdfe0b6d4e89e14",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 1674,
+        "stdout_sha256": "8b351b1adb4e761c7299d35a2dfdf6367352e056b54b164ce537e7ba8a1652db",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "evaluate",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 1061,
+        "stdout_sha256": "817472424060e8daf9fff1544509a3da4e76e367131b51adde74bcb1a99b3dec",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "claim",
+          "goal-1",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 129,
+        "stdout_bytes": 1729,
+        "stdout_sha256": "54090082fe7ea5f02c03eaa6b460e6d0873c049513bbdb5495c0207cf862cb36",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "start",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 486,
+        "stdout_sha256": "793017855f877d1ace5817912bf7499b480de5e47183c537825c3ccda1cbcc7f",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "task-1",
+          "--checkpoint",
+          "Synthetic implementation proof",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 145,
+        "stdout_bytes": 907,
+        "stdout_sha256": "c774e9664f7111063dd0071c124773ebab40385dede5604d3da193fc4b06dfb9",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "chk-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 89,
+        "stdout_bytes": 2541,
+        "stdout_sha256": "1f79e288ec84f77d467af9c8ca73918e3801714df4214edc574c8785c2a8c7ad",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "done",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 974,
+        "stdout_sha256": "fae66bc86b38c8befc0cb93c45c07b815df0094d40fb2c490a3dc544d8100eec",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 87,
+        "stdout_bytes": 904,
+        "stdout_sha256": "2b59e480e8bc0e1d59d49749fdb4a37648e8f4bd05b6b377b6d778496868ffb0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 86,
+        "stdout_bytes": 1292,
+        "stdout_sha256": "295589dc4cd03cc32e998ccedb15525a5efc6f04ff2f89f608e52d939f934529",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 88,
+        "stdout_bytes": 1683,
+        "stdout_sha256": "14f4fbe6218ebf7aabe11f3b81d04a09926b857b5e9cee66dd1a80b6104e96c4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "claim",
+          "goal-2",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 1738,
+        "stdout_sha256": "f16ff890907082f036d49cec70f05dddc640a7211eaeab72eb1fc4f3852a1abb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "start",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 494,
+        "stdout_sha256": "6cf5e3412d76698dd02fd87d981d2427ee0e9e1ce49c3ee7674242df58e33f6c",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 487,
+        "stdout_sha256": "3af815370c5232902fbe6e5f485978e25ad55358cea127dc6bb8847d5af7c203",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 88,
+        "stdout_bytes": 904,
+        "stdout_sha256": "2b59e480e8bc0e1d59d49749fdb4a37648e8f4bd05b6b377b6d778496868ffb0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "done",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 119,
+        "stdout_bytes": 938,
+        "stdout_sha256": "016f77a116164854b9b40f0d86bf950400b390655b5ce6d5fdcea702171f2d20",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 89,
+        "stdout_bytes": 904,
+        "stdout_sha256": "2b59e480e8bc0e1d59d49749fdb4a37648e8f4bd05b6b377b6d778496868ffb0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 125,
+        "stdout_bytes": 195,
+        "stdout_sha256": "62f5d2a4044973e7a14848e851211c7cebc9f1895b595260623eb47b22b10289",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 104,
+        "stdout_bytes": 1748,
+        "stdout_sha256": "261e05d3f59745e0b4e84b0860c01b8862fb2b87f98174b06538531b1a569b09",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "test-1",
+          "--status",
+          "todo",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 122,
+        "stdout_bytes": 490,
+        "stdout_sha256": "4cc436576d939c0a8d120c15086aed809bea66644b3ed670015f5143508719ff",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 87,
+        "stdout_bytes": 904,
+        "stdout_sha256": "2b59e480e8bc0e1d59d49749fdb4a37648e8f4bd05b6b377b6d778496868ffb0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 109,
+        "stdout_bytes": 195,
+        "stdout_sha256": "62f5d2a4044973e7a14848e851211c7cebc9f1895b595260623eb47b22b10289",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 89,
+        "stdout_bytes": 904,
+        "stdout_sha256": "2b59e480e8bc0e1d59d49749fdb4a37648e8f4bd05b6b377b6d778496868ffb0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 113,
+        "stdout_bytes": 195,
+        "stdout_sha256": "62f5d2a4044973e7a14848e851211c7cebc9f1895b595260623eb47b22b10289",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 90,
+        "stdout_bytes": 904,
+        "stdout_sha256": "2b59e480e8bc0e1d59d49749fdb4a37648e8f4bd05b6b377b6d778496868ffb0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 122,
+        "stdout_bytes": 487,
+        "stdout_sha256": "3af815370c5232902fbe6e5f485978e25ad55358cea127dc6bb8847d5af7c203",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 89,
+        "stdout_bytes": 1748,
+        "stdout_sha256": "261e05d3f59745e0b4e84b0860c01b8862fb2b87f98174b06538531b1a569b09",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "evaluate",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 88,
+        "stdout_bytes": 946,
+        "stdout_sha256": "d975fbb2c02883dcd0b6fe03b2c0c3d780bbe22d994d6b85b0d2a5552e35b285",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-jyUynh",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 118,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 381,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "task",
+          "Implement synthetic audit work",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 140,
+        "stdout_bytes": 288,
+        "stdout_sha256": "906c0438e7f349e0e66cca9b4e41dac52a7c34144ff992a7843c167b543d9e42",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "test",
+          "Independently verify synthetic blocker",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 304,
+        "stdout_sha256": "b6a8dddbf92011de3fad7817e38c1dd136968dcb3d5285675eb247e32a731c38",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "task",
+          "Recheck exact artifact and request publication approval",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 338,
+        "stdout_sha256": "0f06d11db6de4d5b2ee545a57d81fbcd18a3e648e08c6ba3a56dbd1ad90f5f1c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Audit synthetic candidate",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 136,
+        "stdout_bytes": 278,
+        "stdout_sha256": "fd460bf185cc493cf73ffe6a29e24891ce61f0c9ab4e5d394800a77170aaeac3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Verify synthetic blockers",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 137,
+        "stdout_bytes": 278,
+        "stdout_sha256": "34a02b293d0512aba52661eab4f2029be5976d5a196c13c98492a68470d7038e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Future synthetic publication",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 137,
+        "stdout_bytes": 284,
+        "stdout_sha256": "ceb4b41c64fdd76564c52770bec78fdd99119aa446dd301831f589d6017e0e90",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "checkpoint",
+          "Accept synthetic audit",
+          "--status",
+          "backlog",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 139,
+        "stdout_bytes": 278,
+        "stdout_sha256": "65f7f6389a182d384e2f67fe9b73d62c1b410d5318867915780e7bb076a80f27",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "test-1",
+          "--add-blocked-by",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 139,
+        "stdout_bytes": 249,
+        "stdout_sha256": "56b5f1f8c01b8c6ed1d7d6050a9e6aee2635046b96a8ff2929e6accecaf98896",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "task-2",
+          "--add-blocked-by",
+          "chk-1,test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 134,
+        "stdout_bytes": 266,
+        "stdout_sha256": "bcf1c726ac6b909aa7621225ef3e937efd57d0f6e7c9ff01a380503f6e33ffdb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "git",
+        "args": [
+          "init",
+          "-b",
+          "main"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 10,
+        "stdout_bytes": 106,
+        "stdout_sha256": "320b8f4b65d687fdecac8c2cddc5517b4a4a1e7b8152d3b38ee8e4850464202c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--show-toplevel"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 64,
+        "stdout_sha256": "454ea5d7403f02ceb1a74f977d04c3c9bfb19913684c81dd9dc4e249c53afa58",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--absolute-git-dir"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 69,
+        "stdout_sha256": "cf9b8625a0c20e1a4eb07579ed4f739b8dabad61e523d732fac4965658004265",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.name",
+          "Synthetic Fixture"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.email",
+          "fixture@example.invalid"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "git",
+        "args": [
+          "add",
+          "--",
+          ".mdkg",
+          ".gitignore"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 34,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "git",
+        "args": [
+          "-c",
+          "commit.gpgsign=false",
+          "commit",
+          "-m",
+          "Synthetic fixture baseline"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 20,
+        "stdout_bytes": 4415,
+        "stdout_sha256": "c18e3ddcf99219b717925cf4594008cb06d80c2541788dfb23757a0635cf001a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 79,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 79,
+        "stdout_bytes": 580,
+        "stdout_sha256": "a5921ec20465aa500da2e3edc808fcdb5cd192f9c7767983e54d09ef01b705e3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 1220,
+        "stdout_sha256": "2f50f1c17db22b7e3bde7f6d27f30bdce0049cb2279ff7a29956e384486fd246",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "evaluate",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 80,
+        "stdout_bytes": 746,
+        "stdout_sha256": "9183d9895e4f38188d4d7b75a256f5c5f4c2012a7cce720f94d36da8a62e9b42",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "claim",
+          "goal-1",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 138,
+        "stdout_bytes": 1201,
+        "stdout_sha256": "60d79f1279c887c8735b391a21f7aa2460d07060518033766b433a083e322d1e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "start",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 245,
+        "stdout_sha256": "d94fba4f7ad8a92b8b424978af40f268f2db87ae9b5fecd622e5b9c7986c1b0f",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "task-1",
+          "--checkpoint",
+          "Synthetic implementation proof",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 159,
+        "stdout_bytes": 425,
+        "stdout_sha256": "7d9c2481f8008426894ff7c699c6e5ca6584a6bb09099fbf93f747e213a1aefe",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "chk-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 80,
+        "stdout_bytes": 2300,
+        "stdout_sha256": "1a8a20516d567a6805c66615d002617469d71845674a292bc88d94c40cc55eaf",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "done",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 133,
+        "stdout_bytes": 585,
+        "stdout_sha256": "ff59a527a170ef3faae45054bb899be0254cd78e8c5fcbd91e114e97eedd2cb5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 80,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 80,
+        "stdout_bytes": 1051,
+        "stdout_sha256": "801dd73e5015a8e67c1cd75e7f7b826b86a941ad6fff958ca5b27e274cb9657a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 1229,
+        "stdout_sha256": "00fa62a1c093493a884b8ed28a9fe94eefb0f6f104dd806663ee663705cb3737",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "claim",
+          "goal-2",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 1210,
+        "stdout_sha256": "70cdb8785dc4c5e3b5804d205f8510dd58dd166955709bf3dec9101f199dc20b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "start",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 253,
+        "stdout_sha256": "20d045f4c4564dc022b81ea9b7dd0a9b65d26537cb75bfd889e4bcb451f55674",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 138,
+        "stdout_bytes": 246,
+        "stdout_sha256": "8f34ba793f11bf720d08240574746827c9dce06f7e28aa20c4011ff6d420a969",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "done",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 134,
+        "stdout_bytes": 549,
+        "stdout_sha256": "76be7a667e9b7a23d5b1fcfc2e653f8a337f81c3410a869d5cb6734a6489c043",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 129,
+        "stdout_bytes": 241,
+        "stdout_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 1294,
+        "stdout_sha256": "a7be9293f43194f942ef380cb8e66366dba16655701965fd1a20c4faf5ff34f1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "test-1",
+          "--status",
+          "todo",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 138,
+        "stdout_bytes": 249,
+        "stdout_sha256": "56b5f1f8c01b8c6ed1d7d6050a9e6aee2635046b96a8ff2929e6accecaf98896",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 125,
+        "stdout_bytes": 241,
+        "stdout_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 122,
+        "stdout_bytes": 241,
+        "stdout_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 83,
+        "stdout_bytes": 589,
+        "stdout_sha256": "b2a4c7d72ce880ed69ccdff9d66a463ec8be6364991f57044b4ddf379af98cf0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 132,
+        "stdout_bytes": 246,
+        "stdout_sha256": "8f34ba793f11bf720d08240574746827c9dce06f7e28aa20c4011ff6d420a969",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 81,
+        "stdout_bytes": 1294,
+        "stdout_sha256": "a7be9293f43194f942ef380cb8e66366dba16655701965fd1a20c4faf5ff34f1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "evaluate",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 80,
+        "stdout_bytes": 631,
+        "stdout_sha256": "4d8e46fbb4f239ea36ba22372830e46c916b81681a3dcdd30990602a5bd196ce",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-VE88cB",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 128,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "init",
+          "--graph-only"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 373,
+        "stdout_bytes": 275,
+        "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "task",
+          "Implement synthetic audit work",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 139,
+        "stdout_bytes": 288,
+        "stdout_sha256": "906c0438e7f349e0e66cca9b4e41dac52a7c34144ff992a7843c167b543d9e42",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "test",
+          "Independently verify synthetic blocker",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 136,
+        "stdout_bytes": 304,
+        "stdout_sha256": "b6a8dddbf92011de3fad7817e38c1dd136968dcb3d5285675eb247e32a731c38",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "task",
+          "Recheck exact artifact and request publication approval",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 136,
+        "stdout_bytes": 338,
+        "stdout_sha256": "0f06d11db6de4d5b2ee545a57d81fbcd18a3e648e08c6ba3a56dbd1ad90f5f1c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Audit synthetic candidate",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 137,
+        "stdout_bytes": 278,
+        "stdout_sha256": "fd460bf185cc493cf73ffe6a29e24891ce61f0c9ab4e5d394800a77170aaeac3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Verify synthetic blockers",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 138,
+        "stdout_bytes": 278,
+        "stdout_sha256": "34a02b293d0512aba52661eab4f2029be5976d5a196c13c98492a68470d7038e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "goal",
+          "Future synthetic publication",
+          "--status",
+          "todo",
+          "--owners",
+          "fixture",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 145,
+        "stdout_bytes": 284,
+        "stdout_sha256": "ceb4b41c64fdd76564c52770bec78fdd99119aa446dd301831f589d6017e0e90",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "new",
+          "checkpoint",
+          "Accept synthetic audit",
+          "--status",
+          "backlog",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 140,
+        "stdout_bytes": 278,
+        "stdout_sha256": "65f7f6389a182d384e2f67fe9b73d62c1b410d5318867915780e7bb076a80f27",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "test-1",
+          "--add-blocked-by",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 138,
+        "stdout_bytes": 249,
+        "stdout_sha256": "56b5f1f8c01b8c6ed1d7d6050a9e6aee2635046b96a8ff2929e6accecaf98896",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "task-2",
+          "--add-blocked-by",
+          "chk-1,test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 132,
+        "stdout_bytes": 266,
+        "stdout_sha256": "bcf1c726ac6b909aa7621225ef3e937efd57d0f6e7c9ff01a380503f6e33ffdb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "2ca98b09-553a-45e9-8ad8-f4fe6162318b",
+          "--origin",
+          "d80fe6e7-cf24-4c8b-9c4a-18019dfafa8c",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 153,
+        "stdout_bytes": 26066,
+        "stdout_sha256": "d43decb5a0914ed4f49fa70899297ea12932bba3f81de90680856fce247a2c95",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "graph",
+          "migrate",
+          "--graph-id",
+          "2ca98b09-553a-45e9-8ad8-f4fe6162318b",
+          "--origin",
+          "d80fe6e7-cf24-4c8b-9c4a-18019dfafa8c",
+          "--apply",
+          "--plan-hash",
+          "sha256:14b26123be172783795774812f4377e19e39e1689a168b054495c106d3b5e4d3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 1007,
+        "stdout_bytes": 1578,
+        "stdout_sha256": "88f2e97e17bce86cc12faf6f36e919bb91f3370d656180ceeaf5451dd8b18409",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 93,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "list",
+          "--ws",
+          "root",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 86,
+        "stdout_bytes": 16670,
+        "stdout_sha256": "e1d91f9d7f9c1140f67934a57859b29cb047b2464a2583328a0a0ea7093f01d5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "git",
+        "args": [
+          "init",
+          "-b",
+          "main"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 11,
+        "stdout_bytes": 106,
+        "stdout_sha256": "1e5629fd84bea23f9994b543bb009365f8bd2db769840c22104b3eec48c437c3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--show-toplevel"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 64,
+        "stdout_sha256": "152831355d744bcc103699013aecd752dea533a1aa1133febb17a10641797c25",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "git",
+        "args": [
+          "rev-parse",
+          "--absolute-git-dir"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 69,
+        "stdout_sha256": "ef1b707592a651704a19d50be6c731fec9a5cb460c36838b0c8891fe8ebbd9d0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.name",
+          "Synthetic Fixture"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 7,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "git",
+        "args": [
+          "config",
+          "user.email",
+          "fixture@example.invalid"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 6,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "git",
+        "args": [
+          "add",
+          "--",
+          ".mdkg",
+          ".gitignore"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 36,
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "git",
+        "args": [
+          "-c",
+          "commit.gpgsign=false",
+          "commit",
+          "-m",
+          "Synthetic fixture baseline"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 19,
+        "stdout_bytes": 4568,
+        "stdout_sha256": "c7655db3f114f9f2abcc278adc9b6e64fff663889b3cce7976851673e142507d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 84,
+        "stdout_bytes": 904,
+        "stdout_sha256": "a22078b69c59c7cf5994427809d82e22f22ae5b5cb137586e6bc5ccf21142f9e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 83,
+        "stdout_bytes": 895,
+        "stdout_sha256": "8daa77ccca3d338c33ab0dfa16bc70946ed495823a90dd7c64f41710319835a2",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 84,
+        "stdout_bytes": 1674,
+        "stdout_sha256": "4f9885d8d153b040c447ae2feba58a2fbcba2057de27d631c59b2cefdefb86f3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "evaluate",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 82,
+        "stdout_bytes": 1061,
+        "stdout_sha256": "269fd0afd879cf2508d02ab22d6d26ab13f60990789989eb831e1521d3e08640",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "claim",
+          "goal-1",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 1729,
+        "stdout_sha256": "bdf39837233384b2d92a39fa7813276ae9db82827e192762537a730dd3897eae",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "start",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 133,
+        "stdout_bytes": 486,
+        "stdout_sha256": "4ec929fb7cd9f4edc717ddd4c8e2cf2997a70a80509691439d59fe2faab3c019",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "task-1",
+          "--checkpoint",
+          "Synthetic implementation proof",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 159,
+        "stdout_bytes": 907,
+        "stdout_sha256": "30ca9562921e5318974529f45916d5240f7304004e0fdbc0bfa5073b9997f298",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "chk-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 96,
+        "stdout_bytes": 2541,
+        "stdout_sha256": "a68deda606a021262a43418b37dc4453d349274ddaf089b9ae71e99e079a15b0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "done",
+          "goal-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 154,
+        "stdout_bytes": 974,
+        "stdout_sha256": "6d84df9b2b6969d73e3e073255dc041dcc6bfa3e047baabeea496afb11efc9b1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 87,
+        "stdout_bytes": 904,
+        "stdout_sha256": "a22078b69c59c7cf5994427809d82e22f22ae5b5cb137586e6bc5ccf21142f9e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "show",
+          "task-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 86,
+        "stdout_bytes": 1292,
+        "stdout_sha256": "5415ff1b9db727d12293d0e57fa596e595bd1dec15d12e1a120bee7e05034d91",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 87,
+        "stdout_bytes": 1683,
+        "stdout_sha256": "5d5c55ea25011693ec00a0cd43f48e658a139e111cafdef6315db9d151e17a40",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "claim",
+          "goal-2",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 136,
+        "stdout_bytes": 1738,
+        "stdout_sha256": "14efd3252c36a39a52dfdc5386719ef117ac0ca4d27c81e2c327084852ec950f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "start",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 134,
+        "stdout_bytes": 494,
+        "stdout_sha256": "5bfd8ac92338bb33ef5e0f6f832fec9fc11eb5e109f75644106721f6625787fa",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 487,
+        "stdout_sha256": "946a135b91f06ffc10aa7bb9a56a50a82cb0e8f28ff284f8c252bc29b96754fa",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 90,
+        "stdout_bytes": 904,
+        "stdout_sha256": "a22078b69c59c7cf5994427809d82e22f22ae5b5cb137586e6bc5ccf21142f9e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "done",
+          "goal-2",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 134,
+        "stdout_bytes": 938,
+        "stdout_sha256": "07a97560e76b8eb018dab47e932a668cd2f1d4771373118bf86aeec3967961af",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 89,
+        "stdout_bytes": 904,
+        "stdout_sha256": "a22078b69c59c7cf5994427809d82e22f22ae5b5cb137586e6bc5ccf21142f9e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 121,
+        "stdout_bytes": 241,
+        "stdout_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 89,
+        "stdout_bytes": 1748,
+        "stdout_sha256": "1187455f6ddcf80e06702e3b53fd8f624777f31a84e671af661ea10e6eb54fe6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "update",
+          "test-1",
+          "--status",
+          "todo",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 133,
+        "stdout_bytes": 490,
+        "stdout_sha256": "2aa791ccdedf35c4b3a7c3d607e42d7d06117d9a9c33f36c8bbd4f120b738509",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 91,
+        "stdout_bytes": 904,
+        "stdout_sha256": "a22078b69c59c7cf5994427809d82e22f22ae5b5cb137586e6bc5ccf21142f9e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 124,
+        "stdout_bytes": 241,
+        "stdout_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 89,
+        "stdout_bytes": 904,
+        "stdout_sha256": "a22078b69c59c7cf5994427809d82e22f22ae5b5cb137586e6bc5ccf21142f9e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "index"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 126,
+        "stdout_bytes": 241,
+        "stdout_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 88,
+        "stdout_bytes": 904,
+        "stdout_sha256": "a22078b69c59c7cf5994427809d82e22f22ae5b5cb137586e6bc5ccf21142f9e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "task",
+          "done",
+          "test-1",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 135,
+        "stdout_bytes": 487,
+        "stdout_sha256": "946a135b91f06ffc10aa7bb9a56a50a82cb0e8f28ff284f8c252bc29b96754fa",
+        "stderr_sha256": "3583226a4e4a02363f1a360e7aac673b15d177afa166f472e3c0737c648886b4"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "next",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 88,
+        "stdout_bytes": 1748,
+        "stdout_sha256": "1187455f6ddcf80e06702e3b53fd8f624777f31a84e671af661ea10e6eb54fe6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "goal",
+          "evaluate",
+          "goal-3",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 88,
+        "stdout_bytes": 946,
+        "stdout_sha256": "0d9f4eff3442dd4ee4e48ae3d0d75761946cc97ebbe537f675c16fbce7a858d2",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "fixture": "mdkg-installed-goals-YUVY4C",
+        "executable": "node",
+        "args": [
+          "/private/tmp/mdkg-scale-goal-VJusOZ/installed/node_modules/mdkg/dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 600000,
+        "elapsed_ms": 120,
+        "stdout_bytes": 1234,
+        "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "fixtures_removed": 9,
+    "limitations": [
+      "2000-node graph is representative coverage, not a universal performance SLA",
+      "2049-commit refusal exercises the existing limit; exhaustive 2048-commit acceptance is not claimed",
+      "goal routing stores guidance, not artifact verification or publication enforcement"
+    ]
+  },
+  "limitations": [
+    "macOS only; remaining platform rows stay open",
+    "No canonical graph migration or publication",
+    "Qualification allowance is not a new product performance target"
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  }
+}

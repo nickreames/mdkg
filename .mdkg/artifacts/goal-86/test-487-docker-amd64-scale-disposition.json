@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "test487-x86_64-scale-failure-disposition",
+  "owner": "root:test-487",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "platform": "linux-x64",
+  "executor": "Local Ubuntu24.04.4 userspace on Docker Desktop ARM64 LinuxKit; Rosetta x86_64 emulation",
+  "observed_failure": "SQLite-backed 2000-task graph migration application was terminated by the existing 600000ms qualification command timeout (elapsed600064ms; ETIMEDOUT/SIGTERM).",
+  "completed_case_rows": [
+    {
+      "family": "scale",
+      "backend": "json",
+      "version": "legacy",
+      "state": "warm"
+    },
+    {
+      "family": "scale",
+      "backend": "json",
+      "version": "legacy",
+      "state": "cold"
+    },
+    {
+      "family": "scale",
+      "backend": "json",
+      "version": "v2",
+      "state": "warm"
+    },
+    {
+      "family": "scale",
+      "backend": "json",
+      "version": "v2",
+      "state": "cold"
+    },
+    {
+      "family": "scale",
+      "backend": "sqlite",
+      "version": "legacy",
+      "state": "warm"
+    },
+    {
+      "family": "scale",
+      "backend": "sqlite",
+      "version": "legacy",
+      "state": "cold"
+    }
+  ],
+  "json_migration_elapsed_ms": 574818,
+  "sqlite_migration_elapsed_ms": 600064,
+  "timeout_ms": 600000,
+  "product_sla": false,
+  "error_code": "ETIMEDOUT",
+  "failed_command_excerpt": "fixture: 'mdkg-installed-scale-Jd6Nml',\n      executable: 'node',\n      args: [\n        '/private/tmp/mdkg-scale-goal-EhJ4Bf/installed/node_modules/mdkg/dist/cli.js',\n        'graph',\n        'migrate',\n        '--graph-id',\n        '288eed9d-ba61-49a4-8b2c-cdc326fe22c0',\n        '--origin',\n        '7745a918-239d-46c3-8e96-7ec39994ef0b',\n        '--apply',\n        '--plan-hash',\n        'sha256:a88ebff594b924a70ac07636cb41d1b9c0f1ed8727aa58907fa41f78487809d1',\n        '--json'\n      ],\n      exit: null,\n      signal: 'SIGTERM',\n      timeout_ms: 600000,\n      elapsed_ms: 600064,\n      stdout_bytes: 0,\n      stdout_sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',\n      stderr_sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'\n    }\n  ]\n}\n\nNode.js v24.18.0\n\n\n1 !== 0\n",
+  "failure_stream_sha256": "5a488adc429fa4a3ef74afdfd30f0faa49b5126d72e052e0acd5deaebeb29ec9",
+  "emulation_observation": {
+    "command": "docker top mdkg-g86-amd64-qualification-20260929 -eo pid,args",
+    "process_args": "PID                 COMMAND\n1229                /sbin/docker-init -- node /capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs\n1244                /run/rosetta/rosetta /opt/node/bin/node node --no-opt -r /proc/.reset /capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs\n9834                /run/rosetta/rosetta /opt/node-v24.18.0-linux-x64/bin/node /opt/node-v24.18.0-linux-x64/bin/node --no-opt -r /proc/.reset /capsule/.mdkg/artifacts/goal-86/test-479-installed-remedies.cjs\n13958               /run/rosetta/rosetta /opt/node-v24.18.0-linux-x64/bin/node /opt/node-v24.18.0-linux-x64/bin/node --no-opt -r /proc/.reset --require /capsule/scripts/qualification-process-context.js --test --test-reporter=tap --test-concurrency=1 /private/tmp/mdkg-installed-remedies-yZjrbY/tests/commands/loop_seed_budget.test.js\n13964               /run/rosetta/rosetta /opt/node-v24.18.0-linux-x64/bin/node /opt/node-v24.18.0-linux-x64/bin/node --no-opt -r /proc/.reset --test-coverage-functions=0 --test-concurrency=1 --inspect-publish-uid=stderr,http --inspect-port=127.0.0.1:9229 --report-signal=SIGUSR2 --test-coverage-lines=0 --test-isolation=process --heap-prof-interval=524288 --cpu-prof-interval=1000 --v8-pool-size=4 --trace-event-file-pattern=node_trace.${rotation}.log --secure-heap-min=2 --network-family-autoselection-attempt-timeout=250 --tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA --use-largepages=off --secure-heap=0 --watch-kill-signal=SIGTERM --test-coverage-branches=0 --max-http-header-size=16384 --test-timeout=0 --node-snapshot --require=/private/tmp/mdkg-installed-remedies-yZjrbY/deny-canonical-implementation.cjs --require=/proc/.reset --require=/capsule/scripts/qualification-process-context.js --stack-trace-limit=10 --heapsnapshot-near-heap-limit=0 --require /capsule/scripts/qualification-process-context.js /private/tmp/mdkg-installed-remedies-yZjrbY/tests/commands/loop_seed_budget.test.js\n14709               /run/rosetta/rosetta /opt/node-v24.18.0-linux-x64/bin/node /opt/node-v24.18.0-linux-x64/bin/node --no-opt -r /proc/.reset /private/tmp/mdkg-installed-remedies-yZjrbY/installed/node_modules/mdkg/dist/cli.js loop show loop-2 --json\n",
+    "preload_sha256": "86c6676bd07477697e8aed12348041dc1ef6bdeee70bdd4d346dd1ce2e27aacd",
+    "meaning": "Actual x86_64 Node processes show --no-opt and /proc/.reset under Rosetta. No emulation configuration or preload was modified; no native x86_64 performance claim."
+  },
+  "disposition": "failed-current; not a new confirmed product defect or compatibility waiver",
+  "inference": "Emulation and shared local executor timing may contribute. Passing native macOS/ARM64 correctness and the completed x64 JSON migration do not prove the uncompleted x64 SQLite migration, limit, history or goal-routing cases.",
+  "next_action": "Retain the failure and finish unaffected families. Resolve the x64 scale gap with an explicitly reviewed local execution approach; do not silently enlarge the helper's current 600000ms cap, lower node count, waive remaining cases, or change package behavior.",
+  "unverified": [
+    "linux-x64 SQLite v2 warm/cold scale observations",
+    "linux-x64 default node/event bound refusals in the scale family",
+    "linux-x64 2049-commit bounded-history refusal in the scale family",
+    "linux-x64 complete legacy/v2 JSON/SQLite goal/blocker routing in the scale family"
+  ],
+  "remaining_release_gates": [
+    "Case-level installed acceptance",
+    "Independent current-source and complete remediation-diff security acceptance under Dec99",
+    "Full37-smoke package ladder and89/77/96 coverage",
+    "Exact artifact seal and protected-state/commit closeout"
+  ],
+  "excluded": [
+    "Publication",
+    "Remote Git",
+    "Host/global reconfiguration",
+    "Blocked historical security context"
+  ]
+}

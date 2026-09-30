@@ -14,20 +14,57 @@ blocked_after_attempts: 3
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/candidate-seal-20260930.json, .mdkg/artifacts/goal-86/requirement-coverage.json, .mdkg/artifacts/goal-86/successor-package-gates-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-private-preview-20260930.json, .mdkg/artifacts/goal-86/local-closeout-20260930.json, .mdkg/artifacts/goal-86/closeout-commit-allowlist-20260930.json]
 relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-75, goal-83, goal-84, goal-86, dec-96]
-evidence_refs: []
+context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-75, goal-83, goal-84, goal-86, dec-96, dec-100, epic-258, epic-257]
+evidence_refs: [chk-570]
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-13
+updated: 2026-09-30
 ---
 
+# Qualified local artifact handoff - 2026-09-30
+
+The0.6.0 candidate is locally qualified and sealed in Chk570 and
+.mdkg/artifacts/goal-86/candidate-seal-20260930.json, SHA256
+b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc.
+This goal remains PAUSED. This handoff/goal completion grants no publication,
+push, tag, credentials, provider or deployment authority.
+
+A future explicitly approved publication pass must independently recheck current
+blockers/deferrals, package inputs, exact retained tarball integrity, Git custody,
+registry/version/auth prerequisites and the publication-specific contract. Consume
+qualified bytes, not a replacement pack. Bugs46/47 remain deferred/unresolved
+under Goal87. macOS/Ubuntu ARM64-native and Ubuntu x86_64-emulated acceptance is
+local proof only; Windows, hosted CI, website and consumer adoption are not passes.
+
+# Historical publication planning retained below
+
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Remain PAUSED/unclaimed. Tasks831/832 still require fresh publication approval and exact artifact/blocker rechecks after Chk570. No push, tag, publication or public-state change is authorized.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
+
 # Current Successor Contract - 2026-09-13
+
+2026-09-28 Dec98 addendum: Bugs46/47 are deferred/unresolved under paused
+Goal87, not accepted or fixed. Publication must recheck their disclosed
+version-specific disposition and the remaining Goal86 gates against the exact
+candidate. Node-only planning/experiments, runtime changes and this deferral
+grant no publication, remote, tag or provider authority. This goal stays paused.
 
 Remain blocked/paused with only task831/832 in execution scope. Fresh publication
 approval, exact artifact and independent blocker checks are still mandatory.

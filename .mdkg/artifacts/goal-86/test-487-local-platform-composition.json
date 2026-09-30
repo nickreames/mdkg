@@ -1,0 +1,665 @@
+{
+  "schema_version": 1,
+  "kind": "test487-local-platform-family-composition",
+  "recorded_at": "2026-09-29T04:54:57.295Z",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "source_revision": "36e075b8d64babff04154704a721db4a82926ebe",
+  "platforms": [
+    {
+      "platform": "linux-arm64",
+      "execution": "native ARM64 Linux on ARM64 host",
+      "node": "v24.18.0",
+      "ubuntu_userspace": "24.04.4 LTS",
+      "kernel": "6.12.76-linuxkit",
+      "fixture_filesystem": "ext4",
+      "read_only_root": "overlay",
+      "families": [
+        {
+          "name": "bootstrap",
+          "pass": true,
+          "duration_ms": 16520,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "collaboration",
+          "pass": true,
+          "duration_ms": 62107,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "gitdir",
+          "pass": true,
+          "duration_ms": 13381,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "submodule",
+          "pass": true,
+          "duration_ms": 13369,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "ownership",
+          "pass": true,
+          "duration_ms": 27878,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "state-admission",
+          "pass": true,
+          "duration_ms": 4350,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "containment",
+          "pass": true,
+          "duration_ms": 26779,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "remedies",
+          "pass": true,
+          "duration_ms": 80930,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "compatibility",
+          "pass": true,
+          "duration_ms": 33500,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "work",
+          "pass": true,
+          "duration_ms": 27686,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "behavior",
+          "pass": true,
+          "duration_ms": 55647,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "pack-controls",
+          "pass": true,
+          "duration_ms": 949,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "generic",
+          "pass": true,
+          "duration_ms": 2951,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "options",
+          "pass": true,
+          "duration_ms": 22657,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json"
+        },
+        {
+          "name": "runtime",
+          "pass": true,
+          "duration_ms": 2635,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-runtime.json"
+        },
+        {
+          "name": "readonly",
+          "pass": true,
+          "duration_ms": 2997,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-supplement.json"
+        },
+        {
+          "name": "capability-umask",
+          "pass": true,
+          "duration_ms": 981,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-supplement.json"
+        },
+        {
+          "name": "scale",
+          "pass": true,
+          "case_count": 15,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-scale.json",
+          "composition": "15 rows from one complete native run"
+        }
+      ],
+      "runtime_safe_controls": 19,
+      "unsupported_old_init_observations": 2,
+      "receipts": [
+        {
+          "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json",
+          "sha256": "e9bed7a66fa2b99a7fa2fb6570b8672d12c74427bfa7a580bbb59e18589cbc8b"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-runtime.json",
+          "sha256": "27205d6aa6f87c936b0b492d0d56b504f3f0c08d20909b56760512c2c9d210cc"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-supplement.json",
+          "sha256": "9eb9f6d9d67649fcaf2a17ba0eda492ed18ac94e6612be6d23225ec78b955fbc"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-scale.json",
+          "sha256": "2c12dca8dcd90a1fb4849302c8c93c99742146f07c0646c821175b20dfc07499"
+        }
+      ]
+    },
+    {
+      "platform": "linux-x64",
+      "execution": "emulated x86_64 Linux on ARM64 host; no native performance claim",
+      "node": "v24.18.0",
+      "ubuntu_userspace": "24.04.4 LTS",
+      "kernel": "6.12.76-linuxkit",
+      "fixture_filesystem": "ext4",
+      "read_only_root": "overlay",
+      "families": [
+        {
+          "name": "bootstrap",
+          "pass": true,
+          "duration_ms": 126435,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "collaboration",
+          "pass": true,
+          "duration_ms": 845977,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "gitdir",
+          "pass": true,
+          "duration_ms": 139275,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "submodule",
+          "pass": true,
+          "duration_ms": 139523,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "ownership",
+          "pass": true,
+          "duration_ms": 298575,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "state-admission",
+          "pass": true,
+          "duration_ms": 27072,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "containment",
+          "pass": true,
+          "duration_ms": 215603,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "remedies",
+          "pass": true,
+          "duration_ms": 566281,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "compatibility",
+          "pass": true,
+          "duration_ms": 229006,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "work",
+          "pass": true,
+          "duration_ms": 185654,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "behavior",
+          "pass": true,
+          "duration_ms": 363402,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "pack-controls",
+          "pass": true,
+          "duration_ms": 4954,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "generic",
+          "pass": true,
+          "duration_ms": 20093,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "options",
+          "pass": true,
+          "duration_ms": 186292,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json"
+        },
+        {
+          "name": "runtime",
+          "pass": true,
+          "duration_ms": 16060,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-runtime.json"
+        },
+        {
+          "name": "readonly",
+          "pass": true,
+          "duration_ms": 23730,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-supplement.json"
+        },
+        {
+          "name": "capability-umask",
+          "pass": true,
+          "duration_ms": 5055,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-supplement.json"
+        },
+        {
+          "name": "scale",
+          "pass": true,
+          "case_count": 15,
+          "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-retry.json",
+          "composition": "4 prior JSON rows plus 11 retry rows; 2 repeated prior SQLite rows excluded"
+        }
+      ],
+      "runtime_safe_controls": 19,
+      "unsupported_old_init_observations": 2,
+      "receipts": [
+        {
+          "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json",
+          "sha256": "56df033f31e9dfe4dc9a2ecc15d7fce743e906ea9652e584e0016223b26a8e53"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-runtime.json",
+          "sha256": "f5ffdbe00c0583b3d195aeb57f7cd16eea0c0ad83e35f79eabf74644f6667647"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-supplement.json",
+          "sha256": "91adcc721b72aafdedf50d44603db496f1896c233c8acd93f96fb9397e253fa1"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-retry.json",
+          "sha256": "7f681eed585572357f78a45a58b0d773b65911b41f10c668939d513e3981a5b7"
+        }
+      ]
+    }
+  ],
+  "macos_existing_evidence": [
+    {
+      "path": ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+      "sha256": "b25de0c915c6ca89220f5f3b3e42c710ee3968f17364ea0a72f4b6b6fe9558ba"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+      "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+      "sha256": "80dbbdcd0fe961a9e44847dde0c72289f7d653d5f313cc0b81cd542dd58e3e39"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+      "sha256": "757e71d5a12dd89392a88fe10d805af426dafff6f4ad1d4187d30fc623d4bdb7"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+      "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-479-real-readonly-qualification.json",
+      "sha256": "345ef33cbf326d6e4cacfb308c9990e876ade3630bbf40a03c14c6ca0529476c"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+      "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-480-local-compatibility-qualification.json",
+      "sha256": "f5008c597609c431de9eb92197e07390633b7e9b9d56a9fc4913424407a9d049"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-480-local-work-qualification.json",
+      "sha256": "d7929b2e7030526c5d39d228c97cb4b2a4549b0548b9ffa65d5930d680a4f305"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json",
+      "sha256": "60f63c87ad05c0896da41ec74f01a61c7e545c91437dc50eb624f6260e15dc9d"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-481-local-scale-qualification.json",
+      "sha256": "1d26e596b7b5acbf6513c6915c8a89cfd9a21ddc4bf5cee69a2d1057ac67a10d"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+      "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-483-local-pack-controls-qualification.json",
+      "sha256": "faf6998ba8776e0d521f7e364d8c1abce356495e5423751e99453c2a9b03d6d2"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-484-local-generic-qualification.json",
+      "sha256": "50ce95eaddb71e3f22f37d1ccf32848f301394e766dc5198c76305ede6c30686"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-486-local-option-qualification.json",
+      "sha256": "a43d6f51a8fb5956e52dab4fbe3c4184c4ab6f1afcfa54386decb38f48846122"
+    }
+  ],
+  "scale_composition": {
+    "pass": true,
+    "unique_cases": 15,
+    "prior_json_cases": 4,
+    "new_retry_cases": 11,
+    "discarded_duplicate_prior_sqlite_cases": 2,
+    "partial_receipt": {
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-partial.json",
+      "sha256": "fecda78d0ff87653c53229857c62ba2dbe1d760e2a84b3a08165e4caa175312e"
+    },
+    "cases": [
+      {
+        "family": "scale",
+        "backend": "json",
+        "version": "legacy",
+        "state": "warm",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          794,
+          765,
+          774,
+          793,
+          811
+        ],
+        "observational": true
+      },
+      {
+        "family": "scale",
+        "backend": "json",
+        "version": "legacy",
+        "state": "cold",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          786,
+          760,
+          787,
+          792,
+          818
+        ],
+        "observational": true
+      },
+      {
+        "family": "scale",
+        "backend": "json",
+        "version": "v2",
+        "state": "warm",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          869,
+          811,
+          860,
+          862,
+          906
+        ],
+        "observational": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 2010,
+          "persisted_task_identity_count": 2000,
+          "exact_plan_writes": 2013,
+          "event_history_preserved": true,
+          "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+        }
+      },
+      {
+        "family": "scale",
+        "backend": "json",
+        "version": "v2",
+        "state": "cold",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          865,
+          850,
+          841,
+          865,
+          876
+        ],
+        "observational": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 2010,
+          "persisted_task_identity_count": 2000,
+          "exact_plan_writes": 2013,
+          "event_history_preserved": true,
+          "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+        }
+      },
+      {
+        "family": "scale",
+        "backend": "sqlite",
+        "version": "legacy",
+        "state": "warm",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          781,
+          751,
+          808,
+          771,
+          1047
+        ],
+        "observational": true
+      },
+      {
+        "family": "scale",
+        "backend": "sqlite",
+        "version": "legacy",
+        "state": "cold",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          783,
+          761,
+          781,
+          776,
+          818
+        ],
+        "observational": true
+      },
+      {
+        "family": "scale",
+        "backend": "sqlite",
+        "version": "v2",
+        "state": "warm",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          875,
+          876,
+          781,
+          794,
+          1085
+        ],
+        "observational": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 2010,
+          "persisted_task_identity_count": 2000,
+          "exact_plan_writes": 2013,
+          "event_history_preserved": true,
+          "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+        }
+      },
+      {
+        "family": "scale",
+        "backend": "sqlite",
+        "version": "v2",
+        "state": "cold",
+        "node_count": 2000,
+        "legacy_authored_bytes": 803563,
+        "event_records": 20000,
+        "event_bytes": 3660000,
+        "command_ms": [
+          816,
+          791,
+          815,
+          803,
+          869
+        ],
+        "observational": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 2010,
+          "persisted_task_identity_count": 2000,
+          "exact_plan_writes": 2013,
+          "event_history_preserved": true,
+          "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+        }
+      },
+      {
+        "family": "default-limit",
+        "kind": "node",
+        "bytes": 8388609,
+        "failed_closed": true,
+        "observational": true
+      },
+      {
+        "family": "default-limit",
+        "kind": "event",
+        "bytes": 1048577,
+        "failed_closed": true,
+        "observational": true
+      },
+      {
+        "family": "history-limit",
+        "commits": 2049,
+        "existing_limit": 2048,
+        "failed_closed": true,
+        "observational": true
+      },
+      {
+        "family": "goal-routing",
+        "backend": "json",
+        "version": "legacy",
+        "both_gate_orders": true,
+        "reopened_gate_blocks": true,
+        "goal_state_not_acceptance": true,
+        "evaluate_observational": true,
+        "artifact_recheck_required": true,
+        "publication_executed": false,
+        "git_index_preserved": true,
+        "selection_preserved": true
+      },
+      {
+        "family": "goal-routing",
+        "backend": "json",
+        "version": "v2",
+        "both_gate_orders": true,
+        "reopened_gate_blocks": true,
+        "goal_state_not_acceptance": true,
+        "evaluate_observational": true,
+        "artifact_recheck_required": true,
+        "publication_executed": false,
+        "git_index_preserved": true,
+        "selection_preserved": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 17,
+          "persisted_task_identity_count": 2,
+          "exact_plan_writes": 20,
+          "event_history_preserved": true,
+          "event_history_sha256": null
+        }
+      },
+      {
+        "family": "goal-routing",
+        "backend": "sqlite",
+        "version": "legacy",
+        "both_gate_orders": true,
+        "reopened_gate_blocks": true,
+        "goal_state_not_acceptance": true,
+        "evaluate_observational": true,
+        "artifact_recheck_required": true,
+        "publication_executed": false,
+        "git_index_preserved": true,
+        "selection_preserved": true
+      },
+      {
+        "family": "goal-routing",
+        "backend": "sqlite",
+        "version": "v2",
+        "both_gate_orders": true,
+        "reopened_gate_blocks": true,
+        "goal_state_not_acceptance": true,
+        "evaluate_observational": true,
+        "artifact_recheck_required": true,
+        "publication_executed": false,
+        "git_index_preserved": true,
+        "selection_preserved": true,
+        "migration": {
+          "graph_format": 2,
+          "persisted_identity_count": 17,
+          "persisted_task_identity_count": 2,
+          "exact_plan_writes": 20,
+          "event_history_preserved": true,
+          "event_history_sha256": null
+        }
+      }
+    ],
+    "retry_command_count": 239,
+    "retry_duration_ms": 718362,
+    "long_retry_commands": [
+      {
+        "args": [
+          "graph",
+          "migrate",
+          "--graph-id",
+          "5e95087f-69cd-4fa9-a292-cf39063ed632",
+          "--origin",
+          "5b7e4518-b54a-4319-886e-2b5197da992c",
+          "--apply",
+          "--plan-hash",
+          "sha256:e375e5233bd7d64c1b2804e06b5756a6c4341165a994aec7d772e14a448a14cc",
+          "--json"
+        ],
+        "elapsed_ms": 593517,
+        "exit": 0,
+        "signal": null,
+        "timeout_ms": 900000
+      }
+    ],
+    "original_failure_preserved": true,
+    "product_or_package_changed": false
+  },
+  "scope": "All selected Linux installed family executions passed after separately recorded executor correction and bounded scale retry. This is case evidence, not completed aggregate task, independent security acceptance, full release ladder or artifact seal.",
+  "limitations": [
+    "Ubuntu24.04 userspace on LinuxKit; not an Ubuntu host-kernel qualification",
+    "x86_64 is Rosetta-emulated with its existing --no-opt injection; no native performance claim",
+    "Actual Node24.15.0 and26.0.0 refusal/discovery controls;24.18.0 is minimum and selected supported runtime, counted once",
+    "Old0.5.2 init and force-init effects remain explicitly unsupported observations, not safety passes",
+    "Read-only proofs use warm/fresh graph caches; cold-cache plus read-only cross-product not claimed",
+    "2049-commit refusal proves the existing2048 bound, not exhaustive boundary-size acceptance",
+    "Bugs46/47 remain deferred/unresolved; Windows and hosted CI unqualified",
+    "Task828 current-source/remediation-diff review,Task829 complete package ladder andTask830 seal remain required"
+  ]
+}

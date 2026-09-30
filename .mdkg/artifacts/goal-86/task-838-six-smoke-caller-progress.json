@@ -1,0 +1,936 @@
+{
+  "schema_version": 1,
+  "task": "root:task-838",
+  "goal": "root:goal-86",
+  "checkpoint": "root:chk-644",
+  "date": "2026-09-22",
+  "outcome": "PARTIAL_NOT_RELEASE_READY",
+  "scope": "Six installed smoke callers: isolated native Git, selected Node, private npm state, supervised subprocesses, verified installation/artifact and owned cleanup",
+  "authority": {
+    "owner": "mdkg-project-agent",
+    "goal_claim": "root:goal-86/root:task-838",
+    "node_only": true,
+    "local_only": true,
+    "persistent_lease": false,
+    "canonical_branch_switch": false,
+    "canonical_build": false,
+    "commit": false,
+    "remote": false,
+    "publication": false,
+    "blocked_context_access": false
+  },
+  "source_head": "c10113489381badf2845fc378c49b317376f953e",
+  "changed_implementation_paths": [
+    "scripts/qualification-smoke.js",
+    "tests/qualification-smoke.test.mjs",
+    "scripts/smoke-fix-plan.js",
+    "scripts/smoke-loop.js",
+    "scripts/smoke-handoff.js",
+    "scripts/smoke-command-docs.js",
+    "scripts/smoke-integration-ux.js",
+    "scripts/smoke-operator-health.js"
+  ],
+  "source_sha256": {
+    "scripts/smoke-fix-plan.js": "8a9f8129d5bf971eb291af42ffea1fe0d92bf2eb96dab06bf4bba25dc7a71c46",
+    "scripts/smoke-loop.js": "8838b7a1f7ec2d604476fbb5bae885d1f0f15a0d954f198676d5e4a3c27197f9",
+    "scripts/smoke-handoff.js": "6d29323a41516b32ad60d3231c1eca3ed8a577a88fcd815af3830b557e803593",
+    "scripts/smoke-command-docs.js": "2d203f67e623e53755fd1de0e7f2f0c5d54eb4f6de25f2b1c17b896f1c50907d",
+    "scripts/smoke-integration-ux.js": "daa217e2cd66a3b32287534b5f27ccb96c88f6dda7ac78b6bce187e19af499f9",
+    "scripts/smoke-operator-health.js": "a67aed6136208fbfbcbe34041f66be4df95ee9a8eabefc681d235664d239b351",
+    "scripts/qualification-smoke.js": "343164b3c183412a5d9dfd2d9a678aa5f6bc51e5c5bd850b31b6bc8cbb517a4a",
+    "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+    "scripts/qualification-git.js": "96813af8bcf360bb759a05cd4bda24cc77b561fb52fa5580e4a55a8cd4d57ea8",
+    "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+    "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+    "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+    "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+    "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+    "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+    "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+    "scripts/npm-smoke-proxy.js": "e24e5e383b9078364a2db8ec3697b6b94142f6449a138fa78d81c1c4fcf74e68",
+    "tests/qualification-smoke.test.mjs": "b2db8a570638268c79a3c3fa056c9fb332db712498d56f946094d3d0124f5e6a"
+  },
+  "source_reproduction": {
+    "path": "/private/tmp/mdkg-task838-six-smokes.2aDixy/legacy-reproduction.json",
+    "sha256": "ccce283a499ace0ff643d523226ae0349a6f27b3739d5b9497332c12debaad58",
+    "synthetic": true,
+    "canonical_mutations": false,
+    "results": [
+      {
+        "caller": "scripts/smoke-fix-plan.js",
+        "source_sha256": "4ac0870b17045acab382031e65ab8403c2fc6dd644ef85ca41dd3e1c6139fb0e",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "ae86e93e07864c8bb3d2cca7f70cf1365bc485546193dd9066d3f3b1a5b687c9",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-loop.js",
+        "source_sha256": "2a38814122436a54a25d108f8c3f69187a2002b661a71e28ab151f8ab891697c",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "06f39b857b468b17b8466c309e440542ad781c445ad48d7a1190e71d617e7c90",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-handoff.js",
+        "source_sha256": "daa67f3650e9589740f5c07bcefe692a3cfb8318ff3b0cc5521d13a5ed31a532",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "9ee7519b53d8181b2359d53c8e75dc5f0481db5a786d1abb39f3ffafb6dd3f0c",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-command-docs.js",
+        "source_sha256": "f7b231c2805bb6a9e89e3d390164f59f7d71071243a024c1f19091b5b192f629",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "50337b75410a1f9b9516b62e54e2219273292736f1cbab3df0ce5aa4c9f35029",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-integration-ux.js",
+        "source_sha256": "747be12b8a1e3f4431ecd4c2adff31ccf9543d9bef27b8de21caeea89d1dd43c",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "40e7a657583a155ca2d0f69330c94b95eda45c5e878a3d31f83655c17a2f1294",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-operator-health.js",
+        "source_sha256": "c881389ade9f58e39beb6131c9686f569b3336c4076f1540ec73f893885df57b",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "2a251d709bce982a9baa02f006d3a4620474a398da0bd7ec8bfce642b6facb9f",
+        "redirected": true
+      }
+    ]
+  },
+  "additional_reproduction": {
+    "description": "Before correction, runInstalledSmoke accepted installer-rewritten bytes because hashing followed installation.",
+    "method": "Owned synthetic callback wrote packed bytes then changed them before returning; incorrect success reproduced. No actual historical payload was executed.",
+    "corrective_contract": "Preparation returns deferred installation; independent regular tarball admitted and hashed before installation. withVerifiedArtifact covers installation plus exercise including ordinary installer failures; owned finalization preserves compound errors.",
+    "regression": "tests/qualification-smoke.test.mjs: standalone installed smoke detects installer mutation with and without install failure"
+  },
+  "scenario_families": {
+    "smoke-fix-plan": [
+      "installed help/docs",
+      "missing/stale index",
+      "missing refs",
+      "duplicate IDs",
+      "targeted plan/refusal and no mutation"
+    ],
+    "smoke-loop": [
+      "seven installed templates",
+      "SQLite init",
+      "dry-run ID and byte preservation",
+      "real loop forks and child routing",
+      "synthetic decision binding",
+      "pack and runs discovery"
+    ],
+    "smoke-handoff": [
+      "installed/postinstall payload",
+      "goal/task/checkpoint linkage",
+      "raw marker redaction",
+      "explicit handoff output",
+      "validate/search/show"
+    ],
+    "smoke-command-docs": [
+      "installed contract inventory",
+      "generated command-reference hash",
+      "documented status/doctor/fix/spec/manifest examples",
+      "local DB and queue examples",
+      "final graph validation"
+    ],
+    "smoke-integration-ux": [
+      "five checkpoint kinds",
+      "generic spec/work/order/receipt",
+      "queue contract",
+      "semantic references",
+      "handoff redaction",
+      "packs",
+      "observational cache staleness and explicit refresh"
+    ],
+    "smoke-operator-health": [
+      "fixture local Git commit",
+      "clean/dirty/selected-goal observations",
+      "expected achieved-selection doctor refusal",
+      "explicit selection clear in fixture",
+      "local DB verify",
+      "final graph validation"
+    ]
+  },
+  "intermediate_candidate": {
+    "path": "/private/tmp/mdkg-task838-git-qual.PPoK5C/mdkg-0.6.0.tgz",
+    "sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+    "seal": false,
+    "package_input_changes_this_batch": false,
+    "delivery": "same existing intermediate bytes through npm-smoke-proxy; independent tarball copy and before/after checks; no canonical prepack",
+    "runtime_payload_change": false
+  },
+  "final_qualification": [
+    {
+      "path": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/receipt.json",
+      "sha256": "4676fe4ff55ffa99afc2860d2108dc5aff57309d637ca3d62c34e12b8dde95b7",
+      "runtime": "v24.15.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+      "runs": [
+        {
+          "label": "smoke-fix-plan",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 3375,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-fix-plan.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-fix-plan.stderr",
+          "stdout_sha256": "b5222cf159db3ecd8daed041792998240f13d7c71131329d5a6a970dd180388a",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-fix-plan",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-fix-plan-smoke-kUCcxL",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-fix-plan-smoke-kUCcxL/pack/mdkg-0.6.0.tgz",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-fix-plan-smoke-kUCcxL"
+            }
+          }
+        },
+        {
+          "label": "smoke-loop",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 7162,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-loop.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-loop.stderr",
+          "stdout_sha256": "664935c0fac6413b28eb02c25ff2c0836a6e812cde2ec7a242e5ec7e26eb982e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "loop",
+            "ok": true,
+            "seed_templates": 7,
+            "backend": "sqlite",
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-loop-smoke-x0mFYj",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-loop-smoke-x0mFYj"
+            }
+          }
+        },
+        {
+          "label": "smoke-handoff",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 2291,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-handoff.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-handoff.stderr",
+          "stdout_sha256": "412ec28c6577dc5fb5efd76dc873aa6588aca1ea368e1ef19d0f450ba6d3550d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "handoff",
+            "ok": true,
+            "packageVersion": "0.6.0",
+            "tempRoot": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-handoff-smoke-MHAidA",
+            "tarballPath": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-handoff-smoke-MHAidA/pack/mdkg-0.6.0.tgz",
+            "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-handoff-smoke-MHAidA/repo",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-handoff-smoke-MHAidA"
+            }
+          }
+        },
+        {
+          "label": "smoke-command-docs",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 2617,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-command-docs.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-command-docs.stderr",
+          "stdout_sha256": "44967f39a7be0d75042373a984be0bbb540d58c2b47f423b5c4b7da008924ad0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "ok": true,
+            "smoke": "command-docs",
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-command-docs-smoke-JOmyc1",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-command-docs-smoke-JOmyc1/pack/mdkg-0.6.0.tgz",
+            "generated_reference": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-command-docs-smoke-JOmyc1/repo/.mdkg/generated/command-reference.md",
+            "contract_hash": "8fe115034e949a84d94af7c9e0861dbc72898b1e59f6cf0ae0ec3059fca3b23c",
+            "command_count": 114,
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-command-docs-smoke-JOmyc1"
+            }
+          }
+        },
+        {
+          "label": "smoke-integration-ux",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 4557,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-integration-ux.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-integration-ux.stderr",
+          "stdout_sha256": "4897d2b81caa050d67234edad32af9a22eab829c3ba55c839f350f9eac5d37cc",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "integration-ux",
+            "ok": true,
+            "packageVersion": "0.6.0",
+            "tempRoot": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-integration-ux-smoke-c6Iju9",
+            "tarballPath": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-integration-ux-smoke-c6Iju9/pack/mdkg-0.6.0.tgz",
+            "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-integration-ux-smoke-c6Iju9/repo",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-integration-ux-smoke-c6Iju9"
+            }
+          }
+        },
+        {
+          "label": "smoke-operator-health",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 4136,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-operator-health.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/smoke-operator-health.stderr",
+          "stdout_sha256": "f556a39464a67ecf079ba2e115169d0a215f53e5bc89012325680fcb2e7e8e48",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-operator-health",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-operator-health-smoke-UWNFgZ",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-operator-health-smoke-UWNFgZ/pack/mdkg-0.6.0.tgz",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd/mdkg-operator-health-smoke-UWNFgZ"
+            }
+          }
+        }
+      ],
+      "focused": {
+        "files": [
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "duration_ms": 7034,
+        "log": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.15.0-bZ2zgS/focused.log",
+        "sha256": "9590932058c9afc5c1474139137314b72a706b6c28eb644a703a067f63317def",
+        "summary": [
+          "# tests 122",
+          "# pass 122",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 7003.384292"
+        ]
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-Bf1ntd"
+      }
+    },
+    {
+      "path": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/receipt.json",
+      "sha256": "3a7b76deb877e6e3022cfee52f29dba192755185be460177064503ff50f5b4a8",
+      "runtime": "v24.18.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+      "runs": [
+        {
+          "label": "smoke-fix-plan",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 4729,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-fix-plan.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-fix-plan.stderr",
+          "stdout_sha256": "78efade0f70a023f683bcf54fec5c0a6b976f3830a1a440b03215dab8d9d3dee",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-fix-plan",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-fix-plan-smoke-cs9u6U",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-fix-plan-smoke-cs9u6U/pack/mdkg-0.6.0.tgz",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-fix-plan-smoke-cs9u6U"
+            }
+          }
+        },
+        {
+          "label": "smoke-loop",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 7795,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-loop.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-loop.stderr",
+          "stdout_sha256": "c2d4261c395ab64975359f997d1685120ce75f61154daeb7ebb728e273406cac",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "loop",
+            "ok": true,
+            "seed_templates": 7,
+            "backend": "sqlite",
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-loop-smoke-4UV7li",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-loop-smoke-4UV7li"
+            }
+          }
+        },
+        {
+          "label": "smoke-handoff",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 2629,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-handoff.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-handoff.stderr",
+          "stdout_sha256": "98f7f71adea7191e6b08b95cf49e0cabb23b924052204e903f59d30771e287e8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "handoff",
+            "ok": true,
+            "packageVersion": "0.6.0",
+            "tempRoot": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-handoff-smoke-utWE1t",
+            "tarballPath": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-handoff-smoke-utWE1t/pack/mdkg-0.6.0.tgz",
+            "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-handoff-smoke-utWE1t/repo",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-handoff-smoke-utWE1t"
+            }
+          }
+        },
+        {
+          "label": "smoke-command-docs",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 3039,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-command-docs.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-command-docs.stderr",
+          "stdout_sha256": "3e18b16fd94f6c99f6eb08e3826ecf1bc58f90f756afd41cfef069d2c9bf2322",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "ok": true,
+            "smoke": "command-docs",
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-command-docs-smoke-QFz5Er",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-command-docs-smoke-QFz5Er/pack/mdkg-0.6.0.tgz",
+            "generated_reference": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-command-docs-smoke-QFz5Er/repo/.mdkg/generated/command-reference.md",
+            "contract_hash": "8fe115034e949a84d94af7c9e0861dbc72898b1e59f6cf0ae0ec3059fca3b23c",
+            "command_count": 114,
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-command-docs-smoke-QFz5Er"
+            }
+          }
+        },
+        {
+          "label": "smoke-integration-ux",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 5205,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-integration-ux.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-integration-ux.stderr",
+          "stdout_sha256": "119e712625359d3f8e96d07090d48af1c089fa7cd5078ef5b4f8b6ddccbf55ec",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "integration-ux",
+            "ok": true,
+            "packageVersion": "0.6.0",
+            "tempRoot": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-integration-ux-smoke-hiGLW4",
+            "tarballPath": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-integration-ux-smoke-hiGLW4/pack/mdkg-0.6.0.tgz",
+            "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-integration-ux-smoke-hiGLW4/repo",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-integration-ux-smoke-hiGLW4"
+            }
+          }
+        },
+        {
+          "label": "smoke-operator-health",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 5737,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-operator-health.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/smoke-operator-health.stderr",
+          "stdout_sha256": "bb07c4f1cc81cfdf41a598092b4ef1b46fba1cdc06b83360488e5a1a2f722ac0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-operator-health",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-operator-health-smoke-PWDYdD",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-operator-health-smoke-PWDYdD/pack/mdkg-0.6.0.tgz",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0/mdkg-operator-health-smoke-PWDYdD"
+            }
+          }
+        }
+      ],
+      "focused": {
+        "files": [
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "duration_ms": 7694,
+        "log": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Z7aLX2/focused.log",
+        "sha256": "b0b779d3e0adae110ca37c930801a7cde2c9819969106085f6912e50a431800f",
+        "summary": [
+          "# tests 122",
+          "# pass 122",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 7632.012208"
+        ]
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-NGTyx0"
+      }
+    },
+    {
+      "path": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/receipt.json",
+      "sha256": "9e15fa735ec1bcb2524becb14fb5f4f0ff964095b78dd270ef7b37c80f558e1a",
+      "runtime": "v26.0.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+      "runs": [
+        {
+          "label": "smoke-fix-plan",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 4102,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-fix-plan.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-fix-plan.stderr",
+          "stdout_sha256": "eb43923346374dd7ef452688f875cb9afa4c88491126fe2702d14e30d8b129c4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-fix-plan",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-fix-plan-smoke-jvDwNg",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-fix-plan-smoke-jvDwNg/pack/mdkg-0.6.0.tgz",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-fix-plan-smoke-jvDwNg"
+            }
+          }
+        },
+        {
+          "label": "smoke-loop",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 8808,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-loop.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-loop.stderr",
+          "stdout_sha256": "491e91724466234ad70883e3c8c6b5db0ea21d7f43764920524054459277a3bb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "loop",
+            "ok": true,
+            "seed_templates": 7,
+            "backend": "sqlite",
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-loop-smoke-SJNpEW",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-loop-smoke-SJNpEW"
+            }
+          }
+        },
+        {
+          "label": "smoke-handoff",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 2873,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-handoff.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-handoff.stderr",
+          "stdout_sha256": "1e017f5cb7e17db8187785e0400478d889e98a1b84d1744d40e7239ea0f9f51e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "handoff",
+            "ok": true,
+            "packageVersion": "0.6.0",
+            "tempRoot": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-handoff-smoke-asvGwC",
+            "tarballPath": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-handoff-smoke-asvGwC/pack/mdkg-0.6.0.tgz",
+            "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-handoff-smoke-asvGwC/repo",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-handoff-smoke-asvGwC"
+            }
+          }
+        },
+        {
+          "label": "smoke-command-docs",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 3278,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-command-docs.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-command-docs.stderr",
+          "stdout_sha256": "4c3ede558cb8048117609970b098d27322763a44127ff563a042e44e5481a893",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "ok": true,
+            "smoke": "command-docs",
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-command-docs-smoke-PEIYJQ",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-command-docs-smoke-PEIYJQ/pack/mdkg-0.6.0.tgz",
+            "generated_reference": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-command-docs-smoke-PEIYJQ/repo/.mdkg/generated/command-reference.md",
+            "contract_hash": "8fe115034e949a84d94af7c9e0861dbc72898b1e59f6cf0ae0ec3059fca3b23c",
+            "command_count": 114,
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-command-docs-smoke-PEIYJQ"
+            }
+          }
+        },
+        {
+          "label": "smoke-integration-ux",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 5739,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-integration-ux.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-integration-ux.stderr",
+          "stdout_sha256": "ce475a3dbc0279aa0429469a652ff2a07707f2a643927d57cc598f54e756f5f6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "smoke": "integration-ux",
+            "ok": true,
+            "packageVersion": "0.6.0",
+            "tempRoot": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-integration-ux-smoke-7ayeHd",
+            "tarballPath": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-integration-ux-smoke-7ayeHd/pack/mdkg-0.6.0.tgz",
+            "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-integration-ux-smoke-7ayeHd/repo",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-integration-ux-smoke-7ayeHd"
+            }
+          }
+        },
+        {
+          "label": "smoke-operator-health",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 4754,
+          "stdout": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-operator-health.stdout",
+          "stderr": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/smoke-operator-health.stderr",
+          "stdout_sha256": "485622f8845cfdc4955974df08b6179ffe4b0b090d7070928fc873a8b4a71146",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-operator-health",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-operator-health-smoke-NCSXb6",
+            "tarball": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-operator-health-smoke-NCSXb6/pack/mdkg-0.6.0.tgz",
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC/mdkg-operator-health-smoke-NCSXb6"
+            }
+          }
+        }
+      ],
+      "focused": {
+        "files": [
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "duration_ms": 6658,
+        "log": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v26.0.0-PRoK5C/focused.log",
+        "sha256": "e205b53a3caaf6111534237cb05b062986ba696f5db202f0da0a3dd83a435df7",
+        "summary": [
+          "# tests 122",
+          "# pass 122",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 6599.306875"
+        ]
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-six-smokes.2aDixy/execution-I7UhGC"
+      }
+    }
+  ],
+  "first_attempt": {
+    "receipt": "/private/tmp/mdkg-task838-six-smokes.2aDixy/results-v24.18.0-Qevz4P/receipt.json",
+    "status": "six installed scenarios and121 focused passed; superseded for final helper correction",
+    "not_final": true
+  },
+  "independent_review": {
+    "agent": "task838_output_review",
+    "mode": "one read-only review with narrow correction followup",
+    "finding": "Installation preceded initial artifact admission in standalone runner",
+    "disposition": "reproduced and fixed",
+    "followup": "No remaining concrete defect found in bounded correction; original scenarios preserved.",
+    "limitations": [
+      "No tests run by reviewer",
+      "Not Standard or Task828 acceptance",
+      "Trusted synchronous fixture callbacks; not an OS/credential/network sandbox",
+      "Standalone npm packing still runs normal repository lifecycle scripts; qualification used immutable proxy"
+    ]
+  },
+  "custody": {
+    "initial_dirty_count": 69,
+    "pre_evidence_dirty_count": 75,
+    "initial_hashes": {
+      ".agents/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".agents/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".agents/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".claude/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".claude/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".claude/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".mdkg/index/mdkg.sqlite": "2647986727605b9455183ecebed36b43d937935947edd672cc8c196460bb3723",
+      ".mdkg/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".mdkg/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".mdkg/skills/registry.md": "1b83dfea49d4f563a8edc3b94c387a886508a89e47b5378ff2af7b1381c6dc2e",
+      ".mdkg/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md": "636f075b25987c54a8194ca6a17f881046e63df970e4c76cd6d9ac7a88a62ca3",
+      ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md": "89c82c2aaea612fb4d5d969f4f8c032035bd5a069f643fea621a4b50443541db",
+      ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md": "963b680347290d3f25c2f953076e8570cd0a026398f1cd395c703dc129dbd705",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md": "5e2c4ff29afa289bd8abed927b2c016e811e22b2ec1babb081f371f2207fa89f",
+      ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md": "fc7a129704646cfab880f3d601ecc4cd6ebe8b575e61cbd35e67b058040c1d5d",
+      ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md": "47c39ffcefc198356a4dae0c93106a35c1ce5a52ec93653d0e34c7f185de2cdc",
+      "assets/init/skills/default/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "assets/init/skills/default/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "scripts/coverage-contract.js": "d353ac54d6528c17a85e73adc465f90e3ff7b45ba9df56c3addb3f3d683e0a70",
+      "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+      "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+      "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+      "scripts/npm-smoke-proxy.js": "e24e5e383b9078364a2db8ec3697b6b94142f6449a138fa78d81c1c4fcf74e68",
+      "scripts/release-ladder.js": "3ba1ed6e19443cdfef0150f6ddd5dc9bc78dcc635882572db68612ab1e73ff6f",
+      "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+      "scripts/smoke-demo-graph.js": "422e7e6bff79cb8c14b8e9d21a21e238a2d32cf4046646377da53e7e84c17a59",
+      "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+      "src/commands/db.ts": "456c45478e40fa766384912e6a3ddb3466321b61ba7d03f339670595500441f5",
+      "src/commands/work.ts": "b6b1c6650245561753f7e9fb4585c1a1d795231f6069166b57babb27a02424d2",
+      "src/core/project_db_events.ts": "a8aba13a42884aede976ed484504ecf6af0b43594d33dd07dd63a2baf6e5cf55",
+      "src/core/project_db_migrations.ts": "6cfcb8b26eda219c17003bf454bd24cd143dc0709325f7b866377287c5c7823d",
+      "src/core/project_db_queue.ts": "02e66ca5e73dc8ee7f611f252bb51eeb117601d917e153abb27089731582cc41",
+      "src/core/project_db_snapshot.ts": "4fa852931dd7e25e5ed7f2fb47cf2e64f5a1d257665627ec117c7fea032fe09c",
+      "src/graph/sqlite_index.ts": "60906705de7b93cf0b8330f8c354998b45e0ce4174321a51164e16ee5500b364",
+      "tests/ci-topology.test.ts": "4df1c9fab33e6a70d75d60d71c7c15ee5a892e42aa93f85ac8f7d25a05134f73",
+      ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json": "c7a247122de177ff94e57b8b54321edeea2f0b6359245bb35b321ef747cd6bf6",
+      ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json": "dc93ee15023f855eae9323d5da2299f33a5580a380c7f521dd9c1a49d92142ba",
+      ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json": "9cba2451fc8c9a53939f5e1b88392d881328ce564f2f4c9515152cf641cde077",
+      ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json": "009d6ad4be6723d3f44c9892c5fcc3e2babddee21a4df54141555932ea6e2e2a",
+      ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json": "37d3a68d9ecae6f89cc24e27ed0fc7ecf56e4559ea1522245f122d666febbb1b",
+      ".mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json": "324ae4fefbbb11481b00afcbb33f31407dbfc9edacd406fafc6d365241b39880",
+      ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md": "c158e5e9f16c3bda163feb95f5aecaf2495962ab327d179e93cc7f3b3a659ab1",
+      ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md": "c82a923d6265dafe99a9d0aae11572b2888d162f36b0eb38aae43f976a04d97a",
+      ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md": "c813fc0b2c1a62c96c7a2e452fcb0a55288aabffed967e9e23c043861caccbca",
+      ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md": "e19c84b4a940a6105c4b49637f2f192281c7b6cedd542e2deed515ecd8a6e5c1",
+      ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md": "d6cbef7ef9835db38e35688be254f98d594c1a4d0714f6e573bb19ee0b10fb1c",
+      ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md": "8d96e8d33889caaa2d0f784c55924d853adcec7be3a9a3d3a3c29267c60c9d0f",
+      ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md": "5bd5a51e750a6553c3be2dd5f06bae5c66d010b83aa673c7f263be6cc615878f",
+      ".mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md": "82d6b5966727cf745c56b1673c10930cc7fe7669a719af6ae175fb507498e44f",
+      ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md": "853e2b91e8acaf8318b719c3870ab1339ae385fcb209f861c4aa7c521f701dc8",
+      ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md": "678b057f273a20e73e106a2e45d2aa8057c374e50ee43df36d1364a3bc8d8e4e",
+      ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md": "7889f6a29e7b1893ca2107255d4f3416855e3d2e2c07b99a9ff1bec515f49d03",
+      "scripts/demo-graph-fixture.js": "ca1de56c84109525a9f5be89c717728d63a89cdaf6146bca20ef822d83150261",
+      "scripts/qualification-artifact.js": "00aefd31e3bbbd488ada301311a92cea3bb48ec7d6ed1095c3170b5fafdfd957",
+      "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+      "scripts/qualification-git.js": "96813af8bcf360bb759a05cd4bda24cc77b561fb52fa5580e4a55a8cd4d57ea8",
+      "scripts/qualification-output.js": "3bfeabab55f6a14e5dcea1890e5d414fcc055cf8316f470db12a98b103c1c1db",
+      "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+      "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+      "scripts/qualification-smoke.js": "ef4b5ace13382bc7711120e5bba151d5f211e7f379806a8ebf4f058ba7006187",
+      "src/core/sqlite_observation.ts": "4439d7f44e7741d82926e7f0e46ebe66f3f03d1560e11e04f67eca28ae57d436",
+      "tests/core/sqlite_observation.test.ts": "723f104fd0bcc401edf52659d85b9b4fdacd017984c6c0c54cb415dc1afe3175",
+      "tests/qualification-artifact.test.mjs": "e7e2f84c39ce713589d7f057f00e8a73d921ca5cfaf940b7f398af8609706e50",
+      "tests/qualification-fixture.test.mjs": "061d6fa2fae431f1fa5e3964b4c9c44fcb6f42ae09aed244fe27f2db5807e9f1",
+      "tests/qualification-git.test.mjs": "46b72afb0ba2b0a4dd341e0bd273be1f003920ed3578cd8ccc1f2bd1410ae1ee",
+      "tests/qualification-output.test.mjs": "b15bd150a8360799068c51c448549cbf8b3d8b9b8d54ccc3e7e25daabe4caed8",
+      "tests/qualification-smoke.test.mjs": "d24145eafbb162abbc22f657983e5666fdfc34965a089596ba23c99b6aea6eb2",
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "scripts/smoke-fix-plan.js": "4ac0870b17045acab382031e65ab8403c2fc6dd644ef85ca41dd3e1c6139fb0e",
+      "scripts/smoke-loop.js": "2a38814122436a54a25d108f8c3f69187a2002b661a71e28ab151f8ab891697c",
+      "scripts/smoke-handoff.js": "daa67f3650e9589740f5c07bcefe692a3cfb8318ff3b0cc5521d13a5ed31a532",
+      "scripts/smoke-command-docs.js": "f7b231c2805bb6a9e89e3d390164f59f7d71071243a024c1f19091b5b192f629",
+      "scripts/smoke-integration-ux.js": "747be12b8a1e3f4431ecd4c2adff31ccf9543d9bef27b8de21caeea89d1dd43c",
+      "scripts/smoke-operator-health.js": "c881389ade9f58e39beb6131c9686f569b3336c4076f1540ec73f893885df57b"
+    },
+    "head_unchanged": true,
+    "zero_staged": true,
+    "protected_paths": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    "runtime_directory": [
+      "project.sqlite"
+    ],
+    "locks_at_pre_evidence": [],
+    "cleanup": "All owned reproduction and installed execution roots removed; compact diagnostics and unsealed intermediate artifact retained at explicit local paths."
+  },
+  "test_policy": {
+    "iteration": "13 focused smoke tests",
+    "fix_boundary": "122/122 across8 fixture/artifact/output/coverage/CI/ladder files on each of3local runtimes",
+    "full_suite": "deferred to stable integration boundary; not run in this batch",
+    "coverage_floors": {
+      "lines": 89,
+      "branches": 77,
+      "functions": 96
+    }
+  },
+  "harness_notes": [
+    "Initial checkpoint creation rejected root-qualified --scope; retry used supported local IDs. No acceptance checks bypassed.",
+    "Two trailing-whitespace lines introduced mechanically were corrected before final installed runs."
+  ],
+  "remaining": [
+    "Task838 remaining DB/SQLite and other fixture callers",
+    "actual locally supplied source-pinned0.5.2 upgrade",
+    "submodule-specific final qualification",
+    "Bug60 Node-only observation design",
+    "Bugs46/47 filesystem invariants",
+    "Test487 Linux",
+    "Task839 release-critical truth",
+    "Task828 independent final acceptance",
+    "Task829 full ladder",
+    "Task830 exact candidate seal",
+    "Goal85 separate paused publication authority"
+  ],
+  "skill_candidates": [],
+  "graph_validation": {
+    "full": {
+      "ok": true,
+      "errors": 0,
+      "warnings": 3
+    },
+    "changed_only": {
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite": {
+      "action": "db-index-verify",
+      "ok": true,
+      "backend": "sqlite",
+      "root": "/Users/nick/omni-chat-rooms/projects/mdkg",
+      "checks": [
+        {
+          "name": "global",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/global.json",
+          "exists": true,
+          "stale": false,
+          "size": 3319721,
+          "detail": "cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "name": "skills",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/skills.json",
+          "exists": true,
+          "stale": false,
+          "size": 7160,
+          "detail": "cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "name": "capabilities",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/capabilities.json",
+          "exists": true,
+          "stale": false,
+          "size": 326029,
+          "detail": "cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "name": "subgraphs",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/subgraphs.json",
+          "exists": true,
+          "stale": false,
+          "size": 559439,
+          "detail": "cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "name": "sqlite",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/mdkg.sqlite",
+          "exists": true,
+          "stale": false,
+          "size": 4591616,
+          "detail": "SQLite cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        }
+      ],
+      "failure_count": 0,
+      "warnings": [],
+      "errors": []
+    },
+    "diff_check": {
+      "exit": 0
+    },
+    "classification": "after evidence nodes authored; final receipt-text/index refresh checked separately"
+  }
+}

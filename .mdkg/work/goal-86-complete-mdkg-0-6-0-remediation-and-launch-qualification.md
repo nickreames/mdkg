@@ -2,12 +2,12 @@
 id: goal-86
 type: goal
 title: Complete mdkg 0.6.0 remediation and launch qualification
-status: progress
+status: done
 priority: 1
-goal_state: active
-goal_condition: Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.
-scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
-active_node: bug-59
+goal_state: achieved
+goal_condition: Every in-scope 0.6.0 blocker is independently verified, deferred Bugs46/47 remain disclosed under Goal87, portable Node contracts and macOS/Linux installed qualification pass, and the exact artifact is sealed without publication.
+scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830, task-841, task-842, test-489, bug-61, task-843, test-490, bug-62, bug-63, bug-64, bug-65, bug-66, bug-67, bug-68, bug-69, test-491, test-492, bug-70, bug-71, bug-72, test-493, bug-73]
+last_active_node: task-830
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, npm run ci:workflow:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, node dist/cli.js db index verify --json, git diff --check]
 max_iterations: 75
@@ -15,20 +15,372 @@ blocked_after_attempts: 3
 tags: [release-0.6.0, launch-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-86/planning-receipt.json, .mdkg/artifacts/goal-86/execution-baseline-20260915.json, .mdkg/artifacts/goal-86/requirement-coverage.json, .mdkg/artifacts/goal-86/observational-boundary-verification.json, .mdkg/artifacts/goal-86/bug-17-local-verification.json, .mdkg/artifacts/goal-86/bug-39-local-verification.json, .mdkg/artifacts/goal-86/bug-41-local-verification.json, .mdkg/artifacts/goal-86/changed-warning-intake.json, .mdkg/artifacts/goal-86/bug-42-local-verification.json, .mdkg/artifacts/goal-86/bug-43-local-verification.json]
+artifacts: [.mdkg/artifacts/goal-86/planning-receipt.json, .mdkg/artifacts/goal-86/execution-baseline-20260915.json, .mdkg/artifacts/goal-86/requirement-coverage.json, .mdkg/artifacts/goal-86/observational-boundary-verification.json, .mdkg/artifacts/goal-86/bug-17-local-verification.json, .mdkg/artifacts/goal-86/bug-39-local-verification.json, .mdkg/artifacts/goal-86/bug-41-local-verification.json, .mdkg/artifacts/goal-86/changed-warning-intake.json, .mdkg/artifacts/goal-86/bug-42-local-verification.json, .mdkg/artifacts/goal-86/bug-43-local-verification.json, .mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json, .mdkg/artifacts/goal-86/candidate-seal-20260930.json, .mdkg/artifacts/goal-86/successor-package-gates-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-private-preview-20260930.json, .mdkg/artifacts/goal-86/local-closeout-20260930.json, .mdkg/artifacts/goal-86/closeout-commit-allowlist-20260930.json]
 relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: [goal-83, goal-84, goal-85, goal-75, dec-93, dec-94, dec-95, dec-96, edd-82, task-825, task-833, test-485]
-evidence_refs: [chk-608, chk-609, chk-610, chk-611, chk-612, chk-613, chk-614, chk-615, chk-616, chk-617, chk-618, chk-619, chk-620, chk-621, chk-622, chk-623, chk-624, chk-625]
+context_refs: [goal-83, goal-84, goal-85, goal-75, dec-93, dec-94, dec-95, dec-96, edd-82, task-825, task-833, test-485, dec-98, goal-87, dec-99, dec-100, epic-258, epic-257]
+evidence_refs: [chk-608, chk-609, chk-610, chk-611, chk-612, chk-613, chk-614, chk-615, chk-616, chk-617, chk-618, chk-619, chk-620, chk-621, chk-622, chk-623, chk-624, chk-625, chk-650, chk-651, chk-652, chk-653, chk-654, chk-655, chk-656, chk-657, chk-658, chk-659, chk-660, chk-661, chk-662, chk-663, chk-664, chk-665, chk-570]
 aliases: []
 skills: []
 created: 2026-09-13
-updated: 2026-09-21
+updated: 2026-09-30
 ---
 
+# Final local acceptance - 2026-09-30
+
+LOCAL_READY_NOT_PUBLISHED. Exact0.6.0 b5497c5f5e5f022e candidate
+(545431 bytes,237 payload files) is sealed without repacking at source
+b10870355b264355af2be4fc53bb4640851f747b. Task826/Bug7, Tasks828/829/830
+have actual current acceptance, not inferred status-only clearance.
+
+Full discovery:2389/2389 tests pass;92.63% lines,84.36% branches,97.58%
+functions exceed unchanged89/77/96 floors. All37 package smokes pass. All20
+retained installed families are accounted on native macOS ARM64 and Ubuntu24
+ARM64-native/x86_64-emulated. Node24.18 operation plus actual unsupported24.15/26
+refusal/discovery controls are explicit. No native x86_64 performance or Windows
+qualification is claimed.
+
+Fresh Standard plus complete independent remediation supplements and final17-path
+remedy review support acceptance. Original partial reports and failed harness
+attempts remain historical, never relabeled clear/pass. Twelve of14 historical
+findings have in-scope verified remedies; Bugs46/47 remain deferred/unresolved
+under Goal87. No blocked historical context was accessed. This is not a claim
+that no undiscovered bugs exist.
+
+Private installed migration preview refuses task309's surviving mdkg://goal-10
+ambiguity; no identity was invented and no canonical migration applied. The
+current26-row ledger records exact dispositions. Website/Epic258, hosted/Epic257,
+Windows and consumer adoption remain deferred/unverified, not passes.
+
+Selected achieved Goal73, runtime DB, Demo3 bundle and public draft hashes are
+unchanged. Four reviewed source/qualification commits are bound in the seal;
+the final explicit-path evidence commit follows validated closure. Derived
+.mdkg/index/mdkg.sqlite remains locally owned and excluded, not restored/staged.
+Seven exact owned Docker containers/volumes were removed after verified diagnostics
+were retained; images/unrelated resources were preserved.
+
+Goal85 stays paused pending fresh publication approval and independent blocker,
+input and exact-artifact rechecks. No remote Git, push, tag, publication, provider,
+deployment, bundle refresh, history rewrite or root/sibling mutation occurred.
+Skill coverage: pursue-mdkg-goal and verify-close-and-checkpoint; candidates:none.
+
+# Historical acceptance contracts and intermediate evidence
+
+
+# Independent remediation diff intake - 2026-09-30
+
+Scan e5e0584a at immutable c313d804 is complete with PARTIAL coverage, not clear.
+It confirms two low security instances owned by Bugs70/71. Bug63 additionally
+owns materialized destination-root Git custody; Bug72 owns configured DB snapshot
+Git custody. The latter two are confirmed correctness defects suppressed from
+security-advisory reporting for operator-only preconditions, not waived or fixed.
+Test493 and Task828 require remedy and complete supporting-diff acceptance.
+
+The retained f7cbdc1d artifact passed2382 full tests,37 package smokes and local
+macOS ARM64/Ubuntu24 ARM64-native plus x86_64-emulated installed families.
+Tests477-484/486/487 have earned current-byte acceptance; security and seal remain
+open. Local implementation commit c313d804 is reviewed; no push/publication.
+Preserve all historical passes, original6154 bytes, selection/runtime/Demo3 state.
+Any shipped source change needs a successor artifact and affected requalification.
+Goal85 remains paused; Bugs46/47 remain deferred unresolved. NOT_READY.
+
+Sanitized current result: .mdkg/artifacts/goal-86/independent-diff-review-20260930.json.
+Raw reports remain plugin-owned; no blocked historical context was accessed.
+
+# Current source audit intake - 2026-09-29 Chk667
+
+Current Standard scan78faed0e is complete, not clear: Bugs62-68 own seven
+new confirmed security groups; Bug69 owns the separate generated command
+effect-contract defect. Tests491/492 and Task828 require their verified fixes.
+Earlier candidate/platform evidence remains intermediate. Preserve the exact
+6154e4ea artifact; changed package inputs require a successor candidate and
+affected requalification. No new feature or deferral is authorized. Bugs46/47
+remain deferred/unresolved and Goal85 remains paused. See Chk667 and the
+sanitized current-security-audit-20260929.json receipt. Goal86 is NOT_READY.
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Task843/Test490 are complete with bounded package-gate/candidate-admission proof
+in Chk664. Chk665 adds current native macOS installed containment, real read-only,
+remedy, parity, scale/lifecycle and generic-boundary evidence. Preserve35 earned
+scope completions out of51;16 remain open. Finish missing family/platform rows,
+Task826/Bug7, Task828, Task829, Task830 and Chk570. Local reviewed explicit-path
+commits are authorized; selected Goal73 remains unchanged. NOT_READY is retained.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
+
 # Objective
+
+## Current execution contract - 2026-09-28 Node-only portability
+
+Chk653 records the portable SQLite source remedy and Task842 runtime-contract
+milestone. Node >=24.18.0 <25 plus explicit capabilities replaces the former
+unconditional24.15/26 matrix. Intermediate source and installed tests pass;
+Chk654 adds Task841's portable operator-confirmed recovery:345 affected tests
+and23 installed cases pass, with no trapped OS dependency. Chk655 adds Test489's
+combined local installed pass:86 SQLite cases,29 recovery cases, three resource
+samples and two linked worktrees. Bug60 is locally complete; final
+qualification remains. The earlier bounded
+experiments are supporting evidence, not the current implementation limit.
+
+Dec98 records Nick's explicit scope revision. Bugs46/47 are DEFERRED and
+unresolved, owned by paused Goal87. They are not accepted/fixed findings and
+are no longer remediation prerequisites of this version's Goal86/Goal84 gates.
+Their severity, reproductions and historical evidence remain intact. The
+earlier native-helper decision and blocker statements below are historical;
+no native implementation or OS-specific filesystem bridge is authorized now.
+
+Bug60's local in-memory SQLite source remedy and Tasks841/842's portable
+recovery/runtime contracts are implemented and locally verified. Test489 has
+qualified their combined resource, writer and recovery cases against identical
+installed bytes without required OS utilities. This intermediate package is
+not final-artifact proof. Chk656 records Task839's release-critical guidance
+milestone:34 focused checks,499 current examples, independent narrow review
+and installed command discovery pass. Final independent/platform/ladder/seal
+gates remain open. No unsafe writable fallback or automatic lock
+takeover follows from this decision.
+
+Chk657 records Test486's current local installed option milestone on the same
+6154e4ea candidate bytes:194 process,388 entrypoint and41 unindexed-graph
+refusals plus seven positive controls pass. The fixture is now part of the
+manifest-backed command matrix with explicit owned controllers;107 focused
+harness tests and independent narrow readback pass. Test486 remains progress
+pending final retained-artifact/platform acceptance, not done by this milestone.
+
+Chk658 adds installed initialization, actual published0.5.2 standard/customized
+upgrades and six caught-error recovery cases on Node24.18.0/macOS arm64.
+The6154e4ea candidate is now retained with a273-file source-input capture;
+final rerun used the same bytes without repacking. Test477 remains progress,
+not final-platform or sealed-artifact acceptance. No package input changed.
+
+Chk659 adds Test478's actual concurrent installed worktrees,60 explicit-root
+warm/cold JSON/SQLite reads, killed-writer recovery isolation and a reviewed
+four-conflict source-plus-graph native merge. Existing identity and288-case
+Git-observation families also pass on the retained6154e4ea bytes. Test478
+remains progress: submodule-backed collaboration, incomplete-journal cases
+and final platform/independent/ladder/seal acceptance are not inferred.
+
+Chk660 adds three installed linked-worktree topologies (ordinary, separate
+gitdir and submodule-backed),180 read observations,12 sampled journal-fault
+scenarios, six actual SIGKILL journals and three native four-conflict merges.
+Bug61 corrected a non-shipping qualification-helper admission error;124
+shared-helper checks and independent bounded readback pass. The original
+source capture remains intact; a separately named qualification amendment
+binds the helper delta to unchanged6154e4ea candidate bytes. Test478 remains
+progress: this is local intermediate evidence, not recursive submodule or
+cross-platform support, dirty-worktree deletion policy, final independent
+acceptance or an artifact seal. All six new fixture roots were removed.
+
+Chk661 adds Test479's49 current installed scenario rows on the retained6154e4ea
+candidate:22 portable/malformed-policy,12 sampled migration/reconciliation
+recovery,9 actual runtime/selection/private-snapshot, and6 live/ambiguous recovery
+admission controls. The drivers preserve exact package inputs, staged fixture
+indexes, unknown bytes and owned cleanup. A relative-target harness correction
+and stronger claim assertion passed the affected supplement without rerunning
+unchanged families. Test479 remains progress pending complete per-finding and
+containment/read-only/platform/final acceptance; no new product defect or
+publication clearance was established by this local evidence tranche.
+
+Chk662 adds49 selected installed scenario rows passing on actual local Linux:
+Ubuntu24.04.4 ARM64/ext4, Node24.18.0, unchanged6154e4ea tarball. All281
+transferred input hash/mode bookends passed; the disposable no-host-mount VM
+and fixtures were removed, leaving the unrelated stopped VM untouched. This
+is Linux subset evidence, not full matrix, x86_64, security or seal acceptance.
+Dec99 records Nick's clarification that Linux remains required and authorized,
+plus the approved fresh current-source/remediation-diff evidence contract with
+explicit historical-report provenance loss. No blocked scan context was read,
+recovered or rerun and no new review was launched. Goal86 remains NOT_READY.
+
+Goal86 remains the sole active execution lane. Existing final platform,
+independent current-source review, full-ladder and exact-artifact gates remain.
+Task828/Test488 must account for all fourteen original findings, distinguishing
+the two explicit deferrals from verified remedies; they may not claim fourteen
+fixes or no known vulnerabilities. Test487 still requires real macOS/Linux
+candidate evidence and Windows remains unqualified. Retained blocked scan
+context must not be recovered or rerun. Goal85 remains paused.
+
+Current authority is local-only on main with supported ownership and one
+writer. Preserve selection, runtime DB, Demo3 bundles and other dirty custody.
+No remote, provider, publication, native helper, canonical graph migration or
+bundle/subgraph refresh. Skill coverage is reused; new candidates: none.
+
+## Historical 2026-09-28 filesystem feasibility and CI gate stub - superseded by Dec98
+
+Nick's current local-only continuation supersedes Dec97's earlier no-VM and
+no-workflow-edit boundaries only for owned filesystem experiments and a
+fail-closed GitHub Actions stub; development stays on main with no remote or
+hosted action. A sanitized receipt at
+`.mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json` binds exact
+source/probe hashes. Deterministic current-Node interleaving reached outside
+read/append/remove sentinels; Node copyFile lost a named restrictive ACL.
+Experimental descriptor-relative and metadata-before-bytes C primitives passed
+synthetic macOS ARM64 and isolated Ubuntu 24.04.4 ARM64 controls. The VM was
+stopped and deleted. These prove neither a complete mdkg remedy nor x64,
+installed-artifact, cross-principal, security-review, or final release evidence.
+No production filesystem source was changed; Bugs46/47 remain blocked.
+
+The manifest-generated manual full CI tier now requires an Ubuntu 24.04
+x64/ARM64 Test487 job that explicitly fails until real installed-artifact cases
+replace the stub. No workflow was dispatched and Test487 remains unqualified.
+The next material decision is the bounded native interface/distribution and
+fail-closed fallback design, or an explicit revision of release/security scope;
+do not implement a mode-only or repeated-path-check partial fix as clearance.
+Goal86 is NOT_READY; Goal85 remains paused.
+
+## Historical execution boundary - Dec97
+
+2026-09-25 Bug47 is explicitly blocked after a bounded local Node26/macOS
+descriptor-path feasibility check ruled out `/dev/fd/<directory-fd>/child` as
+a usable macOS openat substitute. The probe did not test the full race or prove
+that all Node-only remedies are impossible. Dec97 still defers the documented
+native or system-tool options, and no complete Node-only remedy is established;
+this is neither a waiver nor 0.6.0 release clearance. Its sanitized receipt is
+linked from Bug47. No source or public-copy change was made for this check.
+
+2026-09-25 Bug60 current-source focused coverage now passes 91/91 on each of
+local Node24.15.0, 24.18.0 and 26.0.0 under macOS arm64, all bound to the
+same committed source/test bytes. This is not Linux, final installed-candidate,
+independent Test488/Task828, full-ladder or sealed-artifact acceptance. Bug60
+and Goal86 remain open and NOT_READY.
+
+2026-09-25 source-version assessment: Bug47's recorded 0.5.2 source retains
+the ancestor check/use pathname pattern; exact blobs and limitations are bound
+in its new sanitized artifact. Bug46's existing investigation already records
+the same metadata-omitting replacement pattern in that source revision. Neither
+source comparison is an installed-package test or a remedy. Both findings
+remain publication blockers under Dec97; no prior blocked scan context was
+accessed and no final security/platform gate was credited.
+
+2026-09-25 Bug60's ten-path Node-only source/regression unit is locally
+committed at 6d23981e70bc68798def73c81b9cd5fa7bc9f3df. An exact
+parent-plus-only-Bug60 disposable snapshot passed 91/91 affected tests and
+local build/CLI/docs/CI/graph/index checks; the current-source full suite had
+passed 2224/2224 on the same Bug60 bytes. The bug remains in progress because
+Linux behavior, Test488 and Task828 independent review are unverified. This
+commit does not satisfy the final artifact/platform/security or release gates.
+
+2026-09-25 current-source integration evidence: the old DB/index WAL
+expectation failed in an initial host-evidence run (2223/2224), then its
+test-only fail-closed correction passed targeted 1/1 and file-wide 30/30.
+The subsequent full Node24.18/macOS arm64 suite passed 2224/2224 with zero
+failures or skips. Chk650 and the Bug60 JSON receipt retain both failed and
+passing attempts. This is not final-candidate or Linux qualification.
+
+Task838's fixture-isolation source/test unit is locally committed at
+1143e31ac4f153bfa4c7f543c01b93a1692271fb: exactly 62 reviewed paths.
+An isolated copy of committed HEAD plus only those paths passed 2163/2163
+tests, CLI/docs/CI checks and the existing remediation-matrix check; its
+staged patch hash matched the canonical commit. Task838 graph evidence and
+other dirty work remain uncommitted. No push or release action occurred.
+Goal86 remains active and NOT_READY.
+
+Chk650 records Bug60's Node-only local subsystem milestone: descriptor-backed
+read-only observation, deterministic WAL-transition and valid-inode-replacement
+regressions, complete source suite (61/61 on Node24.18/macOS arm64) and installed
+focused suites (61/61 on each Node24.15/24.18/26). The intermediate
+tarball is unsealed and uncommitted. Bug60 remains progress; Linux behavior,
+Test488, independent Task828 review, full ladder and final exact artifact are
+not accepted. Goal86 stays active and NOT_READY; Goal85 stays paused.
+
+Nick chose Node.js-only and local-only current development. Future Rust filesystem
+work is Epic256; future GitHub Actions Linux qualification is Epic257. These epics
+are context, not additional scope_refs or authorization to run native/hosted work.
+The explicit active-goal continuation on2026-09-22 resumes this local lane.
+Selected Goal73 remains unchanged. The existing goal condition,
+security findings and platform acceptance remain unchanged; deferral is not a pass.
+
+The following 2026-09-22 sequence is historical and superseded by the
+2026-09-25 status above where it names unfinished Bug60/Task838 work.
+Recommended efficient local continuation:
+1. Re-inventory preserved Bug60 and Task840 skill-seed custody. Bug60's harness
+   corrections now pass, but a fresh same-inode journal-mode interleaving fails
+   the no-write observation contract (59/60 focused checks pass). Preserve that
+   failing regression and require a Node-only design disposition before closure.
+2. Complete independent Task838 Node-only fixture isolation, owned cleanup and
+   durable evidence/candidate identity work. No hosted runs or service setup.
+3. Prepare Task839's release-critical truth corrections; do not mark aggregate
+   acceptance complete while unresolved security/platform claims remain.
+4. Use Task840's selective test policy. Batch full integration checks for a
+   stable local source unit; final full ladder/coverage and exact-byte qualification
+   remain required. Record source/build hashes and timings, not repeated blind runs.
+5. Report local work complete separately from release readiness. Bugs46/47 and
+   Test487 remain explicit gaps; no Rust/system-tool bridge or Linux qualification
+   is performed by this continuation. Node-only remedies must meet the same
+   invariants or remain partial, never documentation-only waivers.
+
+Readiness: LOCAL_WORK_ACTIVE, NOT_READY_TO_COMPLETE_OR_PUBLISH. No Bun,
+compiler/runtime replacement, broad polish, federation or new consumer policy.
+Chk638 records the decision, future epics and custody; Goal85 remains paused.
+
+2026-09-22 chk647 additionally qualifies native npm-exec with five verified lazy
+consumptions and actual child runtime evidence per local Node version. A review
+gap was reproduced and fixed;149 final affected checks pass per runtime. Two
+Task838 callers now remain: hostile-Git boundary and asynchronous MCP. The
+recorded eight-caller milestone is not Task838 completion or final release proof.
+
+2026-09-22 chk647 qualifies seven synchronous installed smoke callers and their
+transitive helpers:21 selected installed passes and147 affected checks per local
+runtime. Reviewed diagnostic/init-controller corrections and source-grounded
+fixture sequencing/hash fixes preserve all original scenarios. Composite evidence
+records which unchanged-input passes were reused; failed runs remain explicit.
+Three distinct Task838 callers remain. No package-input change, full ladder,
+final seal, staging/commit or publication;26/47 done and NOT_READY remain unchanged.
+
+2026-09-22 chk646 qualifies eight more installed graph-workflow callers on all
+three local Node runtimes:24 installed runs and129 affected checks per runtime
+pass. A stale next --json fixture call and its initial evidence-scope mismatch
+are corrected and independently source-reviewed. Candidate/sentinel/source hashes
+and owned cleanup match. Ten caller candidates remain under Task838; no full
+ladder, final seal, commit or publication. Goal86 stays26/47 done,NOT_READY;
+Bug60 and all existing security/platform gates remain unchanged.
+
+2026-09-22 chk645 qualifies the seven DB/SQLite smoke callers on all three local
+Node runtimes:21 installed runs and128 affected checks per runtime pass. The
+reviewed ambient Git-ignore leak is reproduced/corrected while retaining authored
+ignore rules and commit-eligible SQL. All candidate/sentinel/source checks and
+owned cleanup pass. Eighteen remaining caller candidates still need classification
+and migration; no Task838 closure, package-input change, full ladder or seal.
+Bug60's design decision and existing release blockers remain unchanged,26/47 done.
+
+2026-09-22 chk644 qualifies six additional Task838 installed smoke callers on
+all three local Node runtimes:18 complete smoke runs and122 focused checks per
+runtime. Ambient Git redirection and a newly reviewed installation-before-hash
+gap are reproduced/corrected. Original scenarios remain; all fixture cleanup and
+candidate/sentinel checks pass. Continue remaining DB/SQLite and other fixture
+callers. No package-input change, canonical build, full ladder, final seal or
+commit;26/47 scoped records remain done and overall release status is NOT_READY.
+
+2026-09-22 chk643 advances Task838 direct smoke callers, transitive installed
+Node supervision and separate pinned-baseline provenance. Final focused checks
+pass117/117 per local runtime; installed branch/collaboration plus12 recovery
+cases and seven current-upgrade cases pass per runtime. Published0.5.2 upgrade
+remains unverified without local baseline bytes; no download was attempted.
+Continue the remaining caller inventory. Goal86 remains26/47 scoped nodes done,
+active on Task838, NOT_READY; Bug60 and security/platform/final gates are unchanged.
+
+2026-09-22 Task838 Git/process increment: chk642 binds105/105 affected checks
+per local Node runtime, refreshed demo controls and installed collaboration plus
+12 graph-recovery cases per runtime using identical intermediate tarball bytes.
+Native metadata/helper admission, nested shutdown and upgrade cleanup/default-temp
+controls are locally verified. Remaining callers and published-baseline upgrade
+execution are not covered by this increment. Continue Task838's surrounding smoke
+callers; do not inflate26/47 completed scope nodes or claim final artifact readiness.
+Bug60, filesystem/platform gates, final review/ladder/seal and Goal85 remain unchanged.
+
+2026-09-21 explicit user pause: chk637 records55% formal scope completion
+(26/47 done),12/14 retained findings locally remedied, Bug60 draft53/55 focused
+tests, remaining filesystem architecture/platform/final-qualification gates and
+exact dirty custody. Goal85 stays paused/NOT_READY. Do not resume execution
+without Nick's instruction; no blocked-context recovery or historical scan rerun.
 
 Complete mdkg 0.6.0 remediation and launch qualification as generic OSS project
 memory infrastructure. This is the sole future execution lane for the remaining
@@ -111,8 +463,10 @@ Complete ordinary tests and manifest-backed full local release ladder; floors
 remain 89 percent lines,77 percent branches,96 percent functions. Require complete
 test discovery, CLI/help/contract/docs/MCP/seed/native-skill/package parity, full
 and changed-only graph validation, supported SQLite index verification and diff
-checks. Record exact Node24.15.0, supported24 and26 executable versions/hashes.
-All six fixture families use installed tarball bytes and isolated caches/config.
+checks. Under Dec98/Task842, record exact Node24.18.0 and selected supported24
+executables/capabilities; the same executable is not two distinct runtime passes.
+Older24 and tested26 are explicit no-effect refusal controls, not positive
+compatibility. All six fixture families use installed tarball bytes and isolated caches/config.
 MacOS and Linux proof is required before publication; Windows remains unqualified.
 
 # Acceptance Criteria
@@ -163,6 +517,43 @@ Do not start/reconfigure services; missing local capability or hosted CI needs
 precise separate authorization and remains a blocking evidence gap.
 
 # Current State
+
+2026-09-28 current milestone: Dec98 and Chk652 defer unresolved Bugs46/47 to
+paused/unclaimed Goal87 without calling them accepted or fixed. Tasks841/842,
+Test489 and Bug60 have local portable-Node implementation/installed evidence;
+Chk656 records Task839's guidance/checker completion. Final current-artifact
+installed families, macOS/Linux qualification, independent security acceptance,
+full coverage/ladder, exact seal and reviewed local commits remain. Goal86 is
+active and NOT_READY; Goal85 remains paused. Main stays6d23981e,69ahead cached
+origin/main, no staging or new commit in this milestone. All protected bookends
+match. The older progress entries below retain their historical scope only.
+
+2026-09-22 Task838 output-custody progress: replaced destructive configured
+coverage/context cleanup with fresh-output admission; preserved different build
+content and previous release receipts; moved context leaf checks before reads.
+The affected61 checks pass on each required local Node version. One bounded
+source review and correction follow-up are recorded in Task838's new output
+evidence. No package qualification or task completion is implied. Continue
+Task838's remaining Git fixture isolation and demo scratch cleanup. Bug60 and
+Bugs46/47, Linux, final review/ladder/seal remain open; Goal85 stays paused.
+
+2026-09-22 Task838 artifact-custody increment:27/27 focused checks pass in2.36s
+after replacing hard-linked delivery and adding before/after consumption hashes.
+Canonical self-deletion, unrelated overwrite and same-size corruption cases are
+covered. Task838 remains active for Git fixture isolation, cleanup ownership,
+durable retention and full qualification. Chk639 binds this progress and Bug60's
+59/60 result, including its remaining journal-transition failure. No commit or
+release readiness claimed; all protected bookends match and Goal85 remains paused.
+
+2026-09-22 resumed with unchanged HEAD c1011348 and accepted existing custody.
+No active runtime writer leases or mutation/Git index locks were found before
+claim. Bug60 now has59 passing focused checks and one explicit failing
+journal-transition regression after independent read-only review. This is not
+an unconditional read-only fix or final qualification. The known partial source
+and all prior planning/skill changes remain uncommitted. Continue independent
+Task838 while Bug60's remaining Node-only observation design is unresolved.
+Use .mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json for current evidence;
+do not access blocked context or rerun the historical scan. Goal85 remains paused.
 
 2026-09-21 Bug59 native-Git metadata exclusion locally verified: shared mirror
 admission covers Git directories/files, linked-worktree/submodule topology,
@@ -454,6 +845,21 @@ Demo3 bundle remain protected. Baseline/custody are bound in the planning receip
 
 # Iteration Log
 
+- 2026-09-28: Chk656 binds twelve owned guidance/checker/test paths,34 focused
+  checks,499 current examples,8 skills, local website/docs/SEO and an installed
+  command-docs smoke on candidate6154e4ea. A bounded independent review is
+  resolved; historical examples are separated rather than rewritten. This is
+  local guidance completion, not final artifact/security/platform acceptance.
+  No runtime source changes in Task839, no new commit or external action.
+
+- 2026-09-22: Chk641 verifies Task838's demo-fixture isolation/cleanup increment:
+ 80 affected checks and the complete existing demo smoke pass on each local
+ Node24.15.0/24.18.0/26.0.0 runtime. Five synthetic failure observations informed
+ exact copy/cleanup/process-lifetime corrections; one source reviewer rechecked
+ them. Canonical demo/bundle/selection/runtime bytes remain unchanged. Git fixture
+ admission across remaining callers is next. Task838/Goal86 remain active,26/47
+ scoped nodes done; no final-artifact/platform/security/ladder clearance or commit.
+
 - 2026-09-18: Task837 current-source Standard audit completed without changing
   frozen source/package bytes. Main e42f1d9 contains the reviewed171-path core
   commit;51ahead/0behind cached origin/main, no remote action. Fourteen fresh
@@ -585,6 +991,11 @@ Demo3 bundle remain protected. Baseline/custody are bound in the planning receip
 None. Reuse existing skills; no skill authoring or consumer-specific candidate.
 
 # Completion Evidence
+
+Current disposition: Bugs46/47 are DEFERRED / UNRESOLVED under Goal87, not
+accepted or fixed. Chk653's SQLite/runtime and Chk654's portable recovery
+milestones do not close Test489 or the final release gates. Pre-Dec98 blocker statements below are retained as
+historical evidence and do not override the current scope at the top.
 
 Chk623 and bug-46-investigation.json record a verified defect, NOT a remedy.
 They retain the source-bound reproduction, native metadata evidence and the

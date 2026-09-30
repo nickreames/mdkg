@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "test480-current-installed-work-archive-fork",
+  "owner": "root:test-480",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "driver_sha256": "4ad77d8880a3a32d3d0d1db4b4eeb96935b84091fec46646a98a6a7d21dabef7",
+  "duration_ms": 47195,
+  "completed": [
+    {
+      "script": "smoke-archive-work.js",
+      "exit_code": 0,
+      "signal": null,
+      "duration_ms": 19027,
+      "stdout": "{\"ok\":true,\"smoke\":\"archive-work\",\"version\":\"0.6.0\",\"identityWorkflows\":[{\"backend\":\"json\",\"state\":\"warm\",\"node_count\":7,\"order_count\":1,\"receipt_count\":1,\"stable_links\":7,\"git_index_preserved\":true,\"evidence_bytes_preserved\":true},{\"backend\":\"json\",\"state\":\"cold\",\"node_count\":7,\"order_count\":1,\"receipt_count\":1,\"stable_links\":7,\"git_index_preserved\":true,\"evidence_bytes_preserved\":true},{\"backend\":\"sqlite\",\"state\":\"warm\",\"node_count\":7,\"order_count\":1,\"receipt_count\":1,\"stable_links\":7,\"git_index_preserved\":true,\"evidence_bytes_preserved\":true},{\"backend\":\"sqlite\",\"state\":\"cold\",\"node_count\":7,\"order_count\":1,\"receipt_count\":1,\"stable_links\":7,\"git_index_preserved\":true,\"evidence_bytes_preserved\":true}],\"tarball_sha256\":\"6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca\",\"cleanup\":{\"removed\":true,\"root\":\"/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-archive-work-PrtfmO\"}}\n",
+      "stderr": ""
+    },
+    {
+      "script": "smoke-work-invocation.js",
+      "exit_code": 0,
+      "signal": null,
+      "duration_ms": 22035,
+      "stdout": "{\"ok\":true,\"smoke\":\"work-invocation\",\"genericBoundary\":{\"node\":\"v24.18.0\",\"tarball_sha256\":\"6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca\",\"rejected_invocations\":9,\"subprocesses_on_refusal\":0,\"generic_work\":true,\"old_runtime_token_rejected\":true,\"custom_fields_preserved\":true,\"cached_projection_neutral\":true,\"synthetic_import_projection_neutral\":true,\"imported_bytes_preserved\":true},\"identityWorkflows\":[{\"backend\":\"json\",\"state\":\"warm\",\"node_count\":6,\"order_count\":2,\"receipt_count\":2,\"stable_links\":6,\"git_index_preserved\":true,\"evidence_bytes_preserved\":true},{\"backend\":\"json\",\"state\":\"cold\",\"node_count\":6,\"order_count\":2,\"receipt_count\":2,\"stable_links\":6,\"git_index_preserved\":true,\"evidence_bytes_preserved\":true},{\"backend\":\"sqlite\",\"state\":\"warm\",\"node_count\":6,\"order_count\":2,\"receipt_count\":2,\"stable_links\":6,\"git_index_preserved\":true,\"evidence_bytes_preserved\":true},{\"backend\":\"sqlite\",\"state\":\"cold\",\"node_count\":6,\"order_count\":2,\"receipt_count\":2,\"stable_links\":6,\"git_index_preserved\":true,\"evidence_bytes_preserved\":true}],\"tarball_sha256\":\"6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca\",\"cleanup\":{\"removed\":true,\"root\":\"/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-work-invocation-KFHDep\"}}\n",
+      "stderr": ""
+    },
+    {
+      "script": "smoke-graph-clone.js",
+      "exit_code": 0,
+      "signal": null,
+      "duration_ms": 5876,
+      "stdout": "{\n  \"smoke\": \"graph-clone\",\n  \"ok\": true,\n  \"temp_root\": \"/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-graph-clone-smoke-vB2Jve\",\n  \"tarball\": \"/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-graph-clone-smoke-vB2Jve/pack/candidate-0.6.0-6154e4ea920bfa09.tgz\",\n  \"tarball_sha256\": \"6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca\",\n  \"cleanup\": {\n    \"removed\": true,\n    \"root\": \"/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-graph-clone-smoke-vB2Jve\"\n  }\n}\n",
+      "stderr": ""
+    }
+  ],
+  "deliveries": [
+    {
+      "schema_version": 1,
+      "smoke": "smoke-archive-work.js",
+      "canonical_artifact": "/Users/nick/omni-chat-rooms/projects/mdkg/.mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-archive-work-PrtfmO/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke-work-invocation.js",
+      "canonical_artifact": "/Users/nick/omni-chat-rooms/projects/mdkg/.mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-work-invocation-KFHDep/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke-graph-clone.js",
+      "canonical_artifact": "/Users/nick/omni-chat-rooms/projects/mdkg/.mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-graph-clone-smoke-vB2Jve/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "delivery": "independent-verified-copy"
+    }
+  ],
+  "consumptions": [
+    {
+      "schema_version": 1,
+      "smoke": "smoke-archive-work.js",
+      "canonical_artifact": "/Users/nick/omni-chat-rooms/projects/mdkg/.mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-archive-work-PrtfmO/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "consumer_exit_status": 0,
+      "consumer_signal": null
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke-work-invocation.js",
+      "canonical_artifact": "/Users/nick/omni-chat-rooms/projects/mdkg/.mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-work-invocation-KFHDep/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "consumer_exit_status": 0,
+      "consumer_signal": null
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke-graph-clone.js",
+      "canonical_artifact": "/Users/nick/omni-chat-rooms/projects/mdkg/.mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-installed-work-family-OXN3tO/mdkg-graph-clone-smoke-vB2Jve/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "consumer_exit_status": 0,
+      "consumer_signal": null
+    }
+  ],
+  "limitations": [
+    "Three existing smokes only, not the complete37-smoke release ladder.",
+    "Native macOS only; old-client/runtime/platform and independent acceptance remain separate."
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  },
+  "pass": true
+}

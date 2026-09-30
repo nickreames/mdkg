@@ -1,0 +1,2139 @@
+{
+  "schema_version": 1,
+  "kind": "exact-reviewed-local-mdkg-evidence-commit-allowlist",
+  "source_parent": "b10870355b264355af2be4fc53bb4640851f747b",
+  "owner": "mdkg-project-agent",
+  "entries": [
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/bug-47-macos-fd-path-feasibility.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2355,
+      "mode": 420,
+      "sha256": "dc3e3ce3aeba8c364d7391382318eb6cd60854a0fbb4af0f547db1d349424525"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/bug-47-recorded-0.5.2-source-assessment.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2142,
+      "mode": 420,
+      "sha256": "c1573547690aacf715a5d439a2cd1cd5278ff6529dcf393fc78b02b0892d7728"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 15345,
+      "mode": 420,
+      "sha256": "af8508235be4385599823cd90e6017d84ec51e4259affa09b1ed5c5637ef5429"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/candidate-seal-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 97603,
+      "mode": 420,
+      "sha256": "35833915e1e2a2da5962e5d9b4efab01e3cfc15bdcb608402b24ca15da0ba6c2"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/current-audit-remediation-progress-20260929.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 16527,
+      "mode": 420,
+      "sha256": "614121d10ba45e1cf71eea7efbcc70ba026781bd9e7d0df6d91f474f0e435f64"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/current-finding-qualification-map.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 14089,
+      "mode": 420,
+      "sha256": "7714789b4103bce720052e14d3c4f964ae67825d94beeda8f6db0b8691ae1d34"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/current-security-audit-20260929.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 10581,
+      "mode": 420,
+      "sha256": "378bc1bbc1a39e24af47c234abed8960252987772a309c01ff221cb30dce396e"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/native-primitive-probe.c",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6391,
+      "mode": 420,
+      "sha256": "ffb8f612f6645ad361ad776d1bc3ffcc30bd3343031a94133fb93ae5ed0089de"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/node-baseline-probe.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 3745,
+      "mode": 420,
+      "sha256": "87855e17dbc519d89efc73e1515ddf63389dd65875943ec7abf987b6ffa00936"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5871,
+      "mode": 420,
+      "sha256": "75c55bb5b18199dd968df9acf1a6ba2ab87a948376380719a3199cd8c615ac14"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6574,
+      "mode": 420,
+      "sha256": "9014330f171f9d3ea70c46f120d09d22e802585cc5b2450fef4f29b129b860a7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/final-installed-platform-qualification-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 19996,
+      "mode": 420,
+      "sha256": "f9d74e2d43f4b553d03bda0cb3beadee7a9c18ef77932243d9ff92e4a789225c"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/final-package-gates-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 12095,
+      "mode": 420,
+      "sha256": "3547027e7a7c58aea2ac73707276477fe7718723d9a7adb868c3381deb3209bb"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/final-remedies-commit-allowlist-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 3603,
+      "mode": 420,
+      "sha256": "2aa391ee00a7043577d3c6a8fe036f7d5e1ef1d682ec54c18b0d5045558f10e3"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/final-remedies-local-commit-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 1562,
+      "mode": 420,
+      "sha256": "bdc6f369f9aaf39614835a63d3831ed9a442daf0b1abecad86173dd9b4d7b30d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/final-remedies-local-verification-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5926,
+      "mode": 420,
+      "sha256": "158c09b18dde0900075a828663febfb0f8636e6b6c1406cfef1ca42b69ad3e92"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/implementation-commit-allowlist-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 28313,
+      "mode": 420,
+      "sha256": "29b6d620e6dd72a8438ae4d8416afa2ce2a8aadcec0fe61c38415cad7a07c7e1"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/implementation-local-commit-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7251,
+      "mode": 420,
+      "sha256": "83e1831121766bf2e8245d10db08f72111fbfc36ad9bb62de090f57708764742"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/independent-diff-review-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6293,
+      "mode": 420,
+      "sha256": "2126a473e60765aef8fe0f640bf56e86c48e6852ea6aa729a30d8678972ba2ae"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/local-closeout-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 19322,
+      "mode": 420,
+      "sha256": "5e16ff45f3598a0cd035bb8070713f3a1ee09585352d3045ea359040ab62229b"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/combined-installed-probe.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 18828,
+      "mode": 420,
+      "sha256": "e735cc581886e665df21ceb456a9779fd408fa6b776d937f81a2bb1c2122531d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/installed-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 82338,
+      "mode": 420,
+      "sha256": "301f1874efa4717be90c7b0950cf06b9ac60424228dd352288a9f75c6ee36494"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/portable-source-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5735,
+      "mode": 420,
+      "sha256": "9f9c91083396fb46bfe160e64bacca1bb8ed9abcd76d27d8deaea6ffbf600bda"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/receipt.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 18616,
+      "mode": 420,
+      "sha256": "f7d1b4ebe2940d50063776fad31d55741cfaeeedf0a5d7556ed942c9be6875d4"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-admission-installed-probe.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2280,
+      "mode": 420,
+      "sha256": "89b28492cfa5fc2ef7082cdc8c6e62d7890eca29d7b08f434026ea0f3c4285d7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-admission-worker.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7963,
+      "mode": 420,
+      "sha256": "a3c62a111f3d0205fa6893dd0f70b33497841c9875b59d7ba3bb25726a33b776"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-installed-probe.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5126,
+      "mode": 420,
+      "sha256": "98363bc0e94ecf88162a29a9e5d1914cffa8c7b267d2381b7f562eb521ea5347"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 68919,
+      "mode": 420,
+      "sha256": "9d4ea718eb5df9b72bfdb912f52bf034b0f8c17bbacc4f8ca05b73dea1d3f335"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/runtime-installed-probe.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5449,
+      "mode": 420,
+      "sha256": "e087b4a5ebf0e69be03750ba2f9fcb57259c14f62b5624d77530d59ec6679622"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/runtime-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 26991,
+      "mode": 420,
+      "sha256": "418585c5e0738f8c1b7b2d45856fcde4090a811fa171fe959d849eb9b9b92341"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 12253,
+      "mode": 420,
+      "sha256": "c47567bea5d85271f12eada970eb2050cf6455428e693458bbecb6d36571b661"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/package-closeout-custody.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 52491,
+      "mode": 420,
+      "sha256": "3f1324ca4e56ecb33e691b5048f56df59068643000fd09a2c98788940c4d1848"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/package-closeout-progress-receipt.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 74390,
+      "mode": 420,
+      "sha256": "9b18c67a5dbaa5ea8937b9a26b06f58087919a8d946c77175c5836b4b3008dbb"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 46932,
+      "mode": 384,
+      "sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.package-inputs-dec100.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 87056,
+      "mode": 420,
+      "sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.qualification-inputs-bug61.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 48166,
+      "mode": 384,
+      "sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-b5497c5f5e5f022e.inputs.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 88073,
+      "mode": 420,
+      "sha256": "b661a5ea1c15c25d09566b17dd4ad77830cd6b6a2492f05f7c6fd5a97fa42603"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-b5497c5f5e5f022e.qualification-inputs.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 62985,
+      "mode": 420,
+      "sha256": "96090997ad2696dfefdf9cfb6b48c68ff98fdf2e422e94ff81840c7f94eb7ee7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/test-487-docker-capsule-manifest.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 226595,
+      "mode": 420,
+      "sha256": "8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/test-487-docker-scale-retry-capsule-manifest.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 230874,
+      "mode": 420,
+      "sha256": "31ab3b5099d3e6739382183d440c0c05054034049459e9ebbba631e3e190001e"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/test-487-docker-supplement-capsule-manifest.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 229621,
+      "mode": 420,
+      "sha256": "092cc3be9b253eece9cafe96ab9a8dbb995dfb0fc86b3ebe27a296663b97af03"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/private/test-487-linux-arm64-capsule-manifest.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 55763,
+      "mode": 420,
+      "sha256": "de483e12ee4f6ac6d68fba9d0013ac08e14fccbc300ffca8bff366e7972d59b3"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 239018,
+      "mode": 420,
+      "sha256": "4953c465483d3ceef5fb0dc06e5471a92e98d90f8da4ab67ab1c2ebd6a4c8c1b"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/successor-amd64-partial-reuse-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5615,
+      "mode": 420,
+      "sha256": "aba571804897c6e3d6c78afe4053829725fd52eac24ce6c0aa967c64b627f024"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/successor-docker-cleanup-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 17549,
+      "mode": 420,
+      "sha256": "d9401bc836c50c89c66f9675e0741ca5b708eaaa9e9829d9e02f68c807b5f32d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 9550,
+      "mode": 420,
+      "sha256": "c717fe78ca9950c09e44b8193a523bcf3863e9622c72a27ff1b5b69cff1388ce"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 161594,
+      "mode": 420,
+      "sha256": "0b9383627445892f1f7ab3bc577fa0951be72373abcede215c05ae13b21a4dbd"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/successor-package-gates-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 23883,
+      "mode": 420,
+      "sha256": "62fe1b43e3d6bb494374c5b67738488889a4205a9aca507746d3f20e55aab9de"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/successor-private-preview-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2962,
+      "mode": 420,
+      "sha256": "aa0b52a4fd4eeefea4a874c45d0c0b97e8e29c6eeb485aef00adc5613c91952d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7056,
+      "mode": 420,
+      "sha256": "b32d2e048412bce43fef9adc562fdae170d605ae823469af639d983e06dd6fa7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 3507,
+      "mode": 420,
+      "sha256": "dc93ee15023f855eae9323d5da2299f33a5580a380c7f521dd9c1a49d92142ba"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-consumer-smoke-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 25372,
+      "mode": 420,
+      "sha256": "c8786e387cb2fa02b50727a6ede0fb0d523162526e6343ddb6e38cf3ed6e0ec1"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-db-smoke-caller-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 67878,
+      "mode": 420,
+      "sha256": "0d488a683d914ea591b4c65919e8271c09082136fd6405ea88af6222da0b94de"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 8168,
+      "mode": 420,
+      "sha256": "9cba2451fc8c9a53939f5e1b88392d881328ce564f2f4c9515152cf641cde077"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-git-boundary-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5252,
+      "mode": 420,
+      "sha256": "36267d21b945b950c906d559310225004bc654d6519f288090fcf921cbc5c9c9"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 40993,
+      "mode": 420,
+      "sha256": "009d6ad4be6723d3f44c9892c5fcc3e2babddee21a4df54141555932ea6e2e2a"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-graph-smoke-caller-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 81841,
+      "mode": 420,
+      "sha256": "8d2bc3e54a8679764ba4314d989aa4ecd23659bcb4f3e5f1aee3cfb2e4b34e99"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-local-commit.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 4633,
+      "mode": 420,
+      "sha256": "385408ae0090fcbfb4ddaac790752203bdc9b8d6b79db569bd527f1ab9ab7420"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-mcp-smoke-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5055,
+      "mode": 420,
+      "sha256": "afc1aaf3c914a08fd67cdd0625857c6f5bacd290f8c48f2832a2235515f1df80"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6808,
+      "mode": 420,
+      "sha256": "37d3a68d9ecae6f89cc24e27ed0fc7ecf56e4559ea1522245f122d666febbb1b"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-six-smoke-caller-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 51243,
+      "mode": 420,
+      "sha256": "3e8393ab1918f358453f691a0913aa5cbaab6c78e2327b35d37d1edc5b60e015"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 58817,
+      "mode": 420,
+      "sha256": "324ae4fefbbb11481b00afcbb33f31407dbfc9edacd406fafc6d365241b39880"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-sync-smoke-caller-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 71845,
+      "mode": 420,
+      "sha256": "5c141a50bd3ad78ddaa92b6eef8fa9b5c48a2b663d1cdc566beed7d078b66a7e"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-838-tail-smoke-progress.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5709,
+      "mode": 420,
+      "sha256": "a43fbf6ba97e023954831809b2759b849cb67067bc2c1ddafdbf2f577340b30a"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-839-release-guidance.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 79178,
+      "mode": 420,
+      "sha256": "b6d7f9a3b1f78b18e838fdee678b8e4d45f5775d51b0b69b80d906cd20e27146"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-843-final-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 70435,
+      "mode": 420,
+      "sha256": "9e0e4dc0f74a8bb3de268995d6eec05ba46864d1056cb068fd39de6d852de212"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-843-isolated-package-gates.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 4993,
+      "mode": 420,
+      "sha256": "0f3eee94ace06f5aca718a6a59541ebea63471bec2ae27ec64ad79999457d9cc"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-843-isolated-package-gates.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 1225,
+      "mode": 420,
+      "sha256": "6943e35d84ab2094fa30c933ce9149e528ee8a5114a6594018229cf21ea70d4d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-843-local-commit.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2238,
+      "mode": 420,
+      "sha256": "a1d681b2e57610a5d78523cb401568f818c5c7f785c4706b45f4091447b87792"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-843-package-profile-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6359,
+      "mode": 420,
+      "sha256": "b7d37cf4a28bb52d11eb1a8757a78b9aed32e462b734520e7474d700c0a54503"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/task-843-qualification-inputs.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 61889,
+      "mode": 420,
+      "sha256": "1b9a9b51c42f89c3ead2021d7ea0089ac4fa8572d757bdfe3312ff74b6318b76"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 9239,
+      "mode": 420,
+      "sha256": "87c2b24907ed8c23a05de719ed3db34c530b22310f4ba8fee35bffbd6776416f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 27136,
+      "mode": 420,
+      "sha256": "b25de0c915c6ca89220f5f3b3e42c710ee3968f17364ea0a72f4b6b6fe9558ba"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 30245,
+      "mode": 420,
+      "sha256": "b00e336f20bd60e805830a191b30992adefb1f2340c7644b4ba037ce40af5ca6"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 36165,
+      "mode": 420,
+      "sha256": "80dbbdcd0fe961a9e44847dde0c72289f7d653d5f313cc0b81cd542dd58e3e39"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-478-installed-collaboration.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 25247,
+      "mode": 420,
+      "sha256": "305eb0bdec0ffc6ade3f47d96c03b6223c7e5413211e8fc461e6690ce92492de"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-478-installed-worker.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6337,
+      "mode": 420,
+      "sha256": "8688b3a9209e28b6e72e15485ecd334fdb7df2270df1e972d6ec10a1f2c411db"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 14878,
+      "mode": 420,
+      "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-installed-containment.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5759,
+      "mode": 420,
+      "sha256": "0f9e3f8386bf3687923e572f699f6ff77ecf162901040c1e45488f36a15ec68a"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-installed-ownership.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5782,
+      "mode": 420,
+      "sha256": "90d240d870be5c985b620cf5755f28c7ecb6f98e05b1415c166b6e14a73ebb90"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-installed-remedies.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7947,
+      "mode": 420,
+      "sha256": "704dcbcd967bfdbf62d4230dec44157a2e381820fce006d39a82d05d30db451e"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 26819,
+      "mode": 420,
+      "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 60294,
+      "mode": 420,
+      "sha256": "757e71d5a12dd89392a88fe10d805af426dafff6f4ad1d4187d30fc623d4bdb7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 70282,
+      "mode": 420,
+      "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-readonly-filesystem.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7299,
+      "mode": 420,
+      "sha256": "5c521ffc23fa9d64a8a21c9a2a9b818825771a0514ab3d02c9b9faae8fab66ac"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-readonly-harness-attempt.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 4585,
+      "mode": 420,
+      "sha256": "8d1db78e126e5791ecaa643e8538a38b4b2a9d00abd5a7c6161151835825e6b6"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-readonly-restricted-attempt.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 1659,
+      "mode": 420,
+      "sha256": "f6eeb6b3079324088c259193ddff65b1faf1a23137042339b608a5f250778e84"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-real-readonly-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 10774,
+      "mode": 420,
+      "sha256": "345ef33cbf326d6e4cacfb308c9990e876ade3630bbf40a03c14c6ca0529476c"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-479-state-admission.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 13177,
+      "mode": 420,
+      "sha256": "33a041efeef820bc07d772e01af26b3f661b82f1a5356fb00fea13ce29d29389"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-final-private-preview-20260930.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2962,
+      "mode": 420,
+      "sha256": "1a624e6592e323fbba6e7b427bb7d3d9a8c657f300cb7924394b7285bd356023"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-historical-reference-disposition.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2374,
+      "mode": 420,
+      "sha256": "962f4c535b2d0295a2ef7d2f0308d2604b655600367141d6321e9d9269aad1e9"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-installed-compatibility.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5225,
+      "mode": 420,
+      "sha256": "bbf1195141f5d8193fa52fa7cf5593e66fb698ebba606dfed7b0ad921ee82e9a"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-installed-work-smokes.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 4919,
+      "mode": 420,
+      "sha256": "4ad77d8880a3a32d3d0d1db4b4eeb96935b84091fec46646a98a6a7d21dabef7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-local-compatibility-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 73034,
+      "mode": 420,
+      "sha256": "f5008c597609c431de9eb92197e07390633b7e9b9d56a9fc4913424407a9d049"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-local-work-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7764,
+      "mode": 420,
+      "sha256": "d7929b2e7030526c5d39d228c97cb4b2a4549b0548b9ffa65d5930d680a4f305"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-old-client-harness-attempt.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 3196,
+      "mode": 420,
+      "sha256": "de53bb04a1df38faf0cd088d48db59475ea8b4a66845854729c4d3aaced14663"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7556,
+      "mode": 420,
+      "sha256": "60f63c87ad05c0896da41ec74f01a61c7e545c91437dc50eb624f6260e15dc9d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-old-client-runtime.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 10430,
+      "mode": 420,
+      "sha256": "b654a3822c205f695a966c74af66d1b844b79373c2e481a44bfbe4483ded95ac"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-private-preview-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2962,
+      "mode": 420,
+      "sha256": "6b97f9e9a67105492f2b3e944082e12d65bbce4a93384cd26cc72712c5ad428e"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-480-private-preview.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7563,
+      "mode": 420,
+      "sha256": "fa1c09f44fb526de83369a9272bd5a87dd698965322adef183778193e2986a43"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-481-installed-scale.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 4389,
+      "mode": 420,
+      "sha256": "3ac882938132d438d360fcdcf32423dc3fbbb7837fce02e5577d808c21297d75"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-481-local-scale-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 170049,
+      "mode": 420,
+      "sha256": "1d26e596b7b5acbf6513c6915c8a89cfd9a21ddc4bf5cee69a2d1057ac67a10d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-483-installed-behavior.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 8453,
+      "mode": 420,
+      "sha256": "0c34d1c763b7f6a6a8c6c8f244ac2caccfa2391f38582059024350d681ed8875"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-483-installed-pack-controls.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 8038,
+      "mode": 420,
+      "sha256": "e2546b7386cec0977acf22faaefa4b0f9a7f9b1b76cae6caad54ff5bada1967b"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 25463,
+      "mode": 420,
+      "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-483-local-pack-controls-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6599,
+      "mode": 420,
+      "sha256": "faf6998ba8776e0d521f7e364d8c1abce356495e5423751e99453c2a9b03d6d2"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-484-installed-generic.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5308,
+      "mode": 420,
+      "sha256": "b4dc20d956b9965c17f9e2874c033e7ba641de43ce95fe1b5ae7359a366a2f2f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-484-local-generic-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2704,
+      "mode": 420,
+      "sha256": "50ce95eaddb71e3f22f37d1ccf32848f301394e766dc5198c76305ede6c30686"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-486-local-option-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 17015,
+      "mode": 420,
+      "sha256": "a43d6f51a8fb5956e52dab4fbe3c4184c4ab6f1afcfa54386decb38f48846122"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-cleanup.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2677,
+      "mode": 420,
+      "sha256": "21e14992bdd6fc691efe81953b9f9beef8ee7433d6394a3eced183217a880f1c"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-condense-evidence.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2920,
+      "mode": 420,
+      "sha256": "0a9204a24ddc137b0464e2f5993c7bbe41894522db33fa06ad99ded790d751f5"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 94694,
+      "mode": 420,
+      "sha256": "56df033f31e9dfe4dc9a2ecc15d7fce743e906ea9652e584e0016223b26a8e53"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-runtime.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7310,
+      "mode": 420,
+      "sha256": "f5ffdbe00c0583b3d195aeb57f7cd16eea0c0ad83e35f79eabf74644f6667647"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-disposition.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6680,
+      "mode": 420,
+      "sha256": "8936a14caa264158e007faa68d7aed6c5879d1d4f930aa2a590cea9f5b0f26dc"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-partial.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 3660,
+      "mode": 420,
+      "sha256": "fecda78d0ff87653c53229857c62ba2dbe1d760e2a84b3a08165e4caa175312e"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-retry.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 8439,
+      "mode": 420,
+      "sha256": "7f681eed585572357f78a45a58b0d773b65911b41f10c668939d513e3981a5b7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 8100,
+      "mode": 420,
+      "sha256": "ba986ebeb578f1d471ea72b652555b254f88bddce24bfd8caf7f5ddab22d14c6"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-supplement.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 10159,
+      "mode": 420,
+      "sha256": "91adcc721b72aafdedf50d44603db496f1896c233c8acd93f96fb9397e253fa1"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 94686,
+      "mode": 420,
+      "sha256": "e9bed7a66fa2b99a7fa2fb6570b8672d12c74427bfa7a580bbb59e18589cbc8b"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-runtime.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7292,
+      "mode": 420,
+      "sha256": "27205d6aa6f87c936b0b492d0d56b504f3f0c08d20909b56760512c2c9d210cc"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-scale.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 8275,
+      "mode": 420,
+      "sha256": "2c12dca8dcd90a1fb4849302c8c93c99742146f07c0646c821175b20dfc07499"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-supplement.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 10128,
+      "mode": 420,
+      "sha256": "9eb9f6d9d67649fcaf2a17ba0eda492ed18ac94e6612be6d23225ec78b955fbc"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-capsule.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 11878,
+      "mode": 420,
+      "sha256": "cd96078dc9831c6e49c9b40dd36cc1ffe942e899135c6835ca9c4f6bec4e5521"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-downloads.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2411,
+      "mode": 420,
+      "sha256": "09cc19be231adc8270356b4c9e8f4afd6a6cad97ee96c281d049ec04b214ba4b"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-execution-identities.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 12777,
+      "mode": 420,
+      "sha256": "aaeb90537e3aa2d504d27542601f3e21fe9fc2c315dd26af72e588742e1a8788"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-isolation.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6274,
+      "mode": 420,
+      "sha256": "792ff39dcd8d0886753901877c2c9d1ffd3faa02b871a50f75b90a41b22c96d7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-readonly.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 7039,
+      "mode": 420,
+      "sha256": "405fe417c60e1f023dfd7c2320ac83e20eff8b9c257b8fabcae08a08c4b0d883"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-runner-controls.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 3603,
+      "mode": 420,
+      "sha256": "2ab5c51759d7dac9e2681d253bcae425c90acdef319d17e5e30aa9250f0a978b"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-runner-controls.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 1997,
+      "mode": 420,
+      "sha256": "bf8a20048a40330a19f6f57f670bd22df02e822e4bee38f07d6bb11ef903f2aa"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-runner.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6915,
+      "mode": 420,
+      "sha256": "9cedf11caae4f151007dac1b0d44607c2248eb42f53f1a4bba2e6a03ede9e482"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-runtime-downloads.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 2319,
+      "mode": 420,
+      "sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-runtime.Dockerfile",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 292,
+      "mode": 420,
+      "sha256": "5b71ecf2f90444a961e20946b9d1b1e25af2441b4f2fbb49224e42b5e2130245"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-scope.md",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5739,
+      "mode": 420,
+      "sha256": "8bf78ab7c3654022120a86122470bc8aadc52f9224e8019bdbeb8b5f8ca08685"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker-supplement.Dockerfile",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 202,
+      "mode": 420,
+      "sha256": "0c7efbd317bd5234d2674a20c0981adfb3bda6dfc4e5373d767e4a89d1b68326"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-docker.Dockerfile",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 1440,
+      "mode": 420,
+      "sha256": "1b5e5ca9a1d0adb9124aef6feb3e1fa6c1df34164b74c44989a716bd7e0609d1"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-final-executor-identities.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 17021,
+      "mode": 420,
+      "sha256": "e78079f41f1d551e663489d2438d5caf3f55ac104de24ea8c58cb6e0f2e7765d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-installed-capability-umask.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 8591,
+      "mode": 420,
+      "sha256": "7daeae2be02d4e10900b818d0e1f222f9211b7c6673e5a52c897264a537ad536"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 28177,
+      "mode": 420,
+      "sha256": "ae604a4d5cf75455d206c1d6883a2ef57d08f4b69d42142f5992977f775763f3"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-linux-capsule.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 3244,
+      "mode": 420,
+      "sha256": "5e928e5ec4cb709d0587e087a6de98ae533b48d1b72c926e70e55d40acdf13f3"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-linux-runner.cjs",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 5324,
+      "mode": 420,
+      "sha256": "55c6289e6992b18b5bd4db04272789aafa4e212a279a6e4a16eed074115e3519"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-local-commit.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 74012,
+      "mode": 420,
+      "sha256": "b7e0fdf12a96df7ff7a6e628670b1c0413a0601757ed8e4059c7d8a38e561861"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-local-linux-scope.md",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 3460,
+      "mode": 420,
+      "sha256": "693e22975e7cbc6595b26ba7f350eac51c08c05f40ed1c6772a7b0f256526488"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 21973,
+      "mode": 420,
+      "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/artifacts/goal-86/test-487-macos-capability-umask.json",
+      "custody": "Goal86 sanitized qualification evidence, owned fixtures and exact input manifests",
+      "bytes": 6779,
+      "mode": 420,
+      "sha256": "54f8240a88d8c84af8b13bef83e90e25ad7908ccd159c00597699b9375c0ad0e"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/design/dec-100-bound-0-6-0-acceptance-to-the-package-and-local-platforms.md",
+      "custody": "approved local runtime/platform/deferral decisions",
+      "bytes": 3483,
+      "mode": 420,
+      "sha256": "799ac6951c9ddb622677b7c62b6bb375575b713419964c6a1dbf48bfeb89187d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+      "custody": "approved local runtime/platform/deferral decisions",
+      "bytes": 5052,
+      "mode": 420,
+      "sha256": "9809bc4aec6177005dbfabdb04663bdab71689e85fdb25a1e3b8a60e34b903c0"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/design/dec-98-keep-0-6-0-portable-in-node-and-defer-unresolved-filesystem-hardening.md",
+      "custody": "approved local runtime/platform/deferral decisions",
+      "bytes": 4913,
+      "mode": 420,
+      "sha256": "7e40ff65ad0db289e742dd2214d01b50c1ab04a1393b37b9f7b7218dc24bd796"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/design/dec-99-retain-local-linux-qualification-and-require-fresh-current-source-security-accep.md",
+      "custody": "approved local runtime/platform/deferral decisions",
+      "bytes": 3637,
+      "mode": 420,
+      "sha256": "4b813999fd898437d1e69ddf8bfdb2ea53925e7e5d770bf13282c6aedba3da59"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 10548,
+      "mode": 420,
+      "sha256": "012a82514bab911ab48f41f659ac056b818cb3c4bdf169db9dd6eeb1dfff3c0d"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 9868,
+      "mode": 420,
+      "sha256": "5f773a92395a398ad305b8f0be60ab98602be50a1bcf0b6839f23ecc171fbec3"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 16025,
+      "mode": 420,
+      "sha256": "a95a5f579ac16627e5d964df7b03141c2ba79c58eab39c69cd41862e363f4636"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-61-qualification-git-admission-rejects-valid-submodule-linked-worktrees.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5800,
+      "mode": 420,
+      "sha256": "4996bd4b73af87a382114dbd2b66846b025b993636d6cbd530ec90af00fc740d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-62-bind-public-archive-exports-to-exact-owned-payload-visibility.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5195,
+      "mode": 420,
+      "sha256": "8ce83a9486baae8354a4201cb9ddcb822f5c81a7f4ed9809010df36b41004c08"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-63-protect-native-git-administration-from-generated-graph-outputs.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5882,
+      "mode": 420,
+      "sha256": "1bf11d449c79edbd0d0659bdfb178748a101a6389110c0d477440c85b8d8afc6"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-64-reject-multiply-linked-event-append-targets.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4626,
+      "mode": 420,
+      "sha256": "fa57daeec1841a6b5764a9d765dffcc4abec61ef9d1961e1bee03c25cf9bffca"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-65-share-exact-frontmatter-boundaries-across-graph-rewriters.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5809,
+      "mode": 420,
+      "sha256": "75bc2666947aee3c983c10424b52909f9d700e6545f1e31d17850645d24f606d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-66-bound-and-contain-diagnostic-file-reads-and-storage-walks.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5632,
+      "mode": 420,
+      "sha256": "466227204f627b688a9ad393d5b69d46f6cd5284ff0cfe1456a1d45a6df61e9d"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-67-preserve-whole-identifiers-during-legacy-duplicate-id-repair.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5566,
+      "mode": 420,
+      "sha256": "e43521d14d2470ba08a1b9bcbbd6d5c8b9bc61088d16ea80bfffb7c8ec4da2ac"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-68-resolve-workflow-evidence-using-its-owning-workspace.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4971,
+      "mode": 420,
+      "sha256": "fbb19a4de2e4a8a4eb582fb9fd237f1c7ff22ac17d8dc9b4d81a43c49130a297"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-69-correct-generated-command-mutation-and-write-path-contracts.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3562,
+      "mode": 420,
+      "sha256": "c85448936f915680a57e05ccc49ff5ddd4208a2df5dca2b78ce7c02fbd546e39"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 27365,
+      "mode": 420,
+      "sha256": "e353f22b4d6327b7eb34f5e06ec2df2108098d63cca4c3ddeb83cab3fbaf9004"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-70-redact-complete-userinfo-for-non-special-remote-descriptors.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3635,
+      "mode": 420,
+      "sha256": "905f778498b30a45af9c2a1653eba0e906559c372ba740f7c5cf63b8700f88b4"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-71-apply-source-budgets-before-pending-skill-registry-authoring.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4734,
+      "mode": 420,
+      "sha256": "635a47cdfc4a53476752c4e65e1c2e1aa9cab1ba0b36e8107e4943364c3cea4f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-72-protect-native-git-state-from-configured-db-snapshot-outputs.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3681,
+      "mode": 420,
+      "sha256": "8f3f4b6adda75495dec8f410493c9c5fbc2c4eaf2a9a7b2cc4710cc33f8c86a3"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/bug-73-isolate-ordinary-and-coverage-test-workers-from-ambient-git-routing.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3067,
+      "mode": 420,
+      "sha256": "9228ca6f6601c1d705e7674c92dc68702e242c3d9f9fdf2dd9a72344a1d9e320"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/chk-570-accept-mdkg-0-6-0-full-local-qualification.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 6188,
+      "mode": 420,
+      "sha256": "b9e33b8625694528fbbdbdea6717367f7f80ba06a66382ae536cb8477d91e2f4"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 8726,
+      "mode": 420,
+      "sha256": "c82a923d6265dafe99a9d0aae11572b2888d162f36b0eb38aae43f976a04d97a"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4701,
+      "mode": 420,
+      "sha256": "c813fc0b2c1a62c96c7a2e452fcb0a55288aabffed967e9e23c043861caccbca"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 7786,
+      "mode": 420,
+      "sha256": "e19c84b4a940a6105c4b49637f2f192281c7b6cedd542e2deed515ecd8a6e5c1"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 7388,
+      "mode": 420,
+      "sha256": "d6cbef7ef9835db38e35688be254f98d594c1a4d0714f6e573bb19ee0b10fb1c"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 7690,
+      "mode": 420,
+      "sha256": "8d96e8d33889caaa2d0f784c55924d853adcec7be3a9a3d3a3c29267c60c9d0f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 7312,
+      "mode": 420,
+      "sha256": "5bd5a51e750a6553c3be2dd5f06bae5c66d010b83aa673c7f263be6cc615878f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 7391,
+      "mode": 420,
+      "sha256": "82d6b5966727cf745c56b1673c10930cc7fe7669a719af6ae175fb507498e44f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-644-isolate-six-installed-smoke-callers-and-verify-artifacts-before-installation.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 6269,
+      "mode": 420,
+      "sha256": "494bd94c9fd402758339b4295633fa9ca26d160fc78230c072d973dab72882f7"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-645-isolate-installed-db-and-sqlite-fixtures-from-ambient-git-state.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 6692,
+      "mode": 420,
+      "sha256": "9439d3b75b9ff44b1e10ba45470381f474c01b186ffe6151e899d0f8d7fc5355"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-646-isolate-installed-graph-workflow-fixtures-and-verify-supported-routing-refusals.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 6460,
+      "mode": 420,
+      "sha256": "d1cd054555e251f743bc001aae2d87261193c6194f056d959f708318ead774a6"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-647-isolate-synchronous-installed-smoke-callers-and-preserve-diagnostic-evidence.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 7442,
+      "mode": 420,
+      "sha256": "cbf8e53d4848de75abfdf82a75371c7c01107596e2c5b7b1ebaddd91702f9653"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-648-qualify-git-boundary-smoke-across-three-local-node-runtimes.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4007,
+      "mode": 420,
+      "sha256": "68a420b965e6c4ad7ae47aa1faa8c986f772b5b0b96f7a8c8e4c402ce9b46205"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-649-qualify-remaining-release-smoke-callers-and-retain-intermediate-candidate-custod.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5068,
+      "mode": 420,
+      "sha256": "5c665481a19526e24b996993e5d61dc59521c8c24d9638ad385b4eb88a52d918"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-650-verify-descriptor-backed-sqlite-observation-under-local-node-runtimes.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 6894,
+      "mode": 420,
+      "sha256": "2e9486cd6515e8110217469fff0e0ee13304a1a0054f66a6168298a68c08a514"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-651-bound-local-filesystem-feasibility-and-fail-closed-linux-ci-stub.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 6650,
+      "mode": 420,
+      "sha256": "202108df9d3e7c8ca0f806893c2ba4014a0c5842e8a79db3419f79293e90242f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-652-defer-unresolved-filesystem-hardening-and-ground-node-only-portability-continuat.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5970,
+      "mode": 420,
+      "sha256": "df750c4984e6c2ee82c86eaccffc2791bc570064915aa7ad268cbbdacd4c9698"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-653-implement-portable-sqlite-observation-and-align-the-node-runtime-contract.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5459,
+      "mode": 420,
+      "sha256": "3b5a6449a8b2edc88b895cd51e80937abf7a35913099dd9099e13e4e5d116c77"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-654-implement-portable-operator-confirmed-graph-recovery-with-exact-evidence.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5028,
+      "mode": 420,
+      "sha256": "81c7739039e6fc6a7488e25cdda3d941eb54a704bf73cc04f6002aab40fa04df"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-655-qualify-portable-node-sqlite-recovery-and-native-linked-worktrees-locally.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4602,
+      "mode": 420,
+      "sha256": "500603b216c9dbea555bd1f2bbdcb4160525524a3288bcbed7f5057ddb724ebb"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-656-correct-release-critical-guidance-and-verify-installed-command-discovery.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4010,
+      "mode": 420,
+      "sha256": "b888b5de681bf4d7273004a37bea8683cdc003edf713d5a25a45e432e63d51d4"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-657-bind-installed-cli-option-qualification-to-owned-fixtures-and-the-release-matrix.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4546,
+      "mode": 420,
+      "sha256": "043b6313d551f0cac7e78afdfbf88dc4b7ee1343b9dd885ccffb6802f7ada543"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-658-qualify-retained-candidate-initialization-and-real-published-upgrades-locally.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5600,
+      "mode": 420,
+      "sha256": "d8648f0a062a35ed4c366c15f9d795d32d1bdd293cfb5e0cb37de68bdfaca55a"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-659-qualify-installed-concurrent-worktrees-and-reviewed-native-integration-locally.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5880,
+      "mode": 420,
+      "sha256": "f9b5d3db22fe84d3e923539e96944c1783785f0c896c449854d557c05e1bf688"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-660-qualify-submodule-linked-worktrees-and-sampled-incomplete-journal-refusals.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5698,
+      "mode": 420,
+      "sha256": "c70dcfeca6e9e695ab6e0b2b62ca0d6fb7902a085472c6f6f4bff016cc977797"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-661-qualify-installed-transport-authority-and-sampled-recovery-admission.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4396,
+      "mode": 420,
+      "sha256": "f14904b1542c56bf2a9288957610bba18b78c92887a21c34e624fab237cc0bc2"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-662-record-local-linux-installed-candidate-transport-and-recovery-proof.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4838,
+      "mode": 420,
+      "sha256": "91e71fa93628fae07cd71e30e13ecedc7e0c4f64801f7ceaf29d1913be6f6294"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-663-record-bounded-package-only-pre-publish-enhancement-and-remaining-evidence.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 2452,
+      "mode": 420,
+      "sha256": "fca1df4795d480e49862112c42cd6cc662d2cb751856b196b98614748e45ed4c"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-664-qualify-package-only-gates-and-exact-retained-candidate-admission.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3670,
+      "mode": 420,
+      "sha256": "235ac3c5979022f6a1e003615f76a82850413ef54b92c58d94b0d8eef1864dad"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-665-record-retained-candidate-installed-qualification-and-remaining-platform-accepta.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 9869,
+      "mode": 420,
+      "sha256": "d688e49dcc91693f5e3675811f471c93ffd96e911acd7fba80384e3eddcf9c3f"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-666-qualify-local-ubuntu-platform-families-and-preserve-bounded-scale-retry-evidence.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 7212,
+      "mode": 420,
+      "sha256": "abd62569671a234f541436e376ddd2989519ba17ccc140d5f10822502d922e09"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-667-capture-current-source-security-audit-and-qualified-blocker-intake.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3817,
+      "mode": 420,
+      "sha256": "8db79b8f8e02659e1b05e7aad7ad31b9667b0ca2e47ed3a2c5efcca4a7952d2b"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-668-verify-final-package-gates-and-preserve-remaining-security-and-seal-requirements.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3845,
+      "mode": 420,
+      "sha256": "999faab72d485ca2cce1933c46a36f0b40de19470abfb5e1d7b38ae7e997a05c"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/chk-669-verify-bounded-final-diff-remedies-before-successor-qualification.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3445,
+      "mode": 420,
+      "sha256": "41696a61950bd3706585e232f7e9ad8348d921dfcc6cbbd31c8a349972bdb657"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3657,
+      "mode": 420,
+      "sha256": "853e2b91e8acaf8318b719c3870ab1339ae385fcb209f861c4aa7c521f701dc8"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4864,
+      "mode": 420,
+      "sha256": "de574a2c44c2d4ecc90618a0d1f50cf6fd2a0ede902c86054eb3e35c4bf77abb"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/epic-258-qualify-deferred-website-and-documentation-release-surfaces.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 1731,
+      "mode": 420,
+      "sha256": "6aa8d80e7621bb3ec2ec84a2edef82970d066132eb081ecb913b17811b9a86f8"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/goal-83-audit-and-locally-qualify-mdkg-0-6-0.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 13700,
+      "mode": 420,
+      "sha256": "b1fa7fb42df5ec4cf00bf73705cba229a09b41fad116cd028a8a057dba0d84b4"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 46046,
+      "mode": 420,
+      "sha256": "6383d40bcd26354bc0184f78aac46d67cb6b66818f3d3d825c7312fd8988b97e"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 8858,
+      "mode": 420,
+      "sha256": "24136dbaa0c736a8c1c6d1826d5dc49f26554cee673f957943a9470c8ab5c71e"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 69632,
+      "mode": 420,
+      "sha256": "f51d719c587a995618cbc86739783db6aa57e83a470aca31a24100861c879fbb"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/goal-87-resolve-deferred-filesystem-bugs-and-harden-portable-mdkg-operations.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4180,
+      "mode": 420,
+      "sha256": "a7a5bb22353a30794ae449dd5a420e084b9a3e29b554e69f52720ab8cf9f8e98"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 6558,
+      "mode": 420,
+      "sha256": "81f18190e3947cfee1c45fb347d4c400a2a474029c87daa690ea08182f0e8a94"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 9346,
+      "mode": 420,
+      "sha256": "9efcdbf629c5b2f30266484bb4b1186fccda2815e60f1914079122a099a829eb"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4376,
+      "mode": 420,
+      "sha256": "5932e254c4e04aceeb8de80df049f3c54389d5268ec1e6e5a8c123c3c06a7638"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4483,
+      "mode": 420,
+      "sha256": "63c127c2118a58437fdebcaf8f30b2d4d7582b9949dfc295478c88d6f082c47d"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 23753,
+      "mode": 420,
+      "sha256": "88df5c061c5da55913c8e8cf91a831c16c4d3a7906752c35f0e04ccec49e5d08"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 6080,
+      "mode": 420,
+      "sha256": "e0a4cee9cac051e0f9678a9432e25da918bf9810c1969cb959b3583aa753a955"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 7483,
+      "mode": 420,
+      "sha256": "7889f6a29e7b1893ca2107255d4f3416855e3d2e2c07b99a9ff1bec515f49d03"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5212,
+      "mode": 420,
+      "sha256": "2da80e84bf2c84a388eddd414e41eb3af9e5b4db62d76ab404fb40dcddbfff68"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 5153,
+      "mode": 420,
+      "sha256": "4650019a85c24cc513745ade9ac02472962dca675ecdeacc0f37b75401a3b8e5"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/task-843-separate-package-release-gates-and-admit-retained-candidate-bytes.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4008,
+      "mode": 420,
+      "sha256": "9957e7f82a2496860074b045897e769ed9de2ecffb2f346128c7b44ae67ef934"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 10442,
+      "mode": 420,
+      "sha256": "044b071492b963cc9ba5d24e18d6815508c86be0f975c2071fc6c2dc68c13662"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 15141,
+      "mode": 420,
+      "sha256": "d8d1750d40fe9894d851b5d9cf0d41d96a0b21eb5c190e9a088641ddb65efe27"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 14653,
+      "mode": 420,
+      "sha256": "aec23e659a5d75efc11eed67d70baf7aae48fe4d94672826ef3ecb6175835f26"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 13135,
+      "mode": 420,
+      "sha256": "0c5f7d9190a6167e8ce821f808a021b39a1a4bd7b4e54fb8830c70a395adcb13"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 12764,
+      "mode": 420,
+      "sha256": "b397a5bd5897cb4ee3bff43bbc695df85f00b49c333996cf215ebc9352666399"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 9489,
+      "mode": 420,
+      "sha256": "565b1fd173d1b1bac0214fd83a7bd90583efd25c35272ee7207e081d6c5cade1"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 12621,
+      "mode": 420,
+      "sha256": "9db986c4227439837d6ed9107729f506dbab988e618e2b21702788def5aeedfc"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 8838,
+      "mode": 420,
+      "sha256": "1efbb881dcf433597abe51072f4aedd0ad95bd5bef3355c71d99c761580c16db"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-485-git-inspection-preserves-status-provenance-and-credential-boundaries.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3425,
+      "mode": 420,
+      "sha256": "d5211c79f4d77df48e903b6b283725ebfa4869390e6079ccf70c537995c4e780"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 10943,
+      "mode": 420,
+      "sha256": "ca0a9c80c4b3591ec4e47576b53197f6634f225d81bc64974817e4695da39a2b"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 17799,
+      "mode": 420,
+      "sha256": "898b29a5b870e735e3959eebdd3afc81079012e1106b515fba2996b2fa86e758"
+    },
+    {
+      "status": " M",
+      "path": ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 17335,
+      "mode": 420,
+      "sha256": "3a0c0b066636227698cdbf2738834847d896b1f24336b7725078872f7a57a460"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3891,
+      "mode": 420,
+      "sha256": "218f11f0d059e9ce9c3db078f49c90cab8cc4f9e013eb9eb123956e55929c75c"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/test-490-verify-package-gate-membership-and-retained-artifact-custody.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 2674,
+      "mode": 420,
+      "sha256": "2b76babc60d56f926ad39a723aaba08d82fe8897398ea1e7b1c69c47eade5868"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/test-491-verify-current-audit-remedies-and-installed-boundary-controls.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 4121,
+      "mode": 420,
+      "sha256": "d24a426658ffa3f21915a7a2914717070059326180fe51ac3942d227839f349a"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/test-492-verify-generated-command-safety-contracts-against-real-effects.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 2950,
+      "mode": 420,
+      "sha256": "7750722b5ec3199d1d0aa14a473391021c046af6c5f1d8c3633f6d38f8e8369c"
+    },
+    {
+      "status": "??",
+      "path": ".mdkg/work/test-493-verify-final-diff-remedies-and-native-git-custody-controls.md",
+      "custody": "attributable Goal86/83/84 closure, accepted follow-up planning and historical checkpoints",
+      "bytes": 3489,
+      "mode": 420,
+      "sha256": "33479e25cac5a67581dcc2ad7bb5c092c834d27bed74696a7ef3b9e7a2a18cb6"
+    }
+  ],
+  "excluded": [
+    {
+      "status": " M",
+      "path": ".mdkg/index/mdkg.sqlite",
+      "reason": "derived current index cache, retained unstaged; no restore or force-stage authority"
+    }
+  ],
+  "self_path": ".mdkg/artifacts/goal-86/closeout-commit-allowlist-20260930.json",
+  "self_hash_policy": "This manifest is explicitly staged and reviewed but cannot contain its own byte hash; its hash is independently verified against the staged blob before commit.",
+  "allowed_paths": [
+    ".mdkg/artifacts/goal-86/bug-47-macos-fd-path-feasibility.json",
+    ".mdkg/artifacts/goal-86/bug-47-recorded-0.5.2-source-assessment.json",
+    ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json",
+    ".mdkg/artifacts/goal-86/candidate-seal-20260930.json",
+    ".mdkg/artifacts/goal-86/closeout-commit-allowlist-20260930.json",
+    ".mdkg/artifacts/goal-86/current-audit-remediation-progress-20260929.json",
+    ".mdkg/artifacts/goal-86/current-finding-qualification-map.json",
+    ".mdkg/artifacts/goal-86/current-security-audit-20260929.json",
+    ".mdkg/artifacts/goal-86/filesystem-feasibility/native-primitive-probe.c",
+    ".mdkg/artifacts/goal-86/filesystem-feasibility/node-baseline-probe.cjs",
+    ".mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json",
+    ".mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json",
+    ".mdkg/artifacts/goal-86/final-installed-platform-qualification-20260930.json",
+    ".mdkg/artifacts/goal-86/final-package-gates-20260930.json",
+    ".mdkg/artifacts/goal-86/final-remedies-commit-allowlist-20260930.json",
+    ".mdkg/artifacts/goal-86/final-remedies-local-commit-20260930.json",
+    ".mdkg/artifacts/goal-86/final-remedies-local-verification-20260930.json",
+    ".mdkg/artifacts/goal-86/implementation-commit-allowlist-20260930.json",
+    ".mdkg/artifacts/goal-86/implementation-local-commit-20260930.json",
+    ".mdkg/artifacts/goal-86/independent-diff-review-20260930.json",
+    ".mdkg/artifacts/goal-86/local-closeout-20260930.json",
+    ".mdkg/artifacts/goal-86/node-portability/combined-installed-probe.cjs",
+    ".mdkg/artifacts/goal-86/node-portability/installed-qualification.json",
+    ".mdkg/artifacts/goal-86/node-portability/portable-source-progress.json",
+    ".mdkg/artifacts/goal-86/node-portability/receipt.json",
+    ".mdkg/artifacts/goal-86/node-portability/recovery-admission-installed-probe.cjs",
+    ".mdkg/artifacts/goal-86/node-portability/recovery-admission-worker.cjs",
+    ".mdkg/artifacts/goal-86/node-portability/recovery-installed-probe.cjs",
+    ".mdkg/artifacts/goal-86/node-portability/recovery-qualification.json",
+    ".mdkg/artifacts/goal-86/node-portability/runtime-installed-probe.cjs",
+    ".mdkg/artifacts/goal-86/node-portability/runtime-qualification.json",
+    ".mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+    ".mdkg/artifacts/goal-86/package-closeout-custody.json",
+    ".mdkg/artifacts/goal-86/package-closeout-progress-receipt.json",
+    ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+    ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.package-inputs-dec100.json",
+    ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.qualification-inputs-bug61.json",
+    ".mdkg/artifacts/goal-86/private/candidate-0.6.0-b5497c5f5e5f022e.inputs.json",
+    ".mdkg/artifacts/goal-86/private/candidate-0.6.0-b5497c5f5e5f022e.qualification-inputs.json",
+    ".mdkg/artifacts/goal-86/private/test-487-docker-capsule-manifest.json",
+    ".mdkg/artifacts/goal-86/private/test-487-docker-scale-retry-capsule-manifest.json",
+    ".mdkg/artifacts/goal-86/private/test-487-docker-supplement-capsule-manifest.json",
+    ".mdkg/artifacts/goal-86/private/test-487-linux-arm64-capsule-manifest.json",
+    ".mdkg/artifacts/goal-86/requirement-coverage.json",
+    ".mdkg/artifacts/goal-86/successor-amd64-partial-reuse-20260930.json",
+    ".mdkg/artifacts/goal-86/successor-docker-cleanup-20260930.json",
+    ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+    ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json",
+    ".mdkg/artifacts/goal-86/successor-package-gates-20260930.json",
+    ".mdkg/artifacts/goal-86/successor-private-preview-20260930.json",
+    ".mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json",
+    ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-consumer-smoke-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-db-smoke-caller-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-git-boundary-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-graph-smoke-caller-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-local-commit.json",
+    ".mdkg/artifacts/goal-86/task-838-mcp-smoke-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-six-smoke-caller-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-sync-smoke-caller-progress.json",
+    ".mdkg/artifacts/goal-86/task-838-tail-smoke-progress.json",
+    ".mdkg/artifacts/goal-86/task-839-release-guidance.json",
+    ".mdkg/artifacts/goal-86/task-843-final-qualification.json",
+    ".mdkg/artifacts/goal-86/task-843-isolated-package-gates.cjs",
+    ".mdkg/artifacts/goal-86/task-843-isolated-package-gates.json",
+    ".mdkg/artifacts/goal-86/task-843-local-commit.json",
+    ".mdkg/artifacts/goal-86/task-843-package-profile-qualification.json",
+    ".mdkg/artifacts/goal-86/task-843-qualification-inputs.json",
+    ".mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+    ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+    ".mdkg/artifacts/goal-86/test-478-indirection-qualification.cjs",
+    ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+    ".mdkg/artifacts/goal-86/test-478-installed-collaboration.cjs",
+    ".mdkg/artifacts/goal-86/test-478-installed-worker.cjs",
+    ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+    ".mdkg/artifacts/goal-86/test-479-installed-containment.cjs",
+    ".mdkg/artifacts/goal-86/test-479-installed-ownership.cjs",
+    ".mdkg/artifacts/goal-86/test-479-installed-remedies.cjs",
+    ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+    ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+    ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+    ".mdkg/artifacts/goal-86/test-479-readonly-filesystem.cjs",
+    ".mdkg/artifacts/goal-86/test-479-readonly-harness-attempt.json",
+    ".mdkg/artifacts/goal-86/test-479-readonly-restricted-attempt.json",
+    ".mdkg/artifacts/goal-86/test-479-real-readonly-qualification.json",
+    ".mdkg/artifacts/goal-86/test-479-state-admission.cjs",
+    ".mdkg/artifacts/goal-86/test-480-final-private-preview-20260930.json",
+    ".mdkg/artifacts/goal-86/test-480-historical-reference-disposition.json",
+    ".mdkg/artifacts/goal-86/test-480-installed-compatibility.cjs",
+    ".mdkg/artifacts/goal-86/test-480-installed-work-smokes.cjs",
+    ".mdkg/artifacts/goal-86/test-480-local-compatibility-qualification.json",
+    ".mdkg/artifacts/goal-86/test-480-local-work-qualification.json",
+    ".mdkg/artifacts/goal-86/test-480-old-client-harness-attempt.json",
+    ".mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json",
+    ".mdkg/artifacts/goal-86/test-480-old-client-runtime.cjs",
+    ".mdkg/artifacts/goal-86/test-480-private-preview-qualification.json",
+    ".mdkg/artifacts/goal-86/test-480-private-preview.cjs",
+    ".mdkg/artifacts/goal-86/test-481-installed-scale.cjs",
+    ".mdkg/artifacts/goal-86/test-481-local-scale-qualification.json",
+    ".mdkg/artifacts/goal-86/test-483-installed-behavior.cjs",
+    ".mdkg/artifacts/goal-86/test-483-installed-pack-controls.cjs",
+    ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+    ".mdkg/artifacts/goal-86/test-483-local-pack-controls-qualification.json",
+    ".mdkg/artifacts/goal-86/test-484-installed-generic.cjs",
+    ".mdkg/artifacts/goal-86/test-484-local-generic-qualification.json",
+    ".mdkg/artifacts/goal-86/test-486-local-option-qualification.json",
+    ".mdkg/artifacts/goal-86/test-487-cleanup.json",
+    ".mdkg/artifacts/goal-86/test-487-condense-evidence.cjs",
+    ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-amd64-runtime.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-disposition.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-partial.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-retry.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-amd64-supplement.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-arm64-runtime.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-arm64-scale.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-arm64-supplement.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-capsule.cjs",
+    ".mdkg/artifacts/goal-86/test-487-docker-downloads.cjs",
+    ".mdkg/artifacts/goal-86/test-487-docker-execution-identities.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-isolation.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-readonly.cjs",
+    ".mdkg/artifacts/goal-86/test-487-docker-runner-controls.cjs",
+    ".mdkg/artifacts/goal-86/test-487-docker-runner-controls.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-runner.cjs",
+    ".mdkg/artifacts/goal-86/test-487-docker-runtime-downloads.json",
+    ".mdkg/artifacts/goal-86/test-487-docker-runtime.Dockerfile",
+    ".mdkg/artifacts/goal-86/test-487-docker-scope.md",
+    ".mdkg/artifacts/goal-86/test-487-docker-supplement.Dockerfile",
+    ".mdkg/artifacts/goal-86/test-487-docker.Dockerfile",
+    ".mdkg/artifacts/goal-86/test-487-final-executor-identities.json",
+    ".mdkg/artifacts/goal-86/test-487-installed-capability-umask.cjs",
+    ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+    ".mdkg/artifacts/goal-86/test-487-linux-capsule.cjs",
+    ".mdkg/artifacts/goal-86/test-487-linux-runner.cjs",
+    ".mdkg/artifacts/goal-86/test-487-local-commit.json",
+    ".mdkg/artifacts/goal-86/test-487-local-linux-scope.md",
+    ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+    ".mdkg/artifacts/goal-86/test-487-macos-capability-umask.json",
+    ".mdkg/design/dec-100-bound-0-6-0-acceptance-to-the-package-and-local-platforms.md",
+    ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+    ".mdkg/design/dec-98-keep-0-6-0-portable-in-node-and-defer-unresolved-filesystem-hardening.md",
+    ".mdkg/design/dec-99-retain-local-linux-qualification-and-require-fresh-current-source-security-accep.md",
+    ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+    ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+    ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+    ".mdkg/work/bug-61-qualification-git-admission-rejects-valid-submodule-linked-worktrees.md",
+    ".mdkg/work/bug-62-bind-public-archive-exports-to-exact-owned-payload-visibility.md",
+    ".mdkg/work/bug-63-protect-native-git-administration-from-generated-graph-outputs.md",
+    ".mdkg/work/bug-64-reject-multiply-linked-event-append-targets.md",
+    ".mdkg/work/bug-65-share-exact-frontmatter-boundaries-across-graph-rewriters.md",
+    ".mdkg/work/bug-66-bound-and-contain-diagnostic-file-reads-and-storage-walks.md",
+    ".mdkg/work/bug-67-preserve-whole-identifiers-during-legacy-duplicate-id-repair.md",
+    ".mdkg/work/bug-68-resolve-workflow-evidence-using-its-owning-workspace.md",
+    ".mdkg/work/bug-69-correct-generated-command-mutation-and-write-path-contracts.md",
+    ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+    ".mdkg/work/bug-70-redact-complete-userinfo-for-non-special-remote-descriptors.md",
+    ".mdkg/work/bug-71-apply-source-budgets-before-pending-skill-registry-authoring.md",
+    ".mdkg/work/bug-72-protect-native-git-state-from-configured-db-snapshot-outputs.md",
+    ".mdkg/work/bug-73-isolate-ordinary-and-coverage-test-workers-from-ambient-git-routing.md",
+    ".mdkg/work/chk-570-accept-mdkg-0-6-0-full-local-qualification.md",
+    ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md",
+    ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md",
+    ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md",
+    ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md",
+    ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md",
+    ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md",
+    ".mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md",
+    ".mdkg/work/chk-644-isolate-six-installed-smoke-callers-and-verify-artifacts-before-installation.md",
+    ".mdkg/work/chk-645-isolate-installed-db-and-sqlite-fixtures-from-ambient-git-state.md",
+    ".mdkg/work/chk-646-isolate-installed-graph-workflow-fixtures-and-verify-supported-routing-refusals.md",
+    ".mdkg/work/chk-647-isolate-synchronous-installed-smoke-callers-and-preserve-diagnostic-evidence.md",
+    ".mdkg/work/chk-648-qualify-git-boundary-smoke-across-three-local-node-runtimes.md",
+    ".mdkg/work/chk-649-qualify-remaining-release-smoke-callers-and-retain-intermediate-candidate-custod.md",
+    ".mdkg/work/chk-650-verify-descriptor-backed-sqlite-observation-under-local-node-runtimes.md",
+    ".mdkg/work/chk-651-bound-local-filesystem-feasibility-and-fail-closed-linux-ci-stub.md",
+    ".mdkg/work/chk-652-defer-unresolved-filesystem-hardening-and-ground-node-only-portability-continuat.md",
+    ".mdkg/work/chk-653-implement-portable-sqlite-observation-and-align-the-node-runtime-contract.md",
+    ".mdkg/work/chk-654-implement-portable-operator-confirmed-graph-recovery-with-exact-evidence.md",
+    ".mdkg/work/chk-655-qualify-portable-node-sqlite-recovery-and-native-linked-worktrees-locally.md",
+    ".mdkg/work/chk-656-correct-release-critical-guidance-and-verify-installed-command-discovery.md",
+    ".mdkg/work/chk-657-bind-installed-cli-option-qualification-to-owned-fixtures-and-the-release-matrix.md",
+    ".mdkg/work/chk-658-qualify-retained-candidate-initialization-and-real-published-upgrades-locally.md",
+    ".mdkg/work/chk-659-qualify-installed-concurrent-worktrees-and-reviewed-native-integration-locally.md",
+    ".mdkg/work/chk-660-qualify-submodule-linked-worktrees-and-sampled-incomplete-journal-refusals.md",
+    ".mdkg/work/chk-661-qualify-installed-transport-authority-and-sampled-recovery-admission.md",
+    ".mdkg/work/chk-662-record-local-linux-installed-candidate-transport-and-recovery-proof.md",
+    ".mdkg/work/chk-663-record-bounded-package-only-pre-publish-enhancement-and-remaining-evidence.md",
+    ".mdkg/work/chk-664-qualify-package-only-gates-and-exact-retained-candidate-admission.md",
+    ".mdkg/work/chk-665-record-retained-candidate-installed-qualification-and-remaining-platform-accepta.md",
+    ".mdkg/work/chk-666-qualify-local-ubuntu-platform-families-and-preserve-bounded-scale-retry-evidence.md",
+    ".mdkg/work/chk-667-capture-current-source-security-audit-and-qualified-blocker-intake.md",
+    ".mdkg/work/chk-668-verify-final-package-gates-and-preserve-remaining-security-and-seal-requirements.md",
+    ".mdkg/work/chk-669-verify-bounded-final-diff-remedies-before-successor-qualification.md",
+    ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md",
+    ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md",
+    ".mdkg/work/epic-258-qualify-deferred-website-and-documentation-release-surfaces.md",
+    ".mdkg/work/goal-83-audit-and-locally-qualify-mdkg-0-6-0.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+    ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+    ".mdkg/work/goal-87-resolve-deferred-filesystem-bugs-and-harden-portable-mdkg-operations.md",
+    ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+    ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+    ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+    ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+    ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md",
+    ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+    ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md",
+    ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+    ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+    ".mdkg/work/task-843-separate-package-release-gates-and-admit-retained-candidate-bytes.md",
+    ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+    ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+    ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+    ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+    ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+    ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+    ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+    ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+    ".mdkg/work/test-485-git-inspection-preserves-status-provenance-and-credential-boundaries.md",
+    ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+    ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+    ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+    ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+    ".mdkg/work/test-490-verify-package-gate-membership-and-retained-artifact-custody.md",
+    ".mdkg/work/test-491-verify-current-audit-remedies-and-installed-boundary-controls.md",
+    ".mdkg/work/test-492-verify-generated-command-safety-contracts-against-real-effects.md",
+    ".mdkg/work/test-493-verify-final-diff-remedies-and-native-git-custody-controls.md"
+  ],
+  "authority": "local explicit-path commit only; no remote/publication action",
+  "intentionally_untracked": [
+    "derived SQLite cache",
+    "ignored private tarballs",
+    "plugin-owned raw security reports",
+    "local raw diagnostic logs"
+  ],
+  "totals": {
+    "paths": 235,
+    "hashed_paths": 234,
+    "bytes_excluding_self": 4842689
+  }
+}
+

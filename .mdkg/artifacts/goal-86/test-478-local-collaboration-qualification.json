@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-test478-local-installed-collaboration-qualification",
+  "goal_qid": "root:goal-86",
+  "work_qid": "root:test-478",
+  "checkpoint_qid": "root:chk-659",
+  "recorded_at": "2026-09-28T18:36:19.101Z",
+  "status": "LOCAL_INTERMEDIATE_PASS_NOT_RELEASE_READY",
+  "authority": {
+    "owner": "mdkg-project-agent",
+    "contract": "Goal86 Run and Dec98; supported task claim; one writer; local-only installed qualification and mdkg evidence",
+    "persistent_lease_acquired": false,
+    "canonical_git_mutation": false,
+    "remote_actions": false,
+    "blocked_context_access": false,
+    "skill_candidates": []
+  },
+  "baseline": {
+    "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "branch": "main",
+    "cached_upstream": "origin/main",
+    "ahead": 69,
+    "behind": 0,
+    "remote_verified": false,
+    "dirty_paths": 162,
+    "staged_paths": [],
+    "protected_sha256": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+    }
+  },
+  "candidate": {
+    "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+    "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "bytes": 536766,
+    "retained": true,
+    "sealed": false,
+    "input_capture": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+    "input_capture_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+    "source_inputs_sha256": "d9b9f29233b9727fd7a5b0d5f8bb43fd4afc589eae6e6b6b9c89df32b9e8369a",
+    "source_input_file_count": 273,
+    "package_inputs_changed": false
+  },
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "drivers": [
+    {
+      "file": ".mdkg/artifacts/goal-86/test-478-installed-collaboration.cjs",
+      "sha256": "305eb0bdec0ffc6ade3f47d96c03b6223c7e5413211e8fc461e6690ce92492de"
+    },
+    {
+      "file": ".mdkg/artifacts/goal-86/test-478-installed-worker.cjs",
+      "sha256": "8688b3a9209e28b6e72e15485ecd334fdb7df2270df1e972d6ec10a1f2c411db"
+    }
+  ],
+  "selection": {
+    "command": "MDKG_TEST478_FAMILY=all|linked MDKG_EXPECTED_CANDIDATE_SHA256=<candidate.sha256> MDKG_REAL_NPM=<local npm-cli.js> node .mdkg/artifacts/goal-86/test-478-installed-collaboration.cjs",
+    "first_run": "all",
+    "corrected_runs": "linked",
+    "unchanged_completed_families_reused": true,
+    "full_suite_or_release_ladder": false,
+    "reason": "No package input changed. Corrected bounded harness setup and expected-diagnostic/replay usage; repeat only affected linked-worktree family."
+  },
+  "existing_families": [
+    {
+      "name": "existing-installed-identity-collaboration",
+      "duration_ms": 35697.162583,
+      "status": "pass",
+      "local_candidate_before_after_match": true
+    },
+    {
+      "name": "existing-installed-git-observation",
+      "duration_ms": 160310.209209,
+      "cases": 288,
+      "topologies": [
+        "standalone",
+        "worktrees",
+        "submodule",
+        "gitdir"
+      ],
+      "status": "pass",
+      "local_candidate_before_after_match": true
+    }
+  ],
+  "initial_diagnostic_limitation": "Initial combined output was tool-truncated; completed-family summaries retained, no claim of a retained full observation ledger.",
+  "harness_corrections": [
+    {
+      "result": "fixture setup failure",
+      "diagnostic": "Fresh linked worktree fixture called db migrate before db init; runtime directory absent. Corrected fixture initialization; no product change.",
+      "retained_fixture": "/private/tmp/mdkg-collaboration-OaqOcy"
+    },
+    {
+      "kind": "test478-local-installed-collaboration-failure",
+      "fixture": "/private/tmp/mdkg-collaboration-r64Lvh",
+      "message": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /unmerged|unresolved|conflict/i. Input:",
+      "result": "fixture expected-diagnostic failure",
+      "remedy": "Assert invalid config refusal, resolve only reviewed working config bytes without staging, then independently assert unresolved Git-stage refusal; both inventory-preserving."
+    },
+    {
+      "kind": "test478-local-installed-collaboration-failure",
+      "fixture": "/private/tmp/mdkg-collaboration-gM8Qgu",
+      "message": "Error: /private/tmp/mdkg-collaboration-gM8Qgu/installed/node_modules/mdkg/dist/cli.js graph reconcile --ancestor 109ec29dad5cf01d183cd04bc69ed3c1f6621b66 --incoming 3b6260c5bf0296d36015ad0894c3af23fdae0502 --decisions decision.json --json failed with 1\nSTDOUT:\nUsage:\n  mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]\n  mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]\n  mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]\n  mdkg graph refs <id-or-qid> [--ws <alias>] [--json]",
+      "result": "fixture obsolete-decision failure",
+      "remedy": "Assert stale/unnecessary decision refusal after native integration, then use a fresh no-decision replay preview/apply."
+    }
+  ],
+  "linked_worktree_family": {
+    "status": "pass",
+    "selected_family": "linked",
+    "duration_ms": 28743.40475,
+    "graph_id": "386b2527-4976-4af4-af93-89bc8a5d786c",
+    "refs": {
+      "ancestor": "1d1ab5f6894872f6aca857eaf68ffc68a38747c7",
+      "target": "d789989284e053f946c3b693ac13e46803f28692",
+      "incoming": "a82a4cfb4cfab3105556a79d56038d305302fedc",
+      "newer_incoming": "147485af276efecff26749267e8fc6de78fd8cdd",
+      "semantic_commit": "b1243c56dff5fb32123ef624b2d39f98cc6ff3fa",
+      "merge_commit": "949b37083ffba3d4bdd87ed93fbfde694bda15e1"
+    },
+    "simultaneous_creation": true,
+    "same_identity_parallel_edits": true,
+    "alias_collision": "task-2",
+    "distinct_stable_identities": [
+      "mdkg://386b2527-4976-4af4-af93-89bc8a5d786c/c6530c97-0fef-4a61-8318-401a66b1dd4e",
+      "mdkg://386b2527-4976-4af4-af93-89bc8a5d786c/c2bd7203-9d46-4ca7-95fb-e3dcf7fc29db"
+    ],
+    "same_checkout_refused": true,
+    "peer_checkout_succeeded": true,
+    "distinct_checkout_state": [
+      ".mdkg/index/mdkg.sqlite",
+      ".mdkg/state/selected-goal.json",
+      ".mdkg/db/runtime/project.sqlite"
+    ],
+    "read_matrix": {
+      "cases": 60,
+      "backends": [
+        "json",
+        "sqlite"
+      ],
+      "cache_states": [
+        "warm",
+        "cold"
+      ],
+      "checkouts": [
+        "left",
+        "right"
+      ],
+      "commands": [
+        "show",
+        "list",
+        "search",
+        "validate",
+        "git"
+      ],
+      "explicit_root": true,
+      "caller_optional_locks": "1",
+      "full_fixture_and_both_indexes_preserved": true
+    },
+    "pinned_input_stability": true,
+    "advanced_symbolic_ref_refused": true,
+    "two_actual_sigkill_journals": true,
+    "cross_checkout_approval_refused": true,
+    "peer_journal_lock_and_index_preserved": true,
+    "unknown_lock_file_refused_without_cleanup": true,
+    "unresolved_config_refused_without_writes": true,
+    "unresolved_git_stages_refused": true,
+    "native_conflicts": [
+      ".mdkg/config.json",
+      ".mdkg/work/task-1-shared-worktree-ancestor.md",
+      ".mdkg/work/task-2-parallel-authored-task.md",
+      "src/features.cjs"
+    ],
+    "graph_resolution_paths": [
+      ".mdkg/work/goal-1-checkout-local-selection.md",
+      ".mdkg/work/task-1-shared-worktree-ancestor.md",
+      ".mdkg/work/task-2-parallel-authored-task.md",
+      ".mdkg/work/task-3-active-left-writer.md",
+      ".mdkg/work/task-4-cross-linked-contribution.md",
+      ".mdkg/work/task-5-parallel-authored-task.md",
+      ".mdkg/work/task-6-independent-right-writer.md",
+      ".mdkg/work/task-3-independent-right-writer.md",
+      ".mdkg/graph.json",
+      ".mdkg/identity/acceptances/a266c615784cec1eae21c27a0b06b8bd2ce4424d767f4356e0a9fce1ef92fcbc.json",
+      ".mdkg/identity/reconciliations/a266c615784cec1eae21c27a0b06b8bd2ce4424d767f4356e0a9fce1ef92fcbc.json"
+    ],
+    "configuration_resolution": "explicit incoming configuration; not semantic graph overwrite",
+    "merged_source_sha256": "254b1ad897516edb69d907d5d438bf7aa5d01c90bd7e30863d2a191e199d2d23",
+    "staged_merge_paths": [
+      ".mdkg/config.json",
+      "external-receipt.json",
+      "incoming-only.txt",
+      "src/features.cjs"
+    ],
+    "ancestry_and_replay": true,
+    "stale_decision_reuse_refused": true,
+    "external_receipt_sha256": "f6143a58e410572193ed3609f2e7f979b0450778ae26852bf294fa9479c85440",
+    "native_retention_lock_is_not_writer_lease": true,
+    "artifact_verification": {
+      "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "bytes": 536766
+    },
+    "capture_verification": {
+      "before_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+      "after_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+      "bytes": 46932
+    }
+  },
+  "independent_review": {
+    "scope": "Bounded source-only review of private qualification driver and worker, not a security scan or release clearance",
+    "reviewed_driver_sha256": "305eb0bdec0ffc6ade3f47d96c03b6223c7e5413211e8fc461e6690ce92492de",
+    "reviewed_worker_sha256": "8688b3a9209e28b6e72e15485ecd334fdb7df2270df1e972d6ec10a1f2c411db",
+    "findings": [
+      "Fresh worktrees require db init before migrate.",
+      "Source-byte receipt must hash file bytes, not JSON-serialized string."
+    ],
+    "disposition": "Both corrected; final static readback found no additional concrete correctness/custody issue. Runtime corrections and coverage limits reviewed separately."
+  },
+  "cleanup": {
+    "successful_run": {
+      "removed": true,
+      "root": "/private/tmp/mdkg-collaboration-iUc2zz"
+    },
+    "failed_runs": {
+      "removed": [
+        "/private/tmp/mdkg-collaboration-OaqOcy",
+        "/private/tmp/mdkg-collaboration-r64Lvh",
+        "/private/tmp/mdkg-collaboration-gM8Qgu"
+      ],
+      "scope": "only terminal supervised owned synthetic fixtures; diagnostics retained; reproducible, not moved to trash"
+    },
+    "quiescence": "All fixture sessions terminated; supervisor-controlled children returned. Read-only process inspection found no matching remaining processes before exact failed-root cleanup.",
+    "process_inspection": "Initial sandbox ps was denied; explicit read-only inspection permission was granted. No source, provider, network or global configuration authority was used."
+  },
+  "limitations": [
+    "Newer incoming source-only commit remains intentionally unmerged; old reviewed incoming was pinned.",
+    "Submodule-backed linked worktree mutation is not inferred from observational submodule coverage.",
+    "Unknown lock contents refusal does not prove malformed/incomplete-journal refusal.",
+    "Existing 288-case Git-observation family passed before linked fixture corrections; it was not rerun by selected_family=linked. Initial full output was tool-truncated.",
+    "macOS arm64 and Node24.18.0 only; Linux and final supported-platform matrix remain unverified; Windows remains unqualified.",
+    "Candidate retained, not sealed. Test478 remains progress; final artifact/security/full-ladder gates remain open."
+  ],
+  "dispositions": {
+    "goal86": "active NOT_READY",
+    "goal85": "paused; publication requires separate authority",
+    "goal87": "paused and unclaimed",
+    "bug46": "DEFERRED / UNRESOLVED, not accepted/fixed",
+    "bug47": "DEFERRED / UNRESOLVED, not accepted/fixed"
+  },
+  "validation": {
+    "full_graph": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 3,
+      "warning_classification": "three preserved stale imported-subgraph warnings; refresh withheld"
+    },
+    "changed_graph": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite_index": {
+      "exit_code": 0,
+      "checks_passed": 5,
+      "failures": 0
+    },
+    "driver_syntax": "pass",
+    "evidence_json": "pass",
+    "git_diff_check": "pass",
+    "goal_evaluate": "report-only, not a readiness gate or scripts execution",
+    "full_suite_and_ladder": "not rerun for private fixture/evidence-only changes; Task829 final gates remain"
+  },
+  "final_bookend": {
+    "at": "2026-09-28T18:39:49.608Z",
+    "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "branch": "main",
+    "cached_divergence": "69\t0",
+    "remote_verified": false,
+    "dirty_paths": 167,
+    "staged_paths": [],
+    "local_commits_created": [],
+    "locks": [],
+    "protected_sha256": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+    },
+    "source_input_mismatches": [],
+    "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "input_capture_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+    "scope_counts": {
+      "total": 48,
+      "done": 32,
+      "backlog": 12,
+      "progress": 4
+    },
+    "owned_changed_or_newly_dirty_paths": [
+      ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      ".mdkg/artifacts/goal-86/test-478-installed-collaboration.cjs",
+      ".mdkg/artifacts/goal-86/test-478-installed-worker.cjs",
+      ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+      ".mdkg/index/mdkg.sqlite",
+      ".mdkg/work/chk-659-qualify-installed-concurrent-worktrees-and-reviewed-native-integration-locally.md",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md"
+    ],
+    "other_entry_dirty_hashes_preserved": true,
+    "selected_goal": "root:goal-73 unchanged and achieved; not execution authority",
+    "ownership": "Goal86 active_node Test478 remains in progress; no persistent lease acquired or transient lock held",
+    "next": "Complete remaining Test478 incomplete-journal and submodule-backed collaboration cases, then Test479 and remaining final qualification gates."
+  }
+}

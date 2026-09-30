@@ -1,0 +1,71 @@
+{
+  "kind": "goal86-bug46-bug47-local-filesystem-feasibility",
+  "version": 1,
+  "recorded_at": "2026-09-28",
+  "outcome": "OS_PRIMITIVES_FEASIBLE_PRODUCT_REMEDIATION_NOT_IMPLEMENTED",
+  "scope": "Synthetic, owned local experiments for Bug46 metadata preservation and Bug47 ancestor-swap containment, plus an unqualified local GitHub Actions gate stub. This is not an installed-package, cross-principal, or release qualification result.",
+  "source": {
+    "branch": "main",
+    "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "filesystem_authority_sha256": "826cdb2f9e57b5e224bfe1c06ca1ea46820b9642810ae7b2b472f050dcea606e",
+    "atomic_sha256": "27f0961e2ccd09d9d9b21e884024a8bbc54fe58eb3f725160a7e66417c033150",
+    "built_filesystem_authority_sha256": "a3e26550bec29d66d47d2266a5418f981ae8f925d91c9d57bb5ccb48251ec284"
+  },
+  "reproducible_sources": {
+    "node_baseline": {
+      "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/node-baseline-probe.cjs",
+      "sha256": "87855e17dbc519d89efc73e1515ddf63389dd65875943ec7abf987b6ffa00936",
+      "command": "node .mdkg/artifacts/goal-86/filesystem-feasibility/node-baseline-probe.cjs dist/core/filesystem_authority.js"
+    },
+    "native_primitive": {
+      "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/native-primitive-probe.c",
+      "sha256": "ffb8f612f6645ad361ad776d1bc3ffcc30bd3343031a94133fb93ae5ed0089de",
+      "classification": "Experimental C fixture only; not an mdkg runtime dependency or production patch."
+    }
+  },
+  "macos": {
+    "environment": "macOS 26.4 arm64, Node v26.0.0; owned temporary fixtures",
+    "baseline": {
+      "node_copy_file_mode_0600": "0600 in this control",
+      "node_copy_file_acl": "A source 0644 file with a named nobody deny-read ACL copied to 0644 without that ACL.",
+      "injected_ancestor_swap": "After validation and before sink use, read returned outside bytes, append modified an outside sentinel, and remove deleted an outside sentinel. The originally contained item remained inside the moved directory.",
+      "qualification": "Deterministic monkeypatched sink interleaving, not an independently timed cross-process exploit."
+    },
+    "native_primitive": {
+      "compiler": "clang -Wall -Wextra -Werror -O2",
+      "binary_sha256": "bcdbffdb5d31fa735339fab53de0a018349cb4a0ac94a81344412a09c9ac9137",
+      "descriptor_relative_result": "Held O_DIRECTORY|O_NOFOLLOW directory descriptors plus openat/renameat/unlinkat kept read, create, append, replacement, and removal inside the original directory after its pathname was replaced with a symlink; outside sentinel unchanged.",
+      "metadata_result": "fstat/fchown/fchmod/acl_get_fd/acl_set_fd established equal owner, group, mode, and ACL before content write in 0644 named-ACL and 0600 no-ACL fixtures. The 0600 control used a differing group."
+    }
+  },
+  "ubuntu": {
+    "environment": "Isolated local Lima Apple VZ VM, Ubuntu 24.04.4 aarch64, ext4, no host mounts; guest user uid 501",
+    "image_sha256": "6a61b967ba4a27dd1966f835a67643073ed55c2860ce3dc1cb0517282e6b8bec",
+    "probe_source_sha256": "ffb8f612f6645ad361ad776d1bc3ffcc30bd3343031a94133fb93ae5ed0089de",
+    "binary_sha256": "12b5699763695e278dae7acebb5f66c454e86688b8f31866fdbf849232239dbd",
+    "descriptor_relative_result": "The same five operations stayed inside the held directory after an ancestor symlink swap; outside sentinel unchanged.",
+    "metadata_result": "A 0644 POSIX ACL fixture with u:nobody:--- and a 0600 no-extra-ACL fixture matched mode, owner, group, and ACL before write.",
+    "custody": "Only the disposable guest received gcc, libacl1-dev, and acl packages. The scoped VM was stopped and deleted after results were captured; the pre-existing unrelated Lima instance was untouched. The exact owned host scratch tree was removed after the probe sources were retained in this artifact directory."
+  },
+  "ci_stub": {
+    "test_ref": "root:test-487",
+    "manifest": "scripts/smoke-manifest.json",
+    "generator": "scripts/generate-ci-workflow.js",
+    "projection": ".github/workflows/release-readiness.yml",
+    "state": "UNQUALIFIED_FAIL_CLOSED",
+    "behavior": "Only an explicitly dispatched full tier would schedule Ubuntu 24.04 x64/ARM64 stub jobs; each exits 1. The aggregate requires their success. No hosted run was dispatched or credited."
+  },
+  "assessment": {
+    "bug_46": "Still blocked. Node copyFile mode behavior does not establish ACL or ownership preservation. A complete remedy must preserve applicable metadata before sensitive bytes and handle failures safely across both atomic writers and callers.",
+    "bug_47": "Still blocked. Descriptor-relative OS primitives are feasible on the two tested local ARM64 platforms, but mdkg has no qualified interface to them. All path sinks, callback-based callers, packaging, stale-plan behavior, and failure handling still require implementation and review.",
+    "test_487": "Unqualified. One local Ubuntu ARM64 primitive experiment does not substitute for exact installed-artifact macOS/Linux x64/ARM64 qualification.",
+    "release": "Goal86 and Goal85 acceptance gates unchanged; 0.6.0 is NOT_READY and unpublished."
+  },
+  "unverified": [
+    "No production mdkg filesystem fix, native addon or helper protocol.",
+    "No Linux x64 or other supported-runtime installed candidate test.",
+    "No cross-principal attack, ACL/ownership failure injection, reparse/symlink matrix, or complete callback sink audit.",
+    "No independent security diff review, full release ladder, final artifact seal, hosted GitHub Actions run, remote Git, provider, deployment, or publication action."
+  ],
+  "next_decision": "Choose and authorize the bounded native interface/distribution design, or explicitly revise the security/release scope. No silent waiver or mode-only/path-recheck substitute is justified by these probes."
+}

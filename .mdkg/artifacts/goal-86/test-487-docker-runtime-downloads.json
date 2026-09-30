@@ -1,0 +1,56 @@
+[
+  {
+    "kind": "official-node-runtime",
+    "version": "24.18.0",
+    "arch": "arm64",
+    "url": "https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-arm64.tar.xz",
+    "sha256": "58c9520501f6ae2b52d5b210444e24b9d0c029a58c5011b797bc1fe7105886f6",
+    "bytes": 30473480,
+    "checksum_manifest_sha256": "3927bab574a00ca0560c9583fe19655ba19603a1c5851414e4325d34ac50e469"
+  },
+  {
+    "kind": "official-node-runtime",
+    "version": "24.18.0",
+    "arch": "x64",
+    "url": "https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-x64.tar.xz",
+    "sha256": "55aa7153f9d88f28d765fcdad5ae6945b5c0f98a36881703817e4c450fa76742",
+    "bytes": 31511588,
+    "checksum_manifest_sha256": "3927bab574a00ca0560c9583fe19655ba19603a1c5851414e4325d34ac50e469"
+  },
+  {
+    "kind": "official-node-runtime",
+    "version": "24.15.0",
+    "arch": "arm64",
+    "url": "https://nodejs.org/download/release/v24.15.0/node-v24.15.0-linux-arm64.tar.xz",
+    "sha256": "f3d5a797b5d210ce8e2cb265544c8e482eaedcb8aa409a8b46da7e8595d0dda0",
+    "bytes": 30108656,
+    "checksum_manifest_sha256": "1e812945dee26c3e4ca41a8c0b582668ff2401ba0ae727a122300c0e8514edb0"
+  },
+  {
+    "kind": "official-node-runtime",
+    "version": "24.15.0",
+    "arch": "x64",
+    "url": "https://nodejs.org/download/release/v24.15.0/node-v24.15.0-linux-x64.tar.xz",
+    "sha256": "472655581fb851559730c48763e0c9d3bc25975c59d518003fc0849d3e4ba0f6",
+    "bytes": 31164460,
+    "checksum_manifest_sha256": "1e812945dee26c3e4ca41a8c0b582668ff2401ba0ae727a122300c0e8514edb0"
+  },
+  {
+    "kind": "official-node-runtime",
+    "version": "26.0.0",
+    "arch": "arm64",
+    "url": "https://nodejs.org/download/release/v26.0.0/node-v26.0.0-linux-arm64.tar.xz",
+    "sha256": "f0f94e55142149a4d34634dc3d7e103921d898512dd0cef995ecb62c5ebd3f29",
+    "bytes": 31819656,
+    "checksum_manifest_sha256": "d9ed90999491bdda1a4e0668a18c11554b149bae4ef6be02ecbf456c5dd173ae"
+  },
+  {
+    "kind": "official-node-runtime",
+    "version": "26.0.0",
+    "arch": "x64",
+    "url": "https://nodejs.org/download/release/v26.0.0/node-v26.0.0-linux-x64.tar.xz",
+    "sha256": "345d558514c62622b5c7d1f7b5f2a19c31ab1405d217df49f010c5ea8decc0f4",
+    "bytes": 32743500,
+    "checksum_manifest_sha256": "d9ed90999491bdda1a4e0668a18c11554b149bae4ef6be02ecbf456c5dd173ae"
+  }
+]

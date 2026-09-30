@@ -1,0 +1,868 @@
+{
+  "schema_version": 1,
+  "kind": "test478-local-installed-indirection-and-bug61-qualification",
+  "recorded_at": "2026-09-28T18:58:54.185Z",
+  "goal_qid": "root:goal-86",
+  "work_qids": [
+    "root:bug-61",
+    "root:test-478"
+  ],
+  "evidence_state": "current-intermediate",
+  "final_artifact_pass": false,
+  "readiness": "NOT_READY",
+  "scope": {
+    "owner": "mdkg-project-agent",
+    "allowed": "Bounded qualification helper/regression, private installed fixture, mdkg evidence and required projections; native Git actions only in owned disposable synthetic fixtures.",
+    "no_product_payload_change": true,
+    "no_canonical_git_mutation": true,
+    "no_remote_provider_publication": true,
+    "no_blocked_context_access": true
+  },
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "candidate": {
+    "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+    "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "bytes": 536766,
+    "sealed": false,
+    "repacked": false
+  },
+  "provenance": {
+    "original_capture": {
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+      "sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+      "preserved": true,
+      "now_differs_only_at": "scripts/qualification-git.js"
+    },
+    "amended_capture": {
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.qualification-inputs-bug61.json",
+      "sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+      "source_inputs_sha256": "e22daf7b38ceb8808198b5d59f555f8545dd5a29e2101d8582112b24499b1ae6",
+      "files": 273,
+      "qualification_delta": [
+        {
+          "path": "scripts/qualification-git.js",
+          "before_sha256": "284dff358217b7d82cba5e50f6ccc72df4eedcbeddfa9a01213186d4a920f2b0",
+          "after_sha256": "068a5de8d69d578424777f13f74e4ee47b10c1833f30e49dbf3fd0b9cc75920e",
+          "classification": "qualification-only, not npm payload"
+        }
+      ],
+      "additional_inputs": [
+        {
+          "path": "tests/qualification-git.test.mjs",
+          "sha256": "3fda554cd23ccc3847cc43b70970de025c3ec9113fbae2e715910a486f7a5804"
+        }
+      ]
+    },
+    "npm_payload": {
+      "entry_count": 234,
+      "file_manifest_sha256": "ed6670e25adfe9b117b40958dc1dcd8129c1f23180a7584c4644344c9e65d799",
+      "qualification_helper_absent": true,
+      "tests_absent": true
+    },
+    "drivers": [
+      {
+        "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.cjs",
+        "sha256": "b00e336f20bd60e805830a191b30992adefb1f2340c7644b4ba037ce40af5ca6"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-478-installed-worker.cjs",
+        "sha256": "8688b3a9209e28b6e72e15485ecd334fdb7df2270df1e972d6ec10a1f2c411db"
+      }
+    ]
+  },
+  "finding": {
+    "qid": "root:bug-61",
+    "classification": "Qualification infrastructure correctness; not an established shipped CLI defect",
+    "cause": "Common submodule core.worktree was resolved against the linked checkout metadata and required to equal that linked root.",
+    "remedy": "Bind common original checkout reciprocally, bind linked backpointer independently, and check checkout-local core.worktree separately; retain containment and executable/config refusals.",
+    "affected_version": "Current Task838 qualification helper; helper and regression are excluded from npm payload.",
+    "failing_before": {
+      "command": "node --test --test-name-pattern='submodule linked worktrees preserve' tests/qualification-git.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "duration_ms": 540.558875,
+      "diagnostic": "Git fixture core.worktree does not match its expected root"
+    }
+  },
+  "selected_validation": [
+    {
+      "command": "node --test tests/qualification-git.test.mjs",
+      "passed": 31,
+      "failed": 0,
+      "duration_ms": 7416.184083
+    },
+    {
+      "command": "node --test tests/qualification-git.test.mjs tests/qualification-smoke.test.mjs tests/qualification-fixture.test.mjs tests/qualification-artifact.test.mjs tests/qualification-output.test.mjs",
+      "passed": 124,
+      "failed": 0,
+      "duration_ms": 9004.485792,
+      "includes_direct_suite": true
+    },
+    {
+      "command": "MDKG_TEST478_TOPOLOGY=<ordinary|gitdir|submodule> MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca node .mdkg/artifacts/goal-86/test-478-indirection-qualification.cjs",
+      "families_passed": 3,
+      "failed": 0,
+      "reason": "Git admission helper changed; qualify actual composed metadata topologies and dependent recovery/integration.",
+      "full_repository_suite": "Deferred to Task829 final integrated gate; not rerun for this bounded non-shipping helper change."
+    }
+  ],
+  "failed_attempts": [
+    {
+      "fixture": "/private/tmp/mdkg-collaboration-YImngB",
+      "topology": "ordinary",
+      "exit": 1,
+      "classification": "private harness assertion",
+      "diagnostic": "Expected an already-applied Markdown operation at the chosen kill point; none existed.",
+      "correction": "Use common.path, explicitly bound in plan.input_files, for changed-authored-input refusal; rerun family."
+    },
+    {
+      "fixture": "/private/tmp/mdkg-collaboration-3HeXis",
+      "topology": "gitdir",
+      "exit": 1,
+      "classification": "private harness assertion",
+      "diagnostic": "Same first-write assumption.",
+      "correction": "Same exact bound-input control; rerun family."
+    },
+    {
+      "fixture": "/private/tmp/mdkg-collaboration-y0OPzR",
+      "topology": "submodule",
+      "exit": 1,
+      "classification": "Bug61 qualification helper",
+      "diagnostic": "Git fixture core.worktree does not match its expected root",
+      "correction": "Bounded helper patch and new source-input amendment; rerun family."
+    }
+  ],
+  "independent_review": {
+    "reviewer": "bounded read-only test478 coverage scout",
+    "method": "Current source and fixture readback only; no tests or writes by reviewer.",
+    "finding": "Negative rollback had reused a resume-mode approval.",
+    "correction": "Capture each mode's original approval separately before injecting faults; requalify all three families.",
+    "outcome": "No remaining concrete correctness/custody defect evidenced in bounded patch; not security or final release acceptance.",
+    "reviewed_hashes": {
+      "helper": "068a5de8d69d578424777f13f74e4ee47b10c1833f30e49dbf3fd0b9cc75920e",
+      "regression": "3fda554cd23ccc3847cc43b70970de025c3ec9113fbae2e715910a486f7a5804",
+      "supplement": "b00e336f20bd60e805830a191b30992adefb1f2340c7644b4ba037ce40af5ca6"
+    }
+  },
+  "topologies": [
+    {
+      "topology": "ordinary",
+      "started_at": "2026-09-28T18:54:20.461Z",
+      "outcome": "pass",
+      "duration_ms": 37289.059167,
+      "observations": {
+        "count": 60,
+        "backends": [
+          "json",
+          "sqlite"
+        ],
+        "cache_states": [
+          "warm",
+          "cold"
+        ],
+        "checkouts": [
+          "left",
+          "right"
+        ],
+        "commands": [
+          "show",
+          "list",
+          "search",
+          "validate",
+          "git inspect"
+        ],
+        "explicit_root": true,
+        "caller_optional_locks": "1",
+        "whole_fixture_and_indexes_preserved": true
+      },
+      "proof": {
+        "topology": "ordinary",
+        "seed_gitdir": "linked/seed/.git",
+        "seed_git_marker": "directory",
+        "superproject_bookend": null,
+        "superproject_preserved": null,
+        "journal_refusals": [
+          {
+            "case": "truncated-journal-json",
+            "inspection": "nonzero-preserved",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "missing-mirrored-owner-epoch",
+            "inspection": "both-modes-not-ready",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "missing-journal-with-owner-lock",
+            "inspection": "nonzero-preserved",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "changed-authored-input",
+            "inspection": "both-modes-not-ready",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          }
+        ],
+        "graph_id": "a89215ab-e8fa-4941-804a-211290864b4c",
+        "ancestor": "5624a44c0456dc246c9068a89fdf97b7c65eda20",
+        "target": "6630d305eba3a483e6c93c19db4f2989764fc413",
+        "incoming": "84661151fc3ee29ce5c963722b91c6ee4b60534a",
+        "newer_incoming": "da90bc31e916d83ef9100fa140b5c7ae4898e23f",
+        "semantic_commit": "8bab1bf55428fdde12a8a59c823be0e07bd854b1",
+        "merge_commit": "bc35586ed31d058d2b7a8844e5c2881ae7a711dc",
+        "simultaneous_creation": true,
+        "same_identity_parallel_edits": true,
+        "alias_collision": "task-2",
+        "distinct_stable_identities": [
+          "mdkg://a89215ab-e8fa-4941-804a-211290864b4c/963d49e0-5284-4bb8-a5ad-f51b7cc39eec",
+          "mdkg://a89215ab-e8fa-4941-804a-211290864b4c/e04bcf4e-08a8-42b5-93af-ce6e77a1f1e7"
+        ],
+        "exclusion": {
+          "mode": "exclusion",
+          "same_checkout_refused": true,
+          "other_checkout_succeeded": true,
+          "owner": {
+            "action": "created",
+            "node": {
+              "workspace": "root",
+              "id": "task-3",
+              "qid": "root:task-3",
+              "path": ".mdkg/work/task-3-active-left-writer.md",
+              "type": "task",
+              "title": "Active left writer",
+              "identity": {
+                "graph_id": "a89215ab-e8fa-4941-804a-211290864b4c",
+                "node_id": "b5775105-c2a1-4e59-af78-c82b3dcfc34c"
+              },
+              "stable_ref": "mdkg://a89215ab-e8fa-4941-804a-211290864b4c/b5775105-c2a1-4e59-af78-c82b3dcfc34c",
+              "status": "backlog",
+              "priority": 9
+            }
+          },
+          "peer": {
+            "action": "created",
+            "node": {
+              "workspace": "root",
+              "id": "task-3",
+              "qid": "root:task-3",
+              "path": ".mdkg/work/task-3-independent-right-writer.md",
+              "type": "task",
+              "title": "Independent right writer",
+              "identity": {
+                "graph_id": "a89215ab-e8fa-4941-804a-211290864b4c",
+                "node_id": "c2d69430-fc43-4157-98bf-61039b4f7096"
+              },
+              "stable_ref": "mdkg://a89215ab-e8fa-4941-804a-211290864b4c/c2d69430-fc43-4157-98bf-61039b4f7096",
+              "status": "backlog",
+              "priority": 9
+            }
+          }
+        },
+        "local_states": [
+          ".mdkg/index/mdkg.sqlite",
+          ".mdkg/state/selected-goal.json",
+          ".mdkg/db/runtime/project.sqlite"
+        ],
+        "pinned_input_stability": true,
+        "advanced_symbolic_ref_refused": true,
+        "two_actual_sigkill_journals": true,
+        "cross_checkout_approval_refused": true,
+        "peer_journal_lock_and_index_preserved": true,
+        "unknown_lock_file_refused_without_cleanup": true,
+        "unresolved_git_stages_refused": true,
+        "native_conflicts": [
+          ".mdkg/config.json",
+          ".mdkg/work/task-1-shared-worktree-ancestor.md",
+          ".mdkg/work/task-2-parallel-authored-task.md",
+          "src/features.cjs"
+        ],
+        "graph_resolution_paths": [
+          ".mdkg/work/goal-1-checkout-local-selection.md",
+          ".mdkg/work/task-1-shared-worktree-ancestor.md",
+          ".mdkg/work/task-2-parallel-authored-task.md",
+          ".mdkg/work/task-3-active-left-writer.md",
+          ".mdkg/work/task-4-cross-linked-contribution.md",
+          ".mdkg/work/task-5-independent-right-writer.md",
+          ".mdkg/work/task-6-parallel-authored-task.md",
+          ".mdkg/work/task-3-independent-right-writer.md",
+          ".mdkg/graph.json",
+          ".mdkg/identity/acceptances/2d5641f4f1767d3456530a3fcb54cb4b98971c59c0c89e5fefc1cbf8f44cb49e.json",
+          ".mdkg/identity/reconciliations/2d5641f4f1767d3456530a3fcb54cb4b98971c59c0c89e5fefc1cbf8f44cb49e.json"
+        ],
+        "configuration_resolution": "explicit incoming configuration; not semantic graph overwrite",
+        "merged_source_sha256": "254b1ad897516edb69d907d5d438bf7aa5d01c90bd7e30863d2a191e199d2d23",
+        "staged_merge_paths": [
+          ".mdkg/config.json",
+          "external-receipt.json",
+          "incoming-only.txt",
+          "src/features.cjs"
+        ],
+        "ancestry_and_replay": true,
+        "stale_decision_reuse_refused": true,
+        "external_receipt_sha256": "81c1d4acfd9744241714f630528a34ea0a6cee224ebb4c23fd81ad255517301c",
+        "native_retention_lock_is_not_writer_lease": true,
+        "limitations": [
+          "Newer incoming source-only commit remains intentionally unmerged; old reviewed incoming was pinned.",
+          "This is one explicit topology on macOS arm64; not recursive nested-submodule or cross-platform clearance."
+        ]
+      },
+      "artifact_verification": {
+        "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "bytes": 536766
+      },
+      "capture_verification": {
+        "before_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+        "after_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+        "bytes": 48166
+      },
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-collaboration-jo9IGH"
+      }
+    },
+    {
+      "topology": "gitdir",
+      "started_at": "2026-09-28T18:54:22.829Z",
+      "outcome": "pass",
+      "duration_ms": 36760.997624999996,
+      "observations": {
+        "count": 60,
+        "backends": [
+          "json",
+          "sqlite"
+        ],
+        "cache_states": [
+          "warm",
+          "cold"
+        ],
+        "checkouts": [
+          "left",
+          "right"
+        ],
+        "commands": [
+          "show",
+          "list",
+          "search",
+          "validate",
+          "git inspect"
+        ],
+        "explicit_root": true,
+        "caller_optional_locks": "1",
+        "whole_fixture_and_indexes_preserved": true
+      },
+      "proof": {
+        "topology": "gitdir",
+        "seed_gitdir": "linked/separate-metadata",
+        "seed_git_marker": "file",
+        "superproject_bookend": null,
+        "superproject_preserved": null,
+        "journal_refusals": [
+          {
+            "case": "truncated-journal-json",
+            "inspection": "nonzero-preserved",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "missing-mirrored-owner-epoch",
+            "inspection": "both-modes-not-ready",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "missing-journal-with-owner-lock",
+            "inspection": "nonzero-preserved",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "changed-authored-input",
+            "inspection": "both-modes-not-ready",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          }
+        ],
+        "graph_id": "50f02e2f-3010-4596-a4ac-e651ce400493",
+        "ancestor": "14d8677bbb9a574ecfa6924338924de614966471",
+        "target": "814438e8c249baa2f9da0ba06d22c45c30ac7121",
+        "incoming": "f344e4e719f7d14d6d8e0056076bc232519b554a",
+        "newer_incoming": "21ed738cffd86cdb25de4d37f8ee6ae10de11247",
+        "semantic_commit": "340165fdc2d9c250faf989192e0002786a532538",
+        "merge_commit": "f641d428f2575471146722b951855d3bda3283b6",
+        "simultaneous_creation": true,
+        "same_identity_parallel_edits": true,
+        "alias_collision": "task-2",
+        "distinct_stable_identities": [
+          "mdkg://50f02e2f-3010-4596-a4ac-e651ce400493/a37b4b25-3ca9-4e92-8941-3f2af1b83c9d",
+          "mdkg://50f02e2f-3010-4596-a4ac-e651ce400493/78caaf43-6b8a-4fa1-9bbf-1ea0d61159c5"
+        ],
+        "exclusion": {
+          "mode": "exclusion",
+          "same_checkout_refused": true,
+          "other_checkout_succeeded": true,
+          "owner": {
+            "action": "created",
+            "node": {
+              "workspace": "root",
+              "id": "task-3",
+              "qid": "root:task-3",
+              "path": ".mdkg/work/task-3-active-left-writer.md",
+              "type": "task",
+              "title": "Active left writer",
+              "identity": {
+                "graph_id": "50f02e2f-3010-4596-a4ac-e651ce400493",
+                "node_id": "54a0b7a3-90ef-4db7-b141-99355113c4e4"
+              },
+              "stable_ref": "mdkg://50f02e2f-3010-4596-a4ac-e651ce400493/54a0b7a3-90ef-4db7-b141-99355113c4e4",
+              "status": "backlog",
+              "priority": 9
+            }
+          },
+          "peer": {
+            "action": "created",
+            "node": {
+              "workspace": "root",
+              "id": "task-3",
+              "qid": "root:task-3",
+              "path": ".mdkg/work/task-3-independent-right-writer.md",
+              "type": "task",
+              "title": "Independent right writer",
+              "identity": {
+                "graph_id": "50f02e2f-3010-4596-a4ac-e651ce400493",
+                "node_id": "6e3c807b-1680-4ecf-9c87-ef8428787248"
+              },
+              "stable_ref": "mdkg://50f02e2f-3010-4596-a4ac-e651ce400493/6e3c807b-1680-4ecf-9c87-ef8428787248",
+              "status": "backlog",
+              "priority": 9
+            }
+          }
+        },
+        "local_states": [
+          ".mdkg/index/mdkg.sqlite",
+          ".mdkg/state/selected-goal.json",
+          ".mdkg/db/runtime/project.sqlite"
+        ],
+        "pinned_input_stability": true,
+        "advanced_symbolic_ref_refused": true,
+        "two_actual_sigkill_journals": true,
+        "cross_checkout_approval_refused": true,
+        "peer_journal_lock_and_index_preserved": true,
+        "unknown_lock_file_refused_without_cleanup": true,
+        "unresolved_git_stages_refused": true,
+        "native_conflicts": [
+          ".mdkg/config.json",
+          ".mdkg/work/task-1-shared-worktree-ancestor.md",
+          ".mdkg/work/task-2-parallel-authored-task.md",
+          "src/features.cjs"
+        ],
+        "graph_resolution_paths": [
+          ".mdkg/work/goal-1-checkout-local-selection.md",
+          ".mdkg/work/task-1-shared-worktree-ancestor.md",
+          ".mdkg/work/task-2-parallel-authored-task.md",
+          ".mdkg/work/task-3-active-left-writer.md",
+          ".mdkg/work/task-4-cross-linked-contribution.md",
+          ".mdkg/work/task-5-independent-right-writer.md",
+          ".mdkg/work/task-6-parallel-authored-task.md",
+          ".mdkg/work/task-3-independent-right-writer.md",
+          ".mdkg/graph.json",
+          ".mdkg/identity/acceptances/cf6352eb70be723c9a1366d07904a26b0e35602a6c38859372cdbfed5049dfa2.json",
+          ".mdkg/identity/reconciliations/cf6352eb70be723c9a1366d07904a26b0e35602a6c38859372cdbfed5049dfa2.json"
+        ],
+        "configuration_resolution": "explicit incoming configuration; not semantic graph overwrite",
+        "merged_source_sha256": "254b1ad897516edb69d907d5d438bf7aa5d01c90bd7e30863d2a191e199d2d23",
+        "staged_merge_paths": [
+          ".mdkg/config.json",
+          "external-receipt.json",
+          "incoming-only.txt",
+          "src/features.cjs"
+        ],
+        "ancestry_and_replay": true,
+        "stale_decision_reuse_refused": true,
+        "external_receipt_sha256": "9db09ab9382843186857974eb1322d3b59b2e7931aa5ebb158b6fd4e2d4411da",
+        "native_retention_lock_is_not_writer_lease": true,
+        "limitations": [
+          "Newer incoming source-only commit remains intentionally unmerged; old reviewed incoming was pinned.",
+          "This is one explicit topology on macOS arm64; not recursive nested-submodule or cross-platform clearance."
+        ]
+      },
+      "artifact_verification": {
+        "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "bytes": 536766
+      },
+      "capture_verification": {
+        "before_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+        "after_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+        "bytes": 48166
+      },
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-collaboration-V2R3E9"
+      }
+    },
+    {
+      "topology": "submodule",
+      "started_at": "2026-09-28T18:54:21.654Z",
+      "outcome": "pass",
+      "duration_ms": 37866.538083,
+      "observations": {
+        "count": 60,
+        "backends": [
+          "json",
+          "sqlite"
+        ],
+        "cache_states": [
+          "warm",
+          "cold"
+        ],
+        "checkouts": [
+          "left",
+          "right"
+        ],
+        "commands": [
+          "show",
+          "list",
+          "search",
+          "validate",
+          "git inspect"
+        ],
+        "explicit_root": true,
+        "caller_optional_locks": "1",
+        "whole_fixture_and_indexes_preserved": true
+      },
+      "proof": {
+        "topology": "submodule",
+        "seed_gitdir": "linked/superproject/.git/modules/projects/child",
+        "seed_git_marker": "file",
+        "superproject_bookend": {
+          "head": "7e4f2a7ec9340e34cce02441148cd7c6213a9e11",
+          "index_sha256": "e259d0350092f6f13cdab874b2a0aabc2673f2b3467498a8694ed998ba548bdb",
+          "modules_sha256": "7aba2a8646d05b8601eec4ca01cee1dbcadd2cafe8afb606272ea7c9ae156be5",
+          "marker_sha256": "0b8055a627901efecf356271881daed746ec8d737860bff936c732af63749483",
+          "staged_sha256": "37d451ed3cedd8c7a62603acd6700c06a85a38906b4ad1e12a2c3b411413d084"
+        },
+        "superproject_preserved": true,
+        "journal_refusals": [
+          {
+            "case": "truncated-journal-json",
+            "inspection": "nonzero-preserved",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "missing-mirrored-owner-epoch",
+            "inspection": "both-modes-not-ready",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "missing-journal-with-owner-lock",
+            "inspection": "nonzero-preserved",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          },
+          {
+            "case": "changed-authored-input",
+            "inspection": "both-modes-not-ready",
+            "resume_refused": true,
+            "rollback_refused": true,
+            "complete_fixture_preserved": true
+          }
+        ],
+        "graph_id": "99c242eb-858a-42a4-9357-5b907defcc7c",
+        "ancestor": "f6c744bf5fdff62c7339dcce53b153b4e20ddfe9",
+        "target": "fca6aeba0812799e1764bba088ed88ef5a8bb712",
+        "incoming": "cca1933c5b3d48a04da7253c320810fdd1bc3e8b",
+        "newer_incoming": "097e3bea9e25b38ac1f85188c6e2b6109c0e998c",
+        "semantic_commit": "582a389218eaf875425d0a432f1d05c4337c9a68",
+        "merge_commit": "35509c79fd1a4d047937f98aad389d365af99336",
+        "simultaneous_creation": true,
+        "same_identity_parallel_edits": true,
+        "alias_collision": "task-2",
+        "distinct_stable_identities": [
+          "mdkg://99c242eb-858a-42a4-9357-5b907defcc7c/4ba9ea0e-7560-4ed7-a54e-77b298b40ee5",
+          "mdkg://99c242eb-858a-42a4-9357-5b907defcc7c/b5d01d5e-4fe0-49bb-9642-3dfc93019526"
+        ],
+        "exclusion": {
+          "mode": "exclusion",
+          "same_checkout_refused": true,
+          "other_checkout_succeeded": true,
+          "owner": {
+            "action": "created",
+            "node": {
+              "workspace": "root",
+              "id": "task-3",
+              "qid": "root:task-3",
+              "path": ".mdkg/work/task-3-active-left-writer.md",
+              "type": "task",
+              "title": "Active left writer",
+              "identity": {
+                "graph_id": "99c242eb-858a-42a4-9357-5b907defcc7c",
+                "node_id": "200d6b90-7dee-4876-bfb0-6c659b4a72f6"
+              },
+              "stable_ref": "mdkg://99c242eb-858a-42a4-9357-5b907defcc7c/200d6b90-7dee-4876-bfb0-6c659b4a72f6",
+              "status": "backlog",
+              "priority": 9
+            }
+          },
+          "peer": {
+            "action": "created",
+            "node": {
+              "workspace": "root",
+              "id": "task-3",
+              "qid": "root:task-3",
+              "path": ".mdkg/work/task-3-independent-right-writer.md",
+              "type": "task",
+              "title": "Independent right writer",
+              "identity": {
+                "graph_id": "99c242eb-858a-42a4-9357-5b907defcc7c",
+                "node_id": "637f50d0-1f5f-4b54-90ed-2443bc512e56"
+              },
+              "stable_ref": "mdkg://99c242eb-858a-42a4-9357-5b907defcc7c/637f50d0-1f5f-4b54-90ed-2443bc512e56",
+              "status": "backlog",
+              "priority": 9
+            }
+          }
+        },
+        "local_states": [
+          ".mdkg/index/mdkg.sqlite",
+          ".mdkg/state/selected-goal.json",
+          ".mdkg/db/runtime/project.sqlite"
+        ],
+        "pinned_input_stability": true,
+        "advanced_symbolic_ref_refused": true,
+        "two_actual_sigkill_journals": true,
+        "cross_checkout_approval_refused": true,
+        "peer_journal_lock_and_index_preserved": true,
+        "unknown_lock_file_refused_without_cleanup": true,
+        "unresolved_git_stages_refused": true,
+        "native_conflicts": [
+          ".mdkg/config.json",
+          ".mdkg/work/task-1-shared-worktree-ancestor.md",
+          ".mdkg/work/task-2-parallel-authored-task.md",
+          "src/features.cjs"
+        ],
+        "graph_resolution_paths": [
+          ".mdkg/work/goal-1-checkout-local-selection.md",
+          ".mdkg/work/task-1-shared-worktree-ancestor.md",
+          ".mdkg/work/task-2-parallel-authored-task.md",
+          ".mdkg/work/task-3-active-left-writer.md",
+          ".mdkg/work/task-4-cross-linked-contribution.md",
+          ".mdkg/work/task-5-independent-right-writer.md",
+          ".mdkg/work/task-6-parallel-authored-task.md",
+          ".mdkg/work/task-3-independent-right-writer.md",
+          ".mdkg/graph.json",
+          ".mdkg/identity/acceptances/e3490cf99f260f4f127ad667c2740bb00b495a94cb93bd9e7f7848b4c8afe1aa.json",
+          ".mdkg/identity/reconciliations/e3490cf99f260f4f127ad667c2740bb00b495a94cb93bd9e7f7848b4c8afe1aa.json"
+        ],
+        "configuration_resolution": "explicit incoming configuration; not semantic graph overwrite",
+        "merged_source_sha256": "254b1ad897516edb69d907d5d438bf7aa5d01c90bd7e30863d2a191e199d2d23",
+        "staged_merge_paths": [
+          ".mdkg/config.json",
+          "external-receipt.json",
+          "incoming-only.txt",
+          "src/features.cjs"
+        ],
+        "ancestry_and_replay": true,
+        "stale_decision_reuse_refused": true,
+        "external_receipt_sha256": "a1f92545f8388bf3cf1d245b36d0e24ce589798bfbf6eb340019ad2c57f73eb8",
+        "native_retention_lock_is_not_writer_lease": true,
+        "limitations": [
+          "Newer incoming source-only commit remains intentionally unmerged; old reviewed incoming was pinned.",
+          "This is one explicit topology on macOS arm64; not recursive nested-submodule or cross-platform clearance."
+        ]
+      },
+      "artifact_verification": {
+        "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "bytes": 536766
+      },
+      "capture_verification": {
+        "before_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+        "after_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+        "bytes": 48166
+      },
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-collaboration-F8xw7j"
+      }
+    }
+  ],
+  "coverage": {
+    "read_observations": 180,
+    "journal_fault_scenarios": 12,
+    "inspection_and_action_checks": 36,
+    "actual_sigkill_journals": 6,
+    "native_four_conflict_merges": 3,
+    "submodule_parent_preserved": true,
+    "case11": "Sampled malformed/incomplete journal and changed-input refusal plus pinned-revision coverage; not dirty-worktree deletion/pruning acceptance.",
+    "case12": "Ordinary, separate-gitdir and one-level submodule-backed repositories each with two actual linked worktrees; not arbitrary recursive nesting."
+  },
+  "limitations": [
+    "Four sampled journal faults are not exhaustive malformed input coverage.",
+    "Newer sibling source-only commits intentionally remain unmerged; older reviewed incoming commits are pinned.",
+    "Current local macOS arm64/Node24.18.0 only; Linux, final independent acceptance, full ladder and exact seal remain open.",
+    "Test478 stays progress; no final platform or publication clearance.",
+    "Bugs46/47 remain deferred and unresolved in paused Goal87; no claim of zero known vulnerabilities."
+  ],
+  "bookends": {
+    "entry": {
+      "at": "2026-09-28T18:41:05.982Z",
+      "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "branch": "main",
+      "cached_divergence": "69\t0",
+      "dirty_paths": 167,
+      "staged": "",
+      "protected": {
+        ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+        ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+        ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+        "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+      }
+    },
+    "post_trials": {
+      "at": "2026-09-28T18:58:54.185Z",
+      "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "branch": "main",
+      "cached_divergence": "69\t0",
+      "dirty_paths": 172,
+      "staged": "",
+      "protected": {
+        ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+        ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+        ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+        "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+      },
+      "locks": []
+    },
+    "protected_match": true,
+    "all_other_captured_inputs_unchanged": true
+  },
+  "closeout": {
+    "checkpoint": "root:chk-660",
+    "graph_validation": {
+      "full": {
+        "ok": true,
+        "errors": 0,
+        "warnings": 3,
+        "warning_class": "existing stale subgraphs; protected bundles unchanged"
+      },
+      "changed_only": {
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "sqlite": {
+        "ok": true,
+        "checks": 5,
+        "failure_count": 0
+      },
+      "diff_check": {
+        "exit": 0
+      }
+    },
+    "discovery_correction": "Initial index --json was rejected before effects; reran documented mdkg index successfully.",
+    "failed_fixture_cleanup": {
+      "removed": [
+        "/private/tmp/mdkg-collaboration-YImngB",
+        "/private/tmp/mdkg-collaboration-3HeXis",
+        "/private/tmp/mdkg-collaboration-y0OPzR"
+      ],
+      "terminal_exit_codes": [
+        1,
+        1,
+        1
+      ],
+      "process_check": "Read-only process inspection found no remaining process naming these exact fixture roots.",
+      "identity_check": "Exact directory dev/inode/realpath/top entries and candidate hash matched before removal.",
+      "recoverability": "Not trash-recoverable; reproducible synthetic fixtures and failure diagnostics retained."
+    },
+    "successful_fixture_cleanup": {
+      "removed": [
+        "/private/tmp/mdkg-collaboration-jo9IGH",
+        "/private/tmp/mdkg-collaboration-V2R3E9",
+        "/private/tmp/mdkg-collaboration-F8xw7j"
+      ],
+      "verified_by": "Each fixture driver after owned subprocess completion."
+    },
+    "bookend": {
+      "at": "2026-09-28T19:06:08.304Z",
+      "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "branch": "main",
+      "cached_origin_divergence": "69\t0",
+      "staged": "",
+      "dirty_paths": 174,
+      "protected": {
+        ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+        ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+        ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+        "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+      },
+      "locks": [],
+      "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "original_capture_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+      "amended_capture_mismatches": [],
+      "source_inputs": 273,
+      "unrelated_inherited_paths_preserved": true
+    },
+    "changed_inherited_paths": [
+      ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      ".mdkg/index/mdkg.sqlite",
+      ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md"
+    ],
+    "new_dirty_paths": [
+      ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.qualification-inputs-bug61.json",
+      ".mdkg/artifacts/goal-86/test-478-indirection-qualification.cjs",
+      ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+      ".mdkg/work/bug-61-qualification-git-admission-rejects-valid-submodule-linked-worktrees.md",
+      ".mdkg/work/chk-660-qualify-submodule-linked-worktrees-and-sampled-incomplete-journal-refusals.md",
+      "scripts/qualification-git.js",
+      "tests/qualification-git.test.mjs"
+    ],
+    "required_projections": "Tracked SQLite index plus ignored index/cache/events; no bundle/subgraph refresh.",
+    "scope_counts": {
+      "total": 49,
+      "done": 33,
+      "backlog": 12,
+      "progress": 4
+    },
+    "goal_state": "active",
+    "active_node": "root:test-478",
+    "bug61_state": "done-local-implementation",
+    "test478_state": "progress",
+    "next_work": "root:test-479",
+    "ownership": "No persistent lease; transient mutation locks released. Goal active node is routing, not standing writer authority.",
+    "commits_created": [],
+    "push": false,
+    "remote_verification": false,
+    "skills": [
+      "pursue-mdkg-goal",
+      "verify-close-and-checkpoint",
+      "source-grounded-diagnose-and-fix"
+    ],
+    "skill_candidates": []
+  }
+}

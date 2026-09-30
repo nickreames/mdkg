@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "task": "root:task-838",
+  "goal": "root:goal-86",
+  "status": "demo-fixture-increment-verified-task-incomplete",
+  "source_head": "c10113489381badf2845fc378c49b317376f953e",
+  "source_state": "owned uncommitted qualification-infrastructure changes on main",
+  "source_sha256": {
+    "scripts/qualification-fixture.js": "f32d044772441140c535c29c7cbf41dbc2c619411d46492b5153c7adc032a6b0",
+    "scripts/demo-graph-fixture.js": "ca1de56c84109525a9f5be89c717728d63a89cdaf6146bca20ef822d83150261",
+    "scripts/smoke-demo-graph.js": "422e7e6bff79cb8c14b8e9d21a21e238a2d32cf4046646377da53e7e84c17a59",
+    "tests/qualification-fixture.test.mjs": "ed628dd6930846612014337b8d1dc412b95c68e9287f8e59795ffa8f08262f8d",
+    "scripts/bootstrap-website-demo-run.js": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28"
+  },
+  "baseline_reproductions": [
+    "Original prefix cleanup removed an unrelated prefix-matching sentinel in a disposable root.",
+    "A source-check failure skipped independently owned fixture cleanup.",
+    "The copied website template admitted a synthetic unreleased site/node_modules file.",
+    "A bootstrap parent timed out but its descendant wrote 350ms later.",
+    "On this case-insensitive macOS filesystem a synthetic .ENV manifest source copied .env despite the initial lowercase exclusion."
+  ],
+  "baseline_evidence_custody": "Fresh synthetic results are recorded in task tool output and summarized here. No separately retained raw baseline log is claimed; original blocked reports were not accessed or reconstructed.",
+  "corrections": [
+    "Disposable roots have process-local ownership and exact root/ancestor identity checks; no prefix-discovered cleanup targets.",
+    "The demo smoke copies required runtime and example graphs into a private temporary repository. Canonical source/graph/bundle paths remain observational.",
+    "Website operator inputs use validated manifest paths and hashes, with case-insensitive protected-component refusal; unrelated operator files and dependencies are excluded.",
+    "Finalization checks source and cleanup independently and aggregates original, source and cleanup failures without falsely reporting success.",
+    "Node subprocesses run in tracked POSIX groups; timeout/lingering descendants trigger group termination. Cleanup refuses while group disappearance is unverified; EPERM is not absence.",
+    "Canonical subgraph checks use explicit --root from the copied CLI. Mutable operations and process working directories stay inside the owned fixture."
+  ],
+  "command_arguments": [
+    "--test", "--test-reporter=tap",
+    "tests/qualification-fixture.test.mjs", "tests/qualification-artifact.test.mjs",
+    "tests/qualification-output.test.mjs", "dist/tests/coverage-contract.test.js",
+    "dist/tests/ci-topology.test.js", "dist/tests/release-ladder.test.js"
+  ],
+  "focused_runs": [
+    { "node": "24.15.0", "tests": 80, "passed": 80, "failed": 0, "skipped": 0, "duration_ms": 2446,
+      "log": "/private/tmp/mdkg-task838-demo-final-vDI273/v24.15.0.tap", "sha256": "298015f6439a888743c16a4b0c56cfd820ad9b0513c3c3cb5d0b3101040dec68" },
+    { "node": "24.18.0", "tests": 80, "passed": 80, "failed": 0, "skipped": 0, "duration_ms": 2453,
+      "log": "/private/tmp/mdkg-task838-demo-final-vDI273/v24.18.0.tap", "sha256": "43f3e38eed96d4ce2f4115112b5e28744c41a903b6baade5e3cec376cf7206de" },
+    { "node": "26.0.0", "tests": 80, "passed": 80, "failed": 0, "skipped": 0, "duration_ms": 2514,
+      "log": "/private/tmp/mdkg-task838-demo-final-vDI273/v26.0.0.tap", "sha256": "b0021ada6bcb996f1409be5c9b91d1a07f54308c76cc279abacdafb30ab5e64c" }
+  ],
+  "demo_smoke_command": "<recorded Node runtime> scripts/smoke-demo-graph.js",
+  "demo_smoke_runs": [
+    { "node": "24.15.0", "status": 0, "duration_ms": 7009, "cleanup_removed": true,
+      "log": "/private/tmp/mdkg-task838-demo-smoke-final-3XSxVm/v24.15.0.json", "sha256": "d9c99b5190668f0ec0b5dcd47f6bd725b4e810156e1e66c8533ff942d77adc88" },
+    { "node": "24.18.0", "status": 0, "duration_ms": 8914, "cleanup_removed": true,
+      "log": "/private/tmp/mdkg-task838-demo-smoke-final-3XSxVm/v24.18.0.json", "sha256": "613b3944d47c8fba1baa39633ccec83658c1e1036d00bfab02f1abe41adfda31" },
+    { "node": "26.0.0", "status": 0, "duration_ms": 8359, "cleanup_removed": true,
+      "log": "/private/tmp/mdkg-task838-demo-smoke-final-3XSxVm/v26.0.0.json", "sha256": "4b43c5bab3b1ffef59b97f4967c5c369576b02d1bdbbc1ab8d00850af5931470" }
+  ],
+  "platform": { "os": "darwin", "arch": "arm64", "linux": "unverified-deferred-epic-257", "windows": "unqualified" },
+  "smoke_assertions_preserved": {
+    "example_graphs": 4,
+    "distinct_bootstraps_and_repeat_verifications": 2,
+    "files_per_bootstrap": 113,
+    "concise_and_standard_pack_nodes": 19,
+    "negative_classifications": ["target_content_drift", "skill_mirror_mismatch", "authored_child_drift", "interface_drift", "missing_target_input", "unexpected_target", "binding_authority_leakage", "binding_target_mismatch", "source_release_dependency_drift"],
+    "source_example_index_bookends": "unchanged",
+    "source_inventory_sha256": "4750087533a979207af7e792bb77e9bb4c8cef71b37156a7e6cbf52578f6b99c",
+    "source_inventory_files": 588,
+    "source_inventory_bytes": 4441411,
+    "semantic_source_release": "sha256:49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "cli_source_tree_hash": "sha256:25f6c612186918c1c628e1ffaefac3610092a29c93573ee99eb9f2c503640dc0",
+    "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13"
+  },
+  "review": {
+    "reviewer": "task838_output_review",
+    "scope": "one independent read-only source reviewer and bounded correction follow-ups",
+    "disposition": "Three initial gaps plus the case-alias edge reproduced and corrected; final narrow source review found the last correction addressed.",
+    "not_claimed": "Independent test execution, Standard scan clearance, complete Task838 acceptance, installed final candidate, pre-merge or release qualification."
+  },
+  "intermediate_failure": "First expanded run was 18/19 because transient process-group EPERM surfaced raw; current fail-closed classification and final 80/80 runs supersede it. No failing case was skipped.",
+  "limits": [
+    "Node process-group handling covers the trusted bootstrap/CLI child tree, not deliberately detached descendants or an OS sandbox.",
+    "Static containment and identity checks do not fix Bug47 ancestor substitution or Bug46 ACL/metadata preservation.",
+    "These are built-source demo and validation-infrastructure checks, not installed final-artifact or package-coverage results.",
+    "New logs have local temporary custody; this sanitized record and reproducible tests are durable project memory, not the final artifact seal.",
+    "Fixture helpers remain outside npm runtime payloads. No build, package generation, release metadata, protected demo payload or bootstrap source change occurred in this increment."
+  ],
+  "remaining": [
+    "Task838 Git environment/helper/root admission across all mutating fixture callers, including native worktrees and gitdir indirection",
+    "Durable final qualification evidence and actual installed-candidate controls",
+    "Task839 release-critical truth, Task828 independent final review, Task829 full ladder and Task830 exact seal",
+    "Bug60 Node-only observation design, Bugs46/47 and Test487 Linux proof remain unresolved; Goal85 remains paused"
+  ],
+  "protected_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Goal86 Node-only local implementation and mdkg evidence. No shipped CLI/runtime API change, commit, remote, native component, Linux/hosted execution, blocked-context access, publication, provider, deployment, migration, bundle refresh or cross-project mutation."
+}

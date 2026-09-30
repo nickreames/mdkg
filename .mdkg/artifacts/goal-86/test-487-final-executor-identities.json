@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "kind": "test487-final-owned-executor-identities",
+  "recorded_at": "2026-09-29T04:55:49.785Z",
+  "containers": [
+    {
+      "name": "mdkg-g86-arm64-qualification-20260929",
+      "id": "a87c8ec896477792cdc408c71b13d163045a84c24e90f51742ac66d839ad7091",
+      "image": "mdkg-g86-ubuntu24-arm64:20260929",
+      "image_id": "sha256:48e626b8675d37a218d9c03c012851e0164df71ebd6c130bd61723de92a45b84",
+      "status": "exited",
+      "exit": 1,
+      "started_at": "2026-09-29T03:51:08.278644012Z",
+      "finished_at": "2026-09-29T03:57:42.75501725Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "fddc8ac99a5bd3ce2418d170344d0d0de1e0c17a2cbaa3d13dc4e015a5ee22b9",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_CAPSULE_MANIFEST_SHA256=8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_EXPECTED_ARCH=arm64",
+        "MDKG_LINUX_FAMILIES=bootstrap,collaboration,gitdir,submodule,ownership,state-admission,containment,remedies,compatibility,work,runtime,behavior,pack-controls,generic,options,readonly",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    },
+    {
+      "name": "mdkg-g86-amd64-qualification-20260929",
+      "id": "619f4feab76a939ccc9021c219eb36c6c45b3c5628be5a91c60864293da170fc",
+      "image": "mdkg-g86-ubuntu24-amd64:20260929",
+      "image_id": "sha256:94d452815c5a84a95efbbd173680c19676a276894f58693b1d47cce9deae56ec",
+      "status": "exited",
+      "exit": 1,
+      "started_at": "2026-09-29T03:51:41.756181125Z",
+      "finished_at": "2026-09-29T04:48:06.607027136Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "05186b36f3a04515753b71c3482e126971b962f90bfd8044393f5bd9ae40443e",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_LINUX_FAMILIES=bootstrap,collaboration,gitdir,submodule,ownership,state-admission,containment,remedies,compatibility,work,runtime,behavior,pack-controls,generic,options,readonly",
+        "MDKG_CAPSULE_MANIFEST_SHA256=8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    },
+    {
+      "name": "mdkg-g86-arm64-scale-20260929",
+      "id": "a244c737956a756a407496e5defaa6919e382b68beb24cae7a5c1f5c9c079872",
+      "image": "mdkg-g86-ubuntu24-arm64:20260929",
+      "image_id": "sha256:48e626b8675d37a218d9c03c012851e0164df71ebd6c130bd61723de92a45b84",
+      "status": "exited",
+      "exit": 0,
+      "started_at": "2026-09-29T03:52:27.838766799Z",
+      "finished_at": "2026-09-29T03:59:24.176839922Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "6fea2d4f7e735ebea33e747fc45be7b57a41450991a0b42bc0d7e0bc5507f368",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_CAPSULE_MANIFEST_SHA256=8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_EXPECTED_ARCH=arm64",
+        "MDKG_LINUX_FAMILIES=scale",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    },
+    {
+      "name": "mdkg-g86-amd64-scale-20260929",
+      "id": "dc5d5bdc4424ebfd3f2182d22574b716359896628e26b4a1005bd474961ae1cb",
+      "image": "mdkg-g86-ubuntu24-amd64:20260929",
+      "image_id": "sha256:94d452815c5a84a95efbbd173680c19676a276894f58693b1d47cce9deae56ec",
+      "status": "exited",
+      "exit": 1,
+      "started_at": "2026-09-29T03:52:31.422943467Z",
+      "finished_at": "2026-09-29T04:12:47.792848169Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "49e817739b3499d9dc24ff5fe92487d3ea10255380be9007eaf1f6bf03d67299",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_CAPSULE_MANIFEST_SHA256=8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_LINUX_FAMILIES=scale",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    },
+    {
+      "name": "mdkg-g86-arm64-runtime-20260929",
+      "id": "8eb69788ca4f26d0168f68819fbc245c1bd2eb57624b733ad16866817651956a",
+      "image": "mdkg-g86-ubuntu24-arm64-runtime:20260929",
+      "image_id": "sha256:a55004bc26b4e7ebbfc78787120d4155ff1ecad561887cacef2654851613decf",
+      "status": "exited",
+      "exit": 0,
+      "started_at": "2026-09-29T04:00:49.01060917Z",
+      "finished_at": "2026-09-29T04:00:51.841075629Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "3d6170cb28fd9e58c652dbc2ad194eb7b97d301596e287f9760937f0ffccb868",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_EXPECTED_ARCH=arm64",
+        "MDKG_LINUX_FAMILIES=runtime",
+        "MDKG_CAPSULE_MANIFEST_SHA256=8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    },
+    {
+      "name": "mdkg-g86-amd64-runtime-20260929",
+      "id": "60bf8ccf78cd3effe1894b1fd49563d55b445e89a18e39e5aab0ffc6c46aa57e",
+      "image": "mdkg-g86-ubuntu24-amd64-runtime:20260929",
+      "image_id": "sha256:52e5547f993d68482cf9c76aa6014c3924960117a4653daf482731a1183f5fee",
+      "status": "exited",
+      "exit": 0,
+      "started_at": "2026-09-29T04:00:52.877130546Z",
+      "finished_at": "2026-09-29T04:01:09.979086471Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "53ec76cc0b049ac50207360dd854f04595a95b880638efae989244fd97eedddd",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_LINUX_FAMILIES=runtime",
+        "MDKG_CAPSULE_MANIFEST_SHA256=8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    },
+    {
+      "name": "mdkg-g86-arm64-supplement-20260929",
+      "id": "5b9bfd1b7ad309befcabae3cca000c7dd606dcc8f3eff724d04041f52d343061",
+      "image": "mdkg-g86-ubuntu24-arm64-supplement:20260929",
+      "image_id": "sha256:58dd9270fa0394630a65b8408f0d03d25fdb01de1c4790f25d231c2d465d0154",
+      "status": "exited",
+      "exit": 0,
+      "started_at": "2026-09-29T04:19:52.981542213Z",
+      "finished_at": "2026-09-29T04:19:57.265061382Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "9cc69289bcf5768ad519d122e96c2d4e789364a8c75a04e64875cde3a743fa55",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_CAPSULE_MANIFEST_SHA256=092cc3be9b253eece9cafe96ab9a8dbb995dfb0fc86b3ebe27a296663b97af03",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_LINUX_FAMILIES=readonly,capability-umask",
+        "MDKG_EXPECTED_ARCH=arm64",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    },
+    {
+      "name": "mdkg-g86-amd64-supplement-20260929",
+      "id": "d0c0b3e7b5981fdde2dbdc35f540fadfca4fc8cf4a996a1d1e404972ff6443e5",
+      "image": "mdkg-g86-ubuntu24-amd64-supplement:20260929",
+      "image_id": "sha256:79884c2f73f6aba91e2e27cdcab2decde33b74ca7608848999c92f78312beaf2",
+      "status": "exited",
+      "exit": 0,
+      "started_at": "2026-09-29T04:19:58.029315424Z",
+      "finished_at": "2026-09-29T04:20:28.070057216Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "dce55a541995ff33a2ae956bc8a365f2a45d2ce2989eae64b035feb34fe0d3cd",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_CAPSULE_MANIFEST_SHA256=092cc3be9b253eece9cafe96ab9a8dbb995dfb0fc86b3ebe27a296663b97af03",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_LINUX_FAMILIES=readonly,capability-umask",
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    },
+    {
+      "name": "mdkg-g86-amd64-scale-retry-20260929",
+      "id": "5281927f67f0d939f1f0b3435e8392e44627689f7ce19c3976447656bd7d4a79",
+      "image": "mdkg-g86-ubuntu24-amd64-scale-retry:20260929",
+      "image_id": "sha256:47acc5b02b7d250a9720eb070f61ebe970441ab6744bf919ef1f278128693396",
+      "status": "exited",
+      "exit": 0,
+      "started_at": "2026-09-29T04:40:16.585059252Z",
+      "finished_at": "2026-09-29T04:52:16.025715043Z",
+      "network": "none",
+      "read_only_root": true,
+      "user": "10001:10001",
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "bb8d97580656d3d425275eaf2e0a322e06c539757404f7b6030cca664aadd4db",
+          "destination": "/private/tmp",
+          "writable": true
+        }
+      ],
+      "label": "goal86-20260929",
+      "env": [
+        "MDKG_SCALE_EMULATED_RETRY=sqlite",
+        "MDKG_CAPSULE_MANIFEST_SHA256=31ab3b5099d3e6739382183d440c0c05054034049459e9ebbba631e3e190001e",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_LINUX_FAMILIES=scale",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "sha256:48e626b8675d37a218d9c03c012851e0164df71ebd6c130bd61723de92a45b84",
+      "tags": [
+        "mdkg-g86-ubuntu24-arm64:20260929"
+      ],
+      "architecture": "arm64",
+      "os": "linux",
+      "created": "2026-09-29T03:50:12.505325792Z",
+      "label": "goal86-20260929"
+    },
+    {
+      "id": "sha256:94d452815c5a84a95efbbd173680c19676a276894f58693b1d47cce9deae56ec",
+      "tags": [
+        "mdkg-g86-ubuntu24-amd64:20260929"
+      ],
+      "architecture": "amd64",
+      "os": "linux",
+      "created": "2026-09-29T03:50:28.668312508Z",
+      "label": "goal86-20260929"
+    },
+    {
+      "id": "sha256:a55004bc26b4e7ebbfc78787120d4155ff1ecad561887cacef2654851613decf",
+      "tags": [
+        "mdkg-g86-ubuntu24-arm64-runtime:20260929"
+      ],
+      "architecture": "arm64",
+      "os": "linux",
+      "created": "2026-09-29T03:59:17.669646502Z",
+      "label": "goal86-20260929"
+    },
+    {
+      "id": "sha256:52e5547f993d68482cf9c76aa6014c3924960117a4653daf482731a1183f5fee",
+      "tags": [
+        "mdkg-g86-ubuntu24-amd64-runtime:20260929"
+      ],
+      "architecture": "amd64",
+      "os": "linux",
+      "created": "2026-09-29T03:59:28.267489091Z",
+      "label": "goal86-20260929"
+    },
+    {
+      "id": "sha256:58dd9270fa0394630a65b8408f0d03d25fdb01de1c4790f25d231c2d465d0154",
+      "tags": [
+        "mdkg-g86-ubuntu24-arm64-supplement:20260929"
+      ],
+      "architecture": "arm64",
+      "os": "linux",
+      "created": "2026-09-29T04:19:31.228304259Z",
+      "label": "goal86-20260929"
+    },
+    {
+      "id": "sha256:79884c2f73f6aba91e2e27cdcab2decde33b74ca7608848999c92f78312beaf2",
+      "tags": [
+        "mdkg-g86-ubuntu24-amd64-supplement:20260929"
+      ],
+      "architecture": "amd64",
+      "os": "linux",
+      "created": "2026-09-29T04:19:34.553003552Z",
+      "label": "goal86-20260929"
+    },
+    {
+      "id": "sha256:47acc5b02b7d250a9720eb070f61ebe970441ab6744bf919ef1f278128693396",
+      "tags": [
+        "mdkg-g86-ubuntu24-amd64-scale-retry:20260929"
+      ],
+      "architecture": "amd64",
+      "os": "linux",
+      "created": "2026-09-29T04:39:03.110170426Z",
+      "label": "goal86-20260929"
+    }
+  ],
+  "cleanup_scope": {
+    "containers": [
+      "mdkg-g86-arm64-qualification-20260929",
+      "mdkg-g86-amd64-qualification-20260929",
+      "mdkg-g86-arm64-scale-20260929",
+      "mdkg-g86-amd64-scale-20260929",
+      "mdkg-g86-arm64-runtime-20260929",
+      "mdkg-g86-amd64-runtime-20260929",
+      "mdkg-g86-arm64-supplement-20260929",
+      "mdkg-g86-amd64-supplement-20260929",
+      "mdkg-g86-amd64-scale-retry-20260929"
+    ],
+    "images": [
+      "mdkg-g86-ubuntu24-arm64:20260929",
+      "mdkg-g86-ubuntu24-amd64:20260929",
+      "mdkg-g86-ubuntu24-arm64-runtime:20260929",
+      "mdkg-g86-ubuntu24-amd64-runtime:20260929",
+      "mdkg-g86-ubuntu24-arm64-supplement:20260929",
+      "mdkg-g86-ubuntu24-amd64-supplement:20260929",
+      "mdkg-g86-ubuntu24-amd64-scale-retry:20260929"
+    ],
+    "temporary_roots": [
+      "/private/tmp/mdkg-docker-g86-jYNiGN",
+      "/private/tmp/mdkg-docker-g86-KbCeEJ",
+      "/private/tmp/mdkg-docker-g86-IqXRrR"
+    ],
+    "preserve": [
+      "Ubuntu pinned base images",
+      "shared build cache",
+      "unrelated containers and images",
+      "unrelated stopped Lima instance",
+      "canonical candidate tarball and captures"
+    ]
+  }
+}

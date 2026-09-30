@@ -1,0 +1,85 @@
+{
+  "kind": "test487-runner-failure-accounting",
+  "harness_sha256": "9cedf11caae4f151007dac1b0d44607c2248eb42f53f1a4bba2e6a03ede9e482",
+  "node": "v24.18.0",
+  "cases": [
+    {
+      "fault": "preflight",
+      "pass": true,
+      "aggregate_failed": true,
+      "unverified": [
+        "readonly",
+        "capability-umask"
+      ],
+      "completed": []
+    },
+    {
+      "fault": "launch",
+      "pass": true,
+      "aggregate_failed": true,
+      "unverified": [],
+      "completed": [
+        {
+          "name": "readonly",
+          "pass": false,
+          "launch_error": "synthetic launch failure"
+        },
+        {
+          "name": "capability-umask",
+          "pass": false,
+          "launch_error": "synthetic launch failure"
+        }
+      ]
+    },
+    {
+      "fault": "persistence",
+      "pass": true,
+      "aggregate_failed": true,
+      "unverified": [
+        "capability-umask"
+      ],
+      "completed": [
+        {
+          "name": "readonly",
+          "pass": false,
+          "persistence_error": "synthetic stream persistence failure"
+        }
+      ]
+    },
+    {
+      "fault": "custody",
+      "pass": true,
+      "aggregate_failed": true,
+      "unverified": [
+        "capability-umask"
+      ],
+      "completed": [
+        {
+          "name": "readonly",
+          "pass": false,
+          "custody_error": "proof\n+ actual - expected\n\n+ 'd67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed'\n- 'e6d7ddd8f414a22d8935148498c32ce0acdcf5c0c71db2455033f9be0a6cbc0a'\n"
+        }
+      ]
+    },
+    {
+      "fault": "progress-only",
+      "pass": true,
+      "aggregate_failed": true,
+      "unverified": [],
+      "completed": [
+        {
+          "name": "readonly",
+          "pass": false
+        },
+        {
+          "name": "capability-umask",
+          "pass": false
+        }
+      ]
+    }
+  ],
+  "pass": true,
+  "limitations": [
+    "Synthetic runner orchestration faults only; no package behavior or security clearance"
+  ]
+}

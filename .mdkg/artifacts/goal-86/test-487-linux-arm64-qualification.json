@@ -1,0 +1,603 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-test487-local-linux-subset",
+  "work_qid": "root:test-487",
+  "checkpoint_qid": "root:chk-662",
+  "decision_qid": "root:dec-99",
+  "status": "CURRENT_INTERMEDIATE_PASS",
+  "source_head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "cached_divergence": {
+    "ahead": 69,
+    "behind": 0,
+    "remote_verified": false
+  },
+  "before_dirty_paths": 178,
+  "staged_paths": [],
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "guest_original_receipt_sha256": "734ddf1c308c4e21d1ef1ce61bf22538b662bfb5f2200ab31b5c482761997c3a",
+  "guest_receipt": {
+    "kind": "test487-local-linux-arm64-subset",
+    "started_at": "2026-09-28T21:35:46.115Z",
+    "completed_at": "2026-09-28T21:36:12.704Z",
+    "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "capsule_manifest_sha256": "de483e12ee4f6ac6d68fba9d0013ac08e14fccbc300ffca8bff366e7972d59b3",
+    "source_inputs_sha256": "e22daf7b38ceb8808198b5d59f555f8545dd5a29e2101d8582112b24499b1ae6",
+    "environment": {
+      "platform": "linux",
+      "arch": "arm64",
+      "node": "v24.18.0",
+      "kernel": "6.8.0-117-generic",
+      "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "git": "git version 2.43.0",
+      "npm": "11.16.0",
+      "uid": 501,
+      "filesystem": "/dev/vda1 ext4   rw,relatime,discard,errors=remount-ro,commit=30",
+      "host_directory_mounts": false,
+      "execution": "native ARM64 Apple Virtualization guest"
+    },
+    "families": [
+      {
+        "name": "transport-recovery",
+        "driver": "test-479-installed-ownership.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 22966.248166999998,
+        "stdout_sha256": "e221fe8010505586d4aadbcd0f2012297f915f33c4c0cdca96557eb6c07e5d60",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "test479-local-installed-ownership",
+          "started_at": "2026-09-28T21:35:46.139Z",
+          "setup_ms": 356.99902499999996,
+          "runtime": "v24.18.0",
+          "platform": "linux",
+          "arch": "arm64",
+          "selected_family": "all",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_capture_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+          "source_inputs_sha256": "e22daf7b38ceb8808198b5d59f555f8545dd5a29e2101d8582112b24499b1ae6",
+          "drivers": [
+            {
+              "file": "/private/tmp/capsule/.mdkg/artifacts/goal-86/test-479-installed-ownership.cjs",
+              "sha256": "90d240d870be5c985b620cf5755f28c7ecb6f98e05b1415c166b6e14a73ebb90"
+            },
+            {
+              "file": "/private/tmp/capsule/tests/fixtures/transport-state.cjs",
+              "sha256": "b0a913393b08b64dcd7642914e8296013e33fd867b06f09af3440dbf20c8f236"
+            },
+            {
+              "file": "/private/tmp/capsule/scripts/installed-graph-recovery.js",
+              "sha256": "a45b9a147b73f959a75bff86e2b453c9e65fea7d48e42fbc9b5ef284d4458b2c"
+            }
+          ],
+          "completed": [
+            {
+              "name": "portable-state-and-malformed-transport",
+              "duration_ms": 3897.6582960000005,
+              "proof": {
+                "node": "0.6.0",
+                "runtime": "v24.18.0",
+                "platform": "linux-arm64",
+                "cases": 22,
+                "case_names": [
+                  "public: state exclusions and portable contract",
+                  "private: state exclusions and portable contract",
+                  "fresh public: bounded inspection/materialization without restored authority",
+                  "fresh public: template application",
+                  "fresh public: incomplete checkout clone refuses unchanged",
+                  "historical public: inspection retained, both mutation consumers refuse unchanged",
+                  "malformed version: all three entrypoints refuse unchanged",
+                  "malformed profile: all three entrypoints refuse unchanged",
+                  "malformed hash: all three entrypoints refuse unchanged",
+                  "malformed role: all three entrypoints refuse unchanged",
+                  "malformed missing-row: all three entrypoints refuse unchanged",
+                  "malformed workspace: all three entrypoints refuse unchanged",
+                  "private clone: checkpoint exact, live state absent",
+                  "private fork: checkpoint exact, live state absent",
+                  "config-less private: conventional checkpoints remain portable without checkout authority",
+                  "config-less private: conventional runtime forgery refuses across five consumers without writes",
+                  "private: owning config preserves an explicit checkpoint within the conventional runtime directory",
+                  "public: unregistered child-declared payload refuses before export writes",
+                  "private: unregistered child-declared payload refuses before export writes",
+                  "self-consistent nested live-payload forgery: four consumers refuse unchanged",
+                  "public: explicitly registered nested ownership preserves portable checkpoint policy",
+                  "private: explicitly registered nested ownership preserves portable checkpoint policy"
+                ],
+                "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+                "final_qualification": false
+              },
+              "artifact_verification": {
+                "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+                "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+                "bytes": 536766
+              },
+              "capture_verification": {
+                "before_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+                "after_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+                "bytes": 48166
+              }
+            },
+            {
+              "name": "sampled-migration-and-reconciliation-recovery",
+              "duration_ms": 18640.833772,
+              "proof": {
+                "runtime": "v24.18.0",
+                "cases": [
+                  {
+                    "kind": "migration",
+                    "mode": "resume",
+                    "position": "first",
+                    "writes": 15,
+                    "observed_written": 1,
+                    "state": "applied",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "migration",
+                    "mode": "resume",
+                    "position": "middle",
+                    "writes": 15,
+                    "observed_written": 8,
+                    "state": "applied",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": true,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "migration",
+                    "mode": "resume",
+                    "position": "last",
+                    "writes": 15,
+                    "observed_written": 15,
+                    "state": "applied",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "migration",
+                    "mode": "rollback",
+                    "position": "first",
+                    "writes": 15,
+                    "observed_written": 1,
+                    "state": "rolled-back",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "migration",
+                    "mode": "rollback",
+                    "position": "middle",
+                    "writes": 15,
+                    "observed_written": 8,
+                    "state": "rolled-back",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": true,
+                    "rollback_interruption_verified": true
+                  },
+                  {
+                    "kind": "migration",
+                    "mode": "rollback",
+                    "position": "last",
+                    "writes": 15,
+                    "observed_written": 15,
+                    "state": "rolled-back",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "reconciliation",
+                    "mode": "resume",
+                    "position": "first",
+                    "writes": 6,
+                    "observed_written": 1,
+                    "state": "applied",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "reconciliation",
+                    "mode": "resume",
+                    "position": "middle",
+                    "writes": 6,
+                    "observed_written": 4,
+                    "state": "applied",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": true,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "reconciliation",
+                    "mode": "resume",
+                    "position": "last",
+                    "writes": 6,
+                    "observed_written": 6,
+                    "state": "applied",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "reconciliation",
+                    "mode": "rollback",
+                    "position": "first",
+                    "writes": 6,
+                    "observed_written": 1,
+                    "state": "rolled-back",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  },
+                  {
+                    "kind": "reconciliation",
+                    "mode": "rollback",
+                    "position": "middle",
+                    "writes": 6,
+                    "observed_written": 4,
+                    "state": "rolled-back",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": true,
+                    "rollback_interruption_verified": true
+                  },
+                  {
+                    "kind": "reconciliation",
+                    "mode": "rollback",
+                    "position": "last",
+                    "writes": 6,
+                    "observed_written": 6,
+                    "state": "rolled-back",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  }
+                ],
+                "fault_preload_sha256": "7760142d5f3b636cd4ae92c59887a5357a739efe361aa91b0c1b5d3dc743da58",
+                "limitations": [
+                  "Error interruption after real filesystem operations, not SIGKILL or power-loss durability.",
+                  "First/middle/last boundaries sampled; not every operation position."
+                ]
+              },
+              "artifact_verification": {
+                "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+                "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+                "bytes": 536766
+              },
+              "capture_verification": {
+                "before_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+                "after_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+                "bytes": 48166
+              }
+            }
+          ],
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-ownership-jh4BU6"
+          },
+          "final_artifact_pass": false
+        }
+      },
+      {
+        "name": "state-admission",
+        "driver": "test-479-state-admission.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 3599.081806000002,
+        "stdout_sha256": "d9c1b4b7d004f4b7da05b292fdde33f245cf656d1980977fe5ed7bf8c23b1568",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "test479-state-admission",
+          "started_at": "2026-09-28T21:36:09.115Z",
+          "setup_ms": 332.235937,
+          "runtime": "v24.18.0",
+          "platform": "linux",
+          "arch": "arm64",
+          "selected_family": "all",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_capture_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+          "source_inputs_sha256": "e22daf7b38ceb8808198b5d59f555f8545dd5a29e2101d8582112b24499b1ae6",
+          "drivers": [
+            {
+              "file": "/private/tmp/capsule/.mdkg/artifacts/goal-86/test-479-state-admission.cjs",
+              "sha256": "33a041efeef820bc07d772e01af26b3f661b82f1a5356fb00fea13ce29d29389"
+            },
+            {
+              "file": "/private/tmp/capsule/.mdkg/artifacts/goal-86/node-portability/recovery-admission-worker.cjs",
+              "sha256": "a3c62a111f3d0205fa6893dd0f70b33497841c9875b59d7ba3bb25726a33b776"
+            }
+          ],
+          "completed": [
+            {
+              "name": "actual-runtime-and-selector-transport",
+              "duration_ms": 1727.5092219999997,
+              "proof": {
+                "cases": [
+                  {
+                    "name": "actual-leased-runtime-and-selected-goal-excluded",
+                    "pass": true
+                  },
+                  {
+                    "name": "clone-does-not-restore-runtime-selection-or-queue-authority",
+                    "pass": true
+                  },
+                  {
+                    "name": "leased-queue-prevents-unapproved-snapshot",
+                    "pass": true
+                  },
+                  {
+                    "name": "explicit-paused-queue-snapshot-created",
+                    "pass": true,
+                    "checkpoint_sha256": "5507812fdda6bd2839b7f48ca2114b638b8f9bc2617195c633b8705a48fd73bc"
+                  },
+                  {
+                    "name": "public-actual-state-boundaries",
+                    "pass": true
+                  },
+                  {
+                    "name": "private-actual-state-boundaries",
+                    "pass": true
+                  },
+                  {
+                    "name": "private-clone-exact-portable-snapshot-without-live-authority",
+                    "pass": true
+                  },
+                  {
+                    "name": "private-fork-exact-portable-snapshot-without-live-authority",
+                    "pass": true
+                  },
+                  {
+                    "name": "public-inspection-tree-restores-no-checkout-state-or-private-checkpoint",
+                    "pass": true
+                  }
+                ],
+                "runtime": "v24.18.0",
+                "actual_sqlite_runtime": true,
+                "actual_queue_claim": {
+                  "message_id": "active",
+                  "status": "leased",
+                  "lease_owner": "synthetic-ephemeral-owner"
+                },
+                "selected_goal_file_excluded": true,
+                "snapshot_queue_policy": "paused",
+                "limitations": [
+                  "Structural local transport proof, not remote execution/authentication/attestation.",
+                  "An authored lifecycle goal is project knowledge, not an imported checkout lease."
+                ]
+              },
+              "artifact_verification": {
+                "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+                "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+                "bytes": 536766
+              },
+              "capture_verification": {
+                "before_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+                "after_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+                "bytes": 48166
+              }
+            },
+            {
+              "name": "live-and-ambiguous-recovery-admission",
+              "duration_ms": 1491.8177149999997,
+              "proof": {
+                "cases": [
+                  {
+                    "name": "live-writer-refused",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "suspended-writer-refused",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "ambiguous-pid-refused",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "unknown-entry-refused:.mdkg/index/write.lock/unknown.txt",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "unknown-entry-refused:.mdkg/work/task-999-unknown.md",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "competing-opposite-recovery-one-winner",
+                    "pass": true,
+                    "winning_mode": "rollback",
+                    "exact_terminal_bytes": true,
+                    "repeated_terminal_read_only": true
+                  }
+                ],
+                "runtime": "v24.18.0",
+                "platform": "linux",
+                "arch": "arm64",
+                "ambiguity": "synthetic EPERM refusal control",
+                "live_and_suspended": "actual owned child process"
+              },
+              "artifact_verification": {
+                "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+                "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+                "bytes": 536766
+              },
+              "capture_verification": {
+                "before_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+                "after_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+                "bytes": 48166
+              }
+            }
+          ],
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-ownership-state-od5njZ"
+          },
+          "final_artifact_pass": false
+        }
+      }
+    ],
+    "pass": true,
+    "final_platform_qualification": false,
+    "final_artifact_seal": false,
+    "limitations": [
+      "Selected Test479 families only; other platform families remain incomplete.",
+      "Linux x86_64 and Windows not exercised.",
+      "Bugs46/47 remain deferred and unresolved.",
+      "No hosted CI, source build/full ladder or independent security clearance."
+    ]
+  },
+  "executor": {
+    "manager": "Lima 2.1.2",
+    "host_platform": "darwin",
+    "host_arch": "arm64",
+    "vm_type": "Apple VZ",
+    "image_url": "https://cloud-images.ubuntu.com/releases/noble/release-20260518/ubuntu-24.04-server-cloudimg-arm64.img",
+    "image_sha256": "6a61b967ba4a27dd1966f835a67643073ed55c2860ce3dc1cb0517282e6b8bec",
+    "runtime_url": "https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-arm64.tar.xz",
+    "runtime_sha256": "58c9520501f6ae2b52d5b210444e24b9d0c029a58c5011b797bc1fe7105886f6",
+    "config_yaml": "vmType: vz\narch: aarch64\ncpus: 4\nmemory: 4GiB\ndisk: 20GiB\nimages:\n  - location: /Users/nick/Library/Caches/lima/download/by-url-sha256/2307d0ba402620cbfbfd84cb192964b33bc4f4c491640945aab32c0787ed31ef/data\n    arch: aarch64\n    digest: sha256:6a61b967ba4a27dd1966f835a67643073ed55c2860ce3dc1cb0517282e6b8bec\nplain: true\nmounts: []\nssh:\n  loadDotSSHPubKeys: false\n  forwardAgent: false\n  forwardX11: false\ncontainerd:\n  system: false\n  user: false\nvmOpts:\n  vz:\n    rosetta:\n      enabled: false\n      binfmt: false\npropagateProxyEnv: false\nupgradePackages: false\nenv: {}\n",
+    "config_sha256": "d6ffbaa3018a276713a6e302c1fb68e8c8f7452caa860b66e455c4672c4cce99",
+    "host_mounts": false,
+    "host_ssh_keys": false,
+    "ssh_agent_forwarding": false,
+    "containerd": false,
+    "proxy_environment_propagation": false,
+    "host_dependencies_installed": false
+  },
+  "capsule": {
+    "files": 281,
+    "manifest_path": ".mdkg/artifacts/goal-86/private/test-487-linux-arm64-capsule-manifest.json",
+    "manifest_sha256": "de483e12ee4f6ac6d68fba9d0013ac08e14fccbc300ffca8bff366e7972d59b3",
+    "transfer_tar_sha256": "6e385f55030b907c2fa50554542bad1bfbf5199068fe8ce1f77f247b9b02891f",
+    "host_builder_sha256": "5e928e5ec4cb709d0587e087a6de98ae533b48d1b72c926e70e55d40acdf13f3",
+    "guest_runner_sha256": "55c6289e6992b18b5bd4db04272789aafa4e212a279a6e4a16eed074115e3519",
+    "canonical_graph_or_git_metadata_copied": false,
+    "all_input_hashes_and_modes_verified_before_after": true
+  },
+  "cleanup": {
+    "guest_fixture_roots_removed": true,
+    "no_fixture_processes_remaining": true,
+    "vm_stopped": true,
+    "vm_deleted": true,
+    "unrelated_vm": {
+      "name": "omni-k3s-vps-small",
+      "before": "Stopped",
+      "after": "Stopped",
+      "mutated": false
+    },
+    "host_scratch": "/private/tmp/mdkg-linux-pOXG0u",
+    "host_scratch_removed": true
+  },
+  "setup_notes": [
+    "A missing closing brace in the new private launcher was caught by node --check before execution; the corrected, syntax-checked capsule was transferred. No product fix or failing product case resulted.",
+    "Linux tar ignored macOS provenance extended headers; explicit 281-file byte/mode bookends passed. The transfer archive is not the npm candidate.",
+    "Test479's caught-error first/middle/last samples are not exhaustive write boundaries or power-loss tests; admission includes an actual live/suspended/killed child, synthetic EPERM, and opposite recovery without a simultaneous-start barrier."
+  ],
+  "protected_before": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "validation": {
+    "state": "PASS_WITH_THREE_PREEXISTING_FULL_GRAPH_WARNINGS",
+    "full_graph": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 3,
+      "warning_categories": [
+        {
+          "key": "subgraph",
+          "count": 3
+        }
+      ]
+    },
+    "changed_graph": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite_index": {
+      "exit_code": 0,
+      "checks": 5,
+      "failures": 0,
+      "all_fresh": true
+    },
+    "diff_check": {
+      "exit_code": 0
+    },
+    "private_driver_syntax": {
+      "exit_code": 0,
+      "files": [
+        "test-487-linux-capsule.cjs",
+        "test-487-linux-runner.cjs"
+      ]
+    },
+    "goal_evaluation": "report-only; no scripts run or task/goal completed",
+    "full_source_suite_and_release_ladder": "not rerun for evidence/private-harness-only edits; Task829 remains required",
+    "protected_after": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+    },
+    "protected_bookends_match": true,
+    "head_unchanged": true,
+    "candidate_unchanged": true,
+    "existing_dirty_paths_preserved": 178,
+    "unrelated_inherited_paths_unchanged": 172,
+    "final_dirty_paths": 186,
+    "turn_changed_paths": [
+      ".mdkg/artifacts/goal-86/private/test-487-linux-arm64-capsule-manifest.json",
+      ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+      ".mdkg/artifacts/goal-86/test-487-linux-capsule.cjs",
+      ".mdkg/artifacts/goal-86/test-487-linux-runner.cjs",
+      ".mdkg/artifacts/goal-86/test-487-local-linux-scope.md",
+      ".mdkg/design/dec-99-retain-local-linux-qualification-and-require-fresh-current-source-security-accep.md",
+      ".mdkg/index/mdkg.sqlite",
+      ".mdkg/work/chk-662-record-local-linux-installed-candidate-transport-and-recovery-proof.md",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+      ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md"
+    ],
+    "staged_paths": [],
+    "commits": [],
+    "locks": []
+  },
+  "authority": {
+    "local_fixture_and_evidence": true,
+    "product_source_changed": false,
+    "security_scan_launched": false,
+    "blocked_context_accessed": false,
+    "commit_created": false,
+    "push": false,
+    "publication": false,
+    "provider_action": false
+  },
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": []
+}

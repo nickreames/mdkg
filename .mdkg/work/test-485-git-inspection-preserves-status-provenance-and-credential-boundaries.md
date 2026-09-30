@@ -20,6 +20,19 @@ cases: []
 created: 2026-09-11
 updated: 2026-09-12
 ---
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Preserve completed removal-verification evidence without reopening achievement. Final affected acceptance is Test484/Test488 and Task828.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
+
 # Overview
 
 Qualify retained inspection independently of removed-command refusal.

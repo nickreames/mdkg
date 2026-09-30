@@ -1,0 +1,463 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-successor-owned-executor-cleanup",
+  "removed_containers": [
+    {
+      "id": "09b3ac1cc89d8135b1f105c8ad06135f4f1024d48c52b73b6d564353b8a120fa",
+      "name": "/mdkg-g86-successor-arm64-general-wrihmu",
+      "prior_status": "exited"
+    },
+    {
+      "id": "8092114ddfaba6b3e05642bf797b0f10282236f63f5bdf00341b391f7924dd09",
+      "name": "/mdkg-g86-successor-arm64-scale-wrihmu",
+      "prior_status": "exited"
+    },
+    {
+      "id": "99224475833cb04f63ee35dcc2182f5d846ddce249df83798569aea5c9068bb6",
+      "name": "/mdkg-g86-successor-amd64-general-wrihmu",
+      "prior_status": "paused"
+    },
+    {
+      "id": "0d190c9c610d88364c04f489780a1a3dd6ae746aba561f268e8334b2ccb500fb",
+      "name": "/mdkg-g86-successor-amd64-scale-wrihmu",
+      "prior_status": "exited"
+    },
+    {
+      "id": "4b88dd4fcfdbcd5ed7a13f61e9165492ec4fd7672e3a5239ae4cd4fb9c8a6f91",
+      "name": "/mdkg-g86-successor-amd64-topology-wrihmu",
+      "prior_status": "exited"
+    },
+    {
+      "id": "d3824c186ebd6268e417a13794cc79427fbb5bc06cbd7c42d49211f5fde9b551",
+      "name": "/mdkg-g86-successor-amd64-security-wrihmu",
+      "prior_status": "exited"
+    },
+    {
+      "id": "169e158d46d35a0610cc536efc31ea9159e4f27ed3582b2124a51f11d1ae52f6",
+      "name": "/mdkg-g86-successor-amd64-compat-wrihmu",
+      "prior_status": "exited"
+    }
+  ],
+  "removed_volumes": [
+    "mdkg-g86-successor-arm64-general-wrihmu",
+    "mdkg-g86-successor-arm64-scale-wrihmu",
+    "mdkg-g86-successor-amd64-general-wrihmu",
+    "mdkg-g86-successor-amd64-scale-wrihmu",
+    "mdkg-g86-successor-amd64-topology-wrihmu",
+    "mdkg-g86-successor-amd64-security-wrihmu",
+    "mdkg-g86-successor-amd64-compat-wrihmu"
+  ],
+  "diagnostics_preserved": true,
+  "qualified_images_preserved": true,
+  "original_candidates_preserved": true,
+  "unrelated_resources_removed": [],
+  "executor_identities": [
+    {
+      "id": "09b3ac1cc89d8135b1f105c8ad06135f4f1024d48c52b73b6d564353b8a120fa",
+      "name": "/mdkg-g86-successor-arm64-general-wrihmu",
+      "image": "sha256:a3eab7d3f549012dd3be11f64657e97e7f3ea083d99f9e171f77f5245a91f562",
+      "created": "2026-09-30T18:54:39.403180254Z",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-30T18:54:39.44206142Z",
+        "FinishedAt": "2026-09-30T19:05:39.709520837Z"
+      },
+      "status": "exited",
+      "user": "10001:10001",
+      "network": "none",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "env": [
+        "MDKG_LINUX_OUTPUT=/private/tmp/mdkg-linux-results-arm64-general-wrihmu",
+        "MDKG_LINUX_FAMILIES=bootstrap,collaboration,gitdir,submodule,ownership,state-admission,containment,remedies,compatibility,work,runtime,behavior,pack-controls,generic,options,readonly,capability-umask,current-audit,final-remedies",
+        "MDKG_EXPECTED_ARCH=arm64",
+        "PATH=/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "MDKG_CAPSULE_MANIFEST_SHA256=449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz"
+      ],
+      "command": [
+        "/opt/node/bin/node",
+        "/capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "mdkg-g86-successor-arm64-general-wrihmu",
+          "destination": "/private/tmp",
+          "rw": true
+        }
+      ],
+      "labels": {
+        "mdkg.fixture": "wrihmu",
+        "mdkg.goal": "86",
+        "org.opencontainers.image.version": "24.04"
+      }
+    },
+    {
+      "id": "8092114ddfaba6b3e05642bf797b0f10282236f63f5bdf00341b391f7924dd09",
+      "name": "/mdkg-g86-successor-arm64-scale-wrihmu",
+      "image": "sha256:a3eab7d3f549012dd3be11f64657e97e7f3ea083d99f9e171f77f5245a91f562",
+      "created": "2026-09-30T19:00:36.614603461Z",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-30T19:00:36.672686252Z",
+        "FinishedAt": "2026-09-30T19:09:31.440290458Z"
+      },
+      "status": "exited",
+      "user": "10001:10001",
+      "network": "none",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "env": [
+        "MDKG_EXPECTED_ARCH=arm64",
+        "MDKG_LINUX_OUTPUT=/private/tmp/mdkg-linux-results-arm64-scale-wrihmu",
+        "MDKG_LINUX_FAMILIES=scale",
+        "PATH=/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "MDKG_CAPSULE_MANIFEST_SHA256=449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz"
+      ],
+      "command": [
+        "/opt/node/bin/node",
+        "/capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "mdkg-g86-successor-arm64-scale-wrihmu",
+          "destination": "/private/tmp",
+          "rw": true
+        }
+      ],
+      "labels": {
+        "mdkg.fixture": "wrihmu",
+        "mdkg.goal": "86",
+        "org.opencontainers.image.version": "24.04"
+      }
+    },
+    {
+      "id": "99224475833cb04f63ee35dcc2182f5d846ddce249df83798569aea5c9068bb6",
+      "name": "/mdkg-g86-successor-amd64-general-wrihmu",
+      "image": "sha256:8498db596161f6849a01b1b60cda250de64c5861ece62f26d9c716e1eb7e0a4b",
+      "created": "2026-09-30T18:54:39.403313129Z",
+      "state": {
+        "Status": "paused",
+        "Running": true,
+        "Paused": true,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 56534,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-30T18:54:39.633430087Z",
+        "FinishedAt": "0001-01-01T00:00:00Z"
+      },
+      "status": "paused",
+      "user": "10001:10001",
+      "network": "none",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "env": [
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_LINUX_OUTPUT=/private/tmp/mdkg-linux-results-amd64-general-wrihmu",
+        "MDKG_LINUX_FAMILIES=bootstrap,collaboration,gitdir,submodule,ownership,state-admission,containment,remedies,compatibility,work,runtime,behavior,pack-controls,generic,options,readonly,capability-umask,current-audit,final-remedies",
+        "PATH=/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "MDKG_CAPSULE_MANIFEST_SHA256=449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz"
+      ],
+      "command": [
+        "/opt/node/bin/node",
+        "/capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "mdkg-g86-successor-amd64-general-wrihmu",
+          "destination": "/private/tmp",
+          "rw": true
+        }
+      ],
+      "labels": {
+        "mdkg.fixture": "wrihmu",
+        "mdkg.goal": "86",
+        "org.opencontainers.image.version": "24.04"
+      }
+    },
+    {
+      "id": "0d190c9c610d88364c04f489780a1a3dd6ae746aba561f268e8334b2ccb500fb",
+      "name": "/mdkg-g86-successor-amd64-scale-wrihmu",
+      "image": "sha256:8498db596161f6849a01b1b60cda250de64c5861ece62f26d9c716e1eb7e0a4b",
+      "created": "2026-09-30T18:54:39.40328792Z",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-30T18:54:39.631124254Z",
+        "FinishedAt": "2026-09-30T19:19:45.442713132Z"
+      },
+      "status": "exited",
+      "user": "10001:10001",
+      "network": "none",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "env": [
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_LINUX_OUTPUT=/private/tmp/mdkg-linux-results-amd64-scale-wrihmu",
+        "MDKG_LINUX_FAMILIES=scale",
+        "PATH=/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "MDKG_CAPSULE_MANIFEST_SHA256=449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz"
+      ],
+      "command": [
+        "/opt/node/bin/node",
+        "/capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "mdkg-g86-successor-amd64-scale-wrihmu",
+          "destination": "/private/tmp",
+          "rw": true
+        }
+      ],
+      "labels": {
+        "mdkg.fixture": "wrihmu",
+        "mdkg.goal": "86",
+        "org.opencontainers.image.version": "24.04"
+      }
+    },
+    {
+      "id": "4b88dd4fcfdbcd5ed7a13f61e9165492ec4fd7672e3a5239ae4cd4fb9c8a6f91",
+      "name": "/mdkg-g86-successor-amd64-topology-wrihmu",
+      "image": "sha256:8498db596161f6849a01b1b60cda250de64c5861ece62f26d9c716e1eb7e0a4b",
+      "created": "2026-09-30T19:20:32.041699083Z",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-30T19:20:32.080397208Z",
+        "FinishedAt": "2026-09-30T19:42:24.774538344Z"
+      },
+      "status": "exited",
+      "user": "10001:10001",
+      "network": "none",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "env": [
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_LINUX_OUTPUT=/private/tmp/mdkg-linux-results-amd64-topology-wrihmu",
+        "MDKG_LINUX_FAMILIES=gitdir,submodule,ownership,state-admission,containment,readonly,capability-umask",
+        "PATH=/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "MDKG_CAPSULE_MANIFEST_SHA256=449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz"
+      ],
+      "command": [
+        "/opt/node/bin/node",
+        "/capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "mdkg-g86-successor-amd64-topology-wrihmu",
+          "destination": "/private/tmp",
+          "rw": true
+        }
+      ],
+      "labels": {
+        "mdkg.candidate": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "mdkg.fixture": "2r9yJa",
+        "mdkg.goal": "86",
+        "org.opencontainers.image.version": "24.04"
+      }
+    },
+    {
+      "id": "d3824c186ebd6268e417a13794cc79427fbb5bc06cbd7c42d49211f5fde9b551",
+      "name": "/mdkg-g86-successor-amd64-security-wrihmu",
+      "image": "sha256:8498db596161f6849a01b1b60cda250de64c5861ece62f26d9c716e1eb7e0a4b",
+      "created": "2026-09-30T19:20:32.203407125Z",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-30T19:20:32.241025084Z",
+        "FinishedAt": "2026-09-30T19:48:33.382766584Z"
+      },
+      "status": "exited",
+      "user": "10001:10001",
+      "network": "none",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "env": [
+        "MDKG_LINUX_FAMILIES=remedies,current-audit,final-remedies,options",
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_LINUX_OUTPUT=/private/tmp/mdkg-linux-results-amd64-security-wrihmu",
+        "PATH=/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "MDKG_CAPSULE_MANIFEST_SHA256=449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz"
+      ],
+      "command": [
+        "/opt/node/bin/node",
+        "/capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "mdkg-g86-successor-amd64-security-wrihmu",
+          "destination": "/private/tmp",
+          "rw": true
+        }
+      ],
+      "labels": {
+        "mdkg.candidate": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "mdkg.fixture": "2r9yJa",
+        "mdkg.goal": "86",
+        "org.opencontainers.image.version": "24.04"
+      }
+    },
+    {
+      "id": "169e158d46d35a0610cc536efc31ea9159e4f27ed3582b2124a51f11d1ae52f6",
+      "name": "/mdkg-g86-successor-amd64-compat-wrihmu",
+      "image": "sha256:8498db596161f6849a01b1b60cda250de64c5861ece62f26d9c716e1eb7e0a4b",
+      "created": "2026-09-30T19:20:32.357615542Z",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-09-30T19:20:32.401255792Z",
+        "FinishedAt": "2026-09-30T19:40:30.140188638Z"
+      },
+      "status": "exited",
+      "user": "10001:10001",
+      "network": "none",
+      "readonly_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_options": [
+        "no-new-privileges"
+      ],
+      "env": [
+        "MDKG_EXPECTED_ARCH=x64",
+        "MDKG_LINUX_OUTPUT=/private/tmp/mdkg-linux-results-amd64-compat-wrihmu",
+        "MDKG_LINUX_FAMILIES=compatibility,work,runtime,behavior,pack-controls,generic",
+        "PATH=/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "MDKG_REAL_NPM=/opt/node/lib/node_modules/npm/bin/npm-cli.js",
+        "MDKG_EXPECTED_CANDIDATE_SHA256=b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "MDKG_CAPSULE_MANIFEST_SHA256=449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+        "MDKG_RUNTIME_MANIFEST_SHA256=5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "MDKG_PUBLISHED_052_TARBALL=/capsule/published-mdkg-0.5.2.tgz"
+      ],
+      "command": [
+        "/opt/node/bin/node",
+        "/capsule/.mdkg/artifacts/goal-86/test-487-docker-runner.cjs"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "mdkg-g86-successor-amd64-compat-wrihmu",
+          "destination": "/private/tmp",
+          "rw": true
+        }
+      ],
+      "labels": {
+        "mdkg.candidate": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "mdkg.fixture": "2r9yJa",
+        "mdkg.goal": "86",
+        "org.opencontainers.image.version": "24.04"
+      }
+    }
+  ],
+  "limits": [
+    "Only seven exactly inventoried owned containers and their named fixture volumes removed after receipt/stream hashes were verified.",
+    "Qualified immutable images, original candidate tarballs/input manifests, synthetic diagnostic logs, and unrelated Docker resources preserved.",
+    "No host project/source/DB/provider data was mounted or deleted."
+  ]
+}

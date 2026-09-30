@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "kind": "task-progress",
+  "qid": "root:task-838",
+  "goal_qid": "root:goal-86",
+  "date": "2026-09-22",
+  "status": "PARTIAL_NOT_READY",
+  "owner": "mdkg-project-agent",
+  "scope": "Hostile Git boundary smoke, shared observation matrix, and transitive fixture helper",
+  "baseline": {
+    "branch": "main",
+    "head": "c10113489381badf2845fc378c49b317376f953e",
+    "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "entry_dirty_paths": 110,
+    "after_implementation_dirty_paths": 113,
+    "staged_paths": [],
+    "entry_paths_unchanged_except": [
+      "scripts/qualification-git.js",
+      "tests/qualification-git.test.mjs",
+      "tests/qualification-smoke.test.mjs"
+    ],
+    "newly_modified_paths": [
+      "scripts/smoke-git-boundary.js",
+      "tests/fixtures/git-observation.cjs",
+      "tests/commands/git_observation.test.ts"
+    ]
+  },
+  "candidate": {
+    "version": "0.6.0",
+    "classification": "UNSEALED_INTERMEDIATE_NOT_FINAL_RELEASE",
+    "sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+    "package_input_changes_this_unit": false,
+    "repacked": false
+  },
+  "implementation": [
+    "Installed smoke defers npm installation until candidate admission and uses owned root, supervised Node and Git commands, private npm state, and verified cleanup.",
+    "All 288 shared observation cases and four native-index-refresh controls remain in the fixture. The removed Git command refusal, retained inspection, hostile PATH, fsmonitor, filter, malformed-output, and file-inventory probes remain active.",
+    "Git fixture submodule setup uses owned file URL transport so nested object metadata is independent. Its explicit mv operation accepts only an independent regular file and a missing in-checkout destination.",
+    "Review identified that the draft mv operation could rewrite a submodule gitdir outside the admitted root; an owned synthetic reproduction confirmed the mutation. The narrowed helper refuses the directory before Git runs; a matching negative and a regular-file positive regression pass."
+  ],
+  "source_sha256": {
+    "scripts/smoke-git-boundary.js": "85f1036e7d1fe99e6fe13b51fe77d2ef2f1ef994cf17890be71cfadb83c7dabb",
+    "tests/fixtures/git-observation.cjs": "c613453235744bda28e26191b41200ad04f67273bc075a1fa1d9ab9630c3dbfc",
+    "tests/commands/git_observation.test.ts": "c5f5e9dac9db359ff52c360b379b3834f4a9f1d2687d8f4de970b3010fd8d928",
+    "scripts/qualification-git.js": "284dff358217b7d82cba5e50f6ccc72df4eedcbeddfa9a01213186d4a920f2b0",
+    "tests/qualification-git.test.mjs": "1a3e147b60f874418c15bd8d563529d638042316def26b0e40f2778b93add121",
+    "tests/qualification-smoke.test.mjs": "69aebe14f4b4b01d2a2b5ab7588fff662c2eb4b6997b45c98efdef3fde1ff538"
+  },
+  "installed_runs": [
+    {
+      "node": "24.15.0",
+      "platform": "darwin-arm64",
+      "duration_ms": 209773,
+      "cases": 288,
+      "topologies": 4,
+      "affected_tests": 153,
+      "pass": 153,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "owned_roots_removed": true,
+      "receipt_sha256": "c48b2f8921ba5ebe3f36863765bd7249ab3966534dd9642d5197fc8234e40991"
+    },
+    {
+      "node": "24.18.0",
+      "platform": "darwin-arm64",
+      "duration_ms": 231386,
+      "cases": 288,
+      "topologies": 4,
+      "affected_tests": 153,
+      "pass": 153,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "owned_roots_removed": true,
+      "receipt_sha256": "08543bfd3422f6f9685fa7e433b8891077881b54096d7811ec56b1c4b23d2463"
+    },
+    {
+      "node": "26.0.0",
+      "platform": "darwin-arm64",
+      "duration_ms": 223636,
+      "cases": 288,
+      "topologies": 4,
+      "affected_tests": 153,
+      "pass": 153,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "owned_roots_removed": true,
+      "receipt_sha256": "5641a10492865533cae65bf5c6b3814e2775359bae0b8ae335e9a539c714e1d5"
+    }
+  ],
+  "review": {
+    "source_reviewer": "task838_output_review",
+    "scope": "bounded read-only helper and scenario review",
+    "finding": "directory mv can rewrite unadmitted nested gitdir metadata",
+    "disposition": "reproduced in owned fixture; helper narrowed; focused and installed regressions pass",
+    "not_security_acceptance": true
+  },
+  "protected_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "remaining": [
+    "MCP asynchronous installed caller isolation and cleanup",
+    "Task 838 final acceptance and independent final review",
+    "Full release ladder, final artifact sealing, Linux qualification, and separate publication authority"
+  ],
+  "authority": "local Goal 86 execution only; no stage, commit, push, remote, tag, publication, provider, deployment, bundle refresh, or sibling action",
+  "skill_candidates": []
+}

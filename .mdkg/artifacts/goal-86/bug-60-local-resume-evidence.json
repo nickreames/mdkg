@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-60",
+  "goal_qid": "root:goal-86",
+  "status": "PARTIAL_NOT_READY",
+  "source_head": "c10113489381badf2845fc378c49b317376f953e",
+  "source_is_dirty": true,
+  "scope": "Current-source Node.js-only local continuation; no blocked-context access or historical scan rerun",
+  "runtime": { "node": "v24.18.0", "platform": "darwin", "arch": "arm64" },
+  "source_hashes": {
+    "src/commands/db.ts": "456c45478e40fa766384912e6a3ddb3466321b61ba7d03f339670595500441f5",
+    "src/commands/work.ts": "b6b1c6650245561753f7e9fb4585c1a1d795231f6069166b57babb27a02424d2",
+    "src/core/project_db_events.ts": "a8aba13a42884aede976ed484504ecf6af0b43594d33dd07dd63a2baf6e5cf55",
+    "src/core/project_db_migrations.ts": "6cfcb8b26eda219c17003bf454bd24cd143dc0709325f7b866377287c5c7823d",
+    "src/core/project_db_queue.ts": "02e66ca5e73dc8ee7f611f252bb51eeb117601d917e153abb27089731582cc41",
+    "src/core/project_db_snapshot.ts": "4fa852931dd7e25e5ed7f2fb47cf2e64f5a1d257665627ec117c7fea032fe09c",
+    "src/graph/sqlite_index.ts": "60906705de7b93cf0b8330f8c354998b45e0ce4174321a51164e16ee5500b364",
+    "src/core/sqlite_observation.ts": "4439d7f44e7741d82926e7f0e46ebe66f3f03d1560e11e04f67eca28ae57d436",
+    "tests/core/sqlite_observation.test.ts": "723f104fd0bcc401edf52659d85b9b4fdacd017984c6c0c54cb415dc1afe3175"
+  },
+  "focused_run": {
+    "command": "node --test --test-reporter=tap dist/tests/core/sqlite_observation.test.js",
+    "duration_ms": 61632,
+    "tests": 60,
+    "pass": 59,
+    "fail": 1,
+    "skipped": 0,
+    "cancelled": 0,
+    "exit_status": 1,
+    "log_sha256": "9f7d2ff15b3210f0ee51fb19efadf345e3aeea0247902222c96b58bf8e706a23",
+    "temporary_log": "/private/tmp/mdkg-bug60-current.AkZP17/focused-current.tap",
+    "durable_reproduction": "tests/core/sqlite_observation.test.ts: a journal-mode transition after admission must not let an observation create sidecars"
+  },
+  "verified_progress": [
+    "Corrected missing queue positional argument and fixture permission-cleanup ordering",
+    "WAL CLI cases now assert valid DB failure receipts rather than accepting unrelated CLI errors",
+    "Closed and permission-enforced read-only CLI inventory cases pass",
+    "Materializer stats are covered through their queue and lease observation helpers",
+    "Actual work trigger enqueue succeeds on closed and live WAL, alongside queue mutation and snapshot sealing controls"
+  ],
+  "remaining_failure": {
+    "classification": "Same Bug60 observational contract gap; not an additional finding in the retained fourteen-finding inventory",
+    "interleaving": "A second native connection changes the same DB inode to WAL after admission and closes. The measured baseline is captured after that writer closes and before the observational native constructor.",
+    "observational_options": { "readOnly": true },
+    "result": "Observation succeeds but creates mdkg.sqlite-shm (32768 bytes) and mdkg.sqlite-wal (0 bytes); main database hash stays unchanged from the post-writer baseline",
+    "probe_result_sha256": "c6be766a718b62876a2bda60bef6823a9919f7d804a00b4e44d050e53723514a",
+    "not_covered_by": "An ancestor-path-only Bug47 description; this is an in-place journal-mode admission race",
+    "disposition": "Keep Bug60 unresolved. Do not weaken the invariant or claim an immutable live-DB shortcut, repeated precheck, or readOnly flag solves it. A Node-only observation design decision is required before expanding this remedy."
+  },
+  "review": {
+    "kind": "One independent bounded current-source read-only candidate review",
+    "findings": ["Concurrent journal-mode transition", "Missing WAL work-trigger positive controls"],
+    "disposition": ["Freshly reproduced and durable failing regression retained", "Positive controls added and passing"],
+    "not_security_clearance": true
+  },
+  "node_only_local_remediation_progress": {
+    "status": "SUBSYSTEM_PASS_NOT_RELEASE_READY",
+    "source_head": "c10113489381badf2845fc378c49b317376f953e",
+    "source_dirty": true,
+    "current_source_hashes": {
+      "src/commands/db.ts": "456c45478e40fa766384912e6a3ddb3466321b61ba7d03f339670595500441f5",
+      "src/commands/work.ts": "b6b1c6650245561753f7e9fb4585c1a1d795231f6069166b57babb27a02424d2",
+      "src/core/project_db_events.ts": "d732e69203284e3e4bbcfc608bef16f8f8eccd176ad0b6d21d8ffb5f655f2505",
+      "src/core/project_db_migrations.ts": "60252b6a3ff3af3243343bb2abeeead5da8f723c873995d59c7cef2ecf0c3265",
+      "src/core/project_db_queue.ts": "c74578d4c890c8382c0df32ae9b366520e36b1fdab0810005f03723cfa4b69ed",
+      "src/core/project_db_snapshot.ts": "661f73830165e45d0399ee8829c744476eaf972a7da628e4fc93d6eb1ca28f5e",
+      "src/graph/sqlite_index.ts": "e7333c74ef4ca62fc90d78b246d965bf8d4b56774301fa459999567c5208c7d8",
+      "src/core/sqlite_observation.ts": "65e4dac193fe811ffb91b57dd57b29d1e443f4a1235aa1381c4ea77f7e680609",
+      "tests/core/sqlite_observation.test.ts": "5924d57c69849e1662897810f04aecd485c38f0b832f68df993cbfdfc7de8e82"
+    },
+    "behavior": [
+      "Observational native SQLite opens use an admitted held read-only file descriptor and explicit readOnly option",
+      "A WAL transition after admission cannot create sidecars next to the canonical file",
+      "An atomic replacement with another valid database is detected before a result is returned",
+      "Intentional snapshot sealing and queue mutations remain writable through separate routes"
+    ],
+    "validation": {
+      "build": "npm run build passed",
+      "test_build": "npm run build:test passed",
+      "source_full": "Node v24.18.0 macOS arm64: 61/61 passed, 0 failed, 0 skipped, 64796.869 ms",
+      "source_other_runtimes": "Node v24.15.0: 4/4; Node v26.0.0: 4/4 targeted race and live-WAL writer controls",
+      "installed_full": "Node v24.18.0 macOS arm64: 61/61 passed, 0 failed, 0 skipped, 66365.983 ms",
+      "installed_other_runtimes": "Node v24.15.0: 61/61 in 57847.309 ms; Node v26.0.0: 61/61 in 70117.242 ms; both macOS arm64 on the same intermediate tarball",
+      "diff_check": "git diff --check passed",
+      "graph_validation": "full validate passed with three stale imported-subgraph warnings; changed-only validate passed with zero warnings",
+      "db_index_verify": "passed; global, skills, capabilities, subgraphs and SQLite caches fresh"
+    },
+    "intermediate_package": {
+      "path": "/private/tmp/mdkg-bug60-installed.0W7PlN/mdkg-0.6.0.tgz",
+      "sha256": "2565feb6df9e29859f06836f6bd197aa391f59055665572fe0bc26c5323b7147",
+      "npm_integrity": "sha512-XtPGGUe+5cr4yutWkdn82UrpmcviAMcFKKfiglKaSg3JdZWFzme86MWtKedKo3otb5Uzymc9f7iAMnMAiKdb1Q==",
+      "entry_count": 233,
+      "installed_at": "/private/tmp/mdkg-bug60-installed.0W7PlN/install/node_modules/mdkg",
+      "pack_and_install": "npm pack --ignore-scripts and npm install --offline --ignore-scripts with isolated /private/tmp cache; installed helper byte-identical to built source",
+      "final_artifact": false,
+      "published": false
+    },
+    "independent_review": "Read-only current-source review found the missing pathname identity comparison; the correction was reviewed and its replacement-race regression now passes. No additional confirmed canonical-write route in directly reviewed callers; not a security scan or cross-platform clearance.",
+      "unverified": ["Linux descriptor behavior", "Test488", "Task828 independent security diff", "Final-candidate full repository suite and release ladder", "Final exact artifact seal"]
+  },
+  "full_suite_integration_20260925": {
+    "source_head": "c10113489381badf2845fc378c49b317376f953e",
+    "platform": "darwin arm64",
+    "runtime": "Node v24.18.0",
+    "package_inputs_unchanged_from_local_remediation_progress": true,
+    "restricted_run": {
+      "command": "npm run test:built after npm run build",
+      "exit_status": 1,
+      "observation": "Interrupted-writer tests reported unavailable local OS boot/ownership evidence in the restricted sandbox; the shortened output did not retain a complete pass/fail count",
+      "classification": "failed run retained, not converted to a pass"
+    },
+    "host_evidence_run": {
+      "command": "npm run test:built with approved local host process evidence",
+      "exit_status": 1,
+      "tests": 2224,
+      "pass": 2223,
+      "fail": 1,
+      "skipped": 0,
+      "duration_ms": 342417.834,
+      "sole_failure": "db verify and stats report valid project db state and transient warnings"
+    },
+    "environment_control": {
+      "command": "node --test --test-reporter=tap dist/tests/graph/identity_interrupted_writer.test.js with approved local host process evidence",
+      "tests": 38,
+      "pass": 38,
+      "fail": 0,
+      "duration_ms": 32421.710
+    },
+    "diagnosis": "The older DB/index case injected an empty project.sqlite-wal and expected observational success. Bug60's newer no-write contract deliberately refuses any transient sidecar; the already-passing SQLite observation suite asserts that refusal.",
+    "test_only_correction": {
+      "path": "tests/commands/db_index.test.ts",
+      "sha256": "9fcd15de3897e6200ca3a952ab7bfb056b8488f45f2cd3afc6299bd963db33ad",
+      "behavior": "Keep closed-database success controls; assert WAL refusal, warning and complete runtime-directory byte preservation for db verify and stats",
+      "build_test": "npm run build:test passed",
+      "failing_before": "named case 0/1",
+      "passing_after": "named case 1/1; complete DB/index file 30/30",
+      "production_source_changed": false
+    },
+    "full_suite_after_test_correction": {
+      "command": "npm run test:built with approved local host process evidence",
+      "exit_status": 0,
+      "tests": 2224,
+      "pass": 2224,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 342556.576,
+      "scope": "Current dirty source on Node v24.18.0 macOS arm64; not a sealed final candidate, Linux result, or final release ladder"
+    },
+    "companion_checks": {
+      "cli_check_built": "passed",
+      "docs_check_built": "passed; 472 command examples checked, 0 failed",
+      "ci_workflow_check": "passed"
+    },
+    "security_finding_count_changed": false,
+    "release_ready": false
+  },
+  "local_source_commit_20260925": {
+    "commit": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "parent": "1143e31ac4f153bfa4c7f543c01b93a1692271fb",
+    "branch": "main",
+    "scope": "Local source and regression milestone only; Bug60 remains in progress",
+    "staged_patch_sha256": "c25289dad6706f26a3d1908f93b0587851dac948fe7555f3fce6cbb33d774b1d",
+    "changed_paths": [
+      "src/commands/db.ts",
+      "src/commands/work.ts",
+      "src/core/project_db_events.ts",
+      "src/core/project_db_migrations.ts",
+      "src/core/project_db_queue.ts",
+      "src/core/project_db_snapshot.ts",
+      "src/core/sqlite_observation.ts",
+      "src/graph/sqlite_index.ts",
+      "tests/commands/db_index.test.ts",
+      "tests/core/sqlite_observation.test.ts"
+    ],
+    "path_count": 10,
+    "isolated_disposable_copy_removed": true,
+    "validation": {
+      "canonical_build_and_test_build": "passed on Node v24.18.0/macOS arm64",
+      "canonical_affected_tests": "91/91 passed, zero skipped, 59155.323 ms",
+      "isolated_snapshot": "Committed parent plus only the ten listed source/test paths; unrelated dirty skills and graph work excluded",
+      "isolated_build_and_test_build": "passed on Node v24.18.0/macOS arm64",
+      "isolated_affected_tests": "91/91 passed, zero skipped, 59121.318 ms",
+      "isolated_cli_docs_ci_checks": "passed; documentation checked 472 examples with zero failures",
+      "isolated_graph_validation": "passed with zero warnings after disposable index rebuild",
+      "isolated_db_index_verify": "passed with all five caches fresh after disposable index rebuild; the initial missing/stale-cache result is retained as setup evidence, not a pass",
+      "staged_diff_check": "passed",
+      "staged_patch_equal_to_isolated_snapshot": true,
+      "prior_current_source_full_suite": "2224/2224 passed on the same Bug60 source/test bytes before this local commit; mixed dirty source-plus-graph, not final artifact qualification"
+    },
+    "protected_after": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    "unverified": ["Linux descriptor behavior", "Test488", "Task828 independent remediation-diff security review", "Final installed artifact and macOS/Linux qualification", "Full release ladder and exact seal"],
+    "push": false,
+    "publication": false,
+    "remote_verified": false
+  },
+  "committed_source_cross_runtime_20260925": {
+    "commit": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "platform": "darwin",
+    "arch": "arm64",
+    "scope": "Focused current-source and shared DB positive-control tests; not final installed-package or Linux qualification",
+    "command": "<node> --test dist/tests/core/sqlite_observation.test.js dist/tests/commands/db_index.test.js",
+    "source_and_test_diff": "git diff --name-only -- src tests was empty before and after the runs",
+    "source_and_test_sha256": {
+      "src/core/sqlite_observation.ts": "65e4dac193fe811ffb91b57dd57b29d1e443f4a1235aa1381c4ea77f7e680609",
+      "tests/core/sqlite_observation.test.ts": "5924d57c69849e1662897810f04aecd485c38f0b832f68df993cbfdfc7de8e82",
+      "tests/commands/db_index.test.ts": "9fcd15de3897e6200ca3a952ab7bfb056b8488f45f2cd3afc6299bd963db33ad"
+    },
+    "compiled_test_sha256": {
+      "dist/tests/core/sqlite_observation.test.js": "894fd72fc30eb6ada729ff552b607b9067491c36e1562e9d2729721b401f36d6",
+      "dist/tests/commands/db_index.test.js": "a4fde1f374cc38d4fe052f7c45a6dc359d235f623d2fb1e9584fa218a730095d"
+    },
+    "runs": [
+      { "node": "v24.15.0", "tests": 91, "pass": 91, "fail": 0, "skipped": 0, "duration_ms": 46972.6395, "exit_status": 0 },
+      { "node": "v26.0.0", "tests": 91, "pass": 91, "fail": 0, "skipped": 0, "duration_ms": 58994.558417, "exit_status": 0 }
+    ],
+    "same_commit_node_24_18_evidence": "local_source_commit_20260925.validation.canonical_affected_tests records 91/91 on Node v24.18.0; no source/test bytes changed afterward",
+    "protected_after": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    "release_ready": false,
+    "unverified": ["Native Linux descriptor behavior", "Test488", "Task828 independent security review", "Exact final installed artifact and full release ladder"]
+  },
+  "deferred": ["Final-candidate full repository suite", "Final installed candidate runtime matrix", "Linux", "Final independent security acceptance", "Release ladder and candidate seal"],
+  "authority": { "remote_actions": false, "publication": false, "native_bridge": false, "local_source_commit": true },
+  "skill_candidates": []
+}

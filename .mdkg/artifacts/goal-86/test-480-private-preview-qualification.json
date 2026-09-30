@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "test480-current-private-migration-rehearsal",
+  "owner": "root:test-480",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "graph_input_sha256": "f83610cb62a1dcfeb2320c4e37462d8b820bab3029e2eec29b72853a074357fe",
+  "graph_files": 2712,
+  "graph_bytes": 31294591,
+  "graph_roots": [
+    ".mdkg/config.json",
+    ".mdkg/work",
+    ".mdkg/design",
+    ".mdkg/core",
+    ".mdkg/archive",
+    ".mdkg/templates",
+    ".mdkg/skills",
+    ".mdkg/bundles/private/examples/demo-agentic-coding.mdkg.zip",
+    ".mdkg/bundles/private/examples/template-mdkg-dev.mdkg.zip",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip"
+  ],
+  "excluded": "Derived indexes/caches, events, selection, runtime DB, artifact bodies and Git metadata are not graph authoring inputs and were not copied. Registered read-only graph bundles were copied byte-for-byte, never rebuilt or executed.",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "driver_sha256": "fa1c09f44fb526de83369a9272bd5a87dd698965322adef183778193e2986a43",
+  "duration_ms": 1998,
+  "proof": {
+    "command": [
+      "graph",
+      "migrate",
+      "--graph-id",
+      "0bb49df7-8424-4479-89cf-373e3a493292",
+      "--origin",
+      "99cfba97-3f87-48e0-980d-6656630c1592",
+      "--json"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "49ccb510ee52de3276dc277fdb24834fe23e9ee75f0ccd13fcc763759e20382a",
+    "stdout_bytes": 2916553,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "plan_hash": "sha256:3c39c47e2fe84dc0a88fe3ac651bdd78ab00bb802d1b08c094c9136f5d814893",
+    "safe_to_apply": false,
+    "blockers": [
+      "strict candidate validation: root:task-309: artifacts has an unresolved or ambiguous immutable identity mdkg://goal-10"
+    ],
+    "proposed_write_count": 2627,
+    "preview_observational": true,
+    "canonical_preserved": true,
+    "historical_node_sha256": "ec203c4bc774a84a30adb04864ae4fecfad6189e5242658a238aa53a676f3a93"
+  },
+  "disposition": "Evidence-bound unsupported historical alias-shaped immutable reference; no mapping invention, canonical migration, historic rewrite or apply authorization.",
+  "limits": [
+    "Private local preview only; safe_to_apply=false is the expected preserved condition, not a successful migration claim.",
+    "No Git ancestry is fabricated; this standalone-copy preview does not prove ancestry-grounded migration application.",
+    "macOS only; family/platform/security/ladder/seal acceptance remains separate."
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  },
+  "pass": true
+}

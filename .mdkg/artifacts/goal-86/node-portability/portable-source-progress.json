@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "kind": "local-source-progress",
+  "goal": "root:goal-86",
+  "work": "root:bug-60",
+  "decision": "root:dec-98",
+  "recorded_on": "2026-09-28",
+  "status": "INTERMEDIATE_SOURCE_PASS_NOT_RELEASE_READY",
+  "source_revision": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "inputs": [
+    {
+      "path": "src/core/sqlite_observation.ts",
+      "sha256": "ac883271bb353ece821a14b695081cc9593fc550a47cfa8838f0d0a08c1b0353"
+    },
+    {
+      "path": "src/core/project_db_events.ts",
+      "sha256": "f513efea1ba226191bbbc758d9d0132fcb35ca5d71326f84c00c9dce364c6d57"
+    },
+    {
+      "path": "src/core/project_db_queue.ts",
+      "sha256": "60908d81cda539729d1e4eb8f8825a7c97d5a0047ddc7628d4369c7c915ea2e1"
+    },
+    {
+      "path": "src/core/project_db_migrations.ts",
+      "sha256": "f708327a012e4a3c30c238b4a1eebe1e2b0959bbd18a5b504a388b456518e165"
+    },
+    {
+      "path": "src/core/project_db_snapshot.ts",
+      "sha256": "40086394f2b87dd16f0ba3f7c04bb9d2ba68b98eb5222c331c9fc0faa3ced24d"
+    },
+    {
+      "path": "src/graph/sqlite_index.ts",
+      "sha256": "870dd974d92a4dfd98d042df2aa903974541e96b8756a2565a495818415517df"
+    },
+    {
+      "path": "tests/core/sqlite_memory_observation.test.ts",
+      "sha256": "02bfc91735fef6bddfcc4e3d2d90a8b3495a14b5534420c92201d82e2b7e9112"
+    },
+    {
+      "path": "tests/core/sqlite_observation.test.ts",
+      "sha256": "d6b2e7dd9c21966e36defa021c0bae14aa263cd9ee5b4f19754afe0bcb67223a"
+    },
+    {
+      "path": "tests/core/snapshot_containment.test.ts",
+      "sha256": "f402655d8e68652ad99fad73bb1de13f766b7af0f8cc88cddefa221c4e814ef0"
+    }
+  ],
+  "implementation": [
+    "SQLite observations construct only an in-memory Node database; no descriptor pseudo-filesystem or native helper.",
+    "Held ordinary read-only file admission and pre/post identity, timestamp, size, header and journal-state checks remain.",
+    "Memory resource admission precedes image allocation and native deserialization; no temporary-file fallback.",
+    "SQL authorizer, defensive/query-only mode, trusted-schema off and memory temp storage preserve observation; intentional writers retain separate paths."
+  ],
+  "validation": {
+    "failing_before": {
+      "command": "/opt/homebrew/opt/node@24/bin/node --test --test-name-pattern='^meta observation uses only an in-memory' dist/tests/core/sqlite_observation.test.js",
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "error": "OBSERVATION_OPENED_FILE",
+      "exit_code": 1,
+      "duration_ms": 1032.316958
+    },
+    "affected_subsystem": {
+      "command": "TMPDIR=/private/tmp /opt/homebrew/opt/node@24/bin/node --test dist/tests/core/sqlite_memory_observation.test.js dist/tests/core/sqlite_observation.test.js dist/tests/core/snapshot_containment.test.js dist/tests/core/snapshot_verification.test.js dist/tests/commands/db_index.test.js dist/tests/commands/sqlite_dal.test.js dist/tests/commands/numeric_allocation.test.js dist/tests/commands/writer_admission.test.js dist/tests/graph/sqlite_fingerprint.test.js",
+      "runtime": "24.18.0",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "tests": 265,
+      "pass": 265,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "duration_ms": 63921.362417
+    },
+    "unsupported_runtime": {
+      "runtime": "26.0.0",
+      "result": "missing deserialize refused before source admission",
+      "filesystem_opens": 0,
+      "callback_run": false
+    },
+    "build": "pass",
+    "test_compilation": "pass",
+    "cli_command_matrix": "pass",
+    "command_contract": {
+      "status": "pass",
+      "sha256": "8fe115034e949a84d94af7c9e0861dbc72898b1e59f6cf0ae0ec3059fca3b23c"
+    },
+    "diff_check": "pass",
+    "selection_reason": "Shared observer changed: run all DB/index/snapshot/allocation callers and new resource/refusal cases; defer complete repository and installed/platform ladder to explicit final boundaries.",
+    "setup_correction": "Build removes compiled tests; an initial compiled-test invocation found no files. Rebuilt tests before all reported passing runs."
+  },
+  "limits": [
+    "Image memory is linear in database size; available-memory checks are not an OOM guarantee under concurrent system pressure.",
+    "Simulated win32 dispatch is not Windows qualification.",
+    "Not installed-final-artifact, Linux, independent security review, full repository/coverage, full release ladder, or seal evidence.",
+    "Bugs46/47 remain deferred and unresolved under paused Goal87; no ACL or adversarial ancestor containment fix is claimed.",
+    "Task842 must synchronize the approved capability/runtime range; Task841 portable recovery and Test489 installed acceptance remain."
+  ],
+  "custody": {
+    "baseline_dirty_file_count": 82,
+    "baseline_files_preserved_except_required_index_projection": true,
+    "protected_before_and_after": [
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+      },
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      }
+    ],
+    "locks_absent_at_bookend": true,
+    "staged_paths": [],
+    "commits_created": [],
+    "remote_actions": [],
+    "bundle_refresh": false,
+    "canonical_migration": false,
+    "raw_blocked_context_access": false
+  },
+  "next": [
+    "root:task-842",
+    "root:task-841",
+    "root:test-489",
+    "root:test-488",
+    "root:task-828"
+  ],
+  "skill_candidates": []
+}

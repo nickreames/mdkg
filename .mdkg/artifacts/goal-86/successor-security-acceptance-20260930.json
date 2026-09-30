@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-current-source-and-complete-remediation-review-acceptance",
+  "state": "passed-current-with-explicit-deferred-findings",
+  "owner": "mdkg-project-agent",
+  "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+  "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+  "standard": {
+    "scan_id": "78faed0e-5058-4db4-969a-62ccb02d6910",
+    "source_revision": "72a3c8780af7d4c2888590b02158ddc60476facc",
+    "review_units": 408,
+    "surfaces": 10,
+    "exclusions": 7,
+    "artifacts": [
+      {
+        "path": "/Users/nick/.codex/state/plugins/codex-security/scans/mdkg/72a3c8780af7d4c2888590b02158ddc60476facc_20260929T160615Z_avsd3bdc/report.md",
+        "sha256": "e6949b2af5a714df5ed87ac60ee3a6a3372fcc223c022684ee849a79c6bb327f"
+      },
+      {
+        "path": "/Users/nick/.codex/state/plugins/codex-security/scans/mdkg/72a3c8780af7d4c2888590b02158ddc60476facc_20260929T160615Z_avsd3bdc/coverage.json",
+        "sha256": "cd13027fd45b245e3904722ee1b035e541328c6f1e8f387e00a33625163ecf81"
+      }
+    ],
+    "finding_disposition": "Seven newly confirmed groups62-68 remedied; known46/47 remain deferred/unresolved. Current later changes independently reviewed."
+  },
+  "original_diff": {
+    "scan_id": "e5e0584a-bdfc-4da0-8c41-7e5edd4d8bba",
+    "base": "e42f1d93497119c9a1f8684df926510da91dea42",
+    "head": "c313d80407b43797ef0a530a91b645951fdafb81",
+    "sealed_coverage": "partial-preserved",
+    "changed_paths": 334,
+    "primary_source_reviewed": 69,
+    "evidence_json_parent_reviewed": 41,
+    "supporting_independent_reviewed": 93,
+    "independent_complement_65": {
+      "storage": "persistent",
+      "directory": "/Users/nick/.codex/state/plugins/codex-security/scans/mdkg/artifacts-4b03c2349b416f8b77196378f78683713aeb09ea9f3124a438e802c1eba9aa68",
+      "path": "/Users/nick/.codex/state/plugins/codex-security/scans/mdkg/artifacts-4b03c2349b416f8b77196378f78683713aeb09ea9f3124a438e802c1eba9aa68/artifacts/validation/supporting65-remediation-diff-review-20260930.json",
+      "relativePath": "artifacts/validation/supporting65-remediation-diff-review-20260930.json",
+      "sha256": "0d6c602b73a6dfd702eece86c163aa6026444c2b4bcbafc7d05419c856132095"
+    },
+    "independent_release_66": {
+      "storage": "persistent",
+      "directory": "/Users/nick/.codex/state/plugins/codex-security/scans/mdkg/artifacts-4b03c2349b416f8b77196378f78683713aeb09ea9f3124a438e802c1eba9aa68",
+      "path": "/Users/nick/.codex/state/plugins/codex-security/scans/mdkg/artifacts-4b03c2349b416f8b77196378f78683713aeb09ea9f3124a438e802c1eba9aa68/artifacts/validation/release66-remediation-diff-review-20260930.json",
+      "relativePath": "artifacts/validation/release66-remediation-diff-review-20260930.json",
+      "sha256": "65555be5aa429e3b78cf516bba24d10e871f4c9085a5af9a038e7120be47847f"
+    },
+    "exact_partition": [
+      69,
+      41,
+      93,
+      65,
+      66
+    ],
+    "unread_changed_paths": 0,
+    "meaning": "Original partial scan is not relabeled. Separately accepted supplements independently establish the remaining exact changed-hunk coverage, including all66 release-path files, without guessing historical count composition."
+  },
+  "final_remedies": {
+    "base": "c313d80407b43797ef0a530a91b645951fdafb81",
+    "head": "b10870355b264355af2be4fc53bb4640851f747b",
+    "reviewed_patch_sha256": "a7ca409b28b5765999e82bdaf1036d20a41523b3e019eb8c2037bea34afa8e10",
+    "reviewed_path_count": 17,
+    "reviewed_paths_ref": ".mdkg/artifacts/goal-86/final-remedies-commit-allowlist-20260930.json",
+    "reviewed_paths": [
+      "src/commands/skill.ts",
+      "src/commands/skill_mirror.ts",
+      "src/commands/skill_support.ts",
+      "src/commands/subgraph.ts",
+      "src/core/project_db_snapshot.ts",
+      "src/graph/skills_indexer.ts",
+      "src/util/git_metadata.ts",
+      "src/util/git_remote.ts",
+      "scripts/test-built.js",
+      "scripts/coverage-contract.js",
+      "tests/commands/skill_registry_admission.test.ts",
+      "tests/fixtures/bundle-provenance.cjs",
+      "tests/fixtures/skill-registry-admission.cjs",
+      "tests/util/git_remote.test.ts",
+      "tests/core/native_git_custody.test.ts",
+      "tests/fixtures/native-git-custody.cjs",
+      "tests/test-execution-environment.test.mjs"
+    ],
+    "independent_revision_acceptance": {
+      "path": "/Users/nick/.codex/state/plugins/codex-security/scans/mdkg/artifacts-4b03c2349b416f8b77196378f78683713aeb09ea9f3124a438e802c1eba9aa68/artifacts/validation/final-remedies-revision-review-20260930.json",
+      "sha256": "e88cedfe9dfeb2b9807f2c0bb3adfdf134abfe09a4fabfd9e9ff157a0bd84947"
+    },
+    "finding_dispositions": [
+      {
+        "qid": "root:bug-70",
+        "finding_id": "csf_08e010befc7091080172567d",
+        "severity": "low",
+        "state": "remedied-source-accepted"
+      },
+      {
+        "qid": "root:bug-71",
+        "finding_id": "csf_80803508154cfa17788ddac6",
+        "severity": "low",
+        "state": "remedied-source-accepted"
+      },
+      {
+        "qid": "root:bug-63",
+        "state": "native-Git materialization correctness remedy; incoming-growth refusal independently reviewed"
+      },
+      {
+        "qid": "root:bug-72",
+        "state": "configured snapshot native-Git correctness remedy independently reviewed"
+      },
+      {
+        "qid": "root:bug-73",
+        "state": "ordinary/coverage launcher custody remedy;157 focused and2389 full-test plus37-smoke evidence"
+      }
+    ],
+    "affected_version_assessment": "Effects reproduced on unpublished c313/f7 candidate; final b108/b549 remedy verified. Published0.5.2 impact was not independently assessed by these new PoCs."
+  },
+  "final_net_changed_paths": 338,
+  "historical_fourteen": {
+    "in_scope_remedies": 12,
+    "deferred_unresolved": 2,
+    "owners": [
+      "root:bug-46",
+      "root:bug-47"
+    ],
+    "evidence_ref": ".mdkg/artifacts/goal-86/current-finding-qualification-map.json",
+    "unavailable_original_report_bodies": "Provenance limit preserved; no blocked context read/recovered/rerun."
+  },
+  "actual_current_execution": {
+    "full_suite": 2389,
+    "focused": 157,
+    "package_smokes": 37,
+    "macos_installed_families": 19,
+    "linux_arm64_installed_families": 20,
+    "linux_x64_installed_families": 20,
+    "platform_acceptance": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+  },
+  "limitations": [
+    "Source review is not a claim of no undiscovered bugs, external attestation, consumer adoption, hosted CI, native x86_64 performance, or Windows support.",
+    "Bugs46/47 remain deferred and unresolved, never accepted/fixed; Goal87 remains separate.",
+    "No raw security reports copied into mdkg; all raw canonical/supplemental report bodies remain plugin-owned.",
+    "Goal85/publication/remote/provider/deployment remain unauthorized. All retained platform/regression acceptance is now present; Task828 lifecycle/graph validation remains a separate explicit closure boundary."
+  ]
+}

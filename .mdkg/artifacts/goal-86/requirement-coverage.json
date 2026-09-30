@@ -1,4 +1,2249 @@
 {
+  "current_acceptance": {
+    "decision_refs": [
+      "root:dec-98",
+      "root:dec-99",
+      "root:dec-100"
+    ],
+    "recorded_at": "2026-09-30T20:26:48.298Z",
+    "state": "retained-local-acceptance-complete",
+    "source_head": "b10870355b264355af2be4fc53bb4640851f747b",
+    "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+    "seal_path": ".mdkg/artifacts/goal-86/candidate-seal-20260930.json",
+    "policy": "This successor is current; prior intermediate acceptance and execution updates below remain historical. Deferred obligations are not passes. Exact-byte local acceptance grants no publication authority.",
+    "states": [
+      "passed-current",
+      "missing",
+      "failed",
+      "historical",
+      "deferred-by-decision"
+    ],
+    "requirements": [
+      {
+        "id": "R01",
+        "acceptance_criterion": "Compact init, graph-only and --agent; actual 0.5.2 upgrade; custom instructions/docs/skills; repeated and interrupted upgrade",
+        "owner_qids": [
+          "root:test-477"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R02",
+        "acceptance_criterion": "Immutable graph/node identity, numeric aliases, cross-linked uncommitted nodes and explicit v2 writer admission",
+        "owner_qids": [
+          "root:task-835",
+          "root:test-478",
+          "root:test-480"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R03",
+        "acceptance_criterion": "Native linked worktrees, concurrent offline creation, isolated per-checkout state and same-checkout writer exclusion",
+        "owner_qids": [
+          "root:test-478",
+          "root:test-487"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R04",
+        "acceptance_criterion": "Pinned ancestry, reviewed reconcile then native merge, whole source-plus-graph validation; no blanket ours",
+        "owner_qids": [
+          "root:test-478"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R05",
+        "acceptance_criterion": "Repeated integration, cherry-picks/reverts, deletion/reintroduction and immutable external receipts",
+        "owner_qids": [
+          "root:test-478"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R06",
+        "acceptance_criterion": "Separate submodule and gitdir-indirection qualification",
+        "owner_qids": [
+          "root:test-478",
+          "root:test-487"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R07",
+        "acceptance_criterion": "Evidence-bound killed-writer recovery, live/ambiguous/legacy owner refusal; no age/PID-only takeover",
+        "owner_qids": [
+          "root:task-836",
+          "root:test-479",
+          "root:test-487"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R08",
+        "acceptance_criterion": "Stale plans, changed dependencies, unknown files and interrupted rollback/resume",
+        "owner_qids": [
+          "root:task-836",
+          "root:test-477",
+          "root:test-479"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R09",
+        "acceptance_criterion": "Read-only Git everywhere; root/child/worktree index bytes and staging unchanged regardless of caller env",
+        "owner_qids": [
+          "root:bug-35",
+          "root:test-480",
+          "root:test-487"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R10",
+        "acceptance_criterion": "Public/private producer-consumer transport classification; no live state, private DB omission receipts, private portable snapshots and old public inspect-only behavior",
+        "owner_qids": [
+          "root:bug-17",
+          "root:test-479"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R11",
+        "acceptance_criterion": "Unsupported and wrong-command flags refuse before discovery/effects in both entrypoints; complete inventories and subprocess traps plus positive controls",
+        "owner_qids": [
+          "root:bug-39",
+          "root:test-486"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-package-gates-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R12",
+        "acceptance_criterion": "Actual read-only filesystems, malformed/symlink/path admission pass; ancestor substitution and ACL/ownership bugs remain deferred, unresolved under Dec98/Goal87.",
+        "owner_qids": [
+          "root:test-479",
+          "root:test-487",
+          "root:task-828"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json"
+        ],
+        "disposition": "passed-current-with-separate-deferred-components",
+        "missing_action": "none for retained 0.6.0 gate; Bug46/47 remedies remain future Goal87 work, not counted as passed",
+        "components": [
+          {
+            "criterion": "Real read-only and retained containment tests",
+            "state": "passed-current"
+          },
+          {
+            "criterion": "Bug46 ACL/ownership preservation",
+            "state": "deferred-by-decision",
+            "owner": "root:goal-87",
+            "resolved": false
+          },
+          {
+            "criterion": "Bug47 ancestor substitution race",
+            "state": "deferred-by-decision",
+            "owner": "root:goal-87",
+            "resolved": false
+          }
+        ]
+      },
+      {
+        "id": "R13",
+        "acceptance_criterion": "Legacy/v2 JSON/SQLite parity, packs, MCP, archive/work refs and offline graph usability",
+        "owner_qids": [
+          "root:test-480"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R14",
+        "acceptance_criterion": "Installed candidate preview on private canonical copy refuses the surviving historical mdkg://goal-10 ambiguity without inventing an identity.",
+        "owner_qids": [
+          "root:test-480",
+          "root:bug-7"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-private-preview-20260930.json"
+        ],
+        "disposition": "passed-current-unsupported-condition-disposition",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory",
+        "limitation": "Preview only: safe_to_apply=false; no migration applied or ancestry recovery claimed."
+      },
+      {
+        "id": "R15",
+        "acceptance_criterion": "Representative scale, bounded-history diagnostics, full goal/checkpoint/blocker routing and retained measured performance limits",
+        "owner_qids": [
+          "root:test-481"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R16",
+        "acceptance_criterion": "Supported Node24.18.0 operation on macOS/Ubuntu ARM64/x64; actual Node24.15/26 early no-effect refusal and discovery controls. Windows explicitly unqualified.",
+        "owner_qids": [
+          "root:test-482",
+          "root:test-487"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R17",
+        "acceptance_criterion": "Verified local Linux endpoint/image/isolation/filesystem; no automatic service or new-infrastructure authority",
+        "owner_qids": [
+          "root:test-487"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-docker-cleanup-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R18",
+        "acceptance_criterion": "Generic retained/removed CLI/help/docs/MCP/seeds/native projections and npm allowlist agreement; verified undispatched extraction",
+        "owner_qids": [
+          "root:test-483",
+          "root:test-484",
+          "root:task-827"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-package-gates-20260930.json",
+          ".mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R19",
+        "acceptance_criterion": "Fresh Standard at72a3 plus complete source-backed later-change/diff supplements, explicit coverage/exclusions, plugin-owned raw reports and exact hash binding.",
+        "owner_qids": [
+          "root:task-828"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R20",
+        "acceptance_criterion": "334 original paths covered by exact five-part source/hunk partition plus all17 final remedy paths;338 net changed paths accounted. Original partial scan remains preserved, not relabeled.",
+        "owner_qids": [
+          "root:task-828"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R21",
+        "acceptance_criterion": "2389/2389 full tests,37 canonical package smokes, unchanged89/77/96 floors, retained CLI/guidance/package/graph/SQLite/diff gates; website/hosted profiles explicitly separate.",
+        "owner_qids": [
+          "root:task-829"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-package-gates-20260930.json",
+          ".mdkg/artifacts/goal-86/candidate-seal-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R22",
+        "acceptance_criterion": "Draft 0.6.0 metadata and corrected tested guidance, not public publication",
+        "owner_qids": [
+          "root:task-827"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-package-gates-20260930.json",
+          ".mdkg/artifacts/goal-86/task-839-release-guidance.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R23",
+        "acceptance_criterion": "Exact tarball reused for tests and seal, SHA256/SHA512, file/input manifests, source/platform/security/evidence identity; invalidate on input change",
+        "owner_qids": [
+          "root:task-830"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/candidate-seal-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R24",
+        "acceptance_criterion": "Protected Demo3/selection/runtime/public-draft bookends unchanged; reviewed source commits recorded; explicit-path final evidence commit follows validated goal closure, derived SQLite remains excluded.",
+        "owner_qids": [
+          "root:task-829",
+          "root:task-830"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/candidate-seal-20260930.json",
+          ".mdkg/artifacts/goal-86/final-remedies-local-commit-20260930.json",
+          ".mdkg/artifacts/goal-86/implementation-local-commit-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "Final evidence commit is the storage boundary for this ledger; record its exact SHA in the closeout receipt, not a self-referential field in the committed file."
+      },
+      {
+        "id": "R25",
+        "acceptance_criterion": "Goal 85 stays paused; fresh publication approval, blocker and exact-artifact rechecks remain separate",
+        "owner_qids": [
+          "root:task-831"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/candidate-seal-20260930.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      },
+      {
+        "id": "R26",
+        "acceptance_criterion": "37 package smokes required;46 definitions retained; nine website smokes/nine environment profiles owned by deferred Epic258; hosted Epic257 remains honestly unqualified.",
+        "owner_qids": [
+          "root:task-843",
+          "root:test-490"
+        ],
+        "artifact_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+        "platforms": [
+          "darwin-arm64-native",
+          "ubuntu24-arm64-native",
+          "ubuntu24-x64-emulated"
+        ],
+        "evidence": [
+          ".mdkg/artifacts/goal-86/successor-package-gates-20260930.json",
+          ".mdkg/artifacts/goal-86/task-843-final-qualification.json"
+        ],
+        "disposition": "passed-current",
+        "missing_action": "none for retained local package gate; separate publication approval and fresh rechecks remain mandatory"
+      }
+    ],
+    "deferred": [
+      {
+        "owner": "root:goal-87",
+        "qids": [
+          "root:bug-46",
+          "root:bug-47"
+        ],
+        "state": "deferred-by-decision",
+        "resolved": false
+      },
+      {
+        "owner": "root:epic-257",
+        "state": "unverified",
+        "scope": "hosted CI"
+      },
+      {
+        "owner": "root:epic-258",
+        "state": "deferred-by-decision",
+        "scope": "non-shipping website/documentation profile"
+      }
+    ],
+    "unqualified": [
+      "Windows",
+      "native x86_64 performance",
+      "consumer adoption"
+    ],
+    "publication": {
+      "goal_qid": "root:goal-85",
+      "state": "paused",
+      "requires": "fresh explicit publication approval, independent blocker/input/artifact rechecks",
+      "published": false
+    }
+  },
+  "historical_dec100_intermediate_acceptance": {
+    "decision_ref": "root:dec-100",
+    "recorded_at": "2026-09-29T03:17:04.158Z",
+    "states": [
+      "passed-current",
+      "missing",
+      "failed",
+      "historical",
+      "deferred-by-decision"
+    ],
+    "source_head": "36e075b8d64babff04154704a721db4a82926ebe",
+    "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "policy": "Historical requirements/execution_updates below are preserved. This acceptance view controls current routing; passed-current identifies only the named observed scope, never whole release clearance. Reuse same-input evidence; all remaining platform/security/ladder/seal obligations are explicit.",
+    "requirements": [
+      {
+        "id": "R01",
+        "requirement": "Compact init, graph-only and --agent; actual 0.5.2 upgrade; custom instructions/docs/skills; repeated and interrupted upgrade",
+        "owner_qids": [
+          "root:test-477"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+            "sha256": "b25de0c915c6ca89220f5f3b3e42c710ee3968f17364ea0a72f4b6b6fe9558ba",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "bootstrap"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R02",
+        "requirement": "Immutable graph/node identity, numeric aliases, cross-linked uncommitted nodes and explicit v2 writer admission",
+        "owner_qids": [
+          "root:task-835",
+          "root:test-478",
+          "root:test-480"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+            "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json",
+            "sha256": "60f63c87ad05c0896da41ec74f01a61c7e545c91437dc50eb624f6260e15dc9d",
+            "note": "Actual published0.5.2 legacy/v2 warm/cold controls and actual Node24.15.0/26.0.0 no-effect refusals;19 expected safe controls plus2 separately reproduced unsupported old-init effects. Node24.18.0 is the available supported/minimum runtime, counted once. No global installation."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+            "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f",
+            "note": "176 regressions pass on exact installed6154e4ea: pack identities, formatting, init, legacy provenance, strict migration dependencies, identity-safe upgrade/recovery, UTF-8 pipe output and portable dependency labels. Mixed CLI/internal-module proof;234 original payload files preserved, canonical imports refused."
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "collaboration",
+              "runtime",
+              "behavior",
+              "capability-umask"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-macos-capability-umask.json",
+            "sha256": "54f8240a88d8c84af8b13bef83e90e25ad7908ccd159c00597699b9375c0ad0e",
+            "note": "Matching28 installed capability/umask controls pass on Node24.18.0; original234 payload files unchanged. Mixed installed CLI/internal-module proof, no ACL/ownership hardening claim."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R03",
+        "requirement": "Native linked worktrees, concurrent offline creation, isolated per-checkout state and same-checkout writer exclusion",
+        "owner_qids": [
+          "root:test-478",
+          "root:test-487"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+            "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "collaboration"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R04",
+        "requirement": "Pinned ancestry, reviewed reconcile then native merge, whole source-plus-graph validation; no blanket ours",
+        "owner_qids": [
+          "root:test-478"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+            "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "collaboration"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R05",
+        "requirement": "Repeated integration, cherry-picks/reverts, deletion/reintroduction and immutable external receipts",
+        "owner_qids": [
+          "root:test-478"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+            "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "collaboration"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R06",
+        "requirement": "Separate submodule and gitdir-indirection qualification",
+        "owner_qids": [
+          "root:test-478",
+          "root:test-487"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+            "sha256": "80dbbdcd0fe961a9e44847dde0c72289f7d653d5f313cc0b81cd542dd58e3e39",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "gitdir",
+              "submodule"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R07",
+        "requirement": "Evidence-bound killed-writer recovery, live/ambiguous/legacy owner refusal; no age/PID-only takeover",
+        "owner_qids": [
+          "root:task-836",
+          "root:test-479",
+          "root:test-487"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+            "sha256": "80dbbdcd0fe961a9e44847dde0c72289f7d653d5f313cc0b81cd542dd58e3e39",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "path": ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+            "sha256": "757e71d5a12dd89392a88fe10d805af426dafff6f4ad1d4187d30fc623d4bdb7",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "path": ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+            "sha256": "ae604a4d5cf75455d206c1d6883a2ef57d08f4b69d42142f5992977f775763f3",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "ownership",
+              "state-admission",
+              "gitdir",
+              "submodule"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R08",
+        "requirement": "Stale plans, changed dependencies, unknown files and interrupted rollback/resume",
+        "owner_qids": [
+          "root:task-836",
+          "root:test-477",
+          "root:test-479"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+            "sha256": "b25de0c915c6ca89220f5f3b3e42c710ee3968f17364ea0a72f4b6b6fe9558ba",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "path": ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+            "sha256": "757e71d5a12dd89392a88fe10d805af426dafff6f4ad1d4187d30fc623d4bdb7",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "path": ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+            "sha256": "ae604a4d5cf75455d206c1d6883a2ef57d08f4b69d42142f5992977f775763f3",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+            "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f",
+            "note": "176 regressions pass on exact installed6154e4ea: pack identities, formatting, init, legacy provenance, strict migration dependencies, identity-safe upgrade/recovery, UTF-8 pipe output and portable dependency labels. Mixed CLI/internal-module proof;234 original payload files preserved, canonical imports refused."
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "bootstrap",
+              "ownership",
+              "state-admission",
+              "behavior"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R09",
+        "requirement": "Read-only Git everywhere; root/child/worktree index bytes and staging unchanged regardless of caller env",
+        "owner_qids": [
+          "root:bug-35",
+          "root:test-480",
+          "root:test-487"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+            "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+            "sha256": "80dbbdcd0fe961a9e44847dde0c72289f7d653d5f313cc0b81cd542dd58e3e39",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "collaboration",
+              "gitdir",
+              "submodule"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R10",
+        "requirement": "Public/private producer-consumer transport classification; no live state, private DB omission receipts, private portable snapshots and old public inspect-only behavior",
+        "owner_qids": [
+          "root:bug-17",
+          "root:test-479"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+            "sha256": "757e71d5a12dd89392a88fe10d805af426dafff6f4ad1d4187d30fc623d4bdb7",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "path": ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+            "sha256": "ae604a4d5cf75455d206c1d6883a2ef57d08f4b69d42142f5992977f775763f3",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "ownership",
+              "state-admission"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R11",
+        "requirement": "Unsupported and wrong-command flags refuse before discovery/effects in both entrypoints; complete inventories and subprocess traps plus positive controls",
+        "owner_qids": [
+          "root:bug-39",
+          "root:test-486"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-486-local-option-qualification.json",
+            "sha256": "a43d6f51a8fb5956e52dab4fbe3c4184c4ab6f1afcfa54386decb38f48846122",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "options"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R12",
+        "requirement": "Real read-only, malformed/link/type/ownership controls within Dec98 scope",
+        "owner_qids": [
+          "root:test-479",
+          "root:test-487",
+          "root:task-828"
+        ],
+        "disposition": "missing",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+            "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef",
+            "note": "203 installed containment cases across Bugs44/48/49/50/51 pass; repeated receipt capture counted once."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-479-real-readonly-qualification.json",
+            "sha256": "345ef33cbf326d6e4cacfb308c9990e876ade3630bbf40a03c14c6ca0529476c",
+            "note": "46 cases pass on a real HFS+ read-only image across legacy/v2 and JSON/SQLite; EROFS probe, unchanged bytes, detach and owned cleanup verified. Two failed setup/harness attempts remain separately recorded."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+            "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+            "note": "456 Node test cases and167 transport admission cases pass on installed6154e4ea. Mixed CLI and shipped internal-module proof; canonical production imports refused. Covers Bugs45/52-60, not fresh independent security clearance."
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "containment",
+              "remedies",
+              "readonly",
+              "capability-umask"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-macos-capability-umask.json",
+            "sha256": "54f8240a88d8c84af8b13bef83e90e25ad7908ccd159c00597699b9375c0ad0e",
+            "note": "Matching28 installed capability/umask controls pass on Node24.18.0; original234 payload files unchanged. Mixed installed CLI/internal-module proof, no ACL/ownership hardening claim."
+          }
+        ],
+        "missing_action": "Required platform regression and real-read-only rows are present. Complete independent Task828 current-source/remediation-diff acceptance; Bugs46/47 remain deferred/unresolved and the cold-cache/read-only cross-product is not claimed."
+      },
+      {
+        "id": "R13",
+        "requirement": "Legacy/v2 JSON/SQLite parity, packs, MCP, archive/work refs and offline graph usability",
+        "owner_qids": [
+          "root:test-480"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-480-local-compatibility-qualification.json",
+            "sha256": "f5008c597609c431de9eb92197e07390633b7e9b9d56a9fc4913424407a9d049",
+            "note": "242 cache/MCP/pack/archive and16 changed-warning cases pass; other family/platform obligations stay open."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-480-local-work-qualification.json",
+            "sha256": "d7929b2e7030526c5d39d228c97cb4b2a4549b0548b9ffa65d5930d680a4f305",
+            "note": "Three existing installed archive/work, work-invocation and graph-clone/fork smokes pass on unchanged candidate; deliveries and post-consumption hashes verified."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json",
+            "sha256": "60f63c87ad05c0896da41ec74f01a61c7e545c91437dc50eb624f6260e15dc9d",
+            "note": "Actual published0.5.2 legacy/v2 warm/cold controls and actual Node24.15.0/26.0.0 no-effect refusals;19 expected safe controls plus2 separately reproduced unsupported old-init effects. Node24.18.0 is the available supported/minimum runtime, counted once. No global installation."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+            "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f",
+            "note": "176 regressions pass on exact installed6154e4ea: pack identities, formatting, init, legacy provenance, strict migration dependencies, identity-safe upgrade/recovery, UTF-8 pipe output and portable dependency labels. Mixed CLI/internal-module proof;234 original payload files preserved, canonical imports refused."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-483-local-pack-controls-qualification.json",
+            "sha256": "faf6998ba8776e0d521f7e364d8c1abce356495e5423751e99453c2a9b03d6d2",
+            "note": "22 installed pack/profile/budget controls pass, including token limits, truncation and visibility; owned fixtures cleaned."
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "compatibility",
+              "work",
+              "behavior",
+              "pack-controls"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R14",
+        "requirement": "Private canonical-graph migration rehearsal; exact historical mdkg://goal-10 ambiguity disposition without invented identity",
+        "owner_qids": [
+          "root:test-480",
+          "root:bug-7"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "historical",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-480-historical-reference-disposition.json",
+            "sha256": "962f4c535b2d0295a2ef7d2f0308d2604b655600367141d6321e9d9269aad1e9",
+            "note": "Historical full-graph preview preserved; fresh source/byte assessment is not a new current-artifact full-graph rehearsal."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-480-private-preview-qualification.json",
+            "sha256": "6b97f9e9a67105492f2b3e944082e12d65bbce4a93384cd26cc72712c5ad428e",
+            "note": "Private2712-file authoring-input copy previewed with current installed candidate; exact historical task309 ambiguity reproduced, safe_to_apply=false, no writes/apply/identity invention; temporary copy removed."
+          }
+        ],
+        "missing_action": "None for the bounded historical-input preview/disposition. This is not successful v2 migration, ancestry-qualified application, or permission to rewrite canonical evidence; Test480 platform and other compatibility gates stay open."
+      },
+      {
+        "id": "R15",
+        "requirement": "Representative scale, bounded-history diagnostics, full goal/checkpoint/blocker routing and retained measured performance limits",
+        "owner_qids": [
+          "root:test-481"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-481-local-scale-qualification.json",
+            "sha256": "1d26e596b7b5acbf6513c6915c8a89cfd9a21ddc4bf5cee69a2d1057ac67a10d",
+            "note": "15 cases/266 commands pass;2000 tasks and20000 events per backend, full installed routing, owned cleanup and exact bookends.888805ms total; no new product SLA."
+          },
+          {
+            "state": "passed-current",
+            "platform": "linux-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-docker-arm64-scale.json",
+            "sha256": "2c12dca8dcd90a1fb4849302c8c93c99742146f07c0646c821175b20dfc07499",
+            "note": "Native Ubuntu24.04.4 userspace/ext4 Docker fixture, Node24.18.0, exact candidate.15 scale/history/routing cases and266 commands;416153ms. Not a native x64 performance claim."
+          },
+          {
+            "state": "failed",
+            "platform": "linux-x64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-disposition.json",
+            "sha256": "8936a14caa264158e007faa68d7aed6c5879d1d4f930aa2a590cea9f5b0f26dc",
+            "note": "Rosetta emulation: six scale rows complete, JSON migration574818ms; SQLite migration ETIMEDOUT/SIGTERM at600064ms against600000ms allowance. Remaining scale/history/routing rows unverified; no timeout or fixture weakening."
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "scale"
+            ],
+            "note": "15 unique cases: four earlier JSON rows plus11 separately reviewed retry rows; two repeated SQLite legacy rows excluded. Original600064ms timeout retained; retry migration593517ms under900000ms harness allowance. No product/SLA change."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R16",
+        "requirement": "Supported Node >=24.18.0 <25/capabilities on macOS and Linux ARM64/x86_64; unsupported runtimes refuse; Windows unqualified",
+        "owner_qids": [
+          "root:test-482",
+          "root:test-487"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json",
+            "sha256": "60f63c87ad05c0896da41ec74f01a61c7e545c91437dc50eb624f6260e15dc9d",
+            "note": "Actual published0.5.2 legacy/v2 warm/cold controls and actual Node24.15.0/26.0.0 no-effect refusals;19 expected safe controls plus2 separately reproduced unsupported old-init effects. Node24.18.0 is the available supported/minimum runtime, counted once. No global installation."
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "runtime",
+              "capability-umask"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-macos-capability-umask.json",
+            "sha256": "54f8240a88d8c84af8b13bef83e90e25ad7908ccd159c00597699b9375c0ad0e",
+            "note": "Matching28 installed capability/umask controls pass on Node24.18.0; original234 payload files unchanged. Mixed installed CLI/internal-module proof, no ACL/ownership hardening claim."
+          }
+        ],
+        "missing_action": "None for the recorded bounded scenario/platform rows. Owning-node case acceptance and downstream Task828 security review, Task829 full ladder and Task830 seal remain separate; do not rerun unchanged cases merely for evidence bookkeeping."
+      },
+      {
+        "id": "R17",
+        "requirement": "Verified local Linux endpoint/image/isolation/filesystem; no automatic service or new-infrastructure authority",
+        "owner_qids": [
+          "root:test-487"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+            "sha256": "ae604a4d5cf75455d206c1d6883a2ef57d08f4b69d42142f5992977f775763f3",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          },
+          {
+            "path": ".mdkg/artifacts/goal-86/test-487-docker-isolation.json",
+            "sha256": "792ff39dcd8d0886753901877c2c9d1ffd3faa02b871a50f75b90a41b22c96d7",
+            "disposition": "passed-current",
+            "scope": "Nick-approved existing local Docker endpoint; pinned Ubuntu24.04.4, native ARM64 and Rosetta-emulated AMD64, offline non-root read-only-root containers, private ext4 fixture volumes, no host mounts or credentials. This is executor admission, not completed scenario/security/release qualification."
+          }
+        ],
+        "missing_action": "None for executor availability/isolation admission. Earlier no-executor inventory was incomplete and is superseded by verified local Docker capability and Nick approval. Finish required scenario rows under R01-R16 and preserve native/emulated launch details; no native-x64 performance claim."
+      },
+      {
+        "id": "R18",
+        "requirement": "Generic retained/removed CLI/help/docs/MCP/seeds/native projections and npm allowlist agreement; verified undispatched extraction",
+        "owner_qids": [
+          "root:test-483",
+          "root:test-484",
+          "root:task-827"
+        ],
+        "disposition": "missing",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-484-local-generic-qualification.json",
+            "sha256": "50ce95eaddb71e3f22f37d1ccf32848f301394e766dc5198c76305ede6c30686",
+            "note": "Six retired Git commands and nine product-specific invocations refuse before effects; generic controls and all152 extraction file hashes pass. Full package parity/platform aggregation remains open."
+          },
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+            "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f",
+            "note": "176 regressions pass on exact installed6154e4ea: pack identities, formatting, init, legacy provenance, strict migration dependencies, identity-safe upgrade/recovery, UTF-8 pipe output and portable dependency labels. Mixed CLI/internal-module proof;234 original payload files preserved, canonical imports refused."
+          },
+          {
+            "state": "passed-current",
+            "platforms": [
+              "linux-arm64",
+              "linux-x64"
+            ],
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+            "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+            "families": [
+              "generic",
+              "behavior"
+            ],
+            "note": "Current exact-candidate Linux family rows pass; native ARM64 and Rosetta-emulated x64 are explicit. Runtime loader correction and stronger read-only/capability supplements retain separate receipt identities. Not independent security or full-ladder acceptance."
+          }
+        ],
+        "missing_action": "Required generic installed platform rows and extraction hash checks are present. Complete package/guidance/skill/MCP parity and owning-node aggregate review under Tasks828/829; consumer adoption remains unverified."
+      },
+      {
+        "id": "R19",
+        "requirement": "Fresh independent frozen-current-source security acceptance under Dec99",
+        "owner_qids": [
+          "root:task-828"
+        ],
+        "disposition": "missing",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [],
+        "missing_action": "Fresh independent current-source review under Dec99; original blocked reports are not recoverable prerequisites."
+      },
+      {
+        "id": "R20",
+        "requirement": "Independent remediation diff including removals/supporting code; deduplicated findings/regressions/affected versions; no automatic waivers",
+        "owner_qids": [
+          "root:task-828"
+        ],
+        "disposition": "missing",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [],
+        "missing_action": "Independent complete remediation-diff review including Task843 and supporting/deleted behavior."
+      },
+      {
+        "id": "R21",
+        "requirement": "Complete37-smoke package ladder and full applicable discovery;89/77/96 floors",
+        "owner_qids": [
+          "root:task-829"
+        ],
+        "disposition": "missing",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/task-843-final-qualification.json",
+            "sha256": "9e0e4dc0f74a8bb3de268995d6eec05ba46864d1056cb068fd39de6d852de212",
+            "note": "Task843/Test490 passed73 focused controls plus real isolated offline prepack and234-file retained payload equivalence. Full ladder and seal are not inferred."
+          }
+        ],
+        "missing_action": "Pass amended37-smoke package ladder and full applicable discovery at89/77/96 coverage."
+      },
+      {
+        "id": "R22",
+        "requirement": "Draft 0.6.0 metadata and corrected tested guidance, not public publication",
+        "owner_qids": [
+          "root:task-827"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "path": ".mdkg/artifacts/goal-86/task-839-release-guidance.json",
+            "sha256": "b6d7f9a3b1f78b18e838fdee678b8e4d45f5775d51b0b69b80d906cd20e27146",
+            "disposition": "passed-current",
+            "scope": "Only cases/platforms explicitly recorded in this receipt; no extrapolated family acceptance"
+          }
+        ],
+        "missing_action": "None for recorded local guidance milestone; recheck final package identity before seal."
+      },
+      {
+        "id": "R23",
+        "requirement": "Exact tarball reused for tests and seal, SHA256/SHA512, file/input manifests, source/platform/security/evidence identity; invalidate on input change",
+        "owner_qids": [
+          "root:task-830"
+        ],
+        "disposition": "missing",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/task-843-final-qualification.json",
+            "sha256": "9e0e4dc0f74a8bb3de268995d6eec05ba46864d1056cb068fd39de6d852de212",
+            "note": "Task843/Test490 passed73 focused controls plus real isolated offline prepack and234-file retained payload equivalence. Full ladder and seal are not inferred."
+          }
+        ],
+        "missing_action": "Retained candidate admission complete; finish platform/security/full-ladder evidence then Task830 exact seal."
+      },
+      {
+        "id": "R24",
+        "requirement": "Protected Demo 3/selection/runtime state bookends, reviewed local commits, residual custody and ownership release",
+        "owner_qids": [
+          "root:task-829",
+          "root:task-830"
+        ],
+        "disposition": "missing",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/task-843-local-commit.json",
+            "sha256": "a1d681b2e57610a5d78523cb401568f818c5c7f785c4706b45f4091447b87792",
+            "note": "Local commit36e075b8 contains exactly two reviewed artifact-custody files; protected hashes match; remaining owned work is unstaged."
+          }
+        ],
+        "missing_action": "Review local commit units; final protected hashes/residual custody/ownership receipt."
+      },
+      {
+        "id": "R25",
+        "requirement": "Goal 85 stays paused; fresh publication approval, blocker and exact-artifact rechecks remain separate",
+        "owner_qids": [
+          "root:task-831"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64",
+          "linux-arm64",
+          "linux-x64"
+        ],
+        "observations": [],
+        "missing_action": "No present action: keep paused; any future publication needs fresh authority and identity rechecks."
+      },
+      {
+        "id": "R26",
+        "requirement": "Package/repository gate split and exact retained-candidate admission; no replacement/repack; separate harness custody",
+        "owner_qids": [
+          "root:task-843",
+          "root:test-490"
+        ],
+        "disposition": "passed-current",
+        "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "platforms": [
+          "darwin-arm64"
+        ],
+        "observations": [
+          {
+            "state": "passed-current",
+            "platform": "darwin-arm64",
+            "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "evidence": ".mdkg/artifacts/goal-86/task-843-final-qualification.json",
+            "sha256": "9e0e4dc0f74a8bb3de268995d6eec05ba46864d1056cb068fd39de6d852de212",
+            "note": "All bounded infrastructure acceptance passed; no public CLI/runtime API change and no final release clearance."
+          }
+        ],
+        "missing_action": "None for this bounded infrastructure task; Task828/829/830 remain independent gates."
+      }
+    ],
+    "deferred": [
+      {
+        "owner_qids": [
+          "root:goal-87",
+          "root:bug-46",
+          "root:bug-47"
+        ],
+        "disposition": "deferred-by-decision",
+        "acceptance": "Unresolved filesystem metadata and ancestor-swap hardening; accurately disclose, do not claim fixes",
+        "decision_ref": "root:dec-98"
+      },
+      {
+        "owner_qids": [
+          "root:epic-257"
+        ],
+        "disposition": "deferred-by-decision",
+        "acceptance": "Hosted qualification and fail-closed stub completion; not a local0.6.0 prerequisite",
+        "decision_ref": "root:dec-100"
+      },
+      {
+        "owner_qids": [
+          "root:epic-258"
+        ],
+        "disposition": "deferred-by-decision",
+        "acceptance": "Nine non-shipping website smokes and nine site profiles; preserved but not claimed passed",
+        "decision_ref": "root:dec-100"
+      }
+    ],
+    "test483_case_ledger": [
+      {
+        "acceptance_criterion": "Observational cache parity and real read-only storage",
+        "case_id": "test-483-case-1",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-480-local-compatibility-qualification.json",
+                "sha256": "f5008c597609c431de9eb92197e07390633b7e9b9d56a9fc4913424407a9d049"
+              },
+              {
+                "path": ".mdkg/artifacts/goal-86/test-479-real-readonly-qualification.json",
+                "sha256": "345ef33cbf326d6e4cacfb308c9990e876ade3630bbf40a03c14c6ca0529476c"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "compatibility",
+                  "readonly"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "compatibility",
+                  "readonly"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Stable pack identities/aliases, formats/profiles, budgets and visibility",
+        "case_id": "test-483-case-2",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+                "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+              },
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-pack-controls-qualification.json",
+                "sha256": "faf6998ba8776e0d521f7e364d8c1abce356495e5423751e99453c2a9b03d6d2"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior",
+                  "pack-controls"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior",
+                  "pack-controls"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Identity-preserving deterministic formatting and refusal",
+        "case_id": "test-483-case-3",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+                "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Complete v2 init, custom instructions and feature/force refusal",
+        "case_id": "test-483-case-4",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+                "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Non-shipping website cache and stale-output qualification",
+        "case_id": "test-483-case-5",
+        "owner_qid": "root:epic-258",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "deferred-by-decision",
+        "decision_ref": "root:dec-100",
+        "platform_results": [],
+        "missing_action": "Future Epic258 website qualification; not a package gate or pass."
+      },
+      {
+        "acceptance_criterion": "Goal/checkpoint/blocker routing without publication authority",
+        "case_id": "test-483-case-6",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-481-local-scale-qualification.json",
+                "sha256": "1d26e596b7b5acbf6513c6915c8a89cfd9a21ddc4bf5cee69a2d1057ac67a10d"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "scale"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "scale"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Legacy alias/path recreation and reviewed ancestor provenance",
+        "case_id": "test-483-case-7",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+                "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Strict migration skills/dependencies and stale-plan/recovery refusal",
+        "case_id": "test-483-case-8",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+                "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Identity-safe upgrade, unsafe seed refusal and interrupted recovery",
+        "case_id": "test-483-case-9",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+                "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Untouched packaged initialization closes references and adopts v2",
+        "case_id": "test-483-case-10",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+                "sha256": "b25de0c915c6ca89220f5f3b3e42c710ee3968f17364ea0a72f4b6b6fe9558ba"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "bootstrap"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "bootstrap"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      },
+      {
+        "acceptance_criterion": "Complete UTF-8 output and exit codes through ordinary/slow pipes",
+        "case_id": "test-483-case-11",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+                "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate.",
+        "runtime_boundary": "Large-output graph operations use supported24.18.0; actual24.15/26 refusal is separate evidence, not unsupported-runtime success."
+      },
+      {
+        "acceptance_criterion": "Portable dependency labels and explicit identity mapping",
+        "case_id": "test-483-case-12",
+        "owner_qid": "root:test-483",
+        "input_artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "disposition": "passed-current",
+        "platform_results": [
+          {
+            "platform": "darwin-arm64",
+            "node": "v24.18.0",
+            "disposition": "passed-current",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+                "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f"
+              }
+            ]
+          },
+          {
+            "platform": "linux-arm64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "native",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          },
+          {
+            "platform": "linux-x64",
+            "disposition": "passed-current",
+            "node": "v24.18.0",
+            "execution": "Rosetta emulated",
+            "evidence": [
+              {
+                "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+                "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+                "families": [
+                  "behavior"
+                ]
+              }
+            ]
+          }
+        ],
+        "missing_action": "None for the recorded installed case/platform rows. Case5 remains deferred, not passed. Owning-node aggregate acceptance and independent Task828 security review remain separate."
+      }
+    ]
+  },
   "schema_version": 1,
   "kind": "goal86-requirement-coverage",
   "goal_qid": "root:goal-86",
@@ -34,7 +2279,9 @@
         "root:test-480"
       ],
       "evidence_state": "current-intermediate",
-      "evidence": [".mdkg/artifacts/goal-86/task-835-local-verification.json"],
+      "evidence": [
+        ".mdkg/artifacts/goal-86/task-835-local-verification.json"
+      ],
       "qualification_boundary": "Task835 local implementation: 1585 source tests and50 installed cases per required Node runtime on macOS. Final0.6.0 platform/security and collaboration acceptance remain open; no killed-writer proof is implied.",
       "final_artifact_pass": false
     },
@@ -85,7 +2332,9 @@
         "root:test-487"
       ],
       "evidence_state": "current-intermediate",
-      "evidence": [".mdkg/artifacts/goal-86/task-836-local-verification.json"],
+      "evidence": [
+        ".mdkg/artifacts/goal-86/task-836-local-verification.json"
+      ],
       "qualification_boundary": "Task836 local implementation: 1627 source tests, unchanged coverage floors and33 installed SIGKILL cases across three required Node runtimes on macOS arm64. Exact0.6.0 Linux/platform, full installed and independent security gates remain open; incomplete publication fails closed.",
       "final_artifact_pass": false
     },
@@ -98,7 +2347,10 @@
         "root:test-479"
       ],
       "evidence_state": "current-intermediate",
-      "evidence": [".mdkg/artifacts/goal-86/task-835-local-verification.json", ".mdkg/artifacts/goal-86/task-836-local-verification.json"],
+      "evidence": [
+        ".mdkg/artifacts/goal-86/task-835-local-verification.json",
+        ".mdkg/artifacts/goal-86/task-836-local-verification.json"
+      ],
       "qualification_boundary": "Current source and intermediate installed recovery refuse changed dependencies, other journals, unknown files and stale approvals; repeat resume/rollback and recovery-of-recovery pass. Full final-artifact init/upgrade and platform coverage remains required.",
       "final_artifact_pass": false
     },
@@ -131,7 +2383,9 @@
         "root:test-486"
       ],
       "evidence_state": "current-intermediate",
-      "evidence": [".mdkg/artifacts/goal-86/bug-39-local-verification.json"],
+      "evidence": [
+        ".mdkg/artifacts/goal-86/bug-39-local-verification.json"
+      ],
       "qualification_boundary": "Local source and same-intermediate-package macOS proof on Node24.15.0/24.18.0/26.0.0; test486 final0.6.0 and Linux/security acceptance remain open.",
       "final_artifact_pass": false
     },
@@ -202,7 +2456,9 @@
         "root:task-827"
       ],
       "evidence_state": "current-intermediate",
-      "evidence": [".mdkg/artifacts/goal-86/task-827-local-verification.json"],
+      "evidence": [
+        ".mdkg/artifacts/goal-86/task-827-local-verification.json"
+      ],
       "qualification_boundary": "Current CLI/help/docs/generated-contract parity and152-file extraction hash verification pass; final installed inventories and npm artifact exclusion remain test483/484.",
       "final_artifact_pass": false
     },
@@ -240,7 +2496,9 @@
         "root:task-827"
       ],
       "evidence_state": "current-intermediate",
-      "evidence": [".mdkg/artifacts/goal-86/task-827-local-verification.json"],
+      "evidence": [
+        ".mdkg/artifacts/goal-86/task-827-local-verification.json"
+      ],
       "qualification_boundary": "Draft0.6.0 metadata and release-critical guidance locally verified with1628 source tests and unchanged inputs. Public release remains draft; final artifact acceptance and broad docs polish are separate.",
       "final_artifact_pass": false
     },
@@ -1523,13 +3781,403 @@
   "initial_final_artifact_passes": 0,
   "execution_updates": [
     {
+      "date": "2026-09-28",
+      "work": "root:test-487",
+      "checkpoint": "root:chk-662",
+      "decision": "root:dec-99",
+      "evidence": ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+      "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "qualification_input_capture_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+      "requirement_dispositions": [
+        {
+          "id": "R07",
+          "evidence_state": "current-intermediate",
+          "result": "Six live/suspended/ambiguous/unknown-entry/opposite-recovery controls pass on actual Ubuntu24.04.4 ARM64/ext4 and Node24.18.0; synthetic EPERM and concurrency timing limits remain explicit.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R08",
+          "evidence_state": "current-intermediate",
+          "result": "Twelve installed Linux caught-error migration/reconciliation samples pass with exact resumed/rolled-back bytes, unchanged Git staging and preserved unrelated fixture files.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R10",
+          "evidence_state": "current-intermediate",
+          "result": "22 transport cases and nine real runtime/selection/private-snapshot cases pass on Linux against unchanged retained6154e4ea candidate bytes.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R23",
+          "evidence_state": "current-intermediate",
+          "result": "Exact candidate and281 transferred input hash/mode bookends match; verified official runtime/image and isolated native ARM64 ext4 guest. Remaining installed families and Linux x86_64 remain open.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "49 selected Linux rows pass; no full platform/security/ladder/seal clearance. Owned VM and fixtures removed; unrelated VM unchanged. Linux remains required; Dec99 approves current-source/diff review plus retained findings with explicit historical-report loss, without blocked-context recovery/rerun. No product input, hosted, remote, provider or publication change."
+    },
+    {
+      "date": "2026-09-28",
+      "work": "root:test-479",
+      "checkpoint": "root:chk-661",
+      "evidence": ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+      "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "qualification_input_capture_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+      "requirement_dispositions": [
+        {
+          "id": "R07",
+          "evidence_state": "current-intermediate",
+          "result": "Six installed live/suspended/ambiguous/unknown-entry/opposite-recovery controls pass; same-candidate Chk660 SIGKILL proof reused separately. No OS-proven abandonment or power-loss claim.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R08",
+          "evidence_state": "current-intermediate",
+          "result": "Twelve sampled migration/reconciliation resume/rollback combinations preserve staged standalone indexes and user bytes, with middle-position dependency/control refusals and interrupted rollback recovery.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R10",
+          "evidence_state": "current-intermediate",
+          "result": "22 portable/malformed-policy cases and nine actual leased-runtime/selected-goal/private-snapshot scenarios pass. Public exclusion and exact deliberate private checkpoint preservation do not import live execution authority.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R12",
+          "evidence_state": "current-intermediate",
+          "result": "Malformed transport controls refreshed; remaining per-finding/containment and current actual read-only filesystem qualification incomplete. Bugs46/47 remain separately deferred/unresolved, not passing regressions.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R23",
+          "evidence_state": "current-intermediate",
+          "result": "Same retained6154e4ea tarball and273 bound source inputs used without repack; driver/module identities and installed-package bookends captured. Not a final seal.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "49 scenario rows pass on Node24.18.0/macOS arm64; Test479 progress and Goal86 NOT_READY. One harness path error corrected; only affected supplement rerun. No source/package or external change. Final platform/independent/ladder/seal gates remain. Goals85/87 paused; Bugs46/47 deferred/unresolved."
+    },
+    {
+      "date": "2026-09-28",
+      "work": [
+        "root:bug-61",
+        "root:test-478"
+      ],
+      "checkpoint": "root:chk-660",
+      "evidence": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+      "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "qualification_input_capture_sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+      "requirement_dispositions": [
+        {
+          "id": "R03",
+          "evidence_state": "current-intermediate",
+          "result": "Three actual linked-worktree topologies each pass concurrent creation and edits, same-checkout exclusion and peer success, distinct checkout state and60 no-write observations.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R04",
+          "evidence_state": "current-intermediate",
+          "result": "Three pinned reviewed graph integrations followed by native four-conflict source/config/graph merges preserve both ancestries; stale decisions refuse and fresh replay is unchanged.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R06",
+          "evidence_state": "current-intermediate",
+          "result": "Separate-gitdir and one-level submodule-backed linked worktrees now pass composed collaboration/recovery/native integration; superproject bookends preserved. Not recursive nested-submodule support.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R07",
+          "evidence_state": "current-intermediate",
+          "result": "Six actual SIGKILL journals, cross-checkout approval refusal and peer state preservation. Recovery still requires explicit operator-confirmed quiescence and exact evidence, not age/PID inference.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R08",
+          "evidence_state": "current-intermediate",
+          "result": "Twelve sampled incomplete/malformed-journal or changed-bound-input faults preserve complete inventories on inspection/resume/rollback refusal. Four sampled fault shapes are not exhaustive or a dirty-worktree deletion gate.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R21",
+          "evidence_state": "current-intermediate",
+          "result": "Bug61 qualification-only Git admission correction has a failing-before regression,124/124 shared-helper checks and bounded independent source readback; final full ladder unchanged and open.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Bug61 locally done; Test478 progress. Original input capture preserved with a separately named qualification amendment; package bytes unchanged. Newer sibling commits remain intentionally unmerged. Goal86 NOT_READY; Linux, final independent acceptance, full ladder and seal remain. Bugs46/47 remain deferred/unresolved in paused Goal87; Goal85 paused."
+    },
+    {
+      "date": "2026-09-28",
+      "decision": "root:dec-98",
+      "work": "root:test-478",
+      "checkpoint": "root:chk-659",
+      "evidence": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+      "tarball_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "requirement_dispositions": [
+        {
+          "id": "R02",
+          "evidence_state": "current-intermediate",
+          "result": "Installed natural collisions, cross-links, staged/unstaged authored nodes, reviewed stable-identity remapping and actual simultaneous linked-worktree creation pass.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R03",
+          "evidence_state": "current-intermediate",
+          "result": "Two actual concurrent linked worktrees retain separate selection/index/runtime/lock/journal state; same-checkout writer refuses while peer succeeds. Two actual SIGKILL recovery journals preserve peer state.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R04",
+          "evidence_state": "current-intermediate",
+          "result": "Pinned reconcile commit then native four-conflict merge preserves graph/source/config review and both ancestries; unresolved config and Git stages refuse independently. No blanket ours treatment.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R05",
+          "evidence_state": "current-intermediate",
+          "result": "Existing installed lifecycle/evidence/deletion/cherry-pick/revert/reintroduction tests pass; linked native merge replay is unchanged after obsolete decisions refuse. Newer sibling source-only commit remains intentionally unmerged.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R06",
+          "evidence_state": "current-intermediate",
+          "result": "288 Git-observation cases include distinct standalone/worktree/submodule/gitdir topologies. Submodule-backed v2 collaboration/recovery is not proven.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R08",
+          "evidence_state": "current-intermediate",
+          "result": "Cross-checkout recovery approvals and unknown lock contents refuse without cleanup; pinned input remains stable when sibling ref advances. Incomplete/malformed-journal controls remain unverified in this family.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R09",
+          "evidence_state": "current-intermediate",
+          "result": "60 explicit-root installed reads across warm/cold JSON/SQLite worktree state preserve complete fixture and both Git indexes even with caller optional-lock override.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Test478 remains progress. Corrected private harness setup/expected-diagnostic/replay usage; reused already-passed unchanged families. No package-input change. Goal86 NOT_READY; Bugs46/47 deferred/unresolved, Goals85/87 paused."
+    },
+    {
+      "date": "2026-09-28",
+      "decision": "root:dec-98",
+      "work": "root:test-477",
+      "checkpoint": "root:chk-658",
+      "evidence": ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+      "tarball_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "requirement_dispositions": [
+        {
+          "id": "R01",
+          "evidence_state": "current-intermediate",
+          "result": "Retained candidate passes installed compact/default/graph-only/--agent initialization, seven current-upgrade cases and actual pinned0.5.2 standard/customized upgrades on Node24.18.0/macOS arm64. User content, canonical/native skills and Git staging remain intact; no baseline download. Final-platform and independent acceptance remain.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R08",
+          "evidence_state": "current-intermediate",
+          "result": "Six installed caught-error first/middle/last resume/recover cases pass with stale-plan refusal, user-edit refusal, unknown-file preservation and unchanged staging. These are not abrupt-death cases. Candidate and source-input capture are hash-bound before/after each smoke; final rerun does not repack.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Test477 remains progress; artifact retained, not sealed. The source-input capture contains273 files and matches throughout execution. Goal86 NOT_READY; final platform/security/full-ladder/seal gates remain, Goals85/87 paused and Bugs46/47 deferred/unresolved. No package-input change, canonical Git mutation or blocked-context access."
+    },
+    {
+      "date": "2026-09-28",
+      "decision": "root:dec-98",
+      "work": "root:test-486",
+      "checkpoint": "root:chk-657",
+      "evidence": ".mdkg/artifacts/goal-86/test-486-local-option-qualification.json",
+      "tarball_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "requirement_dispositions": [
+        {
+          "id": "R11",
+          "evidence_state": "current-intermediate",
+          "result": "Manifest-backed installed matrix passes194 process refusals,388 direct-entrypoint refusals,41 unindexed-graph refusals and seven positive controls on Node24.18.0/macOSarm64. Owned-controller admission and107 focused harness tests pass; fixture inventory and native Git index remain unchanged. Four PATH traps are bounded evidence, not universal process instrumentation.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Local intermediate milestone only; Test486 remains progress. Exact retained-candidate, macOS/Linux, independent acceptance and full ladder remain open. No package input changed; same intermediate artifact as Task839. Goal86 NOT_READY, Goal85/87 paused, Bugs46/47 deferred and unresolved."
+    },
+    {
+      "date": "2026-09-28",
+      "decision": "root:dec-98",
+      "work": "root:task-839",
+      "checkpoint": "root:chk-656",
+      "evidence": ".mdkg/artifacts/goal-86/task-839-release-guidance.json",
+      "tarball_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "requirement_dispositions": [
+        {
+          "id": "R18",
+          "evidence_state": "current-intermediate",
+          "result": "Source/help/matrix/seed/generated command discovery agrees;34 focused checks,499 current examples and114-entry installed command-docs smoke pass. Historical and illustrative examples are separately reported; final package/extraction acceptance remains.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R22",
+          "evidence_state": "current-intermediate",
+          "result": "Release-critical Git/cache/format/bootstrap/recovery/runtime guidance corrected with independent narrow source review; Bugs46/47 explicitly deferred/unresolved and release remains draft. Broad polish and final qualification remain separate.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Task839 local guidance milestone. Its package-input changes require final qualification against new bytes; earlier recorded candidates remain intermediate evidence only. Goal86 NOT_READY; Goal85/87 paused. No blocked-context recovery, remote action or publication."
+    },
+    {
+      "date": "2026-09-28",
+      "decision": "root:dec-98",
+      "work": [
+        "root:bug-60",
+        "root:test-489"
+      ],
+      "checkpoint": "root:chk-655",
+      "evidence": ".mdkg/artifacts/goal-86/node-portability/installed-qualification.json",
+      "tarball_sha256": "9b312e91815bee8651b5c76bb24d6730ac041ce3153277166563b393888df2df",
+      "requirement_dispositions": [
+        {
+          "id": "R03",
+          "evidence_state": "current-intermediate",
+          "result": "Two actual linked worktrees retain separate SQLite indexes, selection, runtime DBs and locks; same-checkout contention refuses while the peer writes.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R04",
+          "evidence_state": "current-intermediate",
+          "result": "Explicit reviewed semantic reconciliation then native merge preserves exact graph/source/external evidence and both ancestries; no blanket ours treatment. Native merge had no textual conflict in this fixture.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R07",
+          "evidence_state": "current-intermediate",
+          "result": "29 installed recovery cases include real kills, live/suspended refusal, synthetic ambiguous PID, unknown files and competing opposite modes against identical bytes.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R13",
+          "evidence_state": "current-intermediate",
+          "result": "86 installed SQLite tests plus 1/16/64MiB measurements pass; one image/deserialize per observation, no canonical path open by SQLite and zero trapped OS dependencies.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Local Bug60 implementation and Test489 acceptance complete. Task839 and final installed/platform/security/coverage/ladder/seal remain. Goal86 NOT_READY; Goal85/87 paused; Bugs46/47 deferred/unresolved, not accepted/fixed."
+    },
+    {
+      "date": "2026-09-28",
+      "decision": "root:dec-98",
+      "work": [
+        "root:task-841"
+      ],
+      "evidence": ".mdkg/artifacts/goal-86/node-portability/recovery-qualification.json",
+      "requirement_dispositions": [
+        {
+          "id": "R07",
+          "evidence_state": "current-intermediate",
+          "result": "Portable recovery requires explicit operator quiescence plus fresh version2 checkout/journal/lock/file/mode approval.345 affected tests and23 installed recovery cases pass, zero OS dependency attempts; combined Test489 and final platform/security acceptance remain.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R22",
+          "evidence_state": "current-intermediate",
+          "result": "Both entrypoints, option admission, source/seed/generated recovery guidance and472 command examples agree on --confirm-quiescent and fresh --lock-evidence. No OS proof or authentication is claimed.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Task841 local implementation milestone only; distinct intermediate artifact from Chk653, not final qualification. Goal86 remains NOT_READY; Goal85/87 paused; Bugs46/47 deferred and unresolved, not accepted/fixed."
+    },
+    {
+      "date": "2026-09-28",
+      "decision": "root:dec-98",
+      "work": [
+        "root:bug-60",
+        "root:task-842"
+      ],
+      "evidence": ".mdkg/artifacts/goal-86/node-portability/runtime-qualification.json",
+      "requirement_dispositions": [
+        {
+          "id": "R13",
+          "evidence_state": "current-intermediate",
+          "result": "Memory-only Node SQLite observation has affected-caller source evidence,25 installed observer passes,8 installed CLI workflows and4 actual Node26 no-write refusals; final installed recovery/platform acceptance remains.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R22",
+          "evidence_state": "current-intermediate",
+          "result": "Node >=24.18.0 <25 capability/metadata/guidance/CI parity passes; draft release limits explicitly retain deferred unresolved Bugs46/47. Task841 recovery is still unfinished.",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Local source/runtime milestone only. Goal86 remains NOT_READY, Goal85 and Goal87 paused; no final artifact, Linux, independent review or coverage/ladder/seal proof is added."
+    },
+    {
+      "date": "2026-09-28",
+      "decision": "root:dec-98",
+      "source_head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "work": [
+        "root:bug-60",
+        "root:task-841",
+        "root:task-842",
+        "root:test-489"
+      ],
+      "deferred_unresolved": [
+        {
+          "qid": "root:bug-46",
+          "owner_goal": "root:goal-87",
+          "disposition": "deferred, not accepted or fixed",
+          "final_artifact_pass": false
+        },
+        {
+          "qid": "root:bug-47",
+          "owner_goal": "root:goal-87",
+          "disposition": "deferred, not accepted or fixed",
+          "final_artifact_pass": false
+        }
+      ],
+      "requirement_dispositions": [
+        {
+          "id": "R07",
+          "evidence_state": "unverified",
+          "result": "Task841 and Test489 replace OS-bound orphan proof with explicit operator-confirmed quiescence plus exact reviewed lock/journal/file-state evidence. Historical Task836 results do not qualify this successor contract.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R12",
+          "evidence_state": "unverified",
+          "result": "Bugs46/47 full ACL/ownership and adversarial ancestor-replacement remedies are explicitly deferred to paused Goal87. All other read-only, malformed-input, link/type and ownership controls remain in scope; deferral is not a passing test.",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R13",
+          "evidence_state": "unverified",
+          "result": "Bug60 Node-only in-memory observation requires fresh result, no-write, resource and writer-control evidence. Task842 owns the capability/runtime contract; Test489 owns installed qualification.",
+          "final_artifact_pass": false
+        }
+      ],
+      "routing": "Bug60 bounded experiment and portable implementation; Task841 recovery; Task842 runtime/release parity; Test489 installed acceptance; existing platform, independent review, full ladder and exact seal. Test489 does not depend on Bug60 aggregate closure, avoiding a qualification cycle.",
+      "disposition": "Goal86 continues locally. Goal87 is paused and unclaimed, Goal85 stays paused. Original fourteen-finding count and historical evidence remain intact; blocked scan context is neither recovered nor rerun. No final-artifact pass is added."
+    },
+    {
       "date": "2026-09-17",
       "work": "root:task-827",
       "evidence": ".mdkg/artifacts/goal-86/task-827-local-verification.json",
       "requirement_dispositions": [
-        {"id": "R22", "evidence_state": "current-intermediate", "result": "Package0.6.0 and draft/unpublished manifest, corrected breaking/bootstrap/migration/native-Git/recovery guidance and independent bounded review pass", "final_artifact_pass": false},
-        {"id": "R18", "evidence_state": "current-intermediate", "result": "CLI/docs472examples/generated parity and152 extraction payload hashes pass; final installed/package exclusion remains", "final_artifact_pass": false},
-        {"id": "R21", "evidence_state": "current-intermediate", "result": "All1628 source tests pass on unchanged435-file input snapshot;95 focused,27 release/contract, local docs smoke, graph/SQLite and diff checks pass", "final_artifact_pass": false}
+        {
+          "id": "R22",
+          "evidence_state": "current-intermediate",
+          "result": "Package0.6.0 and draft/unpublished manifest, corrected breaking/bootstrap/migration/native-Git/recovery guidance and independent bounded review pass",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R18",
+          "evidence_state": "current-intermediate",
+          "result": "CLI/docs472examples/generated parity and152 extraction payload hashes pass; final installed/package exclusion remains",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R21",
+          "evidence_state": "current-intermediate",
+          "result": "All1628 source tests pass on unchanged435-file input snapshot;95 focused,27 release/contract, local docs smoke, graph/SQLite and diff checks pass",
+          "final_artifact_pass": false
+        }
       ],
       "disposition": "Draft preparation is locally complete, not full release qualification. macOS/Linux installed matrix, fresh Standard, independent remediation diff, full ladder and exact seal remain open; Goal85 stays paused. Broad documentation audit/polish is deferred."
     },
@@ -1593,8 +4241,18 @@
       "checkpoint": "root:chk-613",
       "evidence": ".mdkg/artifacts/goal-86/bug-41-local-verification.json",
       "requirement_dispositions": [
-        {"id": "R27", "evidence_state": "current-intermediate", "result": "Local helper-execution and false-clean/freshness correction passes1474 source tests and726 installed CLI-only cases on each required Node runtime from one unchanged225-file intermediate tarball", "final_artifact_pass": false},
-        {"id": "R21", "evidence_state": "current-intermediate", "result": "All1474 discovered tests and CLI/docs/contract/workflow parity pass; final coverage floors and full release ladder remain unverified", "final_artifact_pass": false}
+        {
+          "id": "R27",
+          "evidence_state": "current-intermediate",
+          "result": "Local helper-execution and false-clean/freshness correction passes1474 source tests and726 installed CLI-only cases on each required Node runtime from one unchanged225-file intermediate tarball",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R21",
+          "evidence_state": "current-intermediate",
+          "result": "All1474 discovered tests and CLI/docs/contract/workflow parity pass; final coverage floors and full release ladder remain unverified",
+          "final_artifact_pass": false
+        }
       ],
       "disposition": "Bug41 local closure is separate from test479/484/487 and task837/828 final acceptance. Bug42 is next. Bug43 separately blocks exact changed-warning qualification; all final platform, security, version and seal gates remain."
     },
@@ -1603,7 +4261,17 @@
       "work": "root:bug-43",
       "evidence": ".mdkg/artifacts/goal-86/changed-warning-intake.json",
       "requirement_additions": [
-        {"id": "R29", "requirement": "Changed-only warnings preserve exact project-relative Git paths for nested graphs and literal POSIX backslashes, retaining global errors and excluding unchanged warnings", "owner_qids": ["root:bug-43", "root:test-480", "root:task-828"], "evidence_state": "failure", "final_artifact_pass": false}
+        {
+          "id": "R29",
+          "requirement": "Changed-only warnings preserve exact project-relative Git paths for nested graphs and literal POSIX backslashes, retaining global errors and excluding unchanged warnings",
+          "owner_qids": [
+            "root:bug-43",
+            "root:test-480",
+            "root:task-828"
+          ],
+          "evidence_state": "failure",
+          "final_artifact_pass": false
+        }
       ],
       "disposition": "Current and retained published0.5.2 each lose six warnings in three cases; the ordinary root-path control retains all six. Bug43 is todo, not claimed or fixed. Goal84/86 scope and task827/test480 dependencies include it; achieved task771/test431/chk506 remain historical evidence."
     },
@@ -1613,9 +4281,24 @@
       "evidence": ".mdkg/artifacts/goal-86/bug-17-local-verification.json",
       "checkpoint": "root:chk-611",
       "requirement_dispositions": [
-        {"id": "R10", "evidence_state": "current-intermediate", "result": "Local transport remedy verified with118 focused tests,22 installed CLI-only scenarios per required runtime on one immutable intermediate artifact, and installed bundle/subgraph/visibility smokes; final-artifact/platform/security acceptance remains", "final_artifact_pass": false},
-        {"id": "R21", "evidence_state": "current-intermediate", "result": "All1457 discovered tests pass after the final config-less runtime correction; source bookends unchanged. Full final release ladder remains unverified", "final_artifact_pass": false},
-        {"id": "R01", "evidence_state": "current-intermediate", "result": "Explicit graph-only setup restores the original parent-owned workspace smoke contract after compact init became default. Independent root event-history re-aliasing is not qualified; task827/test477 retain its final disposition", "final_artifact_pass": false}
+        {
+          "id": "R10",
+          "evidence_state": "current-intermediate",
+          "result": "Local transport remedy verified with118 focused tests,22 installed CLI-only scenarios per required runtime on one immutable intermediate artifact, and installed bundle/subgraph/visibility smokes; final-artifact/platform/security acceptance remains",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R21",
+          "evidence_state": "current-intermediate",
+          "result": "All1457 discovered tests pass after the final config-less runtime correction; source bookends unchanged. Full final release ladder remains unverified",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R01",
+          "evidence_state": "current-intermediate",
+          "result": "Explicit graph-only setup restores the original parent-owned workspace smoke contract after compact init became default. Independent root event-history re-aliasing is not qualified; task827/test477 retain its final disposition",
+          "final_artifact_pass": false
+        }
       ],
       "disposition": "Bug17 local implementation closure is separate from test479/test487/task837/task828 final acceptance. Historical evidence and failed fixture attempts remain bound; no event rewrite, scan, seal, commit, remote action or publication. Bug39 is next."
     },
@@ -1624,8 +4307,18 @@
       "work": "root:bug-17",
       "evidence": ".mdkg/artifacts/goal-86/bug-17-portable-contract-progress.json",
       "requirement_dispositions": [
-        {"id": "R10", "evidence_state": "current-intermediate", "result": "Fresh portable contract, held-snapshot consumers and two parent-reproduced independent-review corrections pass106 focused tests; current installed/platform/security qualification remains", "final_artifact_pass": false},
-        {"id": "R21", "evidence_state": "current-intermediate", "result": "All1445 discovered tests pass after the candidate-review corrections on Node24.18.0/macOS with unchanged source hashes; full release ladder remains unverified", "final_artifact_pass": false}
+        {
+          "id": "R10",
+          "evidence_state": "current-intermediate",
+          "result": "Fresh portable contract, held-snapshot consumers and two parent-reproduced independent-review corrections pass106 focused tests; current installed/platform/security qualification remains",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R21",
+          "evidence_state": "current-intermediate",
+          "result": "All1445 discovered tests pass after the candidate-review corrections on Node24.18.0/macOS with unchanged source hashes; full release ladder remains unverified",
+          "final_artifact_pass": false
+        }
       ],
       "disposition": "Bug17 remains progress and owned. Fresh contracted public snapshots support bounded transport; historical policy-less public snapshots remain inspect-only. No excluded private names or authority are added to the structural declaration. Earlier evidence and final gates are preserved."
     },
@@ -1634,7 +4327,12 @@
       "work": "root:bug-17",
       "evidence": ".mdkg/artifacts/goal-86/bug-17-transport-progress.json",
       "requirement_dispositions": [
-        {"id": "R10", "evidence_state": "current-intermediate", "result": "Known producer/historical-consumer corrections pass67 current focused tests; fresh public portable-state contract and independent/installed qualification remain incomplete", "final_artifact_pass": false}
+        {
+          "id": "R10",
+          "evidence_state": "current-intermediate",
+          "result": "Known producer/historical-consumer corrections pass67 current focused tests; fresh public portable-state contract and independent/installed qualification remain incomplete",
+          "final_artifact_pass": false
+        }
       ],
       "disposition": "Bug17 remains progress and owned; new fresh public bundles remain inspect-only until the explicit contract is implemented and qualified. Prior evidence remains snapshot-bound."
     },
@@ -1643,14 +4341,49 @@
       "checkpoint": "root:chk-610",
       "evidence": ".mdkg/artifacts/goal-86/observational-boundary-verification.json",
       "requirement_dispositions": [
-        {"id": "R09", "evidence_state": "current-intermediate", "result": "Bug35 locally verified: 288 CLI-only installed observations per required runtime, unchanged root/child/worktree indexes and staging", "final_artifact_pass": false},
-        {"id": "R26", "evidence_state": "current-intermediate", "result": "Bug40 locally verified: preview no mutation lock or output-parent creation, real-sync positive controls retained", "final_artifact_pass": false},
-        {"id": "R13", "evidence_state": "failure", "result": "Actual read-only APFS qualification exposes 12 copied-legacy-cache metadata failures across three runtimes; Bug42 owns remediation", "final_artifact_pass": false},
-        {"id": "R12", "evidence_state": "current-intermediate", "result": "Mounted EROFS probes, complete inventories and all sync previews pass; wider semantic and security/platform qualification remains incomplete", "final_artifact_pass": false},
-        {"id": "R21", "evidence_state": "current-intermediate", "result": "1409 full discovered tests passed; CLI and documentation checks passed; final release ladder remains unverified", "final_artifact_pass": false}
+        {
+          "id": "R09",
+          "evidence_state": "current-intermediate",
+          "result": "Bug35 locally verified: 288 CLI-only installed observations per required runtime, unchanged root/child/worktree indexes and staging",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R26",
+          "evidence_state": "current-intermediate",
+          "result": "Bug40 locally verified: preview no mutation lock or output-parent creation, real-sync positive controls retained",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R13",
+          "evidence_state": "failure",
+          "result": "Actual read-only APFS qualification exposes 12 copied-legacy-cache metadata failures across three runtimes; Bug42 owns remediation",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R12",
+          "evidence_state": "current-intermediate",
+          "result": "Mounted EROFS probes, complete inventories and all sync previews pass; wider semantic and security/platform qualification remains incomplete",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R21",
+          "evidence_state": "current-intermediate",
+          "result": "1409 full discovered tests passed; CLI and documentation checks passed; final release ladder remains unverified",
+          "final_artifact_pass": false
+        }
       ],
       "requirement_additions": [
-        {"id": "R28", "requirement": "Copied legacy caches cannot override current authored metadata, including equal/older mtimes and both configured backends", "owner_qids": ["root:bug-42", "root:test-480", "root:task-828"], "evidence_state": "failure", "final_artifact_pass": false}
+        {
+          "id": "R28",
+          "requirement": "Copied legacy caches cannot override current authored metadata, including equal/older mtimes and both configured backends",
+          "owner_qids": [
+            "root:bug-42",
+            "root:test-480",
+            "root:task-828"
+          ],
+          "evidence_state": "failure",
+          "final_artifact_pass": false
+        }
       ],
       "routing": "Bug35/40 done; Bug17 -> Bug39 -> Bug41 -> Bug42 -> Task835; draft/final verification also require Bug42",
       "disposition": "Intermediate tarball still version0.5.2, not a final seal. All final macOS/Linux, Standard, independent diff and artifact gates remain. Original matrix and historical evidence preserved."
@@ -1662,14 +4395,22 @@
         {
           "id": "R26",
           "requirement": "Subgraph previews make no mutation-lock or cache-directory writes, including absent-cache linked worktrees; real sync retains writer exclusion",
-          "owner_qids": ["root:bug-40", "root:test-479", "root:task-828"],
+          "owner_qids": [
+            "root:bug-40",
+            "root:test-479",
+            "root:task-828"
+          ],
           "evidence_state": "failure",
           "final_artifact_pass": false
         },
         {
           "id": "R27",
           "requirement": "Generic Git observations do not execute configured helpers or fabricate clean evidence; preserve existing git inspect safeguards",
-          "owner_qids": ["root:bug-41", "root:test-484", "root:task-828"],
+          "owner_qids": [
+            "root:bug-41",
+            "root:test-484",
+            "root:task-828"
+          ],
           "evidence_state": "failure",
           "final_artifact_pass": false
         }

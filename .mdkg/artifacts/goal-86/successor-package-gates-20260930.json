@@ -1,0 +1,713 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-successor-complete-package-gates",
+  "state": "passed-current",
+  "release_readiness": "NOT_READY",
+  "owner": "mdkg-project-agent",
+  "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+  "recorded_at": "2026-09-30T19:27:25.138Z",
+  "candidate": {
+    "path": "/private/tmp/mdkg-goal86-successor-IXaLuM/run-eEfGkk/artifact/mdkg-0.6.0.tgz",
+    "sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+    "sha512": "6146f4759b40e7030b5f6f70cd451a19f805cf0f3ec010d3286ea1c37986bd3bf845999932419ffb47d59c15dd1411cc907138bb7fb77022a65f486cc4782be6",
+    "integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+    "bytes": 545431,
+    "payload_files": 237,
+    "payload_sha256": "360bfa1c886232042ede8f0e4e9ff66520e015e6eea89a9cf708e9a0f0f4a023",
+    "sealed": false
+  },
+  "input_manifest_sha256": "b661a5ea1c15c25d09566b17dd4ad77830cd6b6a2492f05f7c6fd5a97fa42603",
+  "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+  "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+  "full_suite": {
+    "summary_path": "/private/tmp/mdkg-goal86-successor-IXaLuM/run-eEfGkk/coverage/summary.json",
+    "summary_sha256": "27d87f88798ba35bef9a3e3d823207a48b81981422cc876601c09f6a683c9cb1",
+    "test_contract": {
+      "typescript_source_count": 170,
+      "compiled_typescript_count": 170,
+      "root_mjs_count": 14,
+      "total_test_files": 184,
+      "typescript_families": [
+        "commands",
+        "core",
+        "graph",
+        "pack",
+        "root",
+        "util"
+      ],
+      "test_count": 2389,
+      "passed": 2389,
+      "failed": 0
+    },
+    "measured_surface": {
+      "file_count": 148,
+      "metrics": {
+        "lines": {
+          "total": 42030,
+          "covered": 38932,
+          "percent": 92.63
+        },
+        "branches": {
+          "total": 13022,
+          "covered": 10985,
+          "percent": 84.36
+        },
+        "functions": {
+          "total": 3260,
+          "covered": 3181,
+          "percent": 97.58
+        }
+      },
+      "surfaces": {
+        "cli": {
+          "file_count": 1,
+          "metrics": {
+            "lines": {
+              "total": 3505,
+              "covered": 3247,
+              "percent": 92.64
+            },
+            "branches": {
+              "total": 461,
+              "covered": 304,
+              "percent": 65.94
+            },
+            "functions": {
+              "total": 88,
+              "covered": 87,
+              "percent": 98.86
+            }
+          }
+        },
+        "commands": {
+          "file_count": 46,
+          "metrics": {
+            "lines": {
+              "total": 20028,
+              "covered": 18104,
+              "percent": 90.39
+            },
+            "branches": {
+              "total": 5702,
+              "covered": 4654,
+              "percent": 81.62
+            },
+            "functions": {
+              "total": 1621,
+              "covered": 1561,
+              "percent": 96.3
+            }
+          }
+        },
+        "core": {
+          "file_count": 18,
+          "metrics": {
+            "lines": {
+              "total": 5215,
+              "covered": 4795,
+              "percent": 91.95
+            },
+            "branches": {
+              "total": 1431,
+              "covered": 1163,
+              "percent": 81.27
+            },
+            "functions": {
+              "total": 401,
+              "covered": 399,
+              "percent": 99.5
+            }
+          }
+        },
+        "graph": {
+          "file_count": 49,
+          "metrics": {
+            "lines": {
+              "total": 9751,
+              "covered": 9395,
+              "percent": 96.35
+            },
+            "branches": {
+              "total": 4127,
+              "covered": 3686,
+              "percent": 89.31
+            },
+            "functions": {
+              "total": 886,
+              "covered": 874,
+              "percent": 98.65
+            }
+          }
+        },
+        "pack": {
+          "file_count": 11,
+          "metrics": {
+            "lines": {
+              "total": 1414,
+              "covered": 1350,
+              "percent": 95.47
+            },
+            "branches": {
+              "total": 431,
+              "covered": 383,
+              "percent": 88.86
+            },
+            "functions": {
+              "total": 82,
+              "covered": 82,
+              "percent": 100
+            }
+          }
+        },
+        "templates": {
+          "file_count": 5,
+          "metrics": {
+            "lines": {
+              "total": 239,
+              "covered": 237,
+              "percent": 99.16
+            },
+            "branches": {
+              "total": 91,
+              "covered": 83,
+              "percent": 91.21
+            },
+            "functions": {
+              "total": 24,
+              "covered": 24,
+              "percent": 100
+            }
+          }
+        },
+        "util": {
+          "file_count": 18,
+          "metrics": {
+            "lines": {
+              "total": 1878,
+              "covered": 1804,
+              "percent": 96.06
+            },
+            "branches": {
+              "total": 779,
+              "covered": 712,
+              "percent": 91.4
+            },
+            "functions": {
+              "total": 158,
+              "covered": 154,
+              "percent": 97.47
+            }
+          }
+        }
+      }
+    },
+    "thresholds": {
+      "lines": 89,
+      "branches": 77,
+      "functions": 96
+    }
+  },
+  "package_ladder": {
+    "receipt_path": "/private/tmp/mdkg-goal86-successor-IXaLuM/run-W3xggG/receipt.json",
+    "receipt_sha256": "5d5166a753f72596d5f46adf8df76e3fbf543ed0b0a65a059ca98632767de934",
+    "ok": true,
+    "scope": "package",
+    "canonical_execution_count": 37,
+    "alias_count": 38,
+    "artifact_usage_count": 34,
+    "duration_ms": 1047562,
+    "gates": [
+      {
+        "id": "dependency-preflight",
+        "exit_code": 0,
+        "duration_ms": 44,
+        "execution": "reused-not-rerun"
+      },
+      {
+        "id": "coverage",
+        "exit_code": 0,
+        "duration_ms": 509475,
+        "execution": "reused-not-rerun"
+      },
+      {
+        "id": "cli-check",
+        "exit_code": 0,
+        "duration_ms": 8177,
+        "execution": "reused-not-rerun"
+      },
+      {
+        "id": "cli-contract",
+        "exit_code": 0,
+        "duration_ms": 8136,
+        "execution": "reused-not-rerun"
+      },
+      {
+        "id": "docs-check",
+        "exit_code": 0,
+        "duration_ms": 256,
+        "execution": "reused-not-rerun"
+      },
+      {
+        "id": "graph-validate",
+        "exit_code": 0,
+        "duration_ms": 1366,
+        "execution": "reused-not-rerun"
+      },
+      {
+        "id": "security-verify",
+        "exit_code": 0,
+        "duration_ms": 151,
+        "execution": "reused-not-rerun"
+      },
+      {
+        "id": "package-artifact",
+        "exit_code": 0,
+        "duration_ms": 10451,
+        "execution": "reused-not-rerun"
+      },
+      {
+        "id": "publish-readiness",
+        "exit_code": 0,
+        "duration_ms": 105,
+        "execution": "executed"
+      }
+    ],
+    "smokes": [
+      {
+        "id": "smoke:consumer",
+        "exit_code": 0,
+        "duration_ms": 4979,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:git-boundary",
+        "exit_code": 0,
+        "duration_ms": 241284,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:loop",
+        "exit_code": 0,
+        "duration_ms": 15139,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:matrix",
+        "exit_code": 0,
+        "duration_ms": 58940,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:upgrade",
+        "exit_code": 0,
+        "duration_ms": 43030,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:init",
+        "exit_code": 0,
+        "duration_ms": 19546,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:capabilities",
+        "exit_code": 0,
+        "duration_ms": 3035,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:db",
+        "exit_code": 0,
+        "duration_ms": 8605,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:db-queue",
+        "exit_code": 0,
+        "duration_ms": 3658,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:db-queue-cli",
+        "exit_code": 0,
+        "duration_ms": 9406,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:db-events",
+        "exit_code": 0,
+        "duration_ms": 4596,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:db-materializer",
+        "exit_code": 0,
+        "duration_ms": 5003,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:db-snapshot",
+        "exit_code": 0,
+        "duration_ms": 4614,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:archive-work",
+        "exit_code": 0,
+        "duration_ms": 47120,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:work-invocation",
+        "exit_code": 0,
+        "duration_ms": 46906,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:cli-ux-polish",
+        "exit_code": 0,
+        "duration_ms": 9768,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:operator-health",
+        "exit_code": 0,
+        "duration_ms": 9692,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:fix-plan",
+        "exit_code": 0,
+        "duration_ms": 4832,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:branch-conflicts",
+        "exit_code": 0,
+        "duration_ms": 292523,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:id-repair",
+        "exit_code": 0,
+        "duration_ms": 6506,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:command-docs",
+        "exit_code": 0,
+        "duration_ms": 4512,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:spike",
+        "exit_code": 0,
+        "duration_ms": 10899,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:goal-lifecycle",
+        "exit_code": 0,
+        "duration_ms": 16645,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:semantic-refs",
+        "exit_code": 0,
+        "duration_ms": 7526,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:checkpoint-templates",
+        "exit_code": 0,
+        "duration_ms": 6300,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:handoff",
+        "exit_code": 0,
+        "duration_ms": 5296,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:warning-ux",
+        "exit_code": 0,
+        "duration_ms": 4316,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:integration-ux",
+        "exit_code": 0,
+        "duration_ms": 9648,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:demo-graph",
+        "exit_code": 0,
+        "duration_ms": 10276,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:bundle",
+        "exit_code": 0,
+        "duration_ms": 17338,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:graph-clone",
+        "exit_code": 0,
+        "duration_ms": 10924,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mcp",
+        "exit_code": 0,
+        "duration_ms": 53857,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:subgraph",
+        "exit_code": 0,
+        "duration_ms": 12048,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:visibility",
+        "exit_code": 0,
+        "duration_ms": 5328,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:sqlite",
+        "exit_code": 0,
+        "duration_ms": 3714,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:parallel",
+        "exit_code": 0,
+        "duration_ms": 18456,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:goal",
+        "exit_code": 0,
+        "duration_ms": 10599,
+        "artifact_verification": {
+          "before_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "after_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "bytes": 545431,
+          "identity_preserved": true
+        }
+      }
+    ],
+    "git_boundary": {
+      "ok": true,
+      "before_sha256": "d69c1977c9d2c220920f18a61999c7558575bd2e2537cb6c7abe803187b45bd1",
+      "after_sha256": "d69c1977c9d2c220920f18a61999c7558575bd2e2537cb6c7abe803187b45bd1"
+    }
+  },
+  "retained_failure": {
+    "receipt_path": "/private/tmp/mdkg-goal86-successor-IXaLuM/run-eEfGkk/receipt.json",
+    "receipt_sha256": "9462df84783ad16054f24f20517932ff2fb6b24952a97770f65f0133c1621605",
+    "ok": false,
+    "error": "smoke:upgrade failed with exit 1",
+    "classification": "Missing cached published-baseline launch variable caused a network DNS setup failure after seven current upgrade scenarios passed. No candidate/source change. Original failure retained.",
+    "continuation_driver_sha256": "9ed25485199bed728ec40d9a9c709eeeac58c1f1be134287e8ad7d0d7c60c732",
+    "original_runner_sha256": "60d446a6a966b1bd1850eca54d60479e31c378b3533ec1c9876aeb4b5eaa892c",
+    "derived_runner_sha256": "59ebe904b4ae5f9be707fb96b1456ada286bdbac73348860dfd29b9e5c69f60a",
+    "reuse": "2389 full tests and all8 prerequisite gates actually passed on identical source/package/harness inputs; only those were reused. All37 smokes and final readiness/bookends reran."
+  },
+  "deferred": {
+    "website_canonical_count": 9,
+    "hosted_ci": "unverified",
+    "owners": [
+      "root:epic-258",
+      "root:epic-257"
+    ]
+  },
+  "limitations": [
+    "Passing package gates do not substitute for current installed platform matrix, independent security acceptance, canonical graph closeout validation, or exact seal.",
+    "No push/publication/tag/remote Git/provider/deployment; Bugs46/47 remain deferred and unresolved."
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "sanitized-linux-qualification-receipt",
+  "original_receipt_sha256": "5a82319bab59fceb9d67aa4f4dcbdc766e403408713e8c0de21a1d9728a1d935",
+  "original_receipt_bytes": 3886,
+  "condensation": "Complete raw synthetic stream hashes verified; large arrays/inventories are represented by hashes/counts. Reproduction uses the pinned capsule and original test assertions. No raw security reports or consumer data.",
+  "evidence": {
+    "kind": "test487-local-docker-installed-families",
+    "started_at": "2026-09-29T03:52:32.235Z",
+    "completed_at": "2026-09-29T04:12:47.774Z",
+    "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "capsule_manifest_sha256": "8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+    "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+    "source_revision": "36e075b8d64babff04154704a721db4a82926ebe",
+    "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+    "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+    "environment": {
+      "platform": "linux",
+      "arch": "x64",
+      "node": "v24.18.0",
+      "uid": 10001,
+      "kernel": "6.12.76-linuxkit",
+      "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "git": "git version 2.43.0",
+      "npm": "11.16.0",
+      "root_filesystem": {
+        "bytes": 1159,
+        "sha256": "13a6f6ede175964cc18377e6bef0ada2a478330f2d124a54101b2235d60523cf"
+      },
+      "fixture_filesystem": "/dev/vda1[/docker/volumes/49e817739b3499d9dc24ff5fe92487d3ea10255380be9007eaf1f6bf03d67299/_data] ext4   rw,relatime,discard",
+      "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+      "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+    },
+    "completed": [
+      {
+        "name": "scale",
+        "driver": "test-481-installed-scale.cjs",
+        "status": 1,
+        "signal": null,
+        "duration_ms": 1215336,
+        "stdout_sha256": "e0838586a9634b566cdcd50adc014705e403452e2928d88ca032c18361662de3",
+        "stderr_sha256": "5a488adc429fa4a3ef74afdfd30f0faa49b5126d72e052e0acd5deaebeb29ec9",
+        "receipt": {
+          "event": "scale-started",
+          "nodes": 2000,
+          "node": "v24.18.0",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "qualification_allowance_ms": 600000,
+          "product_sla": false
+        },
+        "pass": false
+      }
+    ],
+    "pass": false,
+    "limitations": [
+      "Platform subset evidence only until aggregate acceptance; not publication readiness or security clearance",
+      "Bugs46/47 deferred/unresolved; Windows and hosted CI unqualified",
+      "Copied fixture adapters are separately hash-bound; no shipped package inputs changed"
+    ]
+  },
+  "failures": [
+    {
+      "family": "scale",
+      "status": 1,
+      "signal": null,
+      "stderr_sha256": "5a488adc429fa4a3ef74afdfd30f0faa49b5126d72e052e0acd5deaebeb29ec9",
+      "diagnostic_tail": "ecutable: 'node',\n          args: [\n            '/private/tmp/mdkg-scale-goal-EhJ4Bf/installed/node_modules/mdkg/dist/cli.js',\n            'validate',\n            '--json'\n          ],\n          exit: 0,\n          signal: null,\n          timeout_ms: 600000,\n          elapsed_ms: 870,\n          stdout_bytes: 1722,\n          stdout_sha256: '62aeb62d46c436a656d528cb803c2493adef7176cd910c6856ce1dc754e1e9e7',\n          stderr_sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'\n        },\n        {\n          fixture: 'mdkg-installed-scale-Jd6Nml',\n          executable: 'node',\n          args: [\n            '/private/tmp/mdkg-scale-goal-EhJ4Bf/installed/node_modules/mdkg/dist/cli.js',\n            'graph',\n            'migrate',\n            '--graph-id',\n            '288eed9d-ba61-49a4-8b2c-cdc326fe22c0',\n            '--origin',\n            '7745a918-239d-46c3-8e96-7ec39994ef0b',\n            '--json'\n          ],\n          exit: 0,\n          signal: null,\n          timeout_ms: 600000,\n          elapsed_ms: 1402,\n          stdout_bytes: 1904490,\n          stdout_sha256: '218ae786d521f242e780bae4711127b034db6db5c2a0ec93bad6cc22e8bf97ad',\n          stderr_sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'\n        },\n        {\n          fixture: 'mdkg-installed-scale-Jd6Nml',\n          executable: 'node',\n          args: [\n            '/private/tmp/mdkg-scale-goal-EhJ4Bf/installed/node_modules/mdkg/dist/cli.js',\n            'graph',\n            'migrate',\n            '--graph-id',\n            '288eed9d-ba61-49a4-8b2c-cdc326fe22c0',\n            '--origin',\n            '7745a918-239d-46c3-8e96-7ec39994ef0b',\n            '--apply',\n            '--plan-hash',\n            'sha256:a88ebff594b924a70ac07636cb41d1b9c0f1ed8727aa58907fa41f78487809d1',\n            '--json'\n          ],\n          exit: null,\n          signal: 'SIGTERM',\n          timeout_ms: 600000,\n          elapsed_ms: 600064,\n          stdout_bytes: 0,\n          stdout_sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',\n          stderr_sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'\n        }\n      ]\n    }\n    \n    Node.js v24.18.0\n    \n    \n    1 !== 0\n    \n        at Object.<anonymous> (/capsule/.mdkg/artifacts/goal-86/test-481-installed-scale.cjs:44:12)\n        at Module._compile (node:internal/modules/cjs/loader:1871:14)\n        at Object..js (node:internal/modules/cjs/loader:2002:10)\n        at Module.load (node:internal/modules/cjs/loader:1594:32)\n        at Module._load (node:internal/modules/cjs/loader:1396:12)\n        at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n        at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n        at node:internal/main/run_main_module:33:47 {\n      generatedMessage: false,\n      code: 'ERR_ASSERTION',\n      actual: 1,\n      expected: 0,\n      operator: 'strictEqual',\n      diff: 'simple'\n    }\n  ]\n}\n\nNode.js v24.18.0\n",
+      "diagnostic_head": "{\"event\":\"qualification-failed\",\"error\":\"/capsule/scripts/installed-scale-goal.js:245\\n  } catch (error) { error.fixture_roots=roots; error.completed_cases=cases; error.command_receipts=commands; throw error; }\\n                                                                                                             ^\\n\\nAssertionError [ERR_ASSERTION]: /private/tmp/mdkg-scale-goal-EhJ4Bf/installed/node_modules/mdkg/dist/cli.js graph migrate --graph-id 288eed9d-ba61-49a4-8b2c-cdc326fe22c0 --origin 7745a918-239d-46c3-8e96-7ec39994ef0b --apply --plan-hash sha256:a88ebff594b924a70ac07636cb41d1b9c0f1ed8727aa58907fa41f78487809d1 --json\\nError: spawnSync /opt/node-v24.18.0-linux-x64/bin/node ETIMEDOUT\\n\\n\\n\\nnull !== 0\\n\\n    at run (/capsule/scripts/installed-scale-goal.js:71:12)\\n    at cli (/capsule/scripts/installed-scale-goal.js:74:45)\\n    at json (/capsule/scripts/installed-scale-goal.js:75:43)\\n    at migrate (/capsule/scripts/installed-scale-goal.js:113:21)\\n    at Object.runInstalledScaleGoal (/capsule/scripts/installed-scale-goal.js:139:44)\\n    at Object.<anonymous> (/capsule/.mdkg/artifacts/goal-86/test-481-installed-scale.cjs:8:74)\\n    at Module._compile (node:internal/m"
+    }
+  ],
+  "scope": "Platform family evidence only; final security, full ladder and artifact seal remain separate. Deferred Bugs46/47 are not fixed."
+}

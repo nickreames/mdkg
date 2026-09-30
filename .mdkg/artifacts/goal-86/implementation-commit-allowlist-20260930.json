@@ -1,0 +1,806 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-reviewed-local-implementation-commit-allowlist",
+  "source_revision": "72a3c8780af7d4c2888590b02158ddc60476facc",
+  "owner": "mdkg-project-agent",
+  "reviewer": "local_commit_review",
+  "paths_sha256": "1651421f4aa708d3be325f7cbec5e36afaa5a6630b983d34bbb92e0110297e6a",
+  "count": 132,
+  "paths": [
+    ".agents/skills/build-pack-and-execute-task/SKILL.md",
+    ".agents/skills/pursue-mdkg-goal/SKILL.md",
+    ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+    ".claude/skills/build-pack-and-execute-task/SKILL.md",
+    ".claude/skills/pursue-mdkg-goal/SKILL.md",
+    ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+    ".github/workflows/release-readiness.yml",
+    ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+    ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+    ".mdkg/skills/registry.md",
+    ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+    "CHANGELOG.md",
+    "CLI_COMMAND_MATRIX.md",
+    "README.md",
+    "assets/init/CLI_COMMAND_MATRIX.md",
+    "assets/init/skills/default/build-pack-and-execute-task/SKILL.md",
+    "assets/init/skills/default/pursue-mdkg-goal/SKILL.md",
+    "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+    "docs/_generated/cli-reference.md",
+    "docs/_generated/command-contract-summary.json",
+    "docs/_generated/release-notes.json",
+    "docs/advanced-alpha/graph-movement.md",
+    "docs/guides/agent-workflow.md",
+    "docs/src/content/docs/advanced-alpha/graph-movement.md",
+    "docs/src/content/docs/project/changelog.md",
+    "docs/src/content/docs/start-here/install.md",
+    "docs/src/content/docs/start-here/safety-boundaries.md",
+    "docs/start-here/install.md",
+    "docs/start-here/safety-boundaries.md",
+    "mdkg-dev/src/pages/index.astro",
+    "mdkg-dev/src/pages/quickstart.astro",
+    "mdkg-dev/src/pages/trust.astro",
+    "package-lock.json",
+    "package.json",
+    "scripts/assert-publish-ready.js",
+    "scripts/check-doc-command-examples.js",
+    "scripts/dependency-boundary.js",
+    "scripts/generate-ci-workflow.js",
+    "scripts/generate-command-contract.js",
+    "scripts/installed-graph-recovery.js",
+    "scripts/mdkg-dev-smoke-utils.js",
+    "scripts/qualification-git.js",
+    "scripts/qualification-smoke.js",
+    "scripts/release-ladder.js",
+    "scripts/release-scope.js",
+    "scripts/retained-release-candidate.js",
+    "scripts/smoke-command-matrix.js",
+    "scripts/smoke-manifest.json",
+    "scripts/smoke-mdkg-dev.js",
+    "src/cli.ts",
+    "src/commands/bundle.ts",
+    "src/commands/db.ts",
+    "src/commands/doctor.ts",
+    "src/commands/fix.ts",
+    "src/commands/format.ts",
+    "src/commands/graph_identity.ts",
+    "src/commands/loop_descriptors.ts",
+    "src/commands/option_contract.ts",
+    "src/commands/status.ts",
+    "src/commands/subgraph.ts",
+    "src/commands/work.ts",
+    "src/core/filesystem_authority.ts",
+    "src/core/node_runtime.ts",
+    "src/core/project_db_events.ts",
+    "src/core/project_db_migrations.ts",
+    "src/core/project_db_queue.ts",
+    "src/core/project_db_snapshot.ts",
+    "src/core/sqlite_observation.ts",
+    "src/graph/cache_output.ts",
+    "src/graph/cache_sources.ts",
+    "src/graph/capabilities_index_cache.ts",
+    "src/graph/capabilities_indexer.ts",
+    "src/graph/frontmatter.ts",
+    "src/graph/identity_migration.ts",
+    "src/graph/identity_reconcile.ts",
+    "src/graph/identity_transaction.ts",
+    "src/graph/identity_validation.ts",
+    "src/graph/index_cache.ts",
+    "src/graph/json_cache_fingerprint.ts",
+    "src/graph/reindex.ts",
+    "src/graph/selected_goal.ts",
+    "src/graph/skills_index_cache.ts",
+    "src/graph/skills_indexer.ts",
+    "src/graph/sqlite_index.ts",
+    "src/graph/subgraphs.ts",
+    "src/graph/workflow_refs.ts",
+    "src/util/argparse.ts",
+    "src/util/git_metadata.ts",
+    "src/util/legacy_id_rewrite.ts",
+    "src/util/lock.ts",
+    "src/util/lock_evidence.ts",
+    "tests/ci-topology.test.ts",
+    "tests/commands/archive_payload_ownership.test.ts",
+    "tests/commands/bundle_archive_visibility.test.ts",
+    "tests/commands/cli_option_admission.test.ts",
+    "tests/commands/command_contract.test.ts",
+    "tests/commands/diagnostic_containment.test.ts",
+    "tests/commands/fix.test.ts",
+    "tests/commands/format_identity.test.ts",
+    "tests/commands/loop_seed_budget.test.ts",
+    "tests/commands/loop_seed_safety.test.ts",
+    "tests/commands/node_runtime_admission.test.ts",
+    "tests/commands/numeric_allocation.test.ts",
+    "tests/commands/subgraph.test.ts",
+    "tests/commands/task_event.test.ts",
+    "tests/core/filesystem_authority.test.ts",
+    "tests/core/snapshot_containment.test.ts",
+    "tests/core/sqlite_memory_observation.test.ts",
+    "tests/core/sqlite_observation.test.ts",
+    "tests/dependency-boundary.test.ts",
+    "tests/fixtures/cli-options.cjs",
+    "tests/fixtures/interrupted-writer.cjs",
+    "tests/graph/cache_git_metadata.test.ts",
+    "tests/graph/capabilities_indexer.test.ts",
+    "tests/graph/frontmatter.test.ts",
+    "tests/graph/identity_interrupted_writer.test.ts",
+    "tests/graph/identity_migration.test.ts",
+    "tests/graph/identity_migration_lineage.test.ts",
+    "tests/graph/identity_migration_validation.test.ts",
+    "tests/graph/identity_portable_recovery.test.ts",
+    "tests/graph/identity_reconcile.test.ts",
+    "tests/graph/identity_reconciliation_plan.test.ts",
+    "tests/graph/identity_writer_fence.test.ts",
+    "tests/helpers/fs.ts",
+    "tests/helpers/identity_recovery.ts",
+    "tests/installed-cli-options.test.mjs",
+    "tests/package-release-profile.test.mjs",
+    "tests/publish-readiness-goal-contract.test.mjs",
+    "tests/qualification-git.test.mjs",
+    "tests/release-guidance.test.mjs",
+    "tests/release-ladder.test.ts",
+    "tests/util/legacy_id_rewrite.test.ts"
+  ],
+  "files": [
+    {
+      "path": ".agents/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "bytes": 4886
+    },
+    {
+      "path": ".agents/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "bytes": 10346
+    },
+    {
+      "path": ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "bytes": 11000
+    },
+    {
+      "path": ".claude/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "bytes": 4886
+    },
+    {
+      "path": ".claude/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "bytes": 10346
+    },
+    {
+      "path": ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "bytes": 11000
+    },
+    {
+      "path": ".github/workflows/release-readiness.yml",
+      "sha256": "0aa57871ea4690141f85c46bc3b56b1d13b4473aa96141a4b4de062d3aa4c106",
+      "bytes": 8244
+    },
+    {
+      "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "bytes": 4886
+    },
+    {
+      "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "bytes": 10346
+    },
+    {
+      "path": ".mdkg/skills/registry.md",
+      "sha256": "1b83dfea49d4f563a8edc3b94c387a886508a89e47b5378ff2af7b1381c6dc2e",
+      "bytes": 3577
+    },
+    {
+      "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "bytes": 11000
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "07e265bcd4b6ba748801d60fe2e9fc708e5708000e1413b33163170fa91c885d",
+      "bytes": 58240
+    },
+    {
+      "path": "CLI_COMMAND_MATRIX.md",
+      "sha256": "824acb61a013096abfffa74076b5e095f69c7a1f01ad03f7d6ff5f7df56428cd",
+      "bytes": 74657
+    },
+    {
+      "path": "README.md",
+      "sha256": "d5794a88aeb8bc67c6647a5e3c5903c69f669d8a7a939b307fdf095d28f449e6",
+      "bytes": 53897
+    },
+    {
+      "path": "assets/init/CLI_COMMAND_MATRIX.md",
+      "sha256": "a273d0b02f9b00775b7a6fbafc3ba09497a7bcdb927168da3a9e0b8739f83e0f",
+      "bytes": 27121
+    },
+    {
+      "path": "assets/init/skills/default/build-pack-and-execute-task/SKILL.md",
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "bytes": 4886
+    },
+    {
+      "path": "assets/init/skills/default/pursue-mdkg-goal/SKILL.md",
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "bytes": 10346
+    },
+    {
+      "path": "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "bytes": 11000
+    },
+    {
+      "path": "docs/_generated/cli-reference.md",
+      "sha256": "532b5b06d57cef38eb79f16c1239ff510f43e7cd8e7f4fea76e7baa093411129",
+      "bytes": 234944
+    },
+    {
+      "path": "docs/_generated/command-contract-summary.json",
+      "sha256": "87b5497a0dff2800dfd2c0761dc3e94420913ac74081b517fb0382957b9df84f",
+      "bytes": 30855
+    },
+    {
+      "path": "docs/_generated/release-notes.json",
+      "sha256": "17c805a21a3a55c3f383da52758ce84c83a8460b47714eadd5e339813ea87f99",
+      "bytes": 82907
+    },
+    {
+      "path": "docs/advanced-alpha/graph-movement.md",
+      "sha256": "cb275ee1b7b8adcd69869a9966d9a9abd4ac334297db20c11869e7e1e5863c49",
+      "bytes": 19044
+    },
+    {
+      "path": "docs/guides/agent-workflow.md",
+      "sha256": "448216dad33f7de29fbaec7b9470ada79927e0ade4805254ca1d7f354fd81bcd",
+      "bytes": 3348
+    },
+    {
+      "path": "docs/src/content/docs/advanced-alpha/graph-movement.md",
+      "sha256": "cb275ee1b7b8adcd69869a9966d9a9abd4ac334297db20c11869e7e1e5863c49",
+      "bytes": 19044
+    },
+    {
+      "path": "docs/src/content/docs/project/changelog.md",
+      "sha256": "5548d7bc86de525c7d2ae50d51d627b4cdd96b3aca5d0b58a8f97b0f2d0d682d",
+      "bytes": 12847
+    },
+    {
+      "path": "docs/src/content/docs/start-here/install.md",
+      "sha256": "d456fd819f7ec152a13c841124d96c6dac243e3129c0dd9378840418325e9b76",
+      "bytes": 5555
+    },
+    {
+      "path": "docs/src/content/docs/start-here/safety-boundaries.md",
+      "sha256": "93538dae18b4912c7c0b7356b45ea41a035fa363f0837fb2a2c95179decad7b5",
+      "bytes": 2877
+    },
+    {
+      "path": "docs/start-here/install.md",
+      "sha256": "973090cd27a32347b36e7dbaf17261db5d236cae6f3d560d7b11460371043a1c",
+      "bytes": 3620
+    },
+    {
+      "path": "docs/start-here/safety-boundaries.md",
+      "sha256": "86dd737965cc2b41f59ab1d2536277ed7c290faa4facb94d2a702468e4ced52e",
+      "bytes": 1934
+    },
+    {
+      "path": "mdkg-dev/src/pages/index.astro",
+      "sha256": "778565bf635fd4c858ba2b81cebc19605783efd173e5ebe2c19c710005350e1a",
+      "bytes": 16197
+    },
+    {
+      "path": "mdkg-dev/src/pages/quickstart.astro",
+      "sha256": "c05e292980e6a1c6ca91f80044134afbad5676dc02d58f62517a6b219fe82340",
+      "bytes": 3258
+    },
+    {
+      "path": "mdkg-dev/src/pages/trust.astro",
+      "sha256": "6ce298a0983880989b765fa3f396284ecc2e5909f62dfdb35d85b9dc885a83d6",
+      "bytes": 4132
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "da6367ac0f9bc63d4471076a45dfa58492be76e468dc720b8eb8b560aaa5aca4",
+      "bytes": 1587
+    },
+    {
+      "path": "package.json",
+      "sha256": "3bde1e4761660a74bd50d7b467f5fae247964ad9811d421c2d05e91cd72d3672",
+      "bytes": 7260
+    },
+    {
+      "path": "scripts/assert-publish-ready.js",
+      "sha256": "2769f6b466930aeac9fff0f99f84604d865299301fd37f144ef6dd1b34074ca7",
+      "bytes": 49714
+    },
+    {
+      "path": "scripts/check-doc-command-examples.js",
+      "sha256": "a6132e97efb2f99628fa1a6100c7cfbda131e1ac6513c700583ed99963650c06",
+      "bytes": 12861
+    },
+    {
+      "path": "scripts/dependency-boundary.js",
+      "sha256": "ec727013983d6972da3f5de60666a89717e475d3c242eb5fa045970072fdda7f",
+      "bytes": 13682
+    },
+    {
+      "path": "scripts/generate-ci-workflow.js",
+      "sha256": "4fab4e318cd52de8a36345185dffa685dde5e42e3249ca06b7416630bba1544e",
+      "bytes": 13037
+    },
+    {
+      "path": "scripts/generate-command-contract.js",
+      "sha256": "b0679253ccb2eebafd2960b2bee7ae16a1d1560015420c139f15aa3ca89117ea",
+      "bytes": 41956
+    },
+    {
+      "path": "scripts/installed-graph-recovery.js",
+      "sha256": "a45b9a147b73f959a75bff86e2b453c9e65fea7d48e42fbc9b5ef284d4458b2c",
+      "bytes": 11840
+    },
+    {
+      "path": "scripts/mdkg-dev-smoke-utils.js",
+      "sha256": "b650fccc815df480ad9bd612679d8d20338fdfcc016693c803057d843fd2dde1",
+      "bytes": 4819
+    },
+    {
+      "path": "scripts/qualification-git.js",
+      "sha256": "068a5de8d69d578424777f13f74e4ee47b10c1833f30e49dbf3fd0b9cc75920e",
+      "bytes": 23566
+    },
+    {
+      "path": "scripts/qualification-smoke.js",
+      "sha256": "95264669589387e90c12aae8c021e49755135ee6c097a7bf29c5a7a691c76a75",
+      "bytes": 4665
+    },
+    {
+      "path": "scripts/release-ladder.js",
+      "sha256": "60d446a6a966b1bd1850eca54d60479e31c378b3533ec1c9876aeb4b5eaa892c",
+      "bytes": 36395
+    },
+    {
+      "path": "scripts/release-scope.js",
+      "sha256": "fa941b37be5465e7ab596c5d1ec46f01c4cfc0e7d8abc93bcea168f937be891c",
+      "bytes": 683
+    },
+    {
+      "path": "scripts/retained-release-candidate.js",
+      "sha256": "c198ddc7dfb98247de610b6d03fc65fae115417d1956af03901b5b4946be9a77",
+      "bytes": 10614
+    },
+    {
+      "path": "scripts/smoke-command-matrix.js",
+      "sha256": "320b6849bb6992fff5ba2190c845bacc97b9388a1c7ae25125a6e916e73ae6d7",
+      "bytes": 16798
+    },
+    {
+      "path": "scripts/smoke-manifest.json",
+      "sha256": "ef748ecd1185bb46c3d57717dcd3c6bfafc363abce48351809f8dabe4ee255e2",
+      "bytes": 17213
+    },
+    {
+      "path": "scripts/smoke-mdkg-dev.js",
+      "sha256": "dfeefa4d6f2511f67b7b137a404b158e4a356dee461f1d810b74eabb82d36e2f",
+      "bytes": 27233
+    },
+    {
+      "path": "src/cli.ts",
+      "sha256": "542924f0b193db6496d3a58912e5c4eb41b7cacd2de864f311c1c897184e09b8",
+      "bytes": 160869
+    },
+    {
+      "path": "src/commands/bundle.ts",
+      "sha256": "796694bd7b21b74f6553fe9973fcbd32e9a6f5be0708c77f69acd81c36ee56af",
+      "bytes": 45266
+    },
+    {
+      "path": "src/commands/db.ts",
+      "sha256": "36c68aaccd278d48f29fd0d065145602553aa8fb751c588014969f1fcbdb6df2",
+      "bytes": 31951
+    },
+    {
+      "path": "src/commands/doctor.ts",
+      "sha256": "6fafbc7d68c90a938550dd3668ab353fa85ad21a79d163011bdc4e8f8de8932f",
+      "bytes": 27024
+    },
+    {
+      "path": "src/commands/fix.ts",
+      "sha256": "ede4c22d4e139194d93ccee202270a6eda48c0fc3b7a990e821daa448e26150f",
+      "bytes": 60870
+    },
+    {
+      "path": "src/commands/format.ts",
+      "sha256": "f4bf4525f720bf3e76bcd8f03cbb41f67685a9413fe72c8e8d6654315cea242d",
+      "bytes": 21906
+    },
+    {
+      "path": "src/commands/graph_identity.ts",
+      "sha256": "2ba6fdf164fb442153af0af1884110a7ad1b3eca8ffa21c54392eb6abe20f77a",
+      "bytes": 3624
+    },
+    {
+      "path": "src/commands/loop_descriptors.ts",
+      "sha256": "b71c349113981c11e32ba55b6882e1eeff8d31fb39af8c42dd3b4c2f9c9216a8",
+      "bytes": 9684
+    },
+    {
+      "path": "src/commands/option_contract.ts",
+      "sha256": "ee891fb4a1f611ff86377822f21e2ba0c5314f68749d80a058beea4d49120e41",
+      "bytes": 11836
+    },
+    {
+      "path": "src/commands/status.ts",
+      "sha256": "7a30aa79550ed262977081bf6861ba42fdbf89ad00a4ac97d7136abf6b4d163f",
+      "bytes": 9964
+    },
+    {
+      "path": "src/commands/subgraph.ts",
+      "sha256": "dd40a4774636916c21b649106911d12ca4059401c7e1f338b51f0ed954aeb666",
+      "bytes": 50527
+    },
+    {
+      "path": "src/commands/work.ts",
+      "sha256": "372b253e96357c72a6dcaef8cd84e503d40249dad4aa61d06a9161acaea45e08",
+      "bytes": 59029
+    },
+    {
+      "path": "src/core/filesystem_authority.ts",
+      "sha256": "7b7a28dcee3545808349c5b6f584c075017f7d3a1cbd4de83407b8a3461d95eb",
+      "bytes": 19948
+    },
+    {
+      "path": "src/core/node_runtime.ts",
+      "sha256": "2b3c81bac7443a8629d6f06de95c7e6ce0e5c4588f595bf62763c4f3dd3fafee",
+      "bytes": 1728
+    },
+    {
+      "path": "src/core/project_db_events.ts",
+      "sha256": "f513efea1ba226191bbbc758d9d0132fcb35ca5d71326f84c00c9dce364c6d57",
+      "bytes": 33348
+    },
+    {
+      "path": "src/core/project_db_migrations.ts",
+      "sha256": "f708327a012e4a3c30c238b4a1eebe1e2b0959bbd18a5b504a388b456518e165",
+      "bytes": 32733
+    },
+    {
+      "path": "src/core/project_db_queue.ts",
+      "sha256": "60908d81cda539729d1e4eb8f8825a7c97d5a0047ddc7628d4369c7c915ea2e1",
+      "bytes": 26198
+    },
+    {
+      "path": "src/core/project_db_snapshot.ts",
+      "sha256": "40086394f2b87dd16f0ba3f7c04bb9d2ba68b98eb5222c331c9fc0faa3ced24d",
+      "bytes": 31207
+    },
+    {
+      "path": "src/core/sqlite_observation.ts",
+      "sha256": "78c8705ee0865b31382c45c60ff6426dc563d7417635caf0c18943c657409754",
+      "bytes": 10871
+    },
+    {
+      "path": "src/graph/cache_output.ts",
+      "sha256": "6465c07d8b5d3a94e1bf167cba184ee0c37932d34487238e9c2e3c42b6cffdd4",
+      "bytes": 1286
+    },
+    {
+      "path": "src/graph/cache_sources.ts",
+      "sha256": "af39021c7fccf59fe1f96b5a89ab196e63b9fe48f80f530d82bc41b36c6d53f1",
+      "bytes": 2244
+    },
+    {
+      "path": "src/graph/capabilities_index_cache.ts",
+      "sha256": "7ec8f110a3ac2a1877dfc2a4af7cc5e106d44181d018ef5a3ae1d29cb2ad8649",
+      "bytes": 6068
+    },
+    {
+      "path": "src/graph/capabilities_indexer.ts",
+      "sha256": "487fd83a037097149d634e45f176bd7fc2176f45d76380c16bc216faf4215767",
+      "bytes": 17826
+    },
+    {
+      "path": "src/graph/frontmatter.ts",
+      "sha256": "a2048814cfbd8e94a10fe89d07296afa963aa3aed5c40b7fd5e23921b861335b",
+      "bytes": 8128
+    },
+    {
+      "path": "src/graph/identity_migration.ts",
+      "sha256": "a483104146c7ebeb5df56846f000465f8254df2874a407429057a1ee3a21d367",
+      "bytes": 16415
+    },
+    {
+      "path": "src/graph/identity_reconcile.ts",
+      "sha256": "b8b8173b84c12d425415bcf1d215c22a4d0b1016bafa7503a91b2d0e6c93db07",
+      "bytes": 14268
+    },
+    {
+      "path": "src/graph/identity_transaction.ts",
+      "sha256": "b2fe38b9a3da3e1a7e503168c5900aa8b21fcb0b18a2f6e6b6e35ac74e3994de",
+      "bytes": 32661
+    },
+    {
+      "path": "src/graph/identity_validation.ts",
+      "sha256": "71ee912d43d97daf08d6c99086025b034b63c2cf6c48269a287b1fe90f35d475",
+      "bytes": 20411
+    },
+    {
+      "path": "src/graph/index_cache.ts",
+      "sha256": "8099f18ac9ccb19136278738af13c3e3d81b223b10a3aabcf9be871e9700c83c",
+      "bytes": 5731
+    },
+    {
+      "path": "src/graph/json_cache_fingerprint.ts",
+      "sha256": "f61d57324155d8f5cafbbca8e4314019be7145eec996cfc5b69d4869f3dac8c9",
+      "bytes": 3927
+    },
+    {
+      "path": "src/graph/reindex.ts",
+      "sha256": "cb2fbd4bb2746f8ea04713c76a2f248b208fe13d5853a950077f3551809a9a42",
+      "bytes": 3235
+    },
+    {
+      "path": "src/graph/selected_goal.ts",
+      "sha256": "feeb448f2f31912eb5ac67e486dabd57645bd10f929fb2b037b440f830a4b00f",
+      "bytes": 3268
+    },
+    {
+      "path": "src/graph/skills_index_cache.ts",
+      "sha256": "d89473a45a580a493f38133ab9087e422661baeddca589d8d8a27816dec7debb",
+      "bytes": 4922
+    },
+    {
+      "path": "src/graph/skills_indexer.ts",
+      "sha256": "13453c8238376c44c531e00b6248e27dbf45bb57734471efddd4c18a16f010cc",
+      "bytes": 10088
+    },
+    {
+      "path": "src/graph/sqlite_index.ts",
+      "sha256": "f903fcdba19b0c552f0f54163608a437f0d1562faa6a432ff252a919de84a000",
+      "bytes": 20562
+    },
+    {
+      "path": "src/graph/subgraphs.ts",
+      "sha256": "cf8d77ecfa9cb178a4d51078c29314f814ef1d6e6768fe7ab6115e67dd74e1d2",
+      "bytes": 32867
+    },
+    {
+      "path": "src/graph/workflow_refs.ts",
+      "sha256": "5afb6b071e9e9b09811122076a58826f62aaae948fbbd9d00ef6a5e7fe50a8c8",
+      "bytes": 1254
+    },
+    {
+      "path": "src/util/argparse.ts",
+      "sha256": "369edeac1eaabdf56b424e4ba290defa3dc345a9316ff22707550b6099ef8a6a",
+      "bytes": 8201
+    },
+    {
+      "path": "src/util/git_metadata.ts",
+      "sha256": "d02b6ef34727b28b5106e7356423945599b13171caf9602c68af1dd1b5ec47b9",
+      "bytes": 7770
+    },
+    {
+      "path": "src/util/legacy_id_rewrite.ts",
+      "sha256": "df909ce20c2b866c39cfa9f1626155ecc00a80923be6c9b44486e43de6e7cfd0",
+      "bytes": 1403
+    },
+    {
+      "path": "src/util/lock.ts",
+      "sha256": "dda74f39604276d422fc3ce6dfb5d46b2138cb53c069b08d8a5aac2c1c31015f",
+      "bytes": 6592
+    },
+    {
+      "path": "src/util/lock_evidence.ts",
+      "sha256": "f147ca96b09396cc2b4ca7ef166ead2b693062d59a2cbe63ef122e5de60c938b",
+      "bytes": 10513
+    },
+    {
+      "path": "tests/ci-topology.test.ts",
+      "sha256": "7318ad1b6d75ba5a5837e2d90b265afdc354f14ec0b0239809e01082fc99b954",
+      "bytes": 12076
+    },
+    {
+      "path": "tests/commands/archive_payload_ownership.test.ts",
+      "sha256": "644776ce061f443cfca1c6430b67a7aa2f7d2b903ced61b63885426b99ff96ce",
+      "bytes": 17472
+    },
+    {
+      "path": "tests/commands/bundle_archive_visibility.test.ts",
+      "sha256": "3d9f534d8f456df5836151abb07ec747f286503fb3394af4804be3e8eb0b4a68",
+      "bytes": 4738
+    },
+    {
+      "path": "tests/commands/cli_option_admission.test.ts",
+      "sha256": "50edb71d3cb184fd45d0ae9fa02a68d660144f1c75aeda3f8741ac419f69afbf",
+      "bytes": 6753
+    },
+    {
+      "path": "tests/commands/command_contract.test.ts",
+      "sha256": "22fb4ec0657b246f41e5dd6dd64795745c4d4916671798a8ecbcb482fba0aa77",
+      "bytes": 15124
+    },
+    {
+      "path": "tests/commands/diagnostic_containment.test.ts",
+      "sha256": "c2d0e7ade4f99a472e76a5162535e48c921eefe8ca8eed39fe3fd6100548b6fb",
+      "bytes": 9157
+    },
+    {
+      "path": "tests/commands/fix.test.ts",
+      "sha256": "2cb0f9a05d69edbbc9dbe980f032a0bf65f0e8f54750ec84b680805981d77a11",
+      "bytes": 45316
+    },
+    {
+      "path": "tests/commands/format_identity.test.ts",
+      "sha256": "1718e990d0987947a8d5ed1b07b8dcee28f6cc56b419ee9e137da716306d6b37",
+      "bytes": 10084
+    },
+    {
+      "path": "tests/commands/loop_seed_budget.test.ts",
+      "sha256": "024ae62e8839e44436d3e0e77dbf6c90fa6648f25cf8cd479809867cbb4b9deb",
+      "bytes": 16551
+    },
+    {
+      "path": "tests/commands/loop_seed_safety.test.ts",
+      "sha256": "d0486f211bed9531a10b873cdf817d4a455b8b67c607685f6de05fa0d5ccdbf1",
+      "bytes": 10512
+    },
+    {
+      "path": "tests/commands/node_runtime_admission.test.ts",
+      "sha256": "76705409aa84ae92ca7203f077b702d98eca62e2bb86f3442e8c9c231b930185",
+      "bytes": 4754
+    },
+    {
+      "path": "tests/commands/numeric_allocation.test.ts",
+      "sha256": "ae77980a2c1a71eff1368b9109ddf267b93cc60010e170d4838a59b024e044d8",
+      "bytes": 17002
+    },
+    {
+      "path": "tests/commands/subgraph.test.ts",
+      "sha256": "bee63c0173a2c387ddef81baa4cad3055fb0f3d94da2342213b1b0607867d23d",
+      "bytes": 38191
+    },
+    {
+      "path": "tests/commands/task_event.test.ts",
+      "sha256": "3e03e66d78150038ee87eade6d61a7b19371b1390630b8b865232f9310297f80",
+      "bytes": 21947
+    },
+    {
+      "path": "tests/core/filesystem_authority.test.ts",
+      "sha256": "49a1f5f6d3b2930bd0dbf44fbe73fddc5ba99f1f981ee1d053175fee7cbfb4ad",
+      "bytes": 17832
+    },
+    {
+      "path": "tests/core/snapshot_containment.test.ts",
+      "sha256": "f402655d8e68652ad99fad73bb1de13f766b7af0f8cc88cddefa221c4e814ef0",
+      "bytes": 4594
+    },
+    {
+      "path": "tests/core/sqlite_memory_observation.test.ts",
+      "sha256": "02bfc91735fef6bddfcc4e3d2d90a8b3495a14b5534420c92201d82e2b7e9112",
+      "bytes": 9492
+    },
+    {
+      "path": "tests/core/sqlite_observation.test.ts",
+      "sha256": "d6b2e7dd9c21966e36defa021c0bae14aa263cd9ee5b4f19754afe0bcb67223a",
+      "bytes": 17990
+    },
+    {
+      "path": "tests/dependency-boundary.test.ts",
+      "sha256": "7322c7d4c2990e4b82b7a5fb5558a8b09a4dfb40b2406690951378af350c352a",
+      "bytes": 6818
+    },
+    {
+      "path": "tests/fixtures/cli-options.cjs",
+      "sha256": "9648a355d5d688d80b690fff18bcfcb3152b2522b351448cba0fd3ebef800206",
+      "bytes": 12116
+    },
+    {
+      "path": "tests/fixtures/interrupted-writer.cjs",
+      "sha256": "24631ec727644511207b403d6bd698d667a018e2967c43fcace7a65acaa1edf0",
+      "bytes": 8961
+    },
+    {
+      "path": "tests/graph/cache_git_metadata.test.ts",
+      "sha256": "11bef66237c01937966f6b29822a494517c2f112f89489f3e982e86cd36ea88d",
+      "bytes": 8246
+    },
+    {
+      "path": "tests/graph/capabilities_indexer.test.ts",
+      "sha256": "238f8bcf8450093ad54cd1a5f7ece558cae39171efd5bc876bb91def1eadb822",
+      "bytes": 20251
+    },
+    {
+      "path": "tests/graph/frontmatter.test.ts",
+      "sha256": "1d27e55e59eceb87e28a79250343623a1f1977271870cdadca0d30ca3681c8c9",
+      "bytes": 2721
+    },
+    {
+      "path": "tests/graph/identity_interrupted_writer.test.ts",
+      "sha256": "1f6f3f13e9d445ac7b88c04856437ebccc12e1b98f2f4c52166f3804a2b66551",
+      "bytes": 24146
+    },
+    {
+      "path": "tests/graph/identity_migration.test.ts",
+      "sha256": "b4914f863a2b54148951ae44e0e8b32a46d5af3eadc5245a0c25abaadcdc9bbe",
+      "bytes": 24185
+    },
+    {
+      "path": "tests/graph/identity_migration_lineage.test.ts",
+      "sha256": "d98d7d0b5580d657e58eb7adcdd820f6c8e13543c36b150075cde478dbbb96db",
+      "bytes": 16934
+    },
+    {
+      "path": "tests/graph/identity_migration_validation.test.ts",
+      "sha256": "b27c24d271df6c493e32f8b876eef76ae0e9f0aac2fd7b86762efcad15bbbd66",
+      "bytes": 26720
+    },
+    {
+      "path": "tests/graph/identity_portable_recovery.test.ts",
+      "sha256": "2138a09674dd9bf27072b3fa807999ebd61cc7ab527f15006ba7f272ed6ee935",
+      "bytes": 9951
+    },
+    {
+      "path": "tests/graph/identity_reconcile.test.ts",
+      "sha256": "bb287c819cd0fc025ec7d0c0a22f2cb35c569fa2b4d2cb5fb6bc46912b964852",
+      "bytes": 12720
+    },
+    {
+      "path": "tests/graph/identity_reconciliation_plan.test.ts",
+      "sha256": "1165bafa18fe2ee9ae375caa0cfb0b1befd9ba48ea4835205721d1d8ec23c7de",
+      "bytes": 33357
+    },
+    {
+      "path": "tests/graph/identity_writer_fence.test.ts",
+      "sha256": "0538b32f4c1b90c09c9f187c711f3167e7a3d9f399b8bc7de1f9a036a0780978",
+      "bytes": 8992
+    },
+    {
+      "path": "tests/helpers/fs.ts",
+      "sha256": "f6cb712822af7393f48daf196d36b751f60db668cb0d7b305a9724280fe986c4",
+      "bytes": 1616
+    },
+    {
+      "path": "tests/helpers/identity_recovery.ts",
+      "sha256": "fe16bc9b79f74dc2f3c0b33a152c28f4baed0ae207df66c9abbb9660de83cb91",
+      "bytes": 640
+    },
+    {
+      "path": "tests/installed-cli-options.test.mjs",
+      "sha256": "521a41daaa5eb13fc7ee57a6eaf12b2d282a5fbe623f14cbd1b38825783f240a",
+      "bytes": 4500
+    },
+    {
+      "path": "tests/package-release-profile.test.mjs",
+      "sha256": "f13fd3125488cd709127f092d4cdf0552786ef0634859661eb3021d1f651ac5c",
+      "bytes": 18735
+    },
+    {
+      "path": "tests/publish-readiness-goal-contract.test.mjs",
+      "sha256": "71545d12168b07d8eb6c005cdf27b0626bed62ad60a1d07b75dae26352883273",
+      "bytes": 3967
+    },
+    {
+      "path": "tests/qualification-git.test.mjs",
+      "sha256": "3fda554cd23ccc3847cc43b70970de025c3ec9113fbae2e715910a486f7a5804",
+      "bytes": 28400
+    },
+    {
+      "path": "tests/release-guidance.test.mjs",
+      "sha256": "68127ab370e37907da3b08a46e1c2da1b20b3fad04c4cf93881dd9f11ca42cd3",
+      "bytes": 6879
+    },
+    {
+      "path": "tests/release-ladder.test.ts",
+      "sha256": "ece57a4f454d51b185102fd852922db1b5200e39437f1a9ac69e88ad29964df5",
+      "bytes": 17341
+    },
+    {
+      "path": "tests/util/legacy_id_rewrite.test.ts",
+      "sha256": "5fbd26a9ebb705417b4c6c13f0c6cab7fefb9727df124bcce075f0eea48e4373",
+      "bytes": 1040
+    }
+  ],
+  "exclusions": "all other .mdkg graph/artifact/event/index paths remain unstaged for this logical source unit; no raw DB/security reports/candidate tarballs in this unit"
+}

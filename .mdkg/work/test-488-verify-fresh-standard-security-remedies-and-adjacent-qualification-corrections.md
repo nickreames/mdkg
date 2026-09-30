@@ -2,25 +2,70 @@
 id: test-488
 type: test
 title: Verify fresh Standard security remedies and adjacent qualification corrections
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security, qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-86/security-findings-checkpoint-20260918.json, .mdkg/artifacts/goal-86/bug-48-current-validation.json, .mdkg/artifacts/goal-86/bug-48-installed-verification.json]
+artifacts: [.mdkg/artifacts/goal-86/security-findings-checkpoint-20260918.json, .mdkg/artifacts/goal-86/bug-48-current-validation.json, .mdkg/artifacts/goal-86/bug-48-installed-verification.json, .mdkg/artifacts/goal-86/current-finding-qualification-map.json, .mdkg/artifacts/goal-86/independent-diff-review-20260930.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json]
 relates: []
-blocked_by: [bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-838, task-839, test-487]
+blocked_by: [bug-44, bug-45, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-838, task-839, test-487, task-841, task-842, test-489, bug-70, bug-71, bug-72, test-493]
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828, chk-624, chk-625]
+refs: [task-837, goal-84, goal-86, task-828, chk-624, chk-625, dec-98, goal-87, dec-99, chk-665]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 cases: []
 created: 2026-09-17
-updated: 2026-09-21
+updated: 2026-09-30
 ---
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+2026-09-29 current-finding-qualification-map.json records native macOS regression
+families for all12 in-scope original findings against exact6154e4ea installed
+bytes. Bugs46/47 are explicitly deferred/unresolved, not passing; Bugs58-60 are
+separate adjacent correctness controls. The containment/remedy receipts contain
+826 test executions, not826 findings. No blocked historical context/report was
+accessed. This is traceable current regression evidence, not independent Task828
+acceptance or completed Linux/platform qualification; this aggregate stays open.
+
+Verify12 in-scope original finding remedies and accurately disclose2 deferred findings. Reuse applicable containment/parity/options/behavioral controls; keep later correctness findings separate from original14. Task828 owns fresh independent review, not blocked historical report recovery.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
+
 # Overview
+
+## Current scope amendment - 2026-09-28
+
+Dec99 records the approved final current-source/remediation-diff evidence
+contract. Preserve and disclose inaccessible historical reports; no blocked
+context recovery/rerun. Trace every finding to retained records, current exact
+artifact regressions and independent Task828 acceptance. This amendment is
+not a fresh scan, current security clearance, or completion of this test.
+
+Dec98 moves Bugs46/47 to paused Goal87 as DEFERRED / UNRESOLVED, not accepted,
+fixed or passing. Preserve the original fourteen-finding inventory and its
+five-medium/nine-low accounting. This 0.6.0 gate requires final-artifact
+remediation evidence for the other twelve findings, truthful deferral evidence
+for these two, and all separately classified correctness/guidance blockers.
+The Bug46/47 cases below are retained follow-up contracts under Goal87; they
+are not falsely recorded as passing or silently deleted. Existing safe
+path/type/link checks and remaining ownership controls are still required.
+
+Tasks841/842 and Test489 add portable Node SQLite observation and explicit
+operator-confirmed interrupted-writer recovery, with supported-runtime
+qualification. Historical Node24.15/26.0 results remain historical; Task842
+must bind the final tested capability range before this gate can pass. Real
+macOS/Linux installed evidence and independent Task828 review remain required.
+No old blocked context is accessed or rerun, and no scan is launched here.
 
 2026-09-21 Bug53 intermediate local evidence:1730 full,59 focused and111 installed
 cases pass. Pre-arranged hard-linked manifests refuse before init effects, with
