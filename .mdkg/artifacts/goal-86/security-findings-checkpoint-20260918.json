@@ -1,5 +1,14 @@
 {
   "schema": "mdkg.goal86.security-findings-checkpoint.v1",
+  "bug50_local_update_20260921": {
+    "status": "locally verified; final independent/platform acceptance remains open",
+    "full_tests": {"pass": 1664, "fail": 0, "skipped": 0},
+    "focused_tests": 71,
+    "installed_cases": 78,
+    "evidence": [".mdkg/artifacts/goal-86/bug-50-baseline.json", ".mdkg/artifacts/goal-86/bug-50-current-validation.json", ".mdkg/artifacts/goal-86/bug-50-installed-verification.json"],
+    "local_remedies": ["bug-44", "bug-45", "bug-48", "bug-49", "bug-50"],
+    "scope": "Fresh current-source regression evidence only. No blocked scan context inspected, recovered or rerun. Historical fields below remain historical, not instructions. Bug51 linked-input and Bug46/47 filesystem controls remain open."
+  },
   "bug49_local_update_20260921": {
     "status": "locally verified; final independent/platform acceptance remains open",
     "full_tests": {"pass": 1658, "fail": 0, "skipped": 0},
@@ -97,7 +106,7 @@
       "path": ".mdkg/work/bug-48-inspecting-repository-config-or-bundle-sources-can-block-on-special-files.md",
       "title": "Inspecting repository config or bundle sources can block on special files",
       "severity": "low",
-      "current_status": "progress",
+      "current_status": "done",
       "summary": "Configuration loading and bundle freshness verification follow repository symlinks and perform unbounded whole-file reads before adequate type/size admission. A device or FIFO target can exhaust memory or block local CLI/MCP inspection.",
       "candidate_id": "g86-baseline-005"
     },
@@ -115,7 +124,7 @@
       "path": ".mdkg/work/bug-50-snapshot-verification-reports-directories-as-valid-checkpoints.md",
       "title": "Snapshot verification reports directories as valid checkpoints",
       "severity": "low",
-      "current_status": "backlog",
+      "current_status": "done",
       "summary": "A malformed repository checkpoint can bypass all substantive verification and receive a successful machine-readable validity receipt, despite containing no usable SQLite snapshot or manifest. This is a checkpoint-validation bypass, not external execution or attestation forgery.",
       "candidate_id": "g86-dbwork-002"
     },

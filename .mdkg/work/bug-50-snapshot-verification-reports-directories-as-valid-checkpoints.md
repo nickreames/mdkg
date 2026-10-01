@@ -2,12 +2,12 @@
 id: bug-50
 type: bug
 title: Snapshot verification reports directories as valid checkpoints
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-50-baseline.json, .mdkg/artifacts/goal-86/bug-50-current-validation.json, .mdkg/artifacts/goal-86/bug-50-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -98,5 +98,46 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-21: Current-source remedy on mainc0a51fbb requires regular snapshot and
+manifest inputs before content readers run. One guarded stat per path reports
+missing, wrong type or inspection errors explicitly. Overall success requires
+all nine mandatory checks to have passed, all emitted checks to be successful,
+and no diagnostics. Empty diagnostic arrays on failed checks receive a fallback;
+failure_count retains diagnostic-count semantics. Status remains observational
+(exit0 with an honest invalid/missing receipt); verify fails on invalid input.
+
+Fresh synthetic prepatch baseline:26 cases,18 passed/8 failed. Nonempty and
+linked directories falsely reported valid; snapshot/manifest FIFOs timed out
+and the owned children were killed after4s. The configured-state-path case also
+reproduced false validity. One earlier fixture expected invalid rather than the
+established missing status for an absent runtime-source hash; that harness
+assumption was corrected and the original result retained, not counted as a bug.
+
+Final focused71/71 and installed78/78 cases pass (26 each on
+Node24.15.0/24.18.0/26.0.0, macOS arm64). Whole fixture inventories include Git
+index, runtime, snapshot, manifest and authored bytes/modes; they remain unchanged
+across verify/status JSON and text observations. Controls retain valid, missing,
+stale, portable runtime-absent and paused-queue behavior. New unit fault injection
+proves omitted checks and failed checks without error strings cannot pass.
+Full frozen-source manifest-backed suite passes1664/1664 with zero failures,
+skips or cancellations on Node26.0.0/macOS arm64 (384855ms). Source/test hashes
+match the reviewed candidate before and after validation.
+
+One independent prepatch investigation and one independent source-only candidate
+review completed; the latter found no concrete surviving Bug50 bypass or new
+regression in the reviewed boundary. No second review cycle, blocked context,
+historical scan recovery or scan launch occurred. Intermediate test harness
+TypeScript/Array mock failures were corrected; they are not product failures or
+qualification passes. Production build and CLI/docs/CI projection checks pass.
+
+Evidence: bug-50-baseline.json, bug-50-current-validation.json and
+bug-50-installed-verification.json under .mdkg/artifacts/goal-86/. These are
+current local regressions, not substitute Security reports. Only draft0.6.0 and
+the current prepatch source were assessed; published0.5.2 impact is unassessed.
+
+This fix does not establish descriptor-bound race safety, reject regular-file
+symlinks, change SQLite open modes, or admit the optional runtime input. Bug51
+owns linked-input authority; Bug47 owns ancestor substitution. No broader
+physical read-only or cross-platform claim follows from these synthetic controls.
+Linux, final independent review, coverage/full ladder and final artifact seal
+remain open. Goal85 remains paused; release NOT_READY.

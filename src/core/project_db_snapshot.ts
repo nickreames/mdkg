@@ -426,30 +426,38 @@ function compareJson(a: unknown, b: unknown): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
+function snapshotInputCheck(root: string, filePath: string, name: string, label: string): ProjectDbSnapshotCheck {
+  const relativePath = rel(root, filePath);
+  try {
+    // One admission observation, before manifest reads, hashing or SQLite opens.
+    // Symlink/ancestor authority is a separate containment contract.
+    const regular = fs.statSync(filePath).isFile();
+    return {
+      name, ok: regular, level: regular ? "ok" : "fail", path: relativePath,
+      detail: regular ? `${label} exists` : `${label} is not a regular file`,
+      errors: regular ? [] : [`${relativePath} must be a regular file`], warnings: [],
+    };
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException).code;
+    const missing = code === "ENOENT" || code === "ENOTDIR";
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      name, ok: false, level: "fail", path: relativePath,
+      detail: missing ? `${label} missing` : `failed to inspect ${label}`,
+      errors: [missing ? `${relativePath} missing; run mdkg db snapshot seal` : `${relativePath}: ${message}`],
+      warnings: [],
+    };
+  }
+}
+
 export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDbSnapshotVerifyReceipt {
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
   const checks: ProjectDbSnapshotCheck[] = [];
   const snapshotRel = rel(root, layout.stateFile);
   const manifestRel = rel(root, layout.stateManifest);
 
-  checks.push({
-    name: "snapshot-file",
-    ok: fs.existsSync(layout.stateFile) && !fs.statSync(layout.stateFile).isDirectory(),
-    level: fs.existsSync(layout.stateFile) && !fs.statSync(layout.stateFile).isDirectory() ? "ok" : "fail",
-    path: snapshotRel,
-    detail: fs.existsSync(layout.stateFile) ? "snapshot file exists" : "snapshot file missing",
-    errors: fs.existsSync(layout.stateFile) ? [] : [`${snapshotRel} missing; run mdkg db snapshot seal`],
-    warnings: [],
-  });
-  checks.push({
-    name: "manifest-file",
-    ok: fs.existsSync(layout.stateManifest) && !fs.statSync(layout.stateManifest).isDirectory(),
-    level: fs.existsSync(layout.stateManifest) && !fs.statSync(layout.stateManifest).isDirectory() ? "ok" : "fail",
-    path: manifestRel,
-    detail: fs.existsSync(layout.stateManifest) ? "snapshot manifest exists" : "snapshot manifest missing",
-    errors: fs.existsSync(layout.stateManifest) ? [] : [`${manifestRel} missing; run mdkg db snapshot seal`],
-    warnings: [],
-  });
+  checks.push(snapshotInputCheck(root, layout.stateFile, "snapshot-file", "snapshot file"));
+  checks.push(snapshotInputCheck(root, layout.stateManifest, "manifest-file", "snapshot manifest"));
 
   let manifest: ProjectDbSnapshotManifest | undefined;
   if (checks.every((check) => check.ok)) {
@@ -578,14 +586,28 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
     }
   }
 
+  const mandatory = ["snapshot-file", "manifest-file", "manifest-shape", "sqlite-integrity",
+    "snapshot-hash", "snapshot-size", "table-counts", "migrations", "queue-policy"];
+  const incomplete = mandatory.filter(name => !checks.some(check => check.name === name && check.ok));
+  // Failed prerequisite checks already explain skipped dependent checks. But
+  // an accidentally omitted check must never yield a successful receipt.
+  if (checks.every(check => check.ok) && incomplete.length > 0) {
+    checks.push({ name: "verification-complete", ok: false, level: "fail",
+      detail: "mandatory snapshot checks did not complete",
+      errors: incomplete.map(name => `required check not completed: ${name}`), warnings: [] });
+  }
+  for (const check of checks) {
+    if (!check.ok && check.errors.length === 0) check.errors.push(check.detail || "check failed");
+  }
   const errors = checks.flatMap((check) => check.errors.map((error) => `${check.name}: ${error}`));
   const warnings = checks.flatMap((check) => check.warnings.map((warning) => `${check.name}: ${warning}`));
   const hasMissing = checks.some((check) => !check.ok && /missing/.test(check.detail));
   const stale = warnings.some((warning) => /runtime database hash differs/.test(warning));
+  const ok = incomplete.length === 0 && checks.every(check => check.ok) && errors.length === 0;
   return {
     action: "db-snapshot-verify",
-    ok: errors.length === 0,
-    status: errors.length > 0 ? (hasMissing ? "missing" : "invalid") : stale ? "stale" : "valid",
+    ok,
+    status: !ok ? (hasMissing ? "missing" : "invalid") : stale ? "stale" : "valid",
     snapshot: snapshotRel,
     manifest: manifestRel,
     checks,
