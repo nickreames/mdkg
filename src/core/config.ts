@@ -1,5 +1,5 @@
-import fs from "fs";
 import { configPath } from "./paths";
+import { readContainedFileIfPresent } from "./filesystem_authority";
 import { LATEST_SCHEMA_VERSION, migrateConfig } from "./migrate";
 import { EventValidationLimits, normalizeEventConfig } from "./event_limits";
 import { normalizeTemplatePath } from "./template_path";
@@ -155,6 +155,8 @@ export const DEFAULT_INDEX_LIMITS = {
   max_total_bytes: 512 * 1024 * 1024,
   max_depth: 64,
 } as const;
+// Bootstrap admission cannot depend on limits supplied by the unread config.
+export const MAX_CONFIG_BYTES = 8 * 1024 * 1024;
 const DEFAULT_SUBGRAPH_MAX_STALE_SECONDS = 3600;
 export const DEFAULT_SKILL_MIRROR_TARGETS = [".agents/skills", ".claude/skills"] as const;
 const DEFAULT_PROJECT_DB_CONFIG = {
@@ -1170,16 +1172,17 @@ export function validateConfigSchema(raw: unknown): Config {
 
 export function loadConfig(root: string): Config {
   const path = configPath(root);
-  if (!fs.existsSync(path)) {
-    throw new Error(`config not found at ${path}`);
-  }
-
+  let content: string | null;
   let raw: unknown;
   try {
-    raw = JSON.parse(fs.readFileSync(path, "utf8"));
+    content = readContainedFileIfPresent({ root, relativePath: ".mdkg/config.json", maxBytes: MAX_CONFIG_BYTES });
+    raw = content === null ? null : JSON.parse(content);
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     throw new Error(`failed to read config: ${message}`);
+  }
+  if (content === null) {
+    throw new Error(`config not found at ${path}`);
   }
 
   const migrated = migrateConfig(raw);

@@ -273,18 +273,27 @@ function cli(root: string, args: string[]) {
 test("bundle verification binds its ZIP receipt to the exact parsed bytes", (t) => {
   const f = fixture(t), first = f.bundle(), file = saveBundle(f.root, first);
   const expected = sha256Buffer(fs.readFileSync(file));
-  const original = fs.readFileSync; let reads = 0;
-  fs.readFileSync = ((target: any, ...args: any[]) => {
-    const bytes = (original as any)(target, ...args);
-    if (target === file && ++reads === 1) fs.writeFileSync(file, Buffer.from("changed after the snapshot read"));
-    return bytes;
-  }) as typeof fs.readFileSync;
-  try {
-    const receipt = verifyBundle(f.root, file);
-    assert.equal(receipt.zip_sha256, expected);
-    assert.equal(reads, 1);
-    assert.deepEqual(receipt.errors, []);
-  } finally { fs.readFileSync = original; }
+  const open = fs.openSync, close = fs.closeSync;
+  let descriptor: number | undefined, opens = 0, snapshots = 0;
+  t.mock.method(fs, "openSync", (...args: any[]) => {
+    const fd = (open as any)(...args);
+    const readOnly = args[1] === "r" || (typeof args[1] === "number" &&
+      (args[1] & (fs.constants.O_WRONLY | fs.constants.O_RDWR)) === 0);
+    if (String(args[0]) === file && readOnly) { descriptor = fd; opens++; }
+    return fd;
+  });
+  t.mock.method(fs, "closeSync", (fd: number) => {
+    const selected = fd === descriptor;
+    if (selected) descriptor = undefined;
+    const result = close(fd);
+    if (selected && ++snapshots === 1) fs.writeFileSync(file, Buffer.from("changed after the snapshot read"));
+    return result;
+  });
+  const receipt = verifyBundle(f.root, file);
+  assert.equal(receipt.zip_sha256, expected);
+  assert.equal(opens, 1);
+  assert.equal(snapshots, 1);
+  assert.deepEqual(receipt.errors, []);
 });
 
 test("template application refuses source movement between preview and owned apply", (t) => {

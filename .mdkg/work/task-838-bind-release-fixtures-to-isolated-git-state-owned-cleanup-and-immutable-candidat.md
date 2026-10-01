@@ -7,17 +7,17 @@ priority: 1
 tags: [release-0.6.0, qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/security-findings-checkpoint-20260918.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, chk-624]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-18
 ---
 # Overview
 
@@ -32,6 +32,21 @@ immutable final bytes. Existing intermediate passes remain historical evidence.
 
 # Acceptance Criteria
 
+2026-09-21 user direction: no blocked-context access, recovery attempts or reruns
+of historical blocked findings. Retained mdkg evidence is the remediation basis.
+The recovery proposal below is historical and no longer an execution prerequisite.
+Implement durable custody for newly produced validation evidence going forward;
+never manufacture old receipts or represent missing old bytes as retained.
+
+- Persist sanitized case-level receipts and source/artifact hashes before
+  disposing of temporary execution roots. Exact candidate bytes and canonical
+  raw security reports need explicit retained custody in their approved private
+  or plugin-owned location; a temporary pathname or digest alone is not custody.
+- Chk624 records inaccessible Standard report/manifest/findings/coverage paths
+  and the Bug48 intermediate tarball/receipts. Recover exact originals and verify
+  recorded hashes where available. Otherwise record the loss and obtain new
+  qualification evidence with explicit supersession, never reconstructed bodies
+  or silent reuse of an inaccessible artifact. Keep raw reports out of public Git.
 - All mutating fixture Git subprocesses clear ambient GIT_DIR, GIT_WORK_TREE,
   GIT_INDEX_FILE and related redirect/config variables, disable configured
   helpers and bind the expected fixture root/gitdir before mutation.
@@ -86,3 +101,11 @@ Missing host/platform capabilities remain explicit gates, not source fixes.
 ## Current State
 
 Planned / backlog. No qualification-harness correction executed yet.
+
+2026-09-18 planning addendum: evidence retention is a demonstrated gate, not
+just future cleanup hygiene. The committed sanitized scan intake and findings
+remain available, but four canonical scan files and Bug48 temporary evidence
+are absent at their recorded paths in this environment. Cause and availability
+on the original host are unknown; no deletion or host inspection is inferred.
+See chk624 and .mdkg/artifacts/goal-86/security-findings-checkpoint-20260918.json.
+This addendum does not authorize new storage, external access or another scan.

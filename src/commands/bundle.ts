@@ -9,6 +9,7 @@ import {
   atomicReplaceContainedFile,
   authorizeOperatorSelectedExternalPath,
   containedPathExists,
+  forEachContainedFileChunk,
   readContainedFile,
 } from "../core/filesystem_authority";
 import { atomicWriteFile } from "../util/atomic";
@@ -960,21 +961,33 @@ export function verifyBundle(root: string, bundlePath: string): VerifyResult {
   }
 
   errors.push(...bundlePayloadErrors(entries, manifest));
-  for (const file of manifest.files) {
-    if (file.kind !== "generated_index") {
-      const sourcePath = path.resolve(root, file.path);
-      if (!fs.existsSync(sourcePath)) {
+  // Only payload-verified paths and sizes may govern source freshness reads.
+  if (errors.length === 0) {
+    for (const file of manifest.files) {
+      if (file.kind === "generated_index") continue;
+      try {
+        if (!containedPathExists({ root, relativePath: file.path })) {
+          stalePaths.push(file.path);
+          continue;
+        }
+        const hash = crypto.createHash("sha256");
+        const bytes = forEachContainedFileChunk(
+          { root, relativePath: file.path, maxBytes: file.size },
+          chunk => { hash.update(chunk); }
+        );
+        if (bytes !== file.size || `sha256:${hash.digest("hex")}` !== file.sha256) {
+          stalePaths.push(file.path);
+        }
+      } catch (err) {
         stalePaths.push(file.path);
-        continue;
-      }
-      if (sha256Buffer(fs.readFileSync(sourcePath)) !== file.sha256) {
-        stalePaths.push(file.path);
+        const message = err instanceof Error ? err.message : String(err);
+        errors.push(`failed to read bundle source ${file.path}: ${message}`);
       }
     }
-  }
-  const currentHead = insideGitWorkTree(root) ? readGitHead(root) : null;
-  if (manifest.source.git_head && manifest.source.git_head !== currentHead) {
-    stalePaths.push("git:HEAD");
+    const currentHead = insideGitWorkTree(root) ? readGitHead(root) : null;
+    if (manifest.source.git_head && manifest.source.git_head !== currentHead) {
+      stalePaths.push("git:HEAD");
+    }
   }
 
   return {

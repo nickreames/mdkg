@@ -1,0 +1,320 @@
+{
+  "schema": "mdkg.goal86.security-findings-checkpoint.v1",
+  "recorded_at": "2026-09-18T14:24:05.536Z",
+  "authority": "Latest request: capture known findings and plan next steps; no further functional changes, scan launch, staging or commit.",
+  "goal": "root:goal-86",
+  "readiness": "NOT_READY",
+  "source": {
+    "branch": "main",
+    "head": "85226b5be095bfb529d388bececbb4b302fffb9a",
+    "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "ahead": 55,
+    "behind": 0,
+    "remote_verified": false
+  },
+  "historical_scan": {
+    "task": "root:task-837",
+    "scan_id": "9d6a2ca2-4273-45de-9013-20452c7651d0",
+    "recorded_status": "complete",
+    "source": "e42f1d93497119c9a1f8684df926510da91dea42",
+    "counts": {
+      "medium": 5,
+      "low": 9,
+      "total": 14
+    },
+    "coverage": "567 files fully reviewed; 4654-path inventory; eight explicit exclusions; static source audit, not runtime or platform clearance",
+    "intake_path": ".mdkg/artifacts/goal-86/task-837-standard-security-audit.json",
+    "canonical_artifacts": {
+      "markdownReport": {
+        "path": "/private/var/folders/t8/vllsb80n0j71dvz3z0cjq7_40000gn/T/codex-security-scans-jIfy3X/mdkg/e42f1d93497119c9a1f8684df926510da91dea42_20260918T020033Z_annw13rq/report.md",
+        "sha256": "de72047114382a3f25dc5619ad7042e296ebfd125272cd2e5b6c03c24e532ba2",
+        "accessible_at_checkpoint": false
+      },
+      "manifest": {
+        "path": "/private/var/folders/t8/vllsb80n0j71dvz3z0cjq7_40000gn/T/codex-security-scans-jIfy3X/mdkg/e42f1d93497119c9a1f8684df926510da91dea42_20260918T020033Z_annw13rq/scan-manifest.json",
+        "sha256": "5781d559f665f41f83a83cd0ca7c80ac210355ee44b4d3ed7c67d7d6aec8a9de",
+        "accessible_at_checkpoint": false
+      },
+      "findings": {
+        "path": "/private/var/folders/t8/vllsb80n0j71dvz3z0cjq7_40000gn/T/codex-security-scans-jIfy3X/mdkg/e42f1d93497119c9a1f8684df926510da91dea42_20260918T020033Z_annw13rq/findings.json",
+        "sha256": "7146007bbcac3b1209f327cd016b9ae519663d97f46d262d40139a8950f2b139",
+        "accessible_at_checkpoint": false
+      },
+      "coverage": {
+        "path": "/private/var/folders/t8/vllsb80n0j71dvz3z0cjq7_40000gn/T/codex-security-scans-jIfy3X/mdkg/e42f1d93497119c9a1f8684df926510da91dea42_20260918T020033Z_annw13rq/coverage.json",
+        "sha256": "bff459ae39ad0067726a1cb37bea3b2bdfb1a82810a83883da18c68d72adf272",
+        "accessible_at_checkpoint": false
+      }
+    }
+  },
+  "findings": [
+    {
+      "qid": "root:bug-44",
+      "path": ".mdkg/work/bug-44-public-bundle-export-can-disclose-credentials-embedded-in-the-origin-url.md",
+      "title": "Public bundle export can disclose credentials embedded in the origin URL",
+      "severity": "medium",
+      "current_status": "done",
+      "summary": "Creating and sharing a public bundle copies an origin URL's authentication-bearing userinfo, query or fragment into manifest provenance and summary output. Public graph filtering does not redact that field.",
+      "candidate_id": "g86-baseline-001"
+    },
+    {
+      "qid": "root:bug-45",
+      "path": ".mdkg/work/bug-45-restoring-a-historical-format-bundle-can-install-active-git-metadata.md",
+      "title": "Restoring a historical-format bundle can install active Git metadata",
+      "severity": "medium",
+      "current_status": "done",
+      "summary": "Graph clone/fork and subgraph materialization accept policy-less bundles with owning configuration and write arbitrary non-excluded manifest entries. An attacker can install .git metadata in the new destination, enabling later native Git operations to consume attacker-selected configuration.",
+      "candidate_id": "g86-baseline-002"
+    },
+    {
+      "qid": "root:bug-46",
+      "path": ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+      "title": "Updating a private graph file can widen its filesystem permissions",
+      "severity": "low",
+      "current_status": "blocked",
+      "summary": "A routine task update replaces an existing file with a fresh inode using0666 subject to umask. An owner-only0600 file can become0644; existing ACL or ownership restrictions are not preserved by either atomic writer.",
+      "candidate_id": "g86-baseline-003"
+    },
+    {
+      "qid": "root:bug-47",
+      "path": ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+      "title": "A concurrent directory swap can redirect contained graph operations",
+      "severity": "medium",
+      "current_status": "backlog",
+      "summary": "The shared containment helper checks ancestors, then passes a pathname to later opens, renames and deletes. A narrower-rights local actor who can replace an ancestor can redirect an authorized operation outside the graph; skill mirroring supplies a concrete read-to-copy disclosure path.",
+      "candidate_id": "g86-baseline-004"
+    },
+    {
+      "qid": "root:bug-48",
+      "path": ".mdkg/work/bug-48-inspecting-repository-config-or-bundle-sources-can-block-on-special-files.md",
+      "title": "Inspecting repository config or bundle sources can block on special files",
+      "severity": "low",
+      "current_status": "progress",
+      "summary": "Configuration loading and bundle freshness verification follow repository symlinks and perform unbounded whole-file reads before adequate type/size admission. A device or FIFO target can exhaust memory or block local CLI/MCP inspection.",
+      "candidate_id": "g86-baseline-005"
+    },
+    {
+      "qid": "root:bug-49",
+      "path": ".mdkg/work/bug-49-creating-a-skill-can-copy-an-external-file-through-a-linked-registry.md",
+      "title": "Creating a skill can copy an external file through a linked registry",
+      "severity": "medium",
+      "current_status": "backlog",
+      "summary": "An untrusted checkout can make registry.md a symlink to an operator-readable file. Ordinary skill creation follows the link, preserves the external text, then replaces the link with a repository-local copy.",
+      "candidate_id": "g86-bootstrap-003"
+    },
+    {
+      "qid": "root:bug-50",
+      "path": ".mdkg/work/bug-50-snapshot-verification-reports-directories-as-valid-checkpoints.md",
+      "title": "Snapshot verification reports directories as valid checkpoints",
+      "severity": "low",
+      "current_status": "backlog",
+      "summary": "A malformed repository checkpoint can bypass all substantive verification and receive a successful machine-readable validity receipt, despite containing no usable SQLite snapshot or manifest. This is a checkpoint-validation bypass, not external execution or attestation forgery.",
+      "candidate_id": "g86-dbwork-002"
+    },
+    {
+      "qid": "root:bug-51",
+      "path": ".mdkg/work/bug-51-snapshot-inspection-can-disclose-hashes-of-files-outside-the-repository.md",
+      "title": "Snapshot inspection can disclose hashes of files outside the repository",
+      "severity": "low",
+      "current_status": "backlog",
+      "summary": "A malicious checkout can cause snapshot verification to read an arbitrary operator-readable external file and disclose its SHA-256 and size in the verification receipt. This does not require the external file to be a valid SQLite database. Whole-file hashing also allocates memory proportional to the external target. No remote access or native SQLite write effect is asserted.",
+      "candidate_id": "g86-dbwork-003"
+    },
+    {
+      "qid": "root:bug-52",
+      "path": ".mdkg/work/bug-52-recovery-journal-operations-are-not-bound-to-the-approved-upgrade-plan-hash.md",
+      "title": "Recovery journal operations are not bound to the approved upgrade plan hash",
+      "severity": "low",
+      "current_status": "backlog",
+      "summary": "Resuming or recovering an upgrade compares the user-approved plan hash to a mutable journal string but does not bind the journal's operations to that hash. A replaced journal can add ordinary-file writes while retaining the approved hash.",
+      "candidate_id": "g86-bootstrap-004"
+    },
+    {
+      "qid": "root:bug-53",
+      "path": ".mdkg/work/bug-53-init-rewrites-hard-linked-manifest-peers-outside-the-selected-repository.md",
+      "title": "Init rewrites hard-linked manifest peers outside the selected repository",
+      "severity": "low",
+      "current_status": "backlog",
+      "summary": "Running init, including without --force, can overwrite another repository's hard-linked init manifest with the selected repository's generated ownership metadata. This can corrupt the external repository's upgrade provenance. The finding does not require a race, but ordinary Git cloning does not preserve the required hard link.",
+      "candidate_id": "g86-bootstrap-002"
+    },
+    {
+      "qid": "root:bug-54",
+      "path": ".mdkg/work/bug-54-large-numeric-aliases-can-hang-repair-or-corrupt-newly-authored-graph-nodes.md",
+      "title": "Large numeric aliases can hang repair or corrupt newly authored graph nodes",
+      "severity": "low",
+      "current_status": "backlog",
+      "summary": "Graph documents can supply decimal IDs that parse correctly but exceed JavaScript's precise integer range. Legacy repair can then loop indefinitely; ordinary creation, checkpoint creation and loop forks can instead author duplicate or invalid aliases, disrupting subsequent graph operations.",
+      "candidate_id": "g86-identity-001"
+    },
+    {
+      "qid": "root:bug-55",
+      "path": ".mdkg/work/bug-55-creating-a-loop-can-read-an-external-file-through-a-linked-seed-template.md",
+      "title": "Creating a loop can read an external file through a linked seed template",
+      "severity": "low",
+      "current_status": "backlog",
+      "summary": "`new loop` automatically reads every matching loop seed after creating the node. A repository-supplied symlink can make this optional discovery read an external Markdown file and expose its title, or block on a special device, leaving the creation without its normal receipt.",
+      "candidate_id": "g86-graph-001"
+    },
+    {
+      "qid": "root:bug-56",
+      "path": ".mdkg/work/bug-56-loop-inspection-can-exhaust-memory-by-reading-seeds-without-template-limits.md",
+      "title": "Loop inspection can exhaust memory by reading seeds without template limits",
+      "severity": "low",
+      "current_status": "backlog",
+      "summary": "Loop list, seed show, fork and provenance lookup read regular seed bodies without the configured file, aggregate or catalog limits. A supplied large seed or many seeds can stall or terminate local inspection or authoring despite the normal template safety envelope.",
+      "candidate_id": "g86-graph-003"
+    },
+    {
+      "qid": "root:bug-57",
+      "path": ".mdkg/work/bug-57-compressing-an-archive-can-copy-or-overwrite-another-workspace-s-files.md",
+      "title": "Compressing an archive can copy or overwrite another workspace's files",
+      "severity": "medium",
+      "current_status": "backlog",
+      "summary": "Archive compression authorizes the sidecar owner but trusts its relative payload paths within the entire repository. A root-owned sidecar can point into a nested private or disabled workspace, copy its raw data into a parent archive, or replace its graph documents with ZIP bytes without force.",
+      "candidate_id": "g86-export-001"
+    }
+  ],
+  "adjacent_non_security_blockers": [
+    {
+      "qid": "root:bug-58",
+      "classification": "correctness",
+      "summary": "Malformed MCP requests terminate the local session; no independent security impact established."
+    },
+    {
+      "qid": "root:bug-59",
+      "classification": "destructive-footgun/custody",
+      "summary": "Explicit force can target Git metadata through a skill mirror; not an additional lower-trust security bypass."
+    },
+    {
+      "qid": "root:bug-60",
+      "classification": "observational-contract/platform proof gap",
+      "summary": "SQLite observations lack explicit read-only opens; concrete native writes were not established by the static scan."
+    }
+  ],
+  "partial_bug48": {
+    "status": "INCOMPLETE_UNCOMMITTED",
+    "current_source_hashes": {
+      "src/core/config.ts": "ba7e79e9bae2f5ddb047c1168a312a32085dc001d4b4316e3a0e1e571bf8731c",
+      "src/commands/bundle.ts": "0c5c63d8b7fafaaf5f12392e77378727b53c47876e4d861f5e63b42d2bcc8480",
+      "src/util/zip.ts": "90336751cca6772ad665a68634a33fc0543907114322d548323a0bd0eb09fd81",
+      "tests/commands/source_read_admission.test.ts": "f578edeef541f63f030a79682b7a512b8baab17ce2401c797c2c18d3af9bd5d7",
+      "tests/core/config_read_admission.test.ts": "fde243a6dea56e63259c04250e020f5256bb5190d80b49ecb2860f5c37cfdb19",
+      "tests/fixtures/source-read-admission.cjs": "b2a25ba55ed371c6dd72c23755af3b1ae26f3e9a3720fc858bf351ddea1e8b67"
+    },
+    "original_reproduction": {
+      "cases": 23,
+      "failed": 16,
+      "passed": 7,
+      "evidence_source": "Observed tool results earlier in this turn; original temporary receipt now inaccessible."
+    },
+    "candidate_checks": {
+      "focused_source": {
+        "passed": 155,
+        "failed": 0
+      },
+      "installed": {
+        "cases_per_runtime": 23,
+        "total_passed": 69,
+        "runtimes": [
+          "24.15.0 darwin arm64",
+          "24.18.0 darwin arm64",
+          "26.0.0 darwin arm64"
+        ],
+        "tarball_sha256": "81ec0e2f3ca64ce23fad29e105672f6fc7ae49230f54bfb2f53e91d55a0dc89e",
+        "integrity": "sha512-SHHbmwmHS1zooWM3i9e4QSsuQl0q7NJpuu9lHLOwtXizphsJX12wu+LojKq63i/pDX4oLcmkT+ShInbDg3F06g==",
+        "files": 230,
+        "receipt_sha256": "e2250c129cd9090c071fc002453531bd572796acd179d2a98170640e6ceec993",
+        "artifact_accessible_now": false
+      },
+      "parity": [
+        "CLI command parity passed",
+        "Docs check:63 files/472 examples passed",
+        "CI workflow projection passed"
+      ],
+      "full_source_suite": "Started; no recoverable terminal result after turn/environment transition. Not counted as pass.",
+      "provenance": "These are previously observed tool results, not a reconstructed original receipt or a fresh rerun. Incomplete security boundary and inaccessible intermediate bytes prevent qualification."
+    },
+    "candidate_review": {
+      "agent": "/root/bug48_candidate_review",
+      "cycles": 1,
+      "result": "One concrete remaining selected-ZIP admission path; no concrete bypass found in the new config/manifest-source readers.",
+      "confirmation": {
+        "source": "src/util/zip.ts:316-326",
+        "invariant": "Type and actual-byte limits must govern the same opened descriptor, before unbounded allocation or blocking reads.",
+        "effect": "Replacing the selected regular ZIP leaf with a FIFO immediately before open caused the owned child to hang.",
+        "observed_result": {
+          "status": null,
+          "signal": "SIGKILL",
+          "error": "ETIMEDOUT",
+          "timeout_ms": 2000,
+          "stdout": "leaf swapped before open\\n"
+        },
+        "raw_receipt_accessible_now": false,
+        "scope": "Same bundle verification read chain, recorded under Bug48; not added to the sealed 14-finding scan count. Distinct from Bug47 ancestor substitution.",
+        "limits": "No large-file OOM executed; no privileged or remote effect claimed. Fault injection used only a synthetic owned fixture."
+      }
+    },
+    "next_remedy": "Extend the shared ZIP byte reader with nonblocking descriptor admission and actual-byte bounds while preserving explicitly selected external and linked regular ZIPs, limit overrides and decoding behavior. Add regression and positive controls, rerun affected checks and installed bytes. No ZIP implementation change made."
+  },
+  "blocked_decisions": [
+    {
+      "owner": "root:bug-46",
+      "related": "root:bug-47",
+      "decision": "Bounded native filesystem design/feasibility and supported-platform packaging policy before introducing a runtime dependency; no approval inferred.",
+      "proof": "Bug46 durable investigation records seven metadata failures and six hardlink controls on macOS arm64. Pure Node controls have not established ACL/owner preservation or ancestor-race immunity."
+    }
+  ],
+  "evidence_custody": {
+    "status": "GAP",
+    "missing_at_recorded_paths": [
+      "Canonical Standard report, manifest, findings and coverage files",
+      "Bug48 temporary reproduction/installed receipts and intermediate tarball"
+    ],
+    "preserved": "Committed sanitized Standard intake, Bug44/45 verification, Bug46 investigation, bug/task nodes, and current source/tests remain accessible.",
+    "required_action": "Recover exact originals from approved plugin-owned storage and verify recorded hashes. If unavailable, explicitly supersede missing qualification evidence with a fresh authorized workflow on a frozen candidate; never synthesize original report bodies or claim hashes establish retained bytes.",
+    "owner": "root:task-838",
+    "acceptance_owner": "root:task-828"
+  },
+  "recommended_sequence": [
+    "Capture findings and current partial-source custody without duplicating goals or findings.",
+    "Resolve filesystem architecture and durable evidence-custody decisions; preserve all open blockers.",
+    "Finish Bug48; remediate independent registry/loop and snapshot controls, then journal/ID/archive ownership gaps with source-backed regression evidence.",
+    "Close adjacent Bugs58-60 and Task838; update only release-critical truth under Task839.",
+    "Freeze final inputs; restore or supersede missing Standard evidence, independent Task828 diff review, macOS/Linux installed qualification, full ladder and exact seal."
+  ],
+  "authority_boundaries": "Goal86 remains the sole existing implementation lane. This checkpoint does not run a new goal, approve native dependencies, access another host, launch a scan, commit, publish, or grant remote/provider authority. Goal85 remains paused.",
+  "protected_hashes": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "skill_candidates": [],
+  "live_workbench_recheck": {
+    "scan_id": "9d6a2ca2-4273-45de-9013-20452c7651d0",
+    "status": "complete",
+    "scanned_revision": "e42f1d93497119c9a1f8684df926510da91dea42",
+    "findings": 14,
+    "counts": {
+      "low": 9,
+      "medium": 5
+    },
+    "findings_truncated": false,
+    "report_available": false,
+    "remediation_available": false,
+    "reason": "Remediation is unavailable because the selected checkout is not at the revision that was scanned. Check out the scanned revision or start a new scan.",
+    "canonical_artifacts": {},
+    "findings_preserved_in_workbench": 14
+  },
+  "guardrail_disposition": "Built-in remediation is disabled for the historical scan because the checkout revision changed. Preserve current main and partial work; do not reset/check out the scanned revision or re-finalize the old scan. Existing Goal86 source-remediation authority remains separate; latest request is findings capture/planning only. Final-snapshot qualification needs the planned workflow and a frozen target.",
+  "checkpoint_validation": {
+    "full_graph": "passed: zero errors, three preserved stale-subgraph warnings",
+    "changed_only_graph": "passed: zero errors, zero warnings",
+    "index_verification": "passed: all five projections fresh",
+    "git_diff_check": "passed",
+    "partial_source_and_protected_hashes": "match",
+    "staging_and_commit": "none",
+    "mutation_lock_remaining": false,
+    "scope": "Planning/checkpoint validation only; not final source, security, platform or publication qualification"
+  }
+}

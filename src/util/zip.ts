@@ -322,9 +322,32 @@ export function readZipFileBytes(filePath: string, overrides: Partial<ZipReadLim
   if (stat.size > limits.maxArchiveBytes) {
     throw new Error(`zip archive exceeds configured byte limit: ${limits.maxArchiveBytes}`);
   }
-  const bytes = fs.readFileSync(filePath);
-  if (bytes.length > limits.maxArchiveBytes) throw new Error(`zip archive exceeds configured byte limit: ${limits.maxArchiveBytes}`);
-  return bytes;
+  // Explicitly selected archives may be external or linked regular files.
+  // Admit the opened object too: the pathname can change after stat, and a
+  // nonblocking open must not wait on a substituted FIFO before that check.
+  const nonblock = typeof fs.constants.O_NONBLOCK === "number" ? fs.constants.O_NONBLOCK : 0;
+  const handle = fs.openSync(filePath, fs.constants.O_RDONLY | nonblock);
+  try {
+    const opened = fs.fstatSync(handle);
+    if (!opened.isFile()) throw new Error(`zip path is not a regular file: ${filePath}`);
+    if (opened.size > limits.maxArchiveBytes) {
+      throw new Error(`zip archive exceeds configured byte limit: ${limits.maxArchiveBytes}`);
+    }
+    const chunks: Buffer[] = [];
+    let total = 0;
+    while (true) {
+      const chunk = Buffer.allocUnsafe(Math.min(64 * 1024, limits.maxArchiveBytes - total + 1));
+      const count = fs.readSync(handle, chunk, 0, chunk.length, null);
+      if (count === 0) return Buffer.concat(chunks, total);
+      total += count;
+      if (total > limits.maxArchiveBytes) {
+        throw new Error(`zip archive exceeds configured byte limit: ${limits.maxArchiveBytes}`);
+      }
+      chunks.push(chunk.subarray(0, count));
+    }
+  } finally {
+    fs.closeSync(handle);
+  }
 }
 
 export function readZipFileEntries(filePath: string, overrides: Partial<ZipReadLimits> = {}): ZipEntry[] {

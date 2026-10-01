@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.
 scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
-active_node: bug-46
+active_node: bug-48
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, npm run ci:workflow:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, node dist/cli.js db index verify --json, git diff --check]
 max_iterations: 75
@@ -21,11 +21,11 @@ blocked_by: []
 blocks: []
 refs: []
 context_refs: [goal-83, goal-84, goal-85, goal-75, dec-93, dec-94, dec-95, dec-96, edd-82, task-825, task-833, test-485]
-evidence_refs: [chk-608, chk-609, chk-610, chk-611, chk-612, chk-613, chk-614, chk-615, chk-616, chk-617, chk-618, chk-619, chk-620, chk-621, chk-622, chk-623]
+evidence_refs: [chk-608, chk-609, chk-610, chk-611, chk-612, chk-613, chk-614, chk-615, chk-616, chk-617, chk-618, chk-619, chk-620, chk-621, chk-622, chk-623, chk-624, chk-625]
 aliases: []
 skills: []
 created: 2026-09-13
-updated: 2026-09-18
+updated: 2026-09-21
 ---
 
 # Objective
@@ -163,6 +163,57 @@ Do not start/reconfigure services; missing local capability or hosted CI needs
 precise separate authorization and remains a blocking evidence gap.
 
 # Current State
+
+2026-09-21 Bug48 local verification complete: bounded config/source/ZIP reads,
+164 focused passes and90 installed CLI/MCP cases across the three required Node
+versions on macOS arm64. Complete1647-test discovery had1614 passes/33 failures
+from unavailable sandbox OS ownership proof; all38 tests in the unchanged
+affected family then passed with approved native evidence. Receipts retain both
+outcomes. No blocked context was opened and no old scan evidence was recovered.
+Local completion is not Linux, Task828, full-ladder or final-artifact acceptance.
+Goal85 stays paused; remaining security/adjacent remedies and native-filesystem
+design remain in scope. Protected selection, runtime and Demo3 bytes match.
+
+2026-09-21 RESUMED by Nick: continue fixes from retained mdkg evidence. Do not
+access blocked scan context, recover its artifacts, or rerun that historical
+scan/findings. This supersedes chk624's proposed recovery prerequisite; missing
+original files remain a disclosed limitation, not a reason to stop independent
+source remedies. Current local regression tests verify new fixes; they do not
+reconstruct or re-finalize the old scan. Final release acceptance stays separate.
+Nick also approves bounded native-filesystem feasibility/design planning for
+Bugs46/47, not dependency adoption or a packaging choice. Preserve current main,
+accepted partial custody, selected Goal73, runtime DB and Demo3 bundle. No remote
+Git, publication, provider, canonical migration or bundle/subgraph refresh.
+
+2026-09-18 findings-capture checkpoint624: Nick requested a durable inventory and
+remediation planning, so no further functional change is being made in this pass.
+The completed Standard scan recorded14 confirmed findings (5medium/9low):
+Bugs44/45 locally done, Bug46 blocked, Bug48 partial, and10 in backlog. Bugs58-60
+remain separately classified correctness/custody/platform gaps. No new duplicate
+goal or finding is needed. Goal86 remains the existing execution lane; this
+checkpoint does not activate new work or approve native dependencies.
+
+Bug48 independent review plus a bounded parent reproduction confirmed the
+selected ZIP reader still admits a blocking final-leaf substitution. Keep its
+two-source/three-test partial patch unstaged and unfinished. Earlier155 focused
+and69 installed passes are intermediate only; no terminal full-suite result was
+recovered. Exact current hashes and observed outcomes are in
+.mdkg/artifacts/goal-86/security-findings-checkpoint-20260918.json.
+
+The canonical Standard reports and Bug48 temporary receipts/tarball are now
+inaccessible at recorded paths in this environment. Sanitized committed findings
+survive; report completion is historical, not evidence availability or clearance.
+Task838 now covers retained custody and Task828 requires verified originals or
+explicitly superseding qualification. Do not infer deletion, provider action,
+security-policy rejection or permission to change host/global configuration.
+Live workbench context subsequently confirms all14 findings survive and the
+actual remediation guardrail is revision mismatch (scanned e42f1d9 versus
+current85226b5), with reportAvailable=false. Preserve current main; no rollback,
+old-scan re-finalization or new scan is authorized by this findings checkpoint.
+The separate Bug46/47 filesystem architecture decision remains unresolved.
+Protected Goal73/runtime/Demo3 hashes match; Goal85 remains paused, NOT_READY.
+
+Earlier decision checkpoint (preserved history):
 
 2026-09-18 decision gate: Bugs44/45 are locally verified and committed in
 d44831b6/754710c7. Fourteen scoped nodes are done, including the fresh Standard
