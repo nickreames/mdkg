@@ -2,12 +2,12 @@
 id: bug-49
 type: bug
 title: Creating a skill can copy an external file through a linked registry
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-49-baseline.json, .mdkg/artifacts/goal-86/bug-49-current-validation.json, .mdkg/artifacts/goal-86/bug-49-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -98,5 +98,40 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-21: Current-source remediation on main8ee44cf1 uses contained,
+nonblocking bounded registry reads and contained replacement. Registry admission
+and the actual parsed prospective projection precede any skill directory/file
+creation or force replacement. Refresh re-admits the registry at use. Regular
+customization, missing registries, hard-linked peer bytes, force replacement and
+init's shared refresh remain supported. No product-specific behavior was added.
+
+Fresh synthetic baseline: corrected15-case fixture had6 passes/9 failures,
+including a FIFO timeout and accepted linked registries. The earlier fixture's
+unsupported custom-root configuration cases are retained as harness errors,
+not additional vulnerabilities. Published0.5.2 impact remains unassessed; this
+fix is grounded in the current prepatch source and draft0.6.0 package only.
+
+One independent candidate review found an output-budget regression introduced
+by the initial remedy. Parent reproduction confirmed17 skills could produce an
+8476-byte registry under8192 and make the18th creation fail. Prospective output
+preflight plus shared UTF8 output bounds now refuse before partial writes;
+subsequent valid smaller edits remain usable. Exactly one review cycle was used.
+
+Current frozen-build evidence:164 focused tests and57 installed cases pass
+(19 each on Node24.15.0/24.18.0/26.0.0, macOS arm64). Full frozen source suite
+passed1658/1658 with zero failures/skips on Node26/macOS arm64. An earlier full run was
+intentionally interrupted after the review finding. A later attempted run was
+invalidated by this agent scheduling a rebuilding CLI check concurrently;19
+missing-module/template failures and the installed input ENOENT are retained,
+not product failures or passes. A separate earlier installed harness path typo
+ran zero cases. Corrected qualification uses frozen build inputs.
+
+Evidence: bug-49-baseline.json, bug-49-current-validation.json and
+bug-49-installed-verification.json under .mdkg/artifacts/goal-86/.
+These are new local regression receipts, not recovered or rerun blocked scan
+context. No blocked context was accessed. Bug46 metadata/ACL preservation and
+Bug47 ancestor substitution remain separate open boundaries; this change does
+not claim to solve either. Post-preflight concurrent changes can refuse after a
+legitimate skill write; whole-command rollback is not claimed. Linux, final
+independent review, full release ladder and exact release seal remain open.
+Goal85 remains paused; no push, publication or provider action occurred.

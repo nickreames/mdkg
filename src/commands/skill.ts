@@ -19,7 +19,7 @@ import { loadSkillsIndex } from "../graph/skills_index_cache";
 import { writeSkillsIndex } from "../graph/skills_index_cache";
 import { UsageError, ValidationError, NotFoundError } from "../util/errors";
 import {
-  ensureSkillsRegistry,
+  prepareSkillsRegistry,
   formatSkillCard,
   refreshSkillsRegistry,
   renderSkillTemplate,
@@ -267,6 +267,11 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
     throw new UsageError(`skill already exists: ${path.relative(root, canonicalPath)} (use --force to overwrite)`);
   }
 
+  // Registry customization will be copied into the refreshed file. Admit it
+  // before creating or replacing any skill; --force is not a containment bypass.
+  const content = renderSkillTemplate({ name, description, tags, authors, links });
+  prepareSkillsRegistry(root, config, { slug, filePath: canonicalPath, content });
+
   const relativeSkillDir = path.relative(root, skillDir).split(path.sep).join("/");
   ensureContainedDirectory({ root, relativePath: relativeSkillDir });
   ensureContainedDirectory({ root, relativePath: `${relativeSkillDir}/references` });
@@ -275,16 +280,8 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
     ensureContainedDirectory({ root, relativePath: `${relativeSkillDir}/scripts` });
   }
 
-  const content = renderSkillTemplate({
-    name,
-    description,
-    tags,
-    authors,
-    links,
-  });
   atomicReplaceContainedFile({ root, relativePath: `${relativeSkillDir}/SKILL.md` }, content);
 
-  ensureSkillsRegistry(root, config);
   refreshSkillsRegistry(root, config);
   if (shouldMaintainSkillMirrors(root, config)) {
     syncSkillMirrors({ root, config, createRoots: true, force });

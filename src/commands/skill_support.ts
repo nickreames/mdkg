@@ -3,11 +3,11 @@ import path from "path";
 import { Config } from "../core/config";
 import {
   buildSkillsIndex,
+  buildSkillIndexEntryForWorkspace,
   resolveSkillsRoot,
   SkillIndexEntry,
-  SkillsIndex,
 } from "../graph/skills_indexer";
-import { atomicWriteFile } from "../util/atomic";
+import { atomicReplaceContainedFile, readContainedFile, readContainedFileIfPresent } from "../core/filesystem_authority";
 
 export const SKILL_REGISTRY_START = "<!-- mdkg:skill-registry:start -->";
 export const SKILL_REGISTRY_END = "<!-- mdkg:skill-registry:end -->";
@@ -117,21 +117,55 @@ function replaceManagedSection(raw: string, lines: string[]): string {
   return `${prefix}${managed}\n`;
 }
 
+function registryInput(root: string, config: Config) {
+  return { root, relativePath: path.relative(root, path.join(resolveSkillsRoot(root, config), "registry.md")),
+    pathSyntax: "native" as const, maxBytes: config.index.limits.max_file_bytes };
+}
+
+// Observation only: missing is allowed, but linked/special/oversized registries
+// must be refused before their preserving renderer can copy untrusted bytes.
+export function readSkillsRegistry(root: string, config: Config): string | null {
+  return readContainedFileIfPresent(registryInput(root, config));
+}
+
 export function ensureSkillsRegistry(root: string, config: Config): string {
-  const skillsRoot = resolveSkillsRoot(root, config);
-  const registryPath = path.join(skillsRoot, "registry.md");
-  if (!fs.existsSync(registryPath)) {
-    atomicWriteFile(registryPath, registryTemplate());
+  const input = registryInput(root, config);
+  if (readSkillsRegistry(root, config) === null) {
+    const content = registryTemplate();
+    assertRegistryOutputBudget(config, content);
+    atomicReplaceContainedFile(input, content);
   }
-  return registryPath;
+  return path.resolve(root, input.relativePath);
+}
+
+function assertRegistryOutputBudget(config: Config, content: string): void {
+  if (Buffer.byteLength(content, "utf8") > config.index.limits.max_file_bytes) {
+    throw new Error(`skill registry output exceeds byte limit: ${config.index.limits.max_file_bytes}`);
+  }
+}
+
+// Predict the actual parsed projection, including force replacement, without
+// publishing a skill or registry. The same renderer/budget is used at refresh.
+export function prepareSkillsRegistry(root: string, config: Config,
+  pending?: { slug: string; filePath: string; content: string }): string {
+  const raw = readSkillsRegistry(root, config) ?? registryTemplate();
+  const index = buildSkillsIndex(root, config, pending ? {
+    readDocument: filePath => filePath === pending.filePath ? pending.content
+      : readContainedFile({ root, relativePath: path.relative(root, filePath), pathSyntax: "native" }),
+  } : {});
+  if (pending) {
+    index.skills[pending.slug] = buildSkillIndexEntryForWorkspace(root, "root", pending.slug,
+      pending.filePath, () => pending.content);
+  }
+  const updated = renderSkillRegistryContent(raw, Object.values(index.skills));
+  assertRegistryOutputBudget(config, updated);
+  return updated;
 }
 
 export function refreshSkillsRegistry(root: string, config: Config): void {
-  const registryPath = ensureSkillsRegistry(root, config);
-  const raw = fs.readFileSync(registryPath, "utf8");
-  const index = buildSkillsIndex(root, config);
-  const updated = renderSkillRegistryContent(raw, Object.values(index.skills));
-  atomicWriteFile(registryPath, updated);
+  // Re-admit at use even when the calling command already preflighted it.
+  const updated = prepareSkillsRegistry(root, config);
+  atomicReplaceContainedFile(registryInput(root, config), updated);
 }
 
 export function renderSkillRegistryContent(raw: string, skills: Array<Pick<SkillIndexEntry, "slug" | "name" | "description" | "tags">>): string {

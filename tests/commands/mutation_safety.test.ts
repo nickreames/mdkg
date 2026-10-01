@@ -120,6 +120,7 @@ test("high-risk graph config and skill mutation paths are lock-wrapped and atomi
   assert.match(skill, /atomicReplaceContainedFile/);
 
   const skillSupport = source("src/commands/skill_support.ts");
-  assert.match(skillSupport, /atomicWriteFile\(registryPath/);
-  assert.doesNotMatch(skillSupport, /fs\.writeFileSync\(registryPath/);
+  assert.match(skillSupport, /atomicReplaceContainedFile/);
+  assert.match(skillSupport, /readContainedFileIfPresent/);
+  assert.doesNotMatch(skillSupport, /atomicWriteFile|fs\.writeFileSync\(registryPath|fs\.readFileSync\(registryPath/);
 });
