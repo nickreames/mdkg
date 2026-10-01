@@ -783,6 +783,18 @@ guidance to compress in the source workspace and refresh its subgraph bundle.
 The JSON receipt preserves `action`, `count`, and `archives` and adds the
 requested workspace, selected local workspaces, and excluded read-only qids.
 
+Compression admits the whole selected resource set before reading payloads.
+Sidecars, raw inputs and caches must share their deepest configured workspace
+owner, including private or disabled nested roots. Raw inputs stay under the
+sidecar directory's `source/` subtree; caches are `.zip` files below that directory,
+outside `source/` and nested metadata directories. Custom cache names and source
+subdirectories remain supported. Resource sharing, ancestor/descendant overlaps,
+case/Unicode aliases, and configured database/index/template/bundle collisions
+fail closed. These checks do not expand a sidecar's authority to another archive;
+explicit `archive add <file>` source access remains a separate operator choice.
+Review nonconforming manually authored layouts before compression; mdkg does not
+rewrite them automatically. Missing or corrupt owned caches remain regenerable.
+
 By default, init/upgrade ignore generated raw archive source copies with `.mdkg/archive/**/source/`; sidecar `.md` files and compressed `.zip` caches remain commit-eligible. `mdkg doctor` warns when a committed archive ZIP cache exceeds `archive.large_cache_warning_bytes` in `.mdkg/config.json` (default `26214400`; set `0` to disable). Large-cache warnings do not block archive add or validation.
 
 ## Current direction

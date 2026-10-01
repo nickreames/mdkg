@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-86",
+  "work": "root:bug-57",
+  "finding": "g86-export-001",
+  "date": "2026-09-21",
+  "source_base": "fb3700edf4c6ef76e3612ecb61dac4aa648a05f8",
+  "branch": "main",
+  "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+  "cached_ahead": 64,
+  "cached_behind": 0,
+  "remote_verified": false,
+  "owner": "mdkg-project-agent",
+  "entry_dirty": [".mdkg/index/mdkg.sqlite"],
+  "prepatch": {
+    "runtime": "v26.0.0",
+    "tests": 24,
+    "pass": 5,
+    "fail": 19,
+    "log_sha256": "f198ffabf01a6262330801be149e375626a2362409e11f2c2621307f0745f41d",
+    "source_hashes": {"src/commands/archive.ts": "dec76ff849619fd8fc790335b39e60ea265e9144bf3bc9b311f46a08998410c1"},
+    "observed": "Compression accepts nested private/disabled payload ownership and same-owner resource collisions; valid regeneration controls pass.",
+    "fixture_corrections": "The first baseline had an incomplete DB configuration and inventory reads counted as payload reads. Corrected those fixtures and set an old sidecar date to expose rewrites, then reran the baseline. No production guard or limit was weakened."
+  },
+  "review": {
+    "prepatch": "Independent read-only boundary investigation and parent source tracing; no blocked context.",
+    "candidate": "One independent read-only candidate review; two source-backed hypotheses confirmed with fresh synthetic fixtures and corrected.",
+    "confirmed_gaps": [
+      "Backslash template-root selectors were normalized by the loader but not the resource-protection guard, allowing template content into an archive.",
+      "The first layout guard rejected legitimate explicitly added regular .git/.mdkg filenames, preventing missing-cache regeneration."
+    ],
+    "review_before_sha256": "ac11c29236017ae5e9be1a750aee5b5d1824c86320ce46a281bf33b7a692563d",
+    "review_after_sha256": "d21537e057bf536a2088987d807e999cf4e1aeb380b34433962de3d95d601f88",
+    "parent_confirmed_regression": "An unselected local archive containing a literal # in its filename blocked another archive. Explicit imported/read-only source markers now distinguish projections; local literal filenames and imported mutation refusal are tested.",
+    "postfix_focused": {
+      "tests": 83,
+      "pass": 83,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 22341.358958,
+      "log_sha256": "78e9a75202dc27bf1dbf1e047f871dc25b1811dec5389c9446a78a18879b5952",
+      "scope": "38 new ownership/compatibility cases plus 45 existing archive ownership, work and containment cases."
+    },
+    "discarded_validation": "A preceding focused run overlapped a CLI/docs build that removed shared dist files: 76 pass, 7 missing-runtime failures. It is invalid evidence, not a product pass; the complete 83-case run was repeated after all builds finished.",
+    "discarded_log_sha256": "fe3db41e3eed32245160a60c82385f932cdd800169535ea55ef5f603f6f1a690"
+  },
+  "protected": {
+    "selected_goal_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_db_sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3_bundle_sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": {
+    "blocked_context_accessed": false,
+    "old_findings_recovered_or_rerun": false,
+    "remote_actions": false,
+    "publication": false
+  },
+  "affected_versions": "Current draft 0.6.0 at the stated source base; published 0.5.2 affectedness unassessed.",
+  "limitations": [
+    "Static resource ownership does not close Bug47 concurrent ancestor substitution or establish a new hardlink policy.",
+    "macOS arm64 intermediate evidence only; Linux, final Task828 review, coverage ladder and artifact seal remain separate gates."
+  ]
+}

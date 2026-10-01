@@ -12,6 +12,7 @@ import {
   writeContainedFileExclusive,
 } from "../core/filesystem_authority";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
+import { normalizeTemplatePath } from "../core/template_path";
 import { FrontmatterValue, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
 import { validateArchiveFrontmatter } from "../graph/archive_file";
 import {
@@ -31,6 +32,7 @@ import { withMutationLock } from "../util/lock";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { createDeterministicZip } from "../util/zip";
 import { appendAutomaticEvent } from "./event_support";
+import { absoluteWorkspaceDocumentOwner } from "../graph/workspace_ownership";
 
 export type ArchiveAddCommandOptions = {
   root: string;
@@ -276,7 +278,9 @@ function archiveNodePaths(root: string, node: IndexNode): {
   rawPath: string;
   zipPath: string;
 } {
-  if (node.source?.imported || node.source?.read_only || node.path.includes("#")) {
+  // Imported projections carry explicit source markers. A literal # is also a
+  // valid local filename and is not, by itself, evidence of a projection.
+  if (node.source?.imported || node.source?.read_only) {
     throw new ValidationError(`refusing to derive filesystem paths for read-only archive projection ${node.qid}`);
   }
   const sidecarPath = path.resolve(root, node.path);
@@ -751,21 +755,24 @@ function preflightArchiveCompression(
   const sidecarRelativePath = toPosixPath(path.relative(root, sidecarPath));
   for (const relativePath of [rawRelativePath, zipRelativePath, sidecarRelativePath]) {
     withContainedPathSink(
-      { root, relativePath, operation: relativePath === rawRelativePath ? "read" : "replace" },
+      { root, relativePath, pathSyntax: "native", operation: relativePath === rawRelativePath ? "read" : "replace" },
       () => undefined
     );
   }
-  if (!containedPathExists({ root, relativePath: rawRelativePath })) {
+  if (!containedPathExists({ root, relativePath: rawRelativePath, pathSyntax: "native" })) {
     throw new NotFoundError(`raw archive file missing for ${node.qid}: ${path.relative(root, rawPath)}`);
   }
-  const rawData = readContainedFile({ root, relativePath: rawRelativePath }, null);
   const parsed = parseFrontmatter(
-    readContainedFile({ root, relativePath: sidecarRelativePath }),
+    readContainedFile({ root, relativePath: sidecarRelativePath, pathSyntax: "native" }),
     sidecarPath
   );
   if (parsed.frontmatter.type !== "archive" || parsed.frontmatter.id !== node.id) {
     throw new ValidationError(`${node.qid}: archive sidecar identity changed before compression`);
   }
+  for (const field of ["stored_path", "compressed_path", "visibility"] as const) {
+    if (parsed.frontmatter[field] !== node.attributes[field]) throw new ValidationError(`${node.qid}: archive resource authority changed before compression`);
+  }
+  const rawData = readContainedFile({ root, relativePath: rawRelativePath, pathSyntax: "native" }, null);
   const zipData = createDeterministicZip(path.basename(rawPath), rawData);
   const nextFrontmatter: Record<string, FrontmatterValue> = {
     ...parsed.frontmatter,
@@ -798,6 +805,92 @@ function preflightArchiveCompression(
   };
 }
 
+// Compression authority comes from the selected local archive, not merely from
+// repository containment. Complete this metadata-only phase before any payload
+// is read, including when a later selected archive is the invalid one.
+function assertArchiveCompressionResources(root: string, config: Config, index: Index, nodes: IndexNode[]): void {
+  const owner = absoluteWorkspaceDocumentOwner(root, config);
+  type Claim = { qid: string; role: string; file: string };
+  const claims = new Map<string, Claim[]>();
+  // Fail closed on portable aliases even when a particular host can distinguish
+  // them. Otherwise two missing destinations can alias only at write time.
+  const key = (file: string) => toPosixPath(file).normalize("NFC").toLowerCase();
+  const add = (claim: Claim) => {
+    const k = key(claim.file), existing = claims.get(k);
+    if (existing) existing.push(claim); else claims.set(k, [claim]);
+  };
+  const resources = (node: IndexNode): Claim[] => {
+    const p = archiveNodePaths(root, node);
+    return [{ qid: node.qid, role: "sidecar", file: p.sidecarPath }, { qid: node.qid, role: "raw", file: p.rawPath }, { qid: node.qid, role: "cache", file: p.zipPath }];
+  };
+  for (const node of Object.values(index.nodes)) {
+    if (node.source?.imported || node.source?.read_only) continue;
+    if (node.type === "archive") resources(node).forEach(add);
+    else add({ qid: node.qid, role: "document", file: path.resolve(root, node.path) });
+  }
+  const keys = [...claims.keys()].sort();
+  const collision = (claim: Claim) => {
+    const k = key(claim.file);
+    for (let parent = k; ; parent = path.posix.dirname(parent)) {
+      const conflict = claims.get(parent)?.find(c => c.qid !== claim.qid || c.role !== claim.role);
+      if (conflict) return conflict;
+      if (path.posix.dirname(parent) === parent) break;
+    }
+    const prefix = `${k}/`; let lo = 0, hi = keys.length;
+    while (lo < hi) { const mid = (lo + hi) >>> 1; if (keys[mid] < prefix) lo = mid + 1; else hi = mid; }
+    return keys[lo]?.startsWith(prefix) ? claims.get(keys[lo])![0] : undefined;
+  };
+  const protectedPaths = [config.db.root_path, config.db.runtime_path, config.db.state_path,
+    config.db.receipts_path, config.index.global_index_path, config.index.sqlite_path,
+    config.capabilities.cache_path, config.bundles.output_dir, normalizeTemplatePath(config.templates.root_path, "templates.root_path"),
+    ...Object.values(config.workspaces).flatMap(w => ["config.json", "core", "design", "work", "skills", "templates", "state", "index", "db", "bundles", "pack", "subgraphs"].map(p => workspaceDocumentRelativePath(w.path, w.mdkg_dir, p)))
+  ].map(p => key(path.resolve(root, p)));
+  const overlaps = (a: string, b: string) => a === b || a.startsWith(`${b}/`) || b.startsWith(`${a}/`);
+  const directories = new Map<string, Set<string>>();
+  let directoryEntries = 0;
+  const assertSpelling = (file: string) => {
+    let parent = path.resolve(root);
+    for (const part of path.relative(root, file).split(path.sep)) {
+      let names = directories.get(parent);
+      if (!names) {
+        names = new Set();
+        forEachContainedDirectoryEntry({ root, relativePath: path.relative(root, parent) || ".", pathSyntax: "native" }, e => {
+          if (++directoryEntries > config.index.limits.max_files * 10) throw new ValidationError("archive resource spelling inspection exceeds directory-entry budget");
+          names!.add(e.name);
+        });
+        directories.set(parent, names);
+      }
+      const next = path.join(parent, part);
+      if (!names.has(part)) {
+        try { fs.lstatSync(next); } catch (error) { if ((error as NodeJS.ErrnoException).code === "ENOENT") return; throw error; }
+        throw new ValidationError(`archive resource path spelling differs from the filesystem: ${path.relative(root, next)}`);
+      }
+      parent = next;
+    }
+  };
+  for (const node of nodes) {
+    const selected = resources(node), sidecarDir = path.dirname(selected[0].file);
+    for (const claim of selected) {
+      if (owner(claim.file) !== node.ws) throw new ValidationError(`${node.qid}: archive ${claim.role} resource belongs to another workspace owner`);
+      const relative = path.relative(sidecarDir, claim.file), parts = relative.split(path.sep);
+      if ((claim.role === "raw" && (parts[0] !== "source" || parts.length < 2)) ||
+          (claim.role === "cache" && (parts.includes("source") || !relative.endsWith(".zip"))) ||
+          parts.slice(0, -1).some(p => [".mdkg", ".git"].includes(p.normalize("NFC").toLowerCase()))) {
+        throw new ValidationError(`${node.qid}: archive ${claim.role} resource is outside its admitted archive layout`);
+      }
+      if (protectedPaths.some(p => overlaps(key(claim.file), p))) throw new ValidationError(`${node.qid}: archive resource overlaps protected metadata`);
+      const other = collision(claim);
+      if (other) throw new ValidationError(`${node.qid}: archive ${claim.role} resource overlaps ${other.qid} ${other.role}`);
+      const relativePath = path.relative(root, claim.file);
+      withContainedPathSink({ root, relativePath, pathSyntax: "native", operation: claim.role === "raw" ? "read" : "replace" }, () => undefined);
+      assertSpelling(claim.file);
+      if (containedPathExists({ root, relativePath, pathSyntax: "native" }) && !fs.lstatSync(claim.file).isFile()) {
+        throw new ValidationError(`${node.qid}: archive resource must be a regular file`);
+      }
+    }
+  }
+}
+
 function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions): void {
   if (!options.all && !options.id) {
     throw new UsageError("archive compress requires <id-or-archive-uri-or-qid> or --all");
@@ -812,16 +905,17 @@ function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions)
     buildSubgraphsIndex(options.root, config)
   );
   const { nodes, selection } = selectArchiveCompressionNodes(options, config, index);
+  assertArchiveCompressionResources(options.root, config, index, nodes);
   const today = formatDate(options.now ?? new Date());
   const plans = nodes.map((node) => preflightArchiveCompression(options.root, node, today));
   const updated: ArchiveReceipt[] = [];
   for (const plan of plans) {
     atomicReplaceContainedFile(
-      { root: options.root, relativePath: plan.zipRelativePath },
+      { root: options.root, relativePath: plan.zipRelativePath, pathSyntax: "native" },
       plan.zipData
     );
     atomicReplaceContainedFile(
-      { root: options.root, relativePath: plan.sidecarRelativePath },
+      { root: options.root, relativePath: plan.sidecarRelativePath, pathSyntax: "native" },
       plan.sidecarContent
     );
     updated.push(plan.receipt);
