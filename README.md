@@ -707,6 +707,14 @@ Required checks are stored as report-only guidance. Agents should run the checks
 
 Loop nodes are durable declarative process state for reusable agentic workflows. Use `mdkg new loop "<process>"` for a loop record, or `mdkg loop fork <template> --scope <scope>` to instantiate a seeded template for a concrete repo, folder, or goal.
 
+Loop seed discovery and local indexed-template reads enforce `index.limits`,
+capped at the default template safety envelope. Catalog/provenance inspection
+shares a command-local file/byte budget and reuses each admitted template;
+subsequent commands read fresh input. Seed discovery also bounds directory entries
+and depth. Direct seed selection does not parse unrelated templates. Unsafe or
+oversized guidance is rejected before `new loop` reserves an alias or writes a
+node; forked output must independently fit the graph's authoring limits.
+
 `loop` is one first-class node type. A loop can act as a reusable template, scoped fork, or run-bearing loop through metadata and links; mdkg does not create separate `loop_template` or `loop_run` node types in this release. Loop metadata records mode, scope, lineage, materialization mode, child refs, run/evidence refs, definition of done, and blocker-continuation policy.
 
 `mdkg loop list|show|plan|runs` inspect loop state without executing agents. `mdkg loop fork` creates graph state; by default it materializes linked spike/task/test child nodes, while `--planning-only` or `--no-children` creates only the scoped loop shell. mdkg defines reusable process state and graph context; consuming runtimes own agent/tool execution, sandboxes, traces, and model routing.

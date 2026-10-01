@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.
 scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
-active_node: bug-55
+active_node: bug-56
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, npm run ci:workflow:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, node dist/cli.js db index verify --json, git diff --check]
 max_iterations: 75
@@ -163,6 +163,19 @@ Do not start/reconfigure services; missing local capability or hosted CI needs
 precise separate authorization and remains a blocking evidence gap.
 
 # Current State
+
+2026-09-21 Bug56 bounded local remedy verified (chk-633): command-local catalog
+and provenance reuse, shared file/byte budgets, bounded indexed-template reads,
+imported show-body accounting and incremental frontmatter/purpose parsing.
+1920 full tests,161 focused/nearby cases and312 exact installed cases pass;
+Node24.15.0/24.18.0/26.0.0,macOS arm64. Intermediate231-file package SHA256
+9c54ce1301ee1db89a5afe5f326c485346bb52d10707de46dd49493305f5ddca.
+One independent candidate review found the imported-body budget gap; fresh
+synthetic proof confirmed it and verified the bounded correction. Eleven of14
+retained findings have local remedies; Bugs46/47/57, adjacent Bugs58-60, Task828,
+Linux, full ladder/coverage and seal remain open. Protected state matches; no
+blocked context, old scan recovery or remote actions. Next: Bug57 archive payload
+ownership. Goal85 stays paused; release NOT_READY; skill candidates none.
 
 2026-09-21 Bug55 bounded local remedy verified (chk-632): shared contained,
 regular-file-only loop-seed admission now precedes new-loop reservations/writes

@@ -46,7 +46,7 @@ export function createNodeBodyReader(root: string, maxBytes = DEFAULT_NODE_BODY_
   };
 }
 
-function readImportedBody(root: string, node: IndexNode, maxBytes: number): string {
+function readImportedBody(root: string, node: IndexNode, maxBytes: number, onSourceBytes?: (bytes: number) => void): string {
   const source = node.source;
   if (!source?.imported) {
     throw new Error("node is not imported");
@@ -55,19 +55,21 @@ function readImportedBody(root: string, node: IndexNode, maxBytes: number): stri
   if (entry.length > maxBytes) {
     throw new Error(`node body source exceeds byte limit for ${node.qid}: ${maxBytes}`);
   }
+  onSourceBytes?.(entry.length);
   return parseFrontmatter(entry.toString("utf8"), source.original_path).body.trimEnd();
 }
 
-export function readNodeBody(root: string, node: IndexNode, maxBytes = DEFAULT_NODE_BODY_MAX_BYTES): string {
+export function readNodeBody(root: string, node: IndexNode, maxBytes = DEFAULT_NODE_BODY_MAX_BYTES, onSourceBytes?: (bytes: number) => void): string {
   if (node.source?.imported) {
-    return readImportedBody(root, node, maxBytes);
+    return readImportedBody(root, node, maxBytes, onSourceBytes);
   }
   const filePath = path.resolve(root, node.path);
   if (!fs.existsSync(filePath)) {
     throw new NotFoundError(`file not found for ${node.qid}: ${node.path}`);
   }
-  const content = readContainedFile({ root, relativePath: node.path, maxBytes }, "utf8");
-  const parsed = parseFrontmatter(content, filePath);
+  const content = readContainedFile({ root, relativePath: node.path, maxBytes }, null);
+  onSourceBytes?.(content.length);
+  const parsed = parseFrontmatter(content.toString("utf8"), filePath);
   if (parsed.frontmatter.id !== node.id || parsed.frontmatter.type !== node.type) {
     throw new Error(`cached node identity mismatch for ${node.qid}`);
   }

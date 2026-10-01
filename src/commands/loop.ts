@@ -1,9 +1,8 @@
 import crypto from "crypto";
-import fs from "fs";
 import path from "path";
 import { loadConfig, Config } from "../core/config";
 import {
-  readContainedFile,
+  readContainedFileIfPresent,
   writeContainedFileExclusive,
 } from "../core/filesystem_authority";
 import { formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/frontmatter";
@@ -24,7 +23,8 @@ import { toNodeDetailJson, toNodeSummaryJson, writeJson } from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
 import { bindNewIdentityGroup, validateProspectiveNodes } from "../graph/identity_authoring";
 import { identityRef, NodeIdentity, readNodeIdentity } from "../graph/identity";
-import { loadLoopSeed, loadLoopSeedCatalog } from "../templates/loop_seeds";
+import { loadLoopSeed, loadLoopSeedCatalog, LoopTemplateReadBudget } from "../templates/loop_seeds";
+import { localTemplateLimits } from "../templates/limits";
 
 type MaterializationMode = "default_children" | "planning_only" | "manual";
 
@@ -384,8 +384,19 @@ function seedSlugFromInput(input: string): string {
     .replace(/\.md$/, "");
 }
 
-function loadSeedTemplates(root: string, config: Config): LoopTemplate[] {
-  return loadLoopSeedCatalog(root, config)
+type LoopTemplateReadContext = {
+  seeds?: LoopTemplate[];
+  nodes: Map<string, LoopTemplate | undefined>;
+  budget: LoopTemplateReadBudget;
+};
+
+function newTemplateReadContext(): LoopTemplateReadContext {
+  return { nodes: new Map(), budget: { files: 0, bytes: 0 } };
+}
+
+function loadSeedTemplates(root: string, config: Config, context = newTemplateReadContext()): LoopTemplate[] {
+  if (context.seeds) return context.seeds;
+  context.seeds = loadLoopSeedCatalog(root, config, context.budget)
     .map(({ path: relativePath, slug, content }) => {
       const filePath = path.resolve(root, relativePath);
       const { frontmatter, body } = parseFrontmatter(content, filePath);
@@ -404,6 +415,24 @@ function loadSeedTemplates(root: string, config: Config): LoopTemplate[] {
         slug,
       };
     });
+  return context.seeds;
+}
+
+function loadNodeTemplate(root: string, config: Config, node: IndexNode, context: LoopTemplateReadContext): LoopTemplate | undefined {
+  if (context.nodes.has(node.qid)) return context.nodes.get(node.qid);
+  const limits = localTemplateLimits(config);
+  if (context.budget.files >= limits.max_files) throw new Error("loop template count exceeds index.limits.max_files");
+  const content = readContainedFileIfPresent({ root, relativePath: node.path, maxBytes: Math.min(limits.max_file_bytes, limits.max_total_bytes - context.budget.bytes) });
+  if (content === null) { context.nodes.set(node.qid, undefined); return undefined; }
+  context.budget.files++; context.budget.bytes += Buffer.byteLength(content, "utf8");
+  const { frontmatter, body } = parseFrontmatter(content, path.resolve(root, node.path));
+  if (frontmatter.id !== node.id || frontmatter.type !== node.type) throw new Error(`cached node identity mismatch for ${node.qid}`);
+  const template: LoopTemplate = {
+    kind: "node", ref: node.qid, title: node.title, path: node.path,
+    hash: sha256Content(content), frontmatter, body, id: node.id, qid: node.qid,
+  };
+  context.nodes.set(node.qid, template);
+  return template;
 }
 
 function resolveLoopTemplate(root: string, config: Config, index: Index, raw: string, ws?: string): LoopTemplate {
@@ -416,20 +445,9 @@ function resolveLoopTemplate(root: string, config: Config, index: Index, raw: st
     if (node.type !== "loop") {
       throw new UsageError(`template must resolve to a loop node, got ${node.type}: ${node.qid}`);
     }
-    const filePath = path.resolve(root, node.path);
-    const content = readContainedFile({ root, relativePath: node.path });
-    const { frontmatter, body } = parseFrontmatter(content, filePath);
-    return {
-      kind: "node",
-      ref: node.qid,
-      title: node.title,
-      path: node.path,
-      hash: sha256Content(content),
-      frontmatter,
-      body,
-      id: node.id,
-      qid: node.qid,
-    };
+    const template = loadNodeTemplate(root, config, node, newTemplateReadContext());
+    if (!template) throw new NotFoundError(`loop template not found: ${raw}`);
+    return template;
   }
 
   const slug = seedSlugFromInput(raw);
@@ -472,10 +490,11 @@ function resolveTemplateForProvenance(
   config: Config,
   index: Index,
   templateRef: string,
-  ws: string
+  ws: string,
+  context: LoopTemplateReadContext
 ): LoopTemplate | undefined {
   if (templateRef.startsWith("template://loops/")) {
-    return loadSeedTemplates(root, config).find((template) => template.ref === templateRef);
+    return loadSeedTemplates(root, config, context).find((template) => template.ref === templateRef);
   }
   if (templateRef.includes("://") && !templateRef.startsWith("mdkg://")) {
     return undefined;
@@ -488,30 +507,15 @@ function resolveTemplateForProvenance(
   if (!node || node.type !== "loop") {
     return undefined;
   }
-  const filePath = path.resolve(root, node.path);
-  if (!fs.existsSync(filePath)) {
-    return undefined;
-  }
-  const content = fs.readFileSync(filePath, "utf8");
-  const { frontmatter, body } = parseFrontmatter(content, filePath);
-  return {
-    kind: "node",
-    ref: node.qid,
-    title: node.title,
-    path: node.path,
-    hash: sha256Content(content),
-    frontmatter,
-    body,
-    id: node.id,
-    qid: node.qid,
-  };
+  return loadNodeTemplate(root, config, node, context);
 }
 
 function loopTemplateProvenance(
   root: string,
   config: Config,
   index: Index,
-  node: IndexNode
+  node: IndexNode,
+  context = newTemplateReadContext()
 ): LoopTemplateProvenance {
   const templateRefs = attributeStringList(node, "template_refs");
   const templateRef = templateRefs.length === 1 ? templateRefs[0] : undefined;
@@ -534,7 +538,7 @@ function loopTemplateProvenance(
     };
   }
 
-  const current = resolveTemplateForProvenance(root, config, index, templateRef, node.ws);
+  const current = resolveTemplateForProvenance(root, config, index, templateRef, node.ws, context);
   if (!current) {
     if (templateRef.includes("://") && !templateRef.startsWith("template://loops/") && !templateRef.startsWith("mdkg://")) {
       return {
@@ -1729,10 +1733,15 @@ function truncateSummary(value: string | undefined, max = 120): string | undefin
 }
 
 function firstPurposeLine(body: string): string | undefined {
-  return body
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .find((line) => line.length > 0 && !line.startsWith("#") && !line.startsWith("- "));
+  let start = 0;
+  while (start < body.length) {
+    const end = body.indexOf("\n", start);
+    const line = body.slice(start, end === -1 ? body.length : end).trim();
+    if (line.length > 0 && !line.startsWith("#") && !line.startsWith("- ")) return line;
+    if (end === -1) break;
+    start = end + 1;
+  }
+  return undefined;
 }
 
 function templateComparison(template: LoopTemplate): Record<string, unknown> {
@@ -1761,7 +1770,8 @@ function loopComparison(
   root: string,
   config: Config,
   index: Index,
-  node: IndexNode
+  node: IndexNode,
+  context: LoopTemplateReadContext
 ): Record<string, unknown> {
   return {
     kind: "node",
@@ -1775,7 +1785,7 @@ function loopComparison(
     tags: [...node.tags],
     materialization_mode: attributeString(node, "materialization_mode"),
     scope_description: truncateSummary(attributeString(node, "scope_description")),
-    template_lineage: loopTemplateProvenance(root, config, index, node),
+    template_lineage: loopTemplateProvenance(root, config, index, node, context),
   };
 }
 
@@ -1803,8 +1813,9 @@ function formatComparisonDetails(entry: Record<string, unknown>): string {
 export function runLoopListCommand(options: LoopListCommandOptions): void {
   const { config, index, ws, warnings } = loadLoopIndex(options);
   const nodes = visibleLoopNodes(index, ws);
-  const templates = options.templates === false ? [] : loadSeedTemplates(options.root, config);
-  const loopCatalog = nodes.map((node) => loopComparison(options.root, config, index, node));
+  const context = newTemplateReadContext();
+  const templates = options.templates === false ? [] : loadSeedTemplates(options.root, config, context);
+  const loopCatalog = nodes.map((node) => loopComparison(options.root, config, index, node, context));
   const templateCatalog = templates.map(templateComparison);
   const provenanceWarnings = loopCatalog.flatMap((entry) => {
     const lineage = entry.template_lineage as LoopTemplateProvenance | undefined;
@@ -1847,8 +1858,16 @@ export function runLoopShowCommand(options: LoopShowCommandOptions): void {
   const resolved = resolveQid(index, options.id, ws);
   if (resolved.status === "ok") {
     const node = resolveLoopNode(index, options.id, ws);
-    const body = options.metaOnly ? undefined : readNodeBody(options.root, node);
-    const templateLineage = loopTemplateProvenance(options.root, config, index, node);
+    const context = newTemplateReadContext();
+    const source = options.metaOnly || node.source?.imported ? undefined : loadNodeTemplate(options.root, config, node, context);
+    if (!options.metaOnly && !node.source?.imported && !source) throw new NotFoundError(`file not found for ${node.qid}: ${node.path}`);
+    const body = options.metaOnly ? undefined : node.source?.imported
+      ? readNodeBody(options.root, node, Math.min(localTemplateLimits(config).max_file_bytes, localTemplateLimits(config).max_total_bytes - context.budget.bytes), (bytes) => {
+        context.budget.files += 1;
+        context.budget.bytes += bytes;
+      })
+      : source!.body.trimEnd();
+    const templateLineage = loopTemplateProvenance(options.root, config, index, node, context);
     const outputWarnings = templateLineage.warning
       ? [...warnings, `${node.qid}: ${templateLineage.warning}`]
       : warnings;
