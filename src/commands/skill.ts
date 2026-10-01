@@ -34,6 +34,7 @@ import {
 import { appendAutomaticEvent } from "./event_support";
 import {
   configuredSkillMirrorTargets,
+  admitSkillMirrorTargets,
   shouldMaintainSkillMirrors,
   syncSkillMirrors,
 } from "./skill_mirror";
@@ -241,6 +242,7 @@ function matchesSkillQuery(skill: SkillIndexEntry, terms: string[]): boolean {
 function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
   const root = options.root;
   const config = loadConfig(root);
+  admitSkillMirrorTargets(root, config);
   const slug = normalizeSlug(options.slug);
   const name = options.name.trim();
   const description = options.description.trim();
@@ -333,6 +335,7 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
 
 export function runSkillNewCommand(options: SkillNewCommandOptions): void {
   const config = loadConfig(options.root);
+  admitSkillMirrorTargets(options.root, config);
   return withMutationLock(options.root, config.index.lock_timeout_ms, () => runSkillNewCommandLocked(options));
 }
 
@@ -594,5 +597,6 @@ function runSkillSyncCommandLocked(options: SkillSyncCommandOptions): void {
 
 export function runSkillSyncCommand(options: SkillSyncCommandOptions): void {
   const config = loadConfig(options.root);
+  admitSkillMirrorTargets(options.root, config);
   return withMutationLock(options.root, config.index.lock_timeout_ms, () => runSkillSyncCommandLocked(options));
 }

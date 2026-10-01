@@ -12,6 +12,7 @@ import {
 } from "../core/filesystem_authority";
 import { buildSkillsIndex, resolveSkillsRoot, SKILL_SLUG_RE, SkillsIndex } from "../graph/skills_indexer";
 import { UsageError } from "../util/errors";
+import { assertNoGitMetadataDestinations } from "../util/git_metadata";
 
 const MANIFEST_FILE = ".mdkg-managed.json";
 const MANAGED_ROOT_MARKERS = [
@@ -60,11 +61,39 @@ export type PreflightSkillMirrorTargetsOptions = {
 
 export function configuredSkillMirrorTargets(config?: Config): string[] {
   const configured = config?.customization.skill_mirrors.targets ?? defaultCustomizationConfig().skill_mirrors.targets;
-  return Array.from(new Set(configured.map((value) => value.trim()).filter(Boolean)));
+  return Array.from(new Set(configured.map((value) => value.trim().split(/[\\/]/).join("/")).filter(Boolean)));
+}
+
+export function admitSkillMirrorTargets(root: string, config?: Config): string[] {
+  const targets = configuredSkillMirrorTargets(config);
+  assertNoGitMetadataDestinations(root, targets);
+  let entries = 0;
+  const maxEntries = config?.index.limits.max_files ?? 20000;
+  const maxDepth = config?.index.limits.max_depth ?? 64;
+  // A managed stale slug can itself contain a repository. Reject it before
+  // recursive pruning or replacement; do not follow directory symlinks.
+  function inspect(relativePath: string, depth: number): void {
+    if (++entries > maxEntries || depth > maxDepth) throw new UsageError("Git metadata destination inventory exceeds entry/depth limit");
+    const input = { root, relativePath, pathSyntax: "native" as const };
+    if (!containedPathExists(input)) return;
+    const stat = withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => fs.lstatSync(absolutePath));
+    if (!stat.isDirectory()) return;
+    const names: string[] = [];
+    forEachContainedDirectoryEntry(input, entry => {
+      if (entries + names.length >= maxEntries) throw new UsageError("Git metadata destination inventory exceeds entry/depth limit");
+      names.push(entry.name);
+    });
+    if (names.some(name => name.toLowerCase() === ".git") || ["HEAD", "objects", "config"].every(name => names.includes(name))) {
+      throw new UsageError(`skill mirror contains native Git metadata: ${relativePath}`);
+    }
+    for (const name of names) inspect(path.join(relativePath, name), depth + 1);
+  }
+  for (const target of targets) inspect(target, 0);
+  return targets;
 }
 
 function resolveMirrorTargets(root: string, config?: Config): MirrorTarget[] {
-  return configuredSkillMirrorTargets(config).map((configuredPath) => {
+  return admitSkillMirrorTargets(root, config).map((configuredPath) => {
     const skillsRoot = path.join(root, configuredPath);
     return {
       boundaryRoot: root,
@@ -279,6 +308,7 @@ export function syncSkillMirrors(options: SyncSkillMirrorsOptions): SyncSkillMir
 }
 
 export function preflightSkillMirrorTargets(options: PreflightSkillMirrorTargetsOptions): void {
+  const targets = resolveMirrorTargets(options.root, options.config);
   if (options.force) {
     return;
   }
@@ -286,7 +316,7 @@ export function preflightSkillMirrorTargets(options: PreflightSkillMirrorTargets
   if (slugs.length === 0) {
     return;
   }
-  for (const target of resolveMirrorTargets(options.root, options.config)) {
+  for (const target of targets) {
     if (!fs.existsSync(target.rootDir) && !fs.existsSync(target.skillsRoot)) {
       continue;
     }

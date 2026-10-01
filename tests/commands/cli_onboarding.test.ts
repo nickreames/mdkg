@@ -106,7 +106,9 @@ test("legacy bundle command gives preview-first upgrade guidance without writes"
 test("upgrade preview emits a usable exact-hash command and stale or missing approval refuses", () => {
   const root = init(), target = ".mdkg/AGENT_START.md";
   fs.unlinkSync(path.join(root, target));
-  const index = path.join(root, ".git/index"); fs.mkdirSync(path.dirname(index)); fs.writeFileSync(index, "synthetic staged bytes");
+  const initialized = spawnSync("git", ["init", "-q"], { cwd: root, encoding: "utf8" });
+  assert.equal(initialized.status, 0, initialized.stderr);
+  const index = path.join(root, ".git/index"); fs.writeFileSync(index, "synthetic staged bytes");
   const before = snapshot(root), args = ["upgrade", "--only", target];
   const preview = cli(root, [...args, "--json"]); assert.equal(preview.status, 0, preview.stderr);
   const receipt = JSON.parse(preview.stdout); assert.equal(receipt.safe_to_apply, true);

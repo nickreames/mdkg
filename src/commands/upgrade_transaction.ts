@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { atomicReplaceContainedFile, readContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import { UsageError } from "../util/errors";
 import { withMutationLock } from "../util/lock";
+import { assertNoGitMetadataDestinations } from "../util/git_metadata";
 
 export const UPGRADE_JOURNAL = ".mdkg/state/upgrade-journal.json";
 export type UpgradeOperation = { path: string; before: string | null; after: string | null };
@@ -215,8 +216,10 @@ export class UpgradePlan {
   apply(planHash: string, timeout: number, afterWrite?: (path: string, index: number) => void): void {
     this.approvedPayload(planHash);
     if (!this.operations.size) return;
+    assertNoGitMetadataDestinations(this.root, [...this.operations.keys()]);
     this.assertFresh();
     withMutationLock(this.root, timeout, () => {
+      assertNoGitMetadataDestinations(this.root, [...this.operations.keys()]);
       this.assertFresh();
       const previous = readUpgradeJournal(this.root);
       if (previous && !["completed", "recovered"].includes(previous.state)) throw new UsageError("unfinished upgrade; use explicit --resume or --recover");
@@ -242,6 +245,7 @@ export function continueUpgrade(root: string, mode: "resume" | "recover", planHa
   if (!planHash) throw new UsageError("resume/recover requires the journal's exact --plan-hash");
   const journal = readUpgradeJournal(root, planHash);
   if (!journal) throw new UsageError("resume/recover requires the journal's exact --plan-hash");
+  assertNoGitMetadataDestinations(root, journal.operations.map(op => op.path));
   if (journal.state === "recovered" || journal.state === "completed") {
     assertTerminalCustody(root, journal, journal.state === "recovered" ? "before" : "after");
     validate?.(journal);
@@ -251,6 +255,7 @@ export function continueUpgrade(root: string, mode: "resume" | "recover", planHa
   if (mode === "resume" && journal.state === "recovering") throw new UsageError("recovery already started; continue --recover");
   const check = () => {
     assertApprovedPlan(journal, planHash);
+    assertNoGitMetadataDestinations(root, journal.operations.map(op => op.path));
     for (const op of journal.operations) {
       const actual = encoded(root, op.path);
       if (actual !== op.before && actual !== op.after) throw new UsageError(`upgrade recovery collision: ${op.path}; user bytes preserved`);

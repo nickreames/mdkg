@@ -222,6 +222,8 @@ test("resume and recovery bind the preview's manifest and non-operation graph de
 
 test("interrupted upgrades refuse unreviewed additions while preserving Git staging", () => {
   const { root, seed, receipt } = interrupted();
+  const initialized = spawnSync("git", ["init", "-q"], { cwd: root, encoding: "utf8" });
+  assert.equal(initialized.status, 0, initialized.stderr);
   writeFile(path.join(root, ".git/index"), "staged bytes");
   writeFile(path.join(root, ".mdkg/work/new.md"), "unreviewed node");
   const before = snapshot(root);
@@ -254,6 +256,8 @@ test("recovery rejects valid new nodes in previously empty graph directories", (
 test("v2 upgrades resume or recover after each interruption with exact identities and unchanged staging", () => {
   for (const mode of ["resume", "recover"]) for (const fault of [0, 1]) {
     const { root, seed, receipt, relative } = interrupted(fault);
+    const initialized = spawnSync("git", ["init", "-q"], { cwd: root, encoding: "utf8" });
+    assert.equal(initialized.status, 0, initialized.stderr);
     writeFile(path.join(root, ".git/index"), "staged bytes");
     const journal = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/state/upgrade-journal.json"), "utf8"));
     const result = quiet(() => runUpgradeCommand({ root, seedRoot: seed, [mode]: true, planHash: receipt.plan_hash }));

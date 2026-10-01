@@ -26,6 +26,8 @@ function fixture(terminal = false) {
   writeFile(path.join(root, "owned/a.txt"), "old a");
   writeFile(path.join(root, "dependency.txt"), "dependency");
   writeFile(path.join(root, "README.md"), "user original");
+  const initialized = spawnSync("git", ["init", "-q"], { cwd: root, encoding: "utf8" });
+  assert.equal(initialized.status, 0, initialized.stderr);
   writeFile(path.join(root, ".git/index"), "unchanged index");
   const plan = new UpgradePlan(root);
   plan.read("dependency.txt"); plan.write("owned/a.txt", "new a"); plan.write("owned/b.txt", "new b");

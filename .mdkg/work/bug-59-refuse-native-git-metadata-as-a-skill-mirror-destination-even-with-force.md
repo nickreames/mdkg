@@ -2,12 +2,12 @@
 id: bug-59
 type: bug
 title: Refuse native Git metadata as a skill mirror destination even with force
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, ownership]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-59-baseline.json, .mdkg/artifacts/goal-86/bug-59-full-verification.json, .mdkg/artifacts/goal-86/bug-59-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -71,4 +71,33 @@ Owned source and directly required regression scope:
 
 ## Current State
 
-Planned / backlog. No fix or runtime/platform clearance claimed.
+2026-09-21 local remedy verified. Shared admission protects native gitdir,
+common-dir, redirected index/hooks/object stores and bounded chained alternate
+stores before skill creation/sync/scaffolding, initialization or upgrade writes.
+Nested repositories cannot be pruned through stale managed slugs. Force and
+empty-slug preflight do not bypass admission. Reviewed historical upgrade
+journals are rechecked against current Git topology before replay or rollback.
+
+The baseline reproduced20 successful unsafe operations and4 late generic
+path/gitfile refusals;5 ordinary controls passed. Final47 focused cases,
+2040 full tests and285 exact installed cases pass on macOS arm64 across
+Node24.15.0/24.18.0/26.0.0. Existing staging-sentinel tests now use actual Git
+repositories; their assertions are preserved. Actual linked-worktree and local
+submodule fixtures pass. Distinct case-sensitive alternate-store traversal is
+still a Linux qualification case, not a claimed macOS proof.
+
+One independent read-only candidate reviewer identified alternate-store,
+discovery-environment, inventory-budget and path-decoding gaps, corrected and
+covered before final qualification. The superseded pre-BOM-correction full run
+was stopped and is not a pass. Final source/input hashes remained unchanged.
+This is an adjacent custody blocker, not another retained security finding.
+No blocked context was accessed or recovered. Broader filesystem architecture,
+Linux, Test488/Task828, coverage ladder and final seal remain open.
+
+Evidence: bug-59-baseline.json, bug-59-full-verification.json and
+bug-59-installed-verification.json under .mdkg/artifacts/goal-86/.
+Intermediate tarball SHA256:
+fc64644615b253f77a5a4866b9653d1c09612ac714d920ef82eaa08bb8b07c80.
+Selected Goal73, runtime DB and Demo3 bundle hashes are preserved. SQLite index
+projection remains separate dirty custody. No remote Git, publication, provider,
+deployment, canonical migration or bundle refresh. Skill candidates:none.
