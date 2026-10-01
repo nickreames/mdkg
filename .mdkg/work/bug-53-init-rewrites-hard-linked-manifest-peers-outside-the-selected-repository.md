@@ -2,22 +2,22 @@
 id: bug-53
 type: bug
 title: Init rewrites hard-linked manifest peers outside the selected repository
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-53-baseline.json, .mdkg/artifacts/goal-86/bug-53-full-verification.json, .mdkg/artifacts/goal-86/bug-53-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, test-488, bug-46, bug-47, bug-54]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -97,5 +97,44 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-21 bounded local remedy verified against current source and retained
+finding only. No blocked context accessed, recovered or historical scan rerun.
+Goal85 remains paused; final release NOT_READY.
+
+At02da123d all six default/agent/graph-only, force/non-force CLI reproductions
+changed a synthetic external hard-linked manifest peer while exiting0. The
+prepatch regression family had six failures and one passing ordinary-init
+control. This proves the current local defect, not published0.5.2 affectedness
+or a remote delivery path; ordinary Git cloning does not transport hard links.
+
+Chosen accepted remedy: fail closed on multiply linked manifests before init's
+first write, repeat admission under the existing lock, then independently guard
+the actual writer. The internal writer now takes an explicit root/relative path,
+uses contained authority, opens without truncation, checks a regular single-link
+descriptor and correlates its device/inode with the admitted and current path
+before writing. New files use exclusive creation. Existing single-link writes
+retain their inode rather than introducing unqualified replacement metadata
+semantics. Default/agent/graph-only and --force cannot bypass the refusal.
+
+Verification: build/build:test,59 final focused and1730 full discovered tests
+pass, zero failures/skips. Full run419585ms on Node26.0.0/macOS arm64. Installed
+Node24.15.0/24.18.0/26.0.0 each pass37 cases (111 total) against tarball SHA256
+166ce48297af02aff57036686e4e343161e99aa6b48a1cf712e96afd17dae10a;
+all230 package input/installed file hashes remain unchanged. Offline local
+pack/install, lifecycle scripts disabled; not a final release seal.
+
+Controls cover unchanged complete fixture/Git inventories on early refusal,
+direct-helper hard links/symlinks/directories, links introduced before/after
+open, moved opened inodes, exclusive creation, repeated init preserving inode,
+0600 mode and owner/group, and existing v2 identity/upgrade safeguards. CLI,
+docs472examples, workflow, graph and diff checks pass; three stale-subgraph
+warnings remain intentionally.
+
+Fresh read-only investigator creation was unavailable (agent thread limit).
+The parent performed the skill's separate boundary and candidate-review fallback;
+this is explicitly not independent acceptance. Review required correlating the
+opened inode with the current path so a moved descriptor cannot target its peer.
+Task828 independent review remains mandatory. Native last-check/namespace races,
+concurrent namespace ownership and general ACL/metadata qualification remain
+Bugs46/47; this single-link admission is not a substitute for that architecture.
+Linux/macOS x86_64, final ladder and seal remain open. Next: Bug54 numeric aliases.

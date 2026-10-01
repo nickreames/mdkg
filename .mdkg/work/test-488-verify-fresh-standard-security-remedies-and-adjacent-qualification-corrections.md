@@ -22,6 +22,16 @@ updated: 2026-09-21
 ---
 # Overview
 
+2026-09-21 Bug53 intermediate local evidence:1730 full,59 focused and111 installed
+cases pass. Pre-arranged hard-linked manifests refuse before init effects, with
+independent writer admission and descriptor/path correlation. Ordinary inode,
+mode, owner/group and Git-index controls pass. Receipts under
+.mdkg/artifacts/goal-86/: bug-53-baseline.json, bug-53-full-verification.json,
+bug-53-installed-verification.json. Fresh delegation hit the agent limit; parent
+separate review fallback is recorded, not independent security acceptance.
+Native race/ACL, Linux, final-artifact and Task828 gates stay open. No blocked
+context recovered or historical scan rerun; this aggregate test remains open.
+
 2026-09-21 Bug52 intermediate local evidence:1718 full,82 independent focused,
 and219 installed cases pass; three exact Node versions on macOS arm64 use one
 hash-bound tarball. Complete plan binding rejects operation/dependency/payload

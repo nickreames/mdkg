@@ -1,0 +1,64 @@
+{
+  "kind": "bug53-current-source-prepatch",
+  "head": "02da123d88cf2d490998400f7b7fed08acc5ca67",
+  "runtime": "v26.0.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "source_hashes": {
+    "src/commands/init.ts": "361b4271aa29f83f84202af84b3c6c1a431580f875269f964a91408ed5a6db38",
+    "src/commands/init_manifest.ts": "e19340ba71a1b7e0dd4d14c9797d9d69f0be9e3b2053bc503c52b0b66abbad40"
+  },
+  "cases": [
+    {
+      "flags": [],
+      "force": false,
+      "exit": 0,
+      "external_peer_changed": true,
+      "same_inode": true
+    },
+    {
+      "flags": [],
+      "force": true,
+      "exit": 0,
+      "external_peer_changed": true,
+      "same_inode": true
+    },
+    {
+      "flags": [
+        "--agent"
+      ],
+      "force": false,
+      "exit": 0,
+      "external_peer_changed": true,
+      "same_inode": true
+    },
+    {
+      "flags": [
+        "--agent"
+      ],
+      "force": true,
+      "exit": 0,
+      "external_peer_changed": true,
+      "same_inode": true
+    },
+    {
+      "flags": [
+        "--graph-only"
+      ],
+      "force": false,
+      "exit": 0,
+      "external_peer_changed": true,
+      "same_inode": true
+    },
+    {
+      "flags": [
+        "--graph-only"
+      ],
+      "force": true,
+      "exit": 0,
+      "external_peer_changed": true,
+      "same_inode": true
+    }
+  ],
+  "scope": "Synthetic same-filesystem hard links and current CLI only; no blocked-context access, historical scan rerun or published-version claim."
+}
