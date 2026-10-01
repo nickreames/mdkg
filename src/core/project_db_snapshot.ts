@@ -4,6 +4,9 @@ import path from "path";
 import { Config } from "./config";
 import {
   atomicReplaceContainedFile,
+  ensureContainedDirectory,
+  forEachContainedFileChunk,
+  readContainedFile,
   withContainedPathSink,
 } from "./filesystem_authority";
 import { resolveConfiguredProjectDbLayout } from "./project_db";
@@ -27,7 +30,7 @@ type DatabaseSyncType = {
   close(): void;
 };
 
-type DatabaseCtor = new (filename: string) => DatabaseSyncType;
+type DatabaseCtor = new (filename: string, options?: { readOnly?: boolean }) => DatabaseSyncType;
 
 export type ProjectDbSnapshotMigration = {
   migration_key: string;
@@ -164,8 +167,45 @@ function sha256Buffer(data: string | Buffer): string {
   return `sha256:${crypto.createHash("sha256").update(data).digest("hex")}`;
 }
 
-function sha256File(filePath: string): string {
-  return `sha256:${crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex")}`;
+function inputPath(root: string, filePath: string) {
+  return { root, relativePath: path.relative(root, filePath), pathSyntax: "native" as const };
+}
+
+function admitInput(root: string, filePath: string, allowMissing = false): boolean {
+  return withContainedPathSink({ ...inputPath(root, filePath), operation: "read" }, ({ absolutePath }) => {
+    let stat: fs.Stats;
+    try { stat = fs.lstatSync(absolutePath); }
+    catch (error) { if (allowMissing && (error as NodeJS.ErrnoException).code === "ENOENT") return false; throw error; }
+    if (!stat.isFile()) throw new ValidationError(`${rel(root, filePath)} must be a regular file`);
+    return true;
+  });
+}
+
+function admitDatabase(root: string, filePath: string, allowMissing = false): boolean {
+  const present = admitInput(root, filePath, allowMissing);
+  // SQLite consumes sidecars implicitly; visible links/special files must not
+  // bypass the selected database's repository-only read authority.
+  for (const suffix of ["-wal", "-shm", "-journal"]) admitInput(root, filePath + suffix, true);
+  return present;
+}
+
+function hashFile(root: string, filePath: string): { hash: string; size: number } {
+  const hash = crypto.createHash("sha256");
+  // Database size is not a Markdown limit. Stream in fixed-size chunks without
+  // retaining prior bytes; the generic reader bounds actual bytes and checks its
+  // opened descriptor. Native SQLite pathname races remain the separate Bug47.
+  const size = forEachContainedFileChunk({ ...inputPath(root, filePath), maxBytes: Number.MAX_SAFE_INTEGER }, chunk => hash.update(chunk));
+  return { hash: `sha256:${hash.digest("hex")}`, size };
+}
+
+function openSnapshotDatabase(root: string, filePath: string, readOnly = true): DatabaseSyncType {
+  admitDatabase(root, filePath);
+  return new (loadDatabaseCtor())(filePath, { readOnly });
+}
+
+function queueSummary(root: string, filePath: string): ProjectQueueSnapshotSummary {
+  admitDatabase(root, filePath);
+  return readProjectQueueSnapshotSummary(filePath, { readOnly: true });
 }
 
 function quoteIdentifier(value: string): string {
@@ -217,9 +257,8 @@ function assertSqliteIntegrity(db: DatabaseSyncType, label: string): void {
 }
 
 function sqliteIntegrityCheck(root: string, filePath: string): ProjectDbSnapshotCheck {
-  const DatabaseSync = loadDatabaseCtor();
   try {
-    const db = new DatabaseSync(filePath);
+    const db = openSnapshotDatabase(root, filePath);
     try {
       assertSqliteIntegrity(db, "snapshot");
       return {
@@ -248,12 +287,11 @@ function sqliteIntegrityCheck(root: string, filePath: string): ProjectDbSnapshot
   }
 }
 
-function collectSnapshotMetadata(filePath: string, migrationTable: string): {
+function collectSnapshotMetadata(root: string, filePath: string, migrationTable: string): {
   table_counts: Array<{ name: string; row_count: number }>;
   migrations: ProjectDbSnapshotMigration[];
 } {
-  const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(filePath);
+  const db = openSnapshotDatabase(root, filePath);
   try {
     assertSqliteIntegrity(db, "snapshot");
     return {
@@ -265,10 +303,10 @@ function collectSnapshotMetadata(filePath: string, migrationTable: string): {
   }
 }
 
-function readManifest(filePath: string): ProjectDbSnapshotManifest {
+function readManifest(root: string, filePath: string, maxBytes: number): ProjectDbSnapshotManifest {
   let parsed: unknown;
   try {
-    parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    parsed = JSON.parse(readContainedFile({ ...inputPath(root, filePath), maxBytes }));
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     throw new ValidationError(`failed to read snapshot manifest: ${message}`);
@@ -304,7 +342,8 @@ function buildManifest(
   queueSummary: ProjectQueueSnapshotSummary
 ): ProjectDbSnapshotManifest {
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
-  const metadata = collectSnapshotMetadata(snapshotFile, config.db.migration_table);
+  const metadata = collectSnapshotMetadata(root, snapshotFile, config.db.migration_table);
+  const content = hashFile(root, snapshotFile);
   return {
     manifest_version: 1,
     tool: "mdkg",
@@ -316,8 +355,8 @@ function buildManifest(
     runtime_path: rel(root, layout.runtimeFile),
     snapshot_path: rel(root, layout.stateFile),
     source_runtime_sha256: runtimeHash,
-    snapshot_sha256: sha256File(snapshotFile),
-    byte_size: fs.statSync(snapshotFile).size,
+    snapshot_sha256: content.hash,
+    byte_size: content.size,
     table_counts: metadata.table_counts,
     migrations: metadata.migrations,
     queue_policy: queuePolicy,
@@ -348,33 +387,33 @@ function assertQueueSnapshotPolicy(policy: ProjectDbSnapshotQueuePolicy, summary
   throw new ValidationError(`unsupported queue snapshot policy: ${policy}`);
 }
 
-function warningListFromVerify(root: string, config: Config): string[] {
-  return verifyProjectDb(root, config).warnings;
-}
-
 export function sealProjectDbSnapshot(
   root: string,
   config: Config,
   queuePolicy: ProjectDbSnapshotQueuePolicy = "drain"
 ): ProjectDbSnapshotSealReceipt {
   assertCompatibleWriter(root);
-  const verification = verifyProjectDb(root, config);
+  const layout = resolveConfiguredProjectDbLayout(root, config.db);
+  // Admit every existing input/output before project verification can open the
+  // runtime, or seal can checkpoint it or replace authored snapshot state.
+  const runtimePresent = admitDatabase(root, layout.runtimeFile, true);
+  const oldPresent = admitDatabase(root, layout.stateFile, true);
+  admitInput(root, layout.stateManifest, true);
+  if (!runtimePresent) throw new ValidationError("db snapshot seal requires a valid project DB; run mdkg db verify");
+  const verification = verifyProjectDb(root, config, { readOnly: true });
   if (!verification.ok) {
     throw new ValidationError(`db snapshot seal requires a valid project DB; run mdkg db verify`);
   }
 
-  const layout = resolveConfiguredProjectDbLayout(root, config.db);
-  const queueSummary = readProjectQueueSnapshotSummary(layout.runtimeFile);
-  assertQueueSnapshotPolicy(queuePolicy, queueSummary);
-  const oldHash = fs.existsSync(layout.stateFile) ? sha256File(layout.stateFile) : null;
-  fs.mkdirSync(layout.stateDir, { recursive: true });
-  const tempSnapshot = path.join(layout.stateDir, `.project.sqlite.${process.pid}-${Date.now()}.tmp`);
-  const tempManifest = path.join(layout.stateDir, `.project.manifest.${process.pid}-${Date.now()}.tmp`);
-  fs.rmSync(tempSnapshot, { force: true });
-  fs.rmSync(tempManifest, { force: true });
+  const runtimeQueues = queueSummary(root, layout.runtimeFile);
+  assertQueueSnapshotPolicy(queuePolicy, runtimeQueues);
+  const oldHash = oldPresent ? hashFile(root, layout.stateFile).hash : null;
+  ensureContainedDirectory(inputPath(root, layout.stateDir));
+  const suffix = `${process.pid}-${crypto.randomUUID()}`;
+  const tempSnapshot = path.join(layout.stateDir, `.project.sqlite.${suffix}.tmp`);
+  const tempManifest = path.join(layout.stateDir, `.project.manifest.${suffix}.tmp`);
 
-  const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(layout.runtimeFile);
+  const db = openSnapshotDatabase(root, layout.runtimeFile, false);
   try {
     db.exec("PRAGMA foreign_keys = ON;");
     assertSqliteIntegrity(db, "runtime project DB");
@@ -393,13 +432,17 @@ export function sealProjectDbSnapshot(
   }
 
   try {
-    const runtimeHash = sha256File(layout.runtimeFile);
-    const sealedQueueSummary = readProjectQueueSnapshotSummary(tempSnapshot);
+    const runtimeHash = hashFile(root, layout.runtimeFile).hash;
+    const sealedQueueSummary = queueSummary(root, tempSnapshot);
     assertQueueSnapshotPolicy(queuePolicy, sealedQueueSummary);
     const manifest = buildManifest(root, config, tempSnapshot, runtimeHash, queuePolicy, sealedQueueSummary);
-    atomicWriteFile(tempManifest, `${JSON.stringify(manifest, null, 2)}\n`);
-    fs.renameSync(tempSnapshot, layout.stateFile);
-    fs.renameSync(tempManifest, layout.stateManifest);
+    const manifestText = `${JSON.stringify(manifest, null, 2)}\n`;
+    if (Buffer.byteLength(manifestText) > config.index.limits.max_file_bytes) throw new ValidationError(`snapshot manifest exceeds byte limit: ${config.index.limits.max_file_bytes}`);
+    atomicWriteFile(tempManifest, manifestText);
+    admitDatabase(root, layout.stateFile, true);
+    admitInput(root, layout.stateManifest, true);
+    withContainedPathSink({ ...inputPath(root, layout.stateFile), operation: "replace" }, ({ absolutePath }) => fs.renameSync(tempSnapshot, absolutePath));
+    withContainedPathSink({ ...inputPath(root, layout.stateManifest), operation: "replace" }, ({ absolutePath }) => fs.renameSync(tempManifest, absolutePath));
     return {
       action: "db-snapshot-seal",
       ok: true,
@@ -413,7 +456,7 @@ export function sealProjectDbSnapshot(
       migrations: manifest.migrations,
       queue_policy: queuePolicy,
       queue_summary: sealedQueueSummary,
-      warnings: warningListFromVerify(root, config),
+      warnings: verification.warnings,
     };
   } catch (err) {
     fs.rmSync(tempSnapshot, { force: true });
@@ -429,9 +472,7 @@ function compareJson(a: unknown, b: unknown): boolean {
 function snapshotInputCheck(root: string, filePath: string, name: string, label: string): ProjectDbSnapshotCheck {
   const relativePath = rel(root, filePath);
   try {
-    // One admission observation, before manifest reads, hashing or SQLite opens.
-    // Symlink/ancestor authority is a separate containment contract.
-    const regular = fs.statSync(filePath).isFile();
+    const regular = name === "snapshot-file" ? admitDatabase(root, filePath) : admitInput(root, filePath);
     return {
       name, ok: regular, level: regular ? "ok" : "fail", path: relativePath,
       detail: regular ? `${label} exists` : `${label} is not a regular file`,
@@ -458,11 +499,13 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
 
   checks.push(snapshotInputCheck(root, layout.stateFile, "snapshot-file", "snapshot file"));
   checks.push(snapshotInputCheck(root, layout.stateManifest, "manifest-file", "snapshot manifest"));
+  try { admitDatabase(root, layout.runtimeFile, true); }
+  catch (error) { checks.push({ name: "runtime-file", ok: false, level: "fail", detail: "runtime input is not safely contained", errors: [error instanceof Error ? error.message : String(error)], warnings: [] }); }
 
   let manifest: ProjectDbSnapshotManifest | undefined;
   if (checks.every((check) => check.ok)) {
     try {
-      manifest = readManifest(layout.stateManifest);
+      manifest = readManifest(root, layout.stateManifest, config.index.limits.max_file_bytes);
       checks.push({
         name: "manifest-shape",
         ok: true,
@@ -488,8 +531,9 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
 
   if (manifest) {
     checks.push(sqliteIntegrityCheck(root, layout.stateFile));
-    const actualHash = sha256File(layout.stateFile);
-    const actualSize = fs.statSync(layout.stateFile).size;
+    const content = hashFile(root, layout.stateFile);
+    const actualHash = content.hash;
+    const actualSize = content.size;
     checks.push({
       name: "snapshot-hash",
       ok: actualHash === manifest.snapshot_sha256,
@@ -509,7 +553,7 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
       warnings: [],
     });
     try {
-      const metadata = collectSnapshotMetadata(layout.stateFile, config.db.migration_table);
+      const metadata = collectSnapshotMetadata(root, layout.stateFile, config.db.migration_table);
       const tablesMatch = compareJson(metadata.table_counts, manifest.table_counts);
       checks.push({
         name: "table-counts",
@@ -539,7 +583,10 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
         warnings: [],
       });
     }
-    if (fs.existsSync(layout.runtimeFile) && !manifest.source_runtime_sha256) {
+    let runtimePresent = false;
+    try { runtimePresent = admitDatabase(root, layout.runtimeFile, true); }
+    catch (error) { checks.push({ name: "runtime-file", ok: false, level: "fail", detail: "runtime input is not safely contained", errors: [error instanceof Error ? error.message : String(error)], warnings: [] }); }
+    if (runtimePresent && !manifest.source_runtime_sha256) {
       checks.push({
         name: "runtime-freshness",
         ok: false,
@@ -549,8 +596,8 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
         errors: ["snapshot manifest must include source_runtime_sha256 when the runtime database exists"],
         warnings: [],
       });
-    } else if (manifest.source_runtime_sha256 && fs.existsSync(layout.runtimeFile)) {
-      const runtimeHash = sha256File(layout.runtimeFile);
+    } else if (manifest.source_runtime_sha256 && runtimePresent) {
+      const runtimeHash = hashFile(root, layout.runtimeFile).hash;
       checks.push({
         name: "runtime-freshness",
         ok: true,
@@ -562,7 +609,7 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
       });
     }
     try {
-      const sealedQueueSummary = readProjectQueueSnapshotSummary(layout.stateFile);
+      const sealedQueueSummary = queueSummary(root, layout.stateFile);
       assertQueueSnapshotPolicy(manifest.queue_policy, sealedQueueSummary);
       const matchesManifest = compareJson(sealedQueueSummary, manifest.queue_summary);
       checks.push({
@@ -652,17 +699,13 @@ function canonicalValue(value: unknown): unknown {
 }
 
 function canonicalDumpForSnapshot(root: string, snapshotPath: string): string {
-  if (!fs.existsSync(snapshotPath) || fs.statSync(snapshotPath).isDirectory()) {
-    throw new ValidationError(`${rel(root, snapshotPath)} missing or not a file`);
-  }
-  const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(snapshotPath);
+  const db = openSnapshotDatabase(root, snapshotPath);
   try {
     assertSqliteIntegrity(db, "snapshot");
     const lines: string[] = [
       "# mdkg project db canonical dump v1",
       `snapshot: ${rel(root, snapshotPath)}`,
-      `snapshot_sha256: ${sha256File(snapshotPath)}`,
+      `snapshot_sha256: ${hashFile(root, snapshotPath).hash}`,
       "",
       "# Schema",
       ...schemaLines(db),

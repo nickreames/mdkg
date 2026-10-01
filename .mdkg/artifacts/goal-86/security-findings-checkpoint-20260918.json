@@ -1,5 +1,15 @@
 {
   "schema": "mdkg.goal86.security-findings-checkpoint.v1",
+  "bug51_local_update_20260921": {
+    "status": "locally verified; final independent/platform acceptance remains open",
+    "full_tests": {"pass": 1670, "fail": 0, "skipped": 0},
+    "focused_tests": 117,
+    "installed_cases": 237,
+    "git_custody_cases": 9,
+    "evidence": [".mdkg/artifacts/goal-86/bug-51-baseline.json", ".mdkg/artifacts/goal-86/bug-51-current-validation.json", ".mdkg/artifacts/goal-86/bug-51-installed-verification.json"],
+    "local_remedies": ["bug-44", "bug-45", "bug-48", "bug-49", "bug-50", "bug-51"],
+    "scope": "Current-source regressions only. No blocked context inspected, recovered or rerun. Historical fields remain historical, not instructions. Native pathname races and metadata/ACLs remain separate."
+  },
   "bug50_local_update_20260921": {
     "status": "locally verified; final independent/platform acceptance remains open",
     "full_tests": {"pass": 1664, "fail": 0, "skipped": 0},
@@ -133,7 +143,7 @@
       "path": ".mdkg/work/bug-51-snapshot-inspection-can-disclose-hashes-of-files-outside-the-repository.md",
       "title": "Snapshot inspection can disclose hashes of files outside the repository",
       "severity": "low",
-      "current_status": "backlog",
+      "current_status": "done",
       "summary": "A malicious checkout can cause snapshot verification to read an arbitrary operator-readable external file and disclose its SHA-256 and size in the verification receipt. This does not require the external file to be a valid SQLite database. Whole-file hashing also allocates memory proportional to the external target. No remote access or native SQLite write effect is asserted.",
       "candidate_id": "g86-dbwork-003"
     },

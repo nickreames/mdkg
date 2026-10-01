@@ -117,6 +117,17 @@ matrix before completion. Test487 supplies required supported-platform proof.
 
 # Notes / Follow-ups
 
+2026-09-21 Bug51 intermediate local remedy:1670 full and117 focused source tests
+pass;79 installed cases each on Node24.15.0/24.18.0/26.0.0 (237 total) macOS arm64
+and9 source-level Git-custody cases pass. Current receipts: bug-51-baseline.json,
+bug-51-current-validation.json and bug-51-installed-verification.json. Static
+links/special files/sidecars refuse before reads; bounded manifest and streamed
+DB controls preserve ordinary first/reseal, portable, stale and queue behavior.
+One independent candidate review found no concrete in-scope bypass. Native
+pathname races, metadata/ACLs, other SQLite observations, Linux, final Task828
+and artifact acceptance remain separate. This acceptance node stays incomplete.
+No blocked context or historical report recovery occurred.
+
 2026-09-21 Bug50 intermediate local remedy:1664 full and71 focused source tests
 pass, plus26 installed cases each on Node24.15.0/24.18.0/26.0.0 macOS arm64.
 Receipts: bug-50-baseline.json, bug-50-current-validation.json and

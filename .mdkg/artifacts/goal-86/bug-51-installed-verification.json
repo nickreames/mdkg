@@ -1,0 +1,1225 @@
+{
+  "kind": "bug51-installed-verification",
+  "source_head": "8c5a61133ba717ca0be0923838549fbf53dcc5d9",
+  "version": "0.6.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "final_release_seal": false,
+  "network": "offline local pack/install",
+  "lifecycle_scripts": "disabled",
+  "package": {
+    "sha256": "b734379203b4887daea7ba1a45b8a38fcd89675a294ec5b2d72bbe854fbbf681",
+    "integrity": "sha512-7H8CpIvJxEtJh1h/Ht6eTHoZjCqUdrzAO/T96PCKouPt2Iz4IU1zpuh7etAyF8mRSPsvjEHi5NsM8Fu2I2smtg==",
+    "file_hashes": {
+      "CHANGELOG.md": "cd4e3872aa67b986b6207995b67a22682fa70bf00a31fefd0409f114e349f026",
+      "CLI_COMMAND_MATRIX.md": "9a7a89474b6972ab3bdd70c610cb712a5088e4df88cb39ccf0492d083b3a6c25",
+      "CONTRIBUTING.md": "40ce333e0d2043222a4d8bbc2d010915f333e1d131683df9c5d4f2b8a9c10925",
+      "LICENSE": "6e515776bca1d21a47c7ccfb73e4b7e62cafee136d7f993ce002d366ba40550f",
+      "README.md": "eec9f5c2879d0114e71978897061180edefde83101da5be3401d5c35e47c9e98",
+      "dist/cli.js": "3a4c5f28d7723b90b8ad89008deac20b21c504811c021269a651c8da5dfd5b48",
+      "dist/command-contract.json": "48496e93fc51ad3712a8d6f8bcfb6e0dfdffc5a555095986b5bd93010d6fef2a",
+      "dist/commands/archive.js": "b08215196b132bbe212de276246eebaca6c0cf72f8244fecd9c3d5adcca72022",
+      "dist/commands/bootstrap_instructions.js": "83763255059ae282f8d50315c72d3eb0235d028f7a396ac9e0cce3f08e4e33eb",
+      "dist/commands/bundle.js": "b6d0588c515ae82dc1bfdc00a52189822b3764188fc7c12beb236675d5c47ebc",
+      "dist/commands/capability.js": "31647527ce4282712af8d62ee1bc6ea930905a78610729db912314c2d8f56ec4",
+      "dist/commands/checkpoint.js": "9a1740554be55131c7b919a0429328e564aa579fbb26aaa8749bd15ee3320834",
+      "dist/commands/db.js": "64a634ccee420e4c70b6313894653dd07351e9dccf500357a5d9ca192dfba4ae",
+      "dist/commands/doctor.js": "d866748cb96a2605344917ccbcd02c84befe24522e5d160fedfaaa52d9231ce9",
+      "dist/commands/event_support.js": "1cf974cd6d7b664e2a0d087c7b0715207b3dd5e7fb61542888baf8cbcb207782",
+      "dist/commands/event.js": "dc37ec73fd519874c750426989dc6312f69d640634f33e0aa7a20f906f702a7e",
+      "dist/commands/fix.js": "9949eeebbe8d3caf505b47e7d8b827125801c65459f203a220b5b32b39588085",
+      "dist/commands/format.js": "215eb7f1eb4320184cfb3d5ccbcb8a53dd80c97cc017aefb38c3300658c1e484",
+      "dist/commands/git.js": "8c05afb54aada4f2e8e5edeb6ca36d9b2acd2e33f83607420294b1acecb9bd5a",
+      "dist/commands/goal.js": "6e3b4f90c02230296b247dad24987eabad33256b10ef49b28739f734b4d8c3e5",
+      "dist/commands/graph_identity.js": "e82506041f0db71e0347fd72578c7b8ba5961fdc5cb43f0ef271a28f06bbd3e4",
+      "dist/commands/graph.js": "6008819b979062bbd52343a0b7ae1790eb56cc7a41d2b0071f1bd52acd6a6316",
+      "dist/commands/guide.js": "f16cc190d721abeaf4bcef24111072d63de5705f34c1700f9319789c2a59db0f",
+      "dist/commands/handoff.js": "3efbaf7f36293d0fdee11d7cb0ac77fd9921510720426802c5f064d8642b27ec",
+      "dist/commands/index.js": "526c400524c95c79526bcd27f97d4d652cba5066cd5c9e5fdd5f2ada46fdaee5",
+      "dist/commands/init_manifest.js": "41341939e40e1be53848bfab7378c3415df89eff7083dc126036be74c85b0160",
+      "dist/commands/init.js": "427c41263e643bcdeeab67e01c93589cc54654ca08362b5fff5bc715a5ab2940",
+      "dist/commands/list.js": "37fec092b98251382ac3f44a8383f929bb7358e503c82f0e6ce872d0ff5f1093",
+      "dist/commands/loop_descriptors.js": "fdb50c649c9879985e662d827ca57e92370b1a572343a5f8cb71bec6aaf89929",
+      "dist/commands/loop.js": "ffb0b3057e06a541cb50eaddcc500538cd70792e377c69fdbb79c65903e1d290",
+      "dist/commands/mcp.js": "725431908453a0f3a113d1e1bd6fed06abac64350ef88e46837108071dfbeee3",
+      "dist/commands/new.js": "d576ec116865c53c113d3584c3c8dee7ae2bef0d476ccb2ba75723c2dbbf81c2",
+      "dist/commands/next.js": "ddc65c1a2ad63ea486fa8f4e042523916601fefe63ada5299852b249a067b4a7",
+      "dist/commands/node_card.js": "a4bf8a347cbd3ce4bcf3031ccd5e40ef0022dc9ca9d5fd0ecae7a3c21e2cd7cb",
+      "dist/commands/option_contract.js": "7f71046e47ab90ab4b4e49a0281c445c4aa4c9f1f49303c8d48deea1c1b44a63",
+      "dist/commands/pack.js": "b19c88d41146738344c51cce45235ab544d3fe09135b5dbbcb1f48c3b014d7cf",
+      "dist/commands/query_output.js": "9febb0972b26b747d7587a6f8f5b23bc9a8ca8e5d271661eb0df73fe142d8f11",
+      "dist/commands/search.js": "ea5ee279df41f539abb426aa112404d4ff75c4dc66683a527bebba7fc1c29a1d",
+      "dist/commands/show.js": "7bde9a232ddce7c8ff3738b433bb458498453ed2e6f3013354fd3f5337ea3fdd",
+      "dist/commands/skill_mirror.js": "e2c4ad7b18806683050fbf84f25ff783db57761724ea88fff48d1bbd2216f203",
+      "dist/commands/skill_support.js": "0ceaa1112397241d60ab0952449c979572aa8e73a86fffa5eec25cec4643eb16",
+      "dist/commands/skill.js": "1583a802eb0f26e618f5745ca1d9335d5c5883899d241ea439ee9f6e72bed8b6",
+      "dist/commands/spec.js": "fda3af81479b5a709b61ed069a0889956cde9011c65f6f088cc733eb1dd2e8d5",
+      "dist/commands/status.js": "dfe0f81f92433b48dc9edf8ab05ac8b61a682f87ead69a154ac63953d52653cd",
+      "dist/commands/subgraph.js": "11643d79007c0a7003a7dc21d2afb4a5fd3fd3a2b8ac9c5e7b62d95a7f537e34",
+      "dist/commands/task.js": "5699473ec30aa696061d8555d33ef2e2cfb6b33e6eaff4529d21864f5ae22cd5",
+      "dist/commands/upgrade_identity.js": "476767fcd5f006da62180c0ebdc7ecbc864edb43016797e21f7f951b90d210ef",
+      "dist/commands/upgrade_projections.js": "9f74dd2f4bc23406943baf550d1d0887e469aac218120b4f3748c4acf722a97d",
+      "dist/commands/upgrade_transaction.js": "d47fee61d41efbe2a23b62a5f9d161f43295dbd82deb994c9fb9c4a17ee2a2cc",
+      "dist/commands/upgrade.js": "9e7e34127f67007f0a7dfda23c053a14e3c2fbfb14c3a20db592fc04f7176f50",
+      "dist/commands/validate.js": "d3f90668fcecd3caa76818bbc9169c1ddfa8757e64cf79ce2d3d24be3f37cf64",
+      "dist/commands/work.js": "f33f48d849abc6df19643cdf222a0f1a1d292d557b3b4faf64c5cae4e9b43b0c",
+      "dist/commands/workspace.js": "b802884b572c03dcd728b3e498b4cb699d494f44456aa2d59b841dd6e243484d",
+      "dist/core/config.js": "cb6b66b98b3d6a682cff5d1af0cece9ad5d5d06eb5fd146fba9bd7d9c373984c",
+      "dist/core/event_limits.js": "5d7df4736348cc4ba8849ec0f59f13ed967d9772fb32f2cbe64d1b9dc7520eb1",
+      "dist/core/filesystem_authority.js": "a3e26550bec29d66d47d2266a5418f981ae8f925d91c9d57bb5ccb48251ec284",
+      "dist/core/migrate.js": "8da7e197148f18edeec17b4a6cee88d95cc4b35b76ec4b24075a565169f67c2a",
+      "dist/core/paths.js": "408043572c54294d3aaaa37272f35fd0dd39e38ff286b2436f525820377bbb27",
+      "dist/core/project_db_events.js": "7546effc7644fa6e51cf845fdcfc9a48bcf9f7d613aea177dc5f00ee9e9eaf53",
+      "dist/core/project_db_materializer.js": "e75e803445dc7979b71b6012004c6287dba639063579aae5602a36d0a8460674",
+      "dist/core/project_db_migrations.js": "4853152098c5df0bc57458db7d7b5b333440c57a4ca4a1e1b13b19ac5cff459d",
+      "dist/core/project_db_queue_contract.js": "fde160eda34be9b6ab26c71dbb85c805ed4894e4356d079cdef8c2f974006ff0",
+      "dist/core/project_db_queue.js": "9c68f44913cdb92687a30dd5049a9f655cb01e6ddc385f448094a1266279a31f",
+      "dist/core/project_db_snapshot.js": "6199fcf41388de0257472f755138c31a8947bb7ce2d8afc4db1bbc884e7499c0",
+      "dist/core/project_db.js": "26c7ce672aef70d2012e0e4f02b381b204e1c746eec3cf20c92ef8aada36c67b",
+      "dist/core/public_skill_projection.js": "28373b1afe65944b2ba69c28f417825d689613408147daba0fb5da4a45415e8b",
+      "dist/core/template_path.js": "d12c3983220eca44b2fe2e8f699bb2724014938fdf5a5dcdd39ea632ddab74d5",
+      "dist/core/version.js": "15d257b02a5cf1750245fbd1db04308ed0b06741ec6c4520880a17ab9f8780b8",
+      "dist/core/workspace_path.js": "858c811ecb89c087c70e20cb2becc76483c228a3bc81a9d52b1ac10c94be878a",
+      "dist/graph/agent_file_types.js": "3132b0c514b72c9d2a225785d844ad570c9c74aad5dbc1ae0a11b728074dafcd",
+      "dist/graph/archive_file.js": "548e385ab142831f2972f6ec47dabadfc4bb19cde2c179312e0bf78cdea1debc",
+      "dist/graph/archive_integrity.js": "3335f3f18b4bcf68c1159d398a3194da4a8adfadfb8754c7eda7a55bb7358ea6",
+      "dist/graph/cache_output.js": "a4db1ff12db6aa13b0a6aa583f8b6129f6f26900036df06bba30683fd1111bd6",
+      "dist/graph/capabilities_index_cache.js": "0f874f263c6ca4a79b91a71a58016ad69f58a4f20ad096dd2623afae46508e22",
+      "dist/graph/capabilities_indexer.js": "d18599d8fea1fe6aa571039134e51cd66db6037a2546e21c819507c8ace4729a",
+      "dist/graph/edges.js": "081e238bafbaa3c15de923db06b05c4018461ee2c0bd67eb82304ee4db657792",
+      "dist/graph/events_validation.js": "8b7931ec47090f9263fb33488c2231e411ec2792cdc4331a75bcbd019c82e325",
+      "dist/graph/frontmatter.js": "5c365afbe593fe43fc98d7b490e567ceaa8ae5703f59a598647e1f671dc36c06",
+      "dist/graph/goal_next.js": "bc2af32120ec1fa9a12e7ca6bfd0efbed9ff335c02682a103a3058d2b8bd281a",
+      "dist/graph/goal_scope.js": "d9e56593d1a9ddebf3d9772c7435e6a84971264b433953eb84ed7b61e009e14e",
+      "dist/graph/identity_acceptance.js": "9e81a2d0268aff70b7d05f72c01646592e0b156d57addd162ffc3e73ba31e46f",
+      "dist/graph/identity_authoring.js": "5e1d4ead7633d01b224ec19e55a82aea998dc7f7bd166745b6d2b7b328c482e2",
+      "dist/graph/identity_history.js": "107b76e2d479514c25b9a8f70e4632a65619e3a3aadf6dbfc5cced961b323288",
+      "dist/graph/identity_legacy_lineage.js": "a8e8b6cbc313fc70674d4f5528f269cfcc561a84f1db632578d9e19d0bacb14b",
+      "dist/graph/identity_migration.js": "3c9818340c146423fc7a843155ed57fa83b14891db9d42ef43ad8dcdb1238704",
+      "dist/graph/identity_reconcile.js": "db96da43fdebd2dad4bfa2239de1cd84f4054ea700552ef9e5495e88652f1ce8",
+      "dist/graph/identity_reconciliation_plan.js": "1e2c10c2d38941e03ff488fc0ef2c56257b052d766a33a37af3efb1422152751",
+      "dist/graph/identity_refs.js": "38b396b966065d9fbf6866f9173b5076b07c974e69f624baad3b675d31a80838",
+      "dist/graph/identity_snapshot.js": "e2143a78a8e7da27fed391d40fd9233d34f55f16f130a25bca6186af790a64a5",
+      "dist/graph/identity_template.js": "d15f6a719669f3f14d20692e79b3db5777d437e6263ef69d5a0dfb0382f284cc",
+      "dist/graph/identity_transaction.js": "436ef491f9d3687ba2d0fca792ad39e96e95f06aad9e5aa2c7f60c8cdcc1ea97",
+      "dist/graph/identity_transport.js": "f266562a4de072954085ffe56f048125a313e8c2051ec3a79709452ef7c4fb4d",
+      "dist/graph/identity_validation.js": "5dbbf4efe390db5a9bc95701f81f6949d689166c4dc8ed41039dbcea17d6ad1c",
+      "dist/graph/identity.js": "c57525a54dd6bd627cfe8267c3d791528553fec33f59c1899805c72d5b16fd1b",
+      "dist/graph/index_cache.js": "724f8d3dca7f6c790cc9ac28553981c895ebe199aed66a8d02afcdc804372c23",
+      "dist/graph/indexer.js": "5608ba96ec53231bc1060c2ff068e0434a3195ac50a619dc811636bd7a35a50d",
+      "dist/graph/json_cache_fingerprint.js": "67efe7bc0628772d4ff8fdf8fb0d16022a87a312e3fe86c14a1be408cc706f9a",
+      "dist/graph/loop_bindings.js": "40046204f732acaa245334b8f2c8c36bed8f4160be77cfef7a76510b163465ff",
+      "dist/graph/node_body.js": "c1cac0619a3369d1d52a4129295cf7ea59ff059f24ddacdeefbafe5e8a84744b",
+      "dist/graph/node.js": "941a6140eb02ae82ac8684b2b10257cc69c3b51481136b6ce66945b06fe9274a",
+      "dist/graph/reindex.js": "d1c5a8818e0aac51a7cbac19c21ffe1101e99957dea2c20fa91506d30ca859ef",
+      "dist/graph/selected_goal.js": "5ca1447819f26d3bf615f7fff6497c7d08efd1fad5c17f9f13b75dd0f63d8885",
+      "dist/graph/skills_index_cache.js": "6a4029622c6878d6c6ed800464b690c5eba5d20ed0963fd6e8f9288f97e0b6cc",
+      "dist/graph/skills_indexer.js": "661e1280a87a066d9d7cb662286e55ac30fc7fc0fb22eecf83804229f5f9080e",
+      "dist/graph/sqlite_index.js": "41e806d0fa37722231ef5477ae965b2ba918ac2729894667a12675104f16b7a3",
+      "dist/graph/staleness.js": "1bb544ff6a196aa06064bae1dbba88b94f49fdab6a237688944db4592a48e5ba",
+      "dist/graph/subgraph_bundle.js": "6f95bc4e48f7dd0892822309611f8b5172f362f77e1fedfd621c5a848cb8917d",
+      "dist/graph/subgraphs.js": "220fc80ae1c4874d75aa12f56380b7707ff30443b264fec7442a0ef92252ea2a",
+      "dist/graph/template_schema.js": "2f08c0ae815d176e3b7bee48f93cfed9cc0ec9c5fcdf1c3f1cb681bc7e9b662d",
+      "dist/graph/transport_paths.js": "3f7587f879f176e447799408fa96d64eddcf227e0b46169480481e10eaa025d5",
+      "dist/graph/transport_policy.js": "79a92784f9a0fed3c0321054b361708eb5f0ebf454873f1df5b2db70e4313762",
+      "dist/graph/transport_state.js": "74f7bd8f62f238f2b0124d1d2d8103958e8d74fc0d468efb657cbe7c977b8057",
+      "dist/graph/validate_graph.js": "76c8d3ec539be62a501d7bd862b0569910d58c8bdc9e212e636eb4fe8f7c7d81",
+      "dist/graph/visibility.js": "eccbb9a048ec966877526539ea376ade329d84e017c4ea6521b9a504c07b3f8b",
+      "dist/graph/workspace_files.js": "decf04f95badf18592d5267638df57dc14f586cd958551aea55bbc07d4f43d0b",
+      "dist/graph/workspace_ownership.js": "0dc1480864a8875b35d16cc0bc664ce8ef59c9d11fa1ee928db86b7171c88986",
+      "dist/init/AGENT_START.md": "dc248fcb3e466cff15d21f6634fea99a362458ac9fc5b04a64a526acb79b61d3",
+      "dist/init/AGENTS.md": "52d9eed4c2d5e5b88952c4b3f117066738aaa90e5f2c22d190a325e1bb7e6e5f",
+      "dist/init/CLAUDE.md": "45b9ba620ca3962a8808953275c118aaa580fabee7f8bd11510c1b2ac8ff1d33",
+      "dist/init/CLI_COMMAND_MATRIX.md": "447987b1b28e924e7a44f759885ad4e7ef5ff78a21f7aa1d549b09298f89d22a",
+      "dist/init/config.json": "3d0ed0f8d65a33fe54a3855b3314a6762ad6dd1eaf6efcdce3e551a493433dc3",
+      "dist/init/core/COLLABORATION.md": "f047064bd3b226be8b43461e740b2698226a90ad90366e04e6cb24f190065c33",
+      "dist/init/core/core.md": "af69bfda0e39acb6d2546dd21bddce0644af0ec5fbf183ea3bcb53e6a12276c0",
+      "dist/init/core/guide.md": "d61baf21254be6283bd18bd505c87bed83a27a607b76011e5d6a6d5bc1e24ca1",
+      "dist/init/core/HUMAN.md": "6d13b14e15d2e5bd32b8c7e33b241ab25d142a13ba57de67ed141e37ec28a1cf",
+      "dist/init/core/rule-1-mdkg-conventions.md": "9cf912380532de20bab0e658bfdefdce177f2ec3733b2f94196eb0cca072c31c",
+      "dist/init/core/rule-2-context-pack-rules.md": "3214954d5ed0eb8620b175a9a50b3429fa718ea17f2eb74c0ad146b627d5e8ca",
+      "dist/init/core/rule-3-cli-contract.md": "864baaf1edc8bdafb5195c7c1c9847960a18358eaffdf07a8555636f2b10610b",
+      "dist/init/core/rule-4-repo-safety-and-ignores.md": "b821c48482bd67066a0224a2ad102e027c326ff0b956454d18bfedeb14555746",
+      "dist/init/core/rule-5-release-and-versioning.md": "59b87afc83eccf34d7c324c006ba97a0a676e77379378f240d0e03aea1d936a7",
+      "dist/init/core/rule-6-templates-and-schemas.md": "7ab6849b86460c051496df97cb4070ff263711d92b34cf2e00d478b576343bb3",
+      "dist/init/core/SOUL.md": "83c337cf97fea35f848ea484794ee0d9fcc941c09621c43ba4d2d005a572a9f5",
+      "dist/init/init-manifest.json": "f5e8a7fa1fb517f28a37dfdcaf0a88506881b3d26f42a495fbb487a7e97cb1d1",
+      "dist/init/legacy/0.5.2-before-compact.json": "b350ce5ae970399145b4a395524296eb973a752d0dd8da760bfa70d9403d1c35",
+      "dist/init/legacy/v0.0.9-init-manifest.json": "196d1b45ac54f1e5161ae64131c6d22b9c30f2949d52508f0916607f94768a7a",
+      "dist/init/llms.txt": "8b00eb116ad7818dcff7d4b3d0cb1d2022129f9e4ad0b19cfe942b633a811758",
+      "dist/init/README.md": "2cb4064b12a3c3c89445ddcd56a60e04c8879cb2bbfa3e7930249863461652a9",
+      "dist/init/skills/default/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+      "dist/init/skills/default/build-pack-and-execute-task/SKILL.md": "a7642724e50b50b3f48d01286bd650610de0dfbab381ead70589d9d18aa894c0",
+      "dist/init/skills/default/pursue-mdkg-goal/SKILL.md": "bc3447989548e9c8c3fcc869bf6a542441742e1fd21bea2fefabd5f488c37e41",
+      "dist/init/skills/default/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+      "dist/init/skills/default/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+      "dist/init/skills/default/verify-close-and-checkpoint/SKILL.md": "87e56b0f920166329cc5a08285584e1fac63f3e3a52f0cf5540053caf506dfc5",
+      "dist/init/skills/public-seed-policy.json": "dff985ab4f54cb23890db11304a17fe7534157843e60fa1c221beb2d5342d9dd",
+      "dist/init/skills/SKILL.md.example": "23fe8774572beb038d75e7ab11ebc09f44f2250c2e89cec571d92d97f2d32f8a",
+      "dist/init/templates/default/archive.md": "d442523bbecd91a3c4a436043919117da00c145b368612311e98e628fe30d69b",
+      "dist/init/templates/default/bug.md": "27ed977c67030befccfc469d9db257fadc9ad5331963e259c489ba03754194cb",
+      "dist/init/templates/default/chk.md": "9e32f46665fc7cc582c4695772f5d99799f574229e740fa8892c7b9e75324de9",
+      "dist/init/templates/default/dec.md": "a2f7098fea538c153ac290f2e2edb2e755ca9dd07d17c2a127fb23959517ece9",
+      "dist/init/templates/default/dispute.md": "b1c5330fd4a1e3f03dbb4ac8907bd728e55537e053dcf43ebcbdc835ff1d0579",
+      "dist/init/templates/default/edd.md": "44828719927cfd31389b9d55b57fc4fa9bc640f3e2475baefe585e4043740f5e",
+      "dist/init/templates/default/epic.md": "0f515c046064771e3f9abaa3689634bfae3ffcf2ffe9825e8e3b7dc15c24fc50",
+      "dist/init/templates/default/feat.md": "25c04ce41d8cf519d5c3009219eeed48f76c23600c6b7999264831aa92cefc4b",
+      "dist/init/templates/default/feedback.md": "61ad7b8b717d17736ba505f814fa6e4f9ec61f7fe4ae6622359304620a99d649",
+      "dist/init/templates/default/goal.md": "8f984580aefd02b34639fa7f5d2a834662656bbf2e12f14a285f5ae31aff74ce",
+      "dist/init/templates/default/loop.md": "6e8f280c3375b9ec18e09fdb263665b2e3da45ca09b2547378fdd4c9bc015d89",
+      "dist/init/templates/default/manifest.md": "a7d758cbe2a51c4889fef39bf91d67f67895f55bcd851d1e02e52f8b2a5a6f2c",
+      "dist/init/templates/default/prd.md": "afee167576a4f881ab191867e118864b7b5629e14b9c4a61359c8fbd7ececeee",
+      "dist/init/templates/default/prop.md": "839b976a8ddc0d6abddfbe6114dfb87f64471958ae807c011538777b758aa1f0",
+      "dist/init/templates/default/proposal.md": "16bfa81b6e665064e93e0d1b625dccc518b9885f87a32a15e5ba5441c2c27ea8",
+      "dist/init/templates/default/receipt.md": "5ffbba7d9ad11193bf65830e4be5b3c04c0fe3aa81a4e473a849cd321644a383",
+      "dist/init/templates/default/rule.md": "6321abf72af61a6513d7bfaa2d3122b2aa3bd2b95b662a52d569fb2bf819fda1",
+      "dist/init/templates/default/spec.md": "2f00af67cf357f6a15a97bf175e6422d8c84d1fcf0e21977b1134e898378677e",
+      "dist/init/templates/default/spike.md": "56e881fad20bd4fda8ae53cc78ce6f30f4dacd083f4eda40f9f2ba3723d52e0e",
+      "dist/init/templates/default/task.md": "2db6e56298b22e9da9121e2ac31f2fd68e370211218c5bcaae1014a9e63b7cde",
+      "dist/init/templates/default/test.md": "59484d4cf397707d738ccbc2f788c08eab58d3d73f37591f7bde8f1533b828ce",
+      "dist/init/templates/default/work_order.md": "d42460ae996f5f309d8666019c24d7b236947bc8a64cff6d4eff61b1d6e46216",
+      "dist/init/templates/default/work.md": "1a2d22b922b37a208a1e51ad0fc51d8914dea6acb0ece4d9c6e19cdf907cd426",
+      "dist/init/templates/loops/backend-api-cli-bloat-audit.loop.md": "e61083901ae2dcd315eba81ebf9aa90b9cbe7fb3ba923dd6834feb5502fd03b3",
+      "dist/init/templates/loops/design-frontend-ux-audit.loop.md": "2da3ad70d71e52545006883452b5fc2673761ecd0875a00746a5468c25eee241",
+      "dist/init/templates/loops/duplicate-code-and-linting-audit.loop.md": "36cbe0957883b5d75ebae6705f24eeb77f616202553c428386eeba9821aeaccc",
+      "dist/init/templates/loops/security-audit.loop.md": "2c26211f628cd62474595191fdc106e051a839bf7232a2336852a1b44e1ca9ba",
+      "dist/init/templates/loops/tech-stack-best-practices-audit.loop.md": "866c6aae55fa1e1eba9b77c0c92b678c779d96eb39cf293cf51c7a244ea39e54",
+      "dist/init/templates/loops/test-ci-skill-infrastructure-audit.loop.md": "2c8b395e43129681574f5417d00311ed30568a3d86bee7639f3254af5a5caa12",
+      "dist/init/templates/loops/user-story-audit-and-recommendations.loop.md": "2bc4b328ccdfd5c0959b003956a5b8bff1ba83032514ed23025fc8f3587c323f",
+      "dist/init/templates/skills/base.SKILL.md": "08a1bd65297173a1dc9df95776775d406337a419d4bc51863593b6f28777ebdb",
+      "dist/init/templates/specs/agent.MANIFEST.md": "79fb755c95747d3f673e1333ec3f039d08f76488ba268b7fa32f457d8638ee64",
+      "dist/init/templates/specs/agent.SPEC.md": "dab10c0ed12aa10a752ee3bd61f263065644826eb950c71a9e3458673edb0ca5",
+      "dist/init/templates/specs/api.MANIFEST.md": "dd342ab2bd331b716e4b7de9f8c7cfa503703422a4cc88c21fe90ff49b11aa83",
+      "dist/init/templates/specs/api.SPEC.md": "aee86cadcca31a5a015d7e15ad7503c4aa30f2af0079ec03f857b82b3ecbae59",
+      "dist/init/templates/specs/base.MANIFEST.md": "4d5fe98b388e9183c9577438e49c375e86d58314130c668be4695f124ea8c37c",
+      "dist/init/templates/specs/base.SPEC.md": "43d8b7726560c6245b2927ed5242dc872c394f16fb3dc9c3e58076766270ff5d",
+      "dist/init/templates/specs/capability.MANIFEST.md": "0ab2c2f90c6bdcddaafd77ac6cc36422d6ee10cc935942d8f80728f5b184d5cc",
+      "dist/init/templates/specs/capability.SPEC.md": "68a91e8bbd80d1ff1972e4c31e29f26451d5a1be1d25d414170fdd670010066f",
+      "dist/init/templates/specs/integration.MANIFEST.md": "7af890bdac5515600661c241dd488c2bc270248ae6fba9afb0307d7a643022a4",
+      "dist/init/templates/specs/integration.SPEC.md": "e907ce6ebc1fa5a455e31e39036e3f8699dccb3d9e45288c8ea025eaec4ca4a2",
+      "dist/init/templates/specs/model.MANIFEST.md": "3fe36a424b6eba8542bd08d3e2728ffd7f35d2c72037f2e565757cea15da2e1f",
+      "dist/init/templates/specs/model.SPEC.md": "56061a241819dfda4d3022c075f744cf6650f5f52c58cd15b0af9d1f613af4f2",
+      "dist/init/templates/specs/project.MANIFEST.md": "e1f68306a9cff3d73e65a2fea38d52b49dd76921b5d7c7ea9710eb2c23cb6f89",
+      "dist/init/templates/specs/project.SPEC.md": "386c41852cbb46e7a6ba583a7b0c4126262a56618d8e214aaa601b68d55818b9",
+      "dist/init/templates/specs/runtime-agent.MANIFEST.md": "4ba2013362597f101fb225bc6a3369a47a0c1cac3de78220efea4e53d42f0393",
+      "dist/init/templates/specs/runtime-agent.SPEC.md": "53af7c3e172f5ed1297f340aca0be5e53302613d2e6bb9145915067d7b0004c8",
+      "dist/init/templates/specs/runtime-image.MANIFEST.md": "098debed22f274c9f408defcf330ef27c760e1a3166876f2a6e16cb28cfb4757",
+      "dist/init/templates/specs/runtime-image.SPEC.md": "37416b045cd7733d1f5e1cc629ac9b6616024d5fa52f2bdcd90110267151e593",
+      "dist/init/templates/specs/tool.MANIFEST.md": "79e45600a3b83d70e2791cbdff0138b57018a30b7e277d9017b7ba142deccb91",
+      "dist/init/templates/specs/tool.SPEC.md": "05b827bbce4f721ea25beda62850688aff3db644aec65e71b9cf76cad8e5f46f",
+      "dist/pack/budget.js": "88f0de16dd7daad8ecd5826695020c9712eeeecc948c9bbcb36fc78f26bc78fb",
+      "dist/pack/export_json.js": "18094f9344d39474901578aef3404b6d3c4d0a9aa267327d5fe1092668540b86",
+      "dist/pack/export_md.js": "dbadf2169cbd699b596042b1efa9b16d55a7bee865ef75f56ffc7317498c5cc8",
+      "dist/pack/export_toon.js": "01507269506c528de6aa67b7dad9bac9f6e8a9b5fc3bf79d2f06ffd085456b1e",
+      "dist/pack/export_xml.js": "e08f4a1dda234bc19e3342bcc782ccb919f90057799d10ec13500a41284c0808",
+      "dist/pack/metrics.js": "f0d6128320e4cdbb5b0a26f759098827d720914ff3a813ed96c3fa7ba26220f0",
+      "dist/pack/order.js": "a0dd3d41e77a60fec1318ac4b7f04e6f443a7b53f70b635429a901f692dce156",
+      "dist/pack/pack.js": "1ff7418e5dcb15b7ad495075b2bd65f650c795d1e1ad3002606105e91754b416",
+      "dist/pack/profile.js": "bfe26ba2315333aea7297d83aa885072ebdbd92793f8cdc67fa48a87bb97441a",
+      "dist/pack/stats.js": "cec231e7b0b6c9185ecbc612d4bddcae4dcdae25a3ccf89b4aabf376a837f523",
+      "dist/pack/types.js": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230",
+      "dist/pack/verbose_core.js": "324ebbe6e13ef7057772bfcf32ca33a27ecc9953186a1c5b1933c53f1d2e014f",
+      "dist/templates/builtin.js": "1078254e6d312b2e8d39925621d905014a66e9874496cc3ff0ea4699a2483f8a",
+      "dist/templates/headings.js": "19bdaa470a472b017b58addaa672df04b5151fc164fcd311d07f4b7bf6c18e25",
+      "dist/templates/limits.js": "a48c1ebbf36088bafdc941686d9d748f25eb3d05b8e6c3c7efadf5f4aa56c3f5",
+      "dist/templates/loader.js": "09ad10603f21423c2f881595b51607579a1aaded17dd6ccf5a735b38060ef677",
+      "dist/util/argparse.js": "0e7a5b66a2e7c124341e34b37cdc47d6a7f8d7a6506496fb6f4cab91c5b088c9",
+      "dist/util/atomic.js": "d442431df8ae32a52a5b9673d1f508a0d477a31479ba0a85ce103756bf098001",
+      "dist/util/date.js": "34ba6e39afacd6b255f81930878ae67af9591a131a8cf2fa5092fa2046b5de95",
+      "dist/util/errors.js": "da8fb2ca6e1721527d36c9d7d858db0cc20dfca055bff9f570a9f626b17865e2",
+      "dist/util/filter.js": "fc21630ae75b3b244770172dcc4bfe0110e70d60b9440db40e3154fb77bf6fea",
+      "dist/util/git_observation.js": "e3b598d7b356a3b29000621a6ebbb93dc3abbeb2843e5681d37d206be205c2ca",
+      "dist/util/git_remote.js": "e76f935dbd54d63e13c5626598cf78b0c07f27e269db535c24f58bf719ec83a6",
+      "dist/util/id.js": "6c975f572800aaeb6bcd86ec92bfa8e1961465f109fda128fd836690822435bb",
+      "dist/util/lock_evidence.js": "1c2338bddd9a7ec08a7788cdb60a1406b949e39a06b70aa77d5aef5e8afe1d1a",
+      "dist/util/lock.js": "1a3500874be99948b63b372dd2ac3c71e7d9230785de065b772a2b47b2ab380f",
+      "dist/util/output.js": "0eadacff0eaa5a03830621a0d73e486ff2c711822976a5b61992887c90c1fd66",
+      "dist/util/qid.js": "df546763340d6c105e83fbdce01659f1ffbc3bde1abc07afd0d414615a17b036",
+      "dist/util/refs.js": "341ab4483a2fd3a498f72c9cb5db38e4ef89cd5101f6dcbac3dc949004c6beb2",
+      "dist/util/sort.js": "5ceaca068f35aea1ae4496a88c243fcff2b05b7820469d6ccb91138dbc57031c",
+      "dist/util/writer_admission.js": "8a6aeec68a9e65a09c67de6ab37cbd9eb6259fc52946d1a41e010cf72a362d67",
+      "dist/util/zip.js": "2cd258510c7368328829bbe3833ced10e9fbd46a95d1fe4afec04a7a39d74cb2",
+      "package.json": "e7ddf8e609bcdf072292d7fa3ca7ba282c8f854974a1f3485bd32e92dd981087",
+      "scripts/postinstall.js": "a101d2452796a12da866b2f999d8a603f93432b8b1e4684938536f0ad8559391"
+    }
+  },
+  "runtimes": [
+    {
+      "version": "v24.15.0",
+      "pass": true,
+      "cases": [
+        {
+          "name": "verify rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects oversized manifest before parse",
+          "pass": true
+        },
+        {
+          "name": "status rejects oversized manifest before parse",
+          "pass": true
+        },
+        {
+          "name": "verify does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "first seal and regular reseal retain old snapshot hash",
+          "pass": true
+        },
+        {
+          "name": "portable absent-runtime snapshot verifies without writes",
+          "pass": true
+        }
+      ],
+      "fixture_cleanup": "exact owned mkdtemp removed"
+    },
+    {
+      "version": "v24.18.0",
+      "pass": true,
+      "cases": [
+        {
+          "name": "verify rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects oversized manifest before parse",
+          "pass": true
+        },
+        {
+          "name": "status rejects oversized manifest before parse",
+          "pass": true
+        },
+        {
+          "name": "verify does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "first seal and regular reseal retain old snapshot hash",
+          "pass": true
+        },
+        {
+          "name": "portable absent-runtime snapshot verifies without writes",
+          "pass": true
+        }
+      ],
+      "fixture_cleanup": "exact owned mkdtemp removed"
+    },
+    {
+      "version": "v26.0.0",
+      "pass": true,
+      "cases": [
+        {
+          "name": "verify rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "status rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects snapshot directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects manifest directory before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime external-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime internal-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime dangling-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime ancestor-link before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime fifo before effects",
+          "pass": true
+        },
+        {
+          "name": "seal rejects runtime directory before effects",
+          "pass": true
+        },
+        {
+          "name": "verify rejects oversized manifest before parse",
+          "pass": true
+        },
+        {
+          "name": "status rejects oversized manifest before parse",
+          "pass": true
+        },
+        {
+          "name": "verify does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "verify rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "status rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal does not disclose arbitrary external snapshot digest",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked snapshot-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-wal sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-shm sidecar",
+          "pass": true
+        },
+        {
+          "name": "seal rejects linked runtime-journal sidecar",
+          "pass": true
+        },
+        {
+          "name": "first seal and regular reseal retain old snapshot hash",
+          "pass": true
+        },
+        {
+          "name": "portable absent-runtime snapshot verifies without writes",
+          "pass": true
+        }
+      ],
+      "fixture_cleanup": "exact owned mkdtemp removed"
+    }
+  ],
+  "limitations": [
+    "macOS arm64 only; Linux and final platform/artifact acceptance unverified",
+    "No blocked context or historical Security workflow accessed",
+    "Native descriptor-bound SQLite race protection and metadata/ACL preservation remain separate"
+  ],
+  "pass": true,
+  "package_inputs_unchanged": true,
+  "fixture_cleanup": "owned installed fixture and intermediate tarball removed"
+}

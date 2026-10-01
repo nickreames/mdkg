@@ -10,7 +10,7 @@ type DatabaseSyncType = {
   close(): void;
 };
 
-type DatabaseCtor = new (filename: string) => DatabaseSyncType;
+type DatabaseCtor = new (filename: string, options?: { readOnly?: boolean }) => DatabaseSyncType;
 
 export type ProjectQueueStatus = "ready" | "leased" | "acked" | "dead_letter";
 export type ProjectQueueControlStatus = "active" | "paused";
@@ -259,9 +259,9 @@ function requireQueueActive(queue: ProjectQueue, action: string): void {
   }
 }
 
-function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T): T {
+function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T, options?: { readOnly?: boolean }): T {
   const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(databasePath);
+  const db = new DatabaseSync(databasePath, options ?? {});
   try {
     db.exec("PRAGMA foreign_keys = ON;");
     return fn(db);
@@ -668,7 +668,7 @@ export function listProjectQueueMessages(
   });
 }
 
-export function readProjectQueueSnapshotSummary(databasePath: string): ProjectQueueSnapshotSummary {
+export function readProjectQueueSnapshotSummary(databasePath: string, options?: { readOnly?: boolean }): ProjectQueueSnapshotSummary {
   return withDb(databasePath, (db) => {
     const rows = db
       .prepare(
@@ -719,5 +719,5 @@ export function readProjectQueueSnapshotSummary(databasePath: string): ProjectQu
       }
     }
     return summary;
-  });
+  }, options);
 }

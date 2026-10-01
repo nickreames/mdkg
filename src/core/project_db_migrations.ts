@@ -25,7 +25,7 @@ type DatabaseSyncType = {
   close(): void;
 };
 
-type DatabaseCtor = new (filename: string) => DatabaseSyncType;
+type DatabaseCtor = new (filename: string, options?: { readOnly?: boolean }) => DatabaseSyncType;
 
 type BuiltinMigration = {
   ordinal: number;
@@ -763,7 +763,7 @@ export function runProjectDbMigrations(root: string, config: Config): ProjectDbM
   };
 }
 
-export function verifyProjectDb(root: string, config: Config): ProjectDbVerifyReceipt {
+export function verifyProjectDb(root: string, config: Config, options?: { readOnly?: boolean }): ProjectDbVerifyReceipt {
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
   const checks: ProjectDbCheck[] = [];
   checks.push({
@@ -847,7 +847,7 @@ export function verifyProjectDb(root: string, config: Config): ProjectDbVerifyRe
       withContainedPathSink(
         { root, relativePath: config.db.runtime_path, operation: "read" },
         ({ absolutePath }) => {
-          const db = new DatabaseSync(absolutePath);
+          const db = new DatabaseSync(absolutePath, options ?? {});
           try {
             checks.push(integrityCheck(db));
             checks.push(migrationTableCheck(db, config));
