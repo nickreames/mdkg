@@ -1,3 +1,4 @@
+import { nextUnusedNumericAlias } from "../util/id";
 import crypto from "crypto";
 import { insideGitWorkTree, observeGit, readGitStatus } from "../util/git_observation";
 import fs from "fs";
@@ -775,21 +776,7 @@ function planRefRepairs(root: string, target: string | undefined): FixPlannerRes
   return { proposed: changes, blocked: [] };
 }
 
-function candidateDuplicateId(baseId: string, used: Set<string>): string {
-  const match = /^([a-z]+)-([0-9]+)$/.exec(baseId);
-  if (!match) {
-    throw new UsageError(`duplicate id ${baseId} cannot be repaired automatically because it is not a canonical numeric id`);
-  }
-  const prefix = match[1];
-  const start = Number.parseInt(match[2], 10) + 1;
-  for (let index = start; ; index += 1) {
-    const candidate = `${prefix}-${index}`;
-    if (!used.has(candidate)) {
-      used.add(candidate);
-      return candidate;
-    }
-  }
-}
+const candidateDuplicateId = nextUnusedNumericAlias;
 
 function gitShow(root: string, refPath: string): string | undefined {
   const result = observeGit(root, ["show", refPath], { allowedFailures: [128], maxBuffer: 16 * 1024 * 1024 });

@@ -7,11 +7,11 @@ import { Index } from "../graph/indexer";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
-import { isCanonicalId, isPortableIdRef } from "../util/id";
+import { isCanonicalId, isPortableIdRef, maxNumericAlias } from "../util/id";
 import { withMutationLock } from "../util/lock";
-import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
+import { planNumericId, reservePlannedNumericIds } from "../graph/sqlite_index";
 import { appendAutomaticEvent } from "./event_support";
-import { authorNewIdentityNode } from "../graph/identity_authoring";
+import { authorNewIdentityNode, validateProspectiveNodes } from "../graph/identity_authoring";
 import { NodeIdentity } from "../graph/identity";
 import { resolveQid } from "../util/qid";
 
@@ -84,28 +84,6 @@ function normalizeIdRef(value: string, key: string): string {
     throw new UsageError(`${key} entries must match <id> or <ws>:<id>: ${value}`);
   }
   return normalized;
-}
-
-function nextCheckpointId(index: Index, ws: string): string {
-  return `chk-${maxCheckpointId(index, ws) + 1}`;
-}
-
-function maxCheckpointId(index: Index, ws: string): number {
-  let max = 0;
-  for (const node of Object.values(index.nodes)) {
-    if (node.ws !== ws) {
-      continue;
-    }
-    const match = /^chk-(\d+)$/.exec(node.id);
-    if (!match) {
-      continue;
-    }
-    const parsed = Number.parseInt(match[1] ?? "", 10);
-    if (Number.isInteger(parsed) && parsed > max) {
-      max = parsed;
-    }
-  }
-  return max;
 }
 
 function slugifyTitle(title: string): string {
@@ -257,7 +235,7 @@ function replaceRenderedBody(content: string, body: string): string {
   return `${content.slice(0, start + marker.length)}${body}`;
 }
 
-function createCheckpointLocked(options: CheckpointNewCommandOptions): CheckpointReceipt {
+function createCheckpointLocked(options: CheckpointNewCommandOptions, preview = false): CheckpointReceipt {
   const title = options.title.trim();
   if (!title) {
     throw new UsageError("checkpoint title cannot be empty");
@@ -282,16 +260,9 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     throw new UsageError(`--priority must be between ${priorityMin} and ${priorityMax}`);
   }
 
-  const { index } = loadIndex({ root: options.root, config });
-  const id = isSqliteBackend(config)
-    ? reserveSqliteNumericId({
-        root: options.root,
-        config,
-        ws,
-        prefix: "chk",
-        currentMax: maxCheckpointId(index, ws),
-      }) ?? nextCheckpointId(index, ws)
-    : nextCheckpointId(index, ws);
+  const { index } = loadIndex({ root: options.root, config, useCache: false, persistReindex: false });
+  const allocation = { root: options.root, config, ws, prefix: "chk", currentMax: maxNumericAlias(index.nodes, ws, "chk") };
+  const id = planNumericId(allocation);
   const slug = slugifyTitle(title);
   const fileName = `${id}-${slug}.md`;
 
@@ -330,6 +301,14 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
   const authored = authorNewIdentityNode(options.root, index, ws,
     replaceRenderedBody(content, options.body ?? checkpointBody(kind)), relativeFilePath);
   const rendered = authored.content;
+  validateProspectiveNodes(options.root, config, index, ws, [{ id, path: relativeFilePath, content: rendered }]);
+  const receipt: CheckpointReceipt = {
+    workspace: ws, id, qid: `${ws}:${id}`,
+    ...(authored.identity ? { identity: authored.identity, stable_ref: authored.stable_ref } : {}),
+    path: path.relative(options.root, filePath), kind,
+  };
+  if (preview) return receipt;
+  reservePlannedNumericIds({ root: options.root, config, reservations: [{ ...allocation, id }] });
 
   try {
     writeContainedFileExclusive({ root: options.root, relativePath: relativeFilePath }, rendered);
@@ -352,14 +331,13 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     now,
   });
 
-  return {
-    workspace: ws,
-    id,
-    qid: `${ws}:${id}`,
-    ...(authored.identity ? { identity: authored.identity, stable_ref: authored.stable_ref } : {}),
-    path: path.relative(options.root, filePath),
-    kind,
-  };
+  return receipt;
+}
+
+// Composite task completion checks checkpoint admission before TASK_DONE or
+// source writes. The held checkout lock protects the later repeated plan.
+export function preflightCheckpoint(options: CheckpointNewCommandOptions): void {
+  createCheckpointLocked(options, true);
 }
 
 export function createCheckpoint(options: CheckpointNewCommandOptions): CheckpointReceipt {

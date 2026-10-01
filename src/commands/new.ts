@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { authorNewIdentityNode } from "../graph/identity_authoring";
+import { authorNewIdentityNode, validateProspectiveNodes } from "../graph/identity_authoring";
 import { loadConfig, Config } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
 import { ALLOWED_TYPES, WORK_TYPES } from "../graph/node";
@@ -11,12 +11,12 @@ import { formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
-import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
+import { isCanonicalId, isPortableId, isPortableIdRef, maxNumericAlias } from "../util/id";
 import { validatePortableOrUriRef } from "../util/refs";
 import { containedPathExists, writeContainedFileExclusive } from "../core/filesystem_authority";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { withMutationLock } from "../util/lock";
-import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
+import { planNumericId, reservePlannedNumericIds } from "../graph/sqlite_index";
 import { writeDerivedIndexes } from "../graph/reindex";
 import { appendAutomaticEvent } from "./event_support";
 import { assertNodeFormat, identityRef, newIdentityUuid, NodeIdentity, parseIdentityRef, readGraphFormat, readNodeIdentity } from "../graph/identity";
@@ -231,29 +231,6 @@ function slugifyTitle(title: string): string {
   return slug.length > maxLen ? slug.slice(0, maxLen).replace(/-+$/g, "") : slug;
 }
 
-function nextIdForPrefix(index: Record<string, { ws: string; id: string }>, ws: string, prefix: string): string {
-  return `${prefix}-${maxIdForPrefix(index, ws, prefix) + 1}`;
-}
-
-function maxIdForPrefix(index: Record<string, { ws: string; id: string }>, ws: string, prefix: string): number {
-  let max = 0;
-  const pattern = new RegExp(`^${prefix}-(\\d+)$`);
-  for (const node of Object.values(index)) {
-    if (node.ws !== ws) {
-      continue;
-    }
-    const match = pattern.exec(node.id);
-    if (!match) {
-      continue;
-    }
-    const parsed = Number.parseInt(match[1] ?? "", 10);
-    if (Number.isInteger(parsed) && parsed > max) {
-      max = parsed;
-    }
-  }
-  return max;
-}
-
 function idPrefixForType(type: string): string {
   if (type === "checkpoint") {
     return "chk";
@@ -346,8 +323,10 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   const { index } = loadIndex({
     root: options.root,
     config,
-    useCache: !noCache,
+    // Allocation must see authored files even when callers suppress persistence.
+    useCache: false,
     allowReindex: !noReindex,
+    persistReindex: false,
   });
 
   if (options.id !== undefined && !isAgentFileType(type)) {
@@ -368,17 +347,10 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   }
 
   const prefix = idPrefixForType(type);
+  const allocation = options.id === undefined ? { root: options.root, config, ws, prefix, currentMax: maxNumericAlias(index.nodes, ws, prefix) } : undefined;
   const id = options.id !== undefined
     ? normalizeAgentFileId(options.id)
-    : isSqliteBackend(config)
-      ? reserveSqliteNumericId({
-          root: options.root,
-          config,
-          ws,
-          prefix,
-          currentMax: maxIdForPrefix(index.nodes, ws, prefix),
-        }) ?? nextIdForPrefix(index.nodes, ws, prefix)
-      : nextIdForPrefix(index.nodes, ws, prefix);
+    : planNumericId(allocation!);
   if (index.nodes[`${ws}:${id}`]) {
     throw new UsageError(`node already exists: ${ws}:${id}`);
   }
@@ -566,6 +538,8 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   });
   const { content } = authorNewIdentityNode(options.root, index, ws, authoredContent, filePath);
   assertNodeFormat(graphFormat, readNodeIdentity(parseFrontmatter(content, filePath).frontmatter, filePath), filePath);
+  validateProspectiveNodes(options.root, config, index, ws, [{ id, path: relativeFilePath, content }], noReindex);
+  if (allocation) reservePlannedNumericIds({ root: options.root, config, reservations: [{ ...allocation, id }] });
 
   try {
     writeContainedFileExclusive({ root: options.root, relativePath: relativeFilePath }, content);

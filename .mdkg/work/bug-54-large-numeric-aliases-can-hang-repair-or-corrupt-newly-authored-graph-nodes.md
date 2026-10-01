@@ -2,22 +2,22 @@
 id: bug-54
 type: bug
 title: Large numeric aliases can hang repair or corrupt newly authored graph nodes
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-54-baseline.json, .mdkg/artifacts/goal-86/bug-54-full-verification.json, .mdkg/artifacts/goal-86/bug-54-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, test-488, bug-55]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -114,5 +114,56 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-21: bounded numeric-allocation remedy locally verified on macOS arm64.
+Goal85 remains paused; this is not final release or Task828 acceptance.
+
+## Implementation and compatibility
+
+- Preserve historical ID inspection syntax. New numeric authoring and allocation
+  use safe integers through 9007199254740991; unsafe inputs and exhausted
+  successors fail deterministically, including leading-zero and huge decimals.
+- Ordinary creation, checkpoint creation, loop groups and legacy duplicate
+  repair share bounded arithmetic. Current authored aliases are inspected even
+  with cache persistence disabled. Immutable identities are not regenerated.
+- SQLite planning is read-only. Exact reviewed reservations are revalidated in
+  one transaction after prospective admission; malformed/exhausted stored
+  counters refuse, and a bounded BigInt sentinel represents exhaustion.
+- Prospective node syntax, aliases, identities, paths and discovery budgets are
+  checked before reservations or files. Full relationship checks remain strict
+  for v2. Existing explicit legacy `new --no-reindex` relationship staging is
+  preserved; it cannot bypass numeric, syntax, ownership or size admission.
+- Composite task completion preflights its actual checkpoint body before task
+  source and TASK_DONE effects. Archive/work shared callers preserve their
+  separate payload admission and portable-ID behavior.
+- No canonical migration, historical renumbering, implicit Git staging or
+  history rewrite occurred. The source remains generic mdkg.
+
+## Evidence and review
+
+The initial synthetic 33-case harness on f311c0e0 had 31 failures and two passing
+controls, including a five-second duplicate-repair timeout. One fresh read-only
+candidate review identified stale-index admission, actual checkpoint-body and
+aggregate-budget gaps; those were addressed with regression coverage.
+
+The first full candidate had 1812 passes / 3 failures: two bundled-template
+fallback regressions and one existing legacy relationship-staging contract.
+Those results remain recorded as superseded, not green clearance. After the
+bounded compatibility corrections: 1816/1816 full tests, 147 final compatibility
+checks and 86 allocation regressions pass with no skips. Earlier focused
+coverage passed 220 tests. CLI/docs/workflow parity, full and changed-only graph
+validation, SQLite verification and diff checks pass. Three stale imported
+bundle warnings remain intentionally unchanged.
+
+Exact intermediate tarball SHA256:
+`7bf5c746dc35a36e6efdee7ce7d6a6a0e2fabdb36c842e112b23abbbbeb1f3e4`.
+All 230 installed files stayed unchanged; 86 cases each passed under Node
+24.15.0, 24.18.0 and 26.0.0 (258 total). Receipts bind source hashes, full test
+discovery, SHA512 integrity, file manifest and test-log hashes. This tarball is
+not a sealed release artifact. Published 0.5.2 affectedness is unassessed.
+
+No blocked Security context was accessed, historical scan artifacts recovered,
+or blocked findings rerun. These are fresh synthetic current-source checks.
+Independent final review, Linux qualification, full release ladder/coverage,
+remaining blockers and the final artifact seal remain required. Native path
+race/metadata guarantees remain separately owned by Bugs46/47. Next: Bug55's
+loop-seed containment boundary. Skill candidates: none.

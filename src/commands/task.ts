@@ -19,7 +19,7 @@ import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent, isEventLoggingEnabled } from "./event_support";
 import { bindExistingIdentityNode } from "../graph/identity_authoring";
 import { identityRef, NodeIdentity } from "../graph/identity";
-import { CheckpointReceipt, createCheckpoint, runCheckpointNewCommand } from "./checkpoint";
+import { CheckpointReceipt, createCheckpoint, preflightCheckpoint, runCheckpointNewCommand } from "./checkpoint";
 
 const MUTABLE_TASK_TYPES = new Set(["feat", "task", "bug", "test", "spike"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -500,6 +500,13 @@ function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
   );
   const nextRefs = appendUnique(toStringList(loaded.frontmatter.refs), normalizeIdList(options.addRefs, "--add-refs"));
 
+  const checkpointBody = taskCompletionCheckpointBody(loaded, nextArtifacts, options.note);
+  if (options.checkpoint) preflightCheckpoint({
+    root: options.root, title: options.checkpoint, ws: loaded.ws,
+    relates: loaded.id, scope: loaded.id, kind: options.checkpointKind,
+    status: "done", body: checkpointBody, now,
+  });
+
   loaded.frontmatter.status = ensureStatusAllowed(loaded.config, "done");
   loaded.frontmatter.links = nextLinks;
   loaded.frontmatter.artifacts = nextArtifacts;
@@ -521,7 +528,6 @@ function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
   });
 
   let checkpoint: CheckpointReceipt | undefined;
-  const checkpointBody = taskCompletionCheckpointBody(loaded, nextArtifacts, options.note);
   if (options.checkpoint && options.json) {
     checkpoint = createCheckpoint({
       root: options.root,

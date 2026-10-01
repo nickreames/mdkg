@@ -7,6 +7,64 @@ import { Index } from "./indexer";
 import { assertNodeFormat, identityRef, newIdentityUuid, readGraphFormat, readNodeIdentity } from "./identity";
 import { identityMatches, mapGraphReferenceFields, matchesWorkContractPath } from "./identity_refs";
 import { replaceGraphFrontmatter } from "./identity_migration";
+import { numericAlias, isPortableId } from "../util/id";
+import { Config } from "../core/config";
+import { containedPathExists } from "../core/filesystem_authority";
+import { ALLOWED_TYPES, parseNode } from "./node";
+import { loadTemplateSchemas } from "./template_schema";
+import { collectGraphErrors } from "./validate_graph";
+import { normalizeIndexIdentityReferences } from "./identity_refs";
+import { listWorkspaceDocFiles, readWorkspaceDocument } from "./workspace_files";
+
+function admitNewAlias(index: Index, ws: string, id: unknown): asserts id is string {
+  if (typeof id !== "string" || !isPortableId(id)) throw new UsageError("new node requires a valid alias");
+  numericAlias(id);
+  if (Object.values(index.nodes).some(node => node.ws === ws && node.id === id)) throw new UsageError(`new node alias is already in use: ${ws}:${id}`);
+}
+
+// Validate the complete virtual authoring group before reservations or writes.
+// Archive creation has its own payload admission and does not call this helper.
+export function validateProspectiveNodes(root: string, config: Config, index: Index, ws: string,
+  entries: Array<{ id: string; path: string; content: string }>, deferLegacyRelationships = false): void {
+  const candidate: Index = structuredClone(index);
+  const files = listWorkspaceDocFiles(root, config);
+  const limits = config.index.limits;
+  if (files.length + entries.length > limits.max_files) throw new UsageError("prospective graph exceeds max_files");
+  const bytes = files.reduce((sum, file) => sum + Buffer.byteLength(readWorkspaceDocument(root, file, limits.max_file_bytes)), 0);
+  if (bytes + entries.reduce((sum, entry) => sum + Buffer.byteLength(entry.content), 0) > limits.max_total_bytes) throw new UsageError("prospective graph exceeds max_total_bytes");
+  const schemas = loadTemplateSchemas(root, config, ALLOWED_TYPES);
+  const paths = new Set<string>();
+  for (const entry of entries) {
+    admitNewAlias(candidate, ws, entry.id);
+    if (paths.has(entry.path) || containedPathExists({ root, relativePath: entry.path })) throw new UsageError(`node already exists: ${entry.path}`);
+    paths.add(entry.path);
+    const workspace = config.workspaces[ws];
+    const relative = path.relative(path.resolve(root, workspace.path, workspace.mdkg_dir), path.resolve(root, entry.path));
+    if (path.dirname(relative).split(path.sep).length - 1 > limits.max_depth) throw new UsageError("prospective graph exceeds max_depth");
+    if (Buffer.byteLength(entry.content) > config.index.limits.max_file_bytes) throw new UsageError("prospective node exceeds max_file_bytes");
+    const node = parseNode(entry.content, path.resolve(root, entry.path), {
+      archiveRoot: root, workStatusEnum: config.work.status_enum,
+      priorityMin: config.work.priority_min, priorityMax: config.work.priority_max, templateSchemas: schemas,
+    });
+    if (node.id !== entry.id) throw new UsageError("rendered node alias differs from planned numeric allocation");
+    assertNodeFormat(readGraphFormat(root), node.identity, entry.path);
+    if (node.identity && identityMatches(candidate.nodes, identityRef(node.identity)).length) throw new UsageError("new node cannot reuse an existing immutable identity");
+    const qid = `${ws}:${node.id}`;
+    const qualify = (ref: string) => ref.includes(":") ? ref : `${ws}:${ref}`;
+    const edges = Object.fromEntries(Object.entries(node.edges).map(([key, value]) => [key,
+      typeof value === "string" ? qualify(value) : Array.isArray(value) ? value.map(qualify) : value])) as typeof node.edges;
+    candidate.nodes[qid] = { ...node, qid, ws, path: entry.path, edges };
+  }
+  normalizeIndexIdentityReferences(candidate);
+  // Legacy --no-reindex already permits separately authored reciprocal links.
+  // It never skips numeric, identity, node-syntax, path, or discovery admission;
+  // v2 relationships remain strict regardless of cache persistence options.
+  if (deferLegacyRelationships && !index.meta.graph_format) return;
+  const options = { allowMissing: config.index.tolerant, externalWorkspaces: new Set(Object.keys(config.subgraphs)) };
+  const previous = new Set(collectGraphErrors(index, options));
+  const errors = collectGraphErrors(candidate, options).filter(error => !previous.has(error));
+  if (errors.length) throw new UsageError(`prospective graph is invalid: ${errors[0]}`);
+}
 
 export function bindAuthoredIdentityReferences(index: Index, ws: string, fm: Record<string, FrontmatterValue>, plannedBindings?: ReadonlyMap<string, string>) {
   const ownIdentity = readNodeIdentity(fm, String(fm.id));
@@ -35,6 +93,12 @@ export function bindAuthoredIdentityReferences(index: Index, ws: string, fm: Rec
 // bound. These are creation identities, never derived from branch-local aliases.
 export function bindNewIdentityGroup(root: string, index: Index, ws: string, nodes: Array<{ frontmatter: Record<string, FrontmatterValue>; path: string }>): void {
   const format = readGraphFormat(root);
+  const aliases = new Set<string>();
+  for (const node of nodes) {
+    admitNewAlias(index, ws, node.frontmatter.id);
+    if (aliases.has(node.frontmatter.id)) throw new UsageError(`new group alias is already in use: ${ws}:${node.frontmatter.id}`);
+    aliases.add(node.frontmatter.id);
+  }
   if (format.format_version === 1) return;
   const bindings = new Map<string, string>();
   for (const node of nodes) {
@@ -53,8 +117,9 @@ export function bindNewIdentityGroup(root: string, index: Index, ws: string, nod
 // structured references and preserves the authored body verbatim.
 export function authorNewIdentityNode(root: string, index: Index, ws: string, content: string, file: string) {
   const format = readGraphFormat(root);
-  if (format.format_version === 1) return { content, identity: undefined, stable_ref: undefined };
   const original = parseFrontmatter(content, file).frontmatter;
+  admitNewAlias(index, ws, original.id);
+  if (format.format_version === 1) return { content, identity: undefined, stable_ref: undefined };
   const identity = readNodeIdentity(original, file) ?? { graph_id: format.graph_id, node_id: newIdentityUuid() };
   assertNodeFormat(format, identity, file);
   if (identityMatches(index.nodes, identityRef(identity)).length > 0) throw new UsageError("new node cannot reuse an existing immutable identity");
