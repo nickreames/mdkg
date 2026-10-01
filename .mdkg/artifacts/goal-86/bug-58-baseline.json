@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-86",
+  "work": "root:bug-58",
+  "classification": "correctness blocker; not an additional retained security finding",
+  "date": "2026-09-21",
+  "source_base": "403c6bfd9b001485a08bdea63d25caaa935863c8",
+  "branch": "main",
+  "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+  "cached_ahead": 65,
+  "cached_behind": 0,
+  "remote_verified": false,
+  "owner": "mdkg-project-agent",
+  "entry_dirty": [".mdkg/index/mdkg.sqlite"],
+  "prepatch": {
+    "runtime": "v26.0.0",
+    "tests": 35,
+    "pass": 22,
+    "fail": 13,
+    "skipped": 0,
+    "log_sha256": "b544286d9eea9d0427c0b3c4cf14a760e78aadc8a204fa7389466f74930ed961",
+    "source_hashes": {"src/commands/mcp.ts": "00f298e18676a827f51be34ed038a553d5f5cfe66a201f2164ffce37446124e1"},
+    "observed": "Null and null batch members terminate stdio with exit4; malformed IDs and scalar/null params reach normal dispatch; nonfinite parsed numeric IDs serialize as null successful IDs."
+  },
+  "remedy": "Validate unknown non-null non-array request objects, version/method, valid finite IDs and structured params before notification handling or dispatch. Preserve null/string/finite numeric IDs, valid notifications, existing framing and limits.",
+  "protocol_reference": "https://www.jsonrpc.org/specification#request_object",
+  "protocol_scope": "Request envelope types and notification rules only; no new transport or protocol-version feature.",
+  "review": {
+    "candidate": "One fresh bounded read-only reviewer found no concrete malformed-wire route or compatibility regression; source inspection only, not final release Security clearance.",
+    "focused": {
+      "tests": 41,
+      "pass": 41,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 3223.0085,
+      "log_sha256": "f8704e7136483aea35452ff94bcf6d88c777b161f978ff1a9b946e0a7050aa57",
+      "scope": "35 new request/session/limit cases plus6 existing MCP tool and graph cases. Actual CLI stdio tests send a valid ping and graph read after each malformed input and compare complete fixture inventories."
+    }
+  },
+  "protected": {
+    "selected_goal_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_db_sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3_bundle_sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": {"blocked_context_accessed": false, "old_findings_recovered_or_rerun": false, "remote_git": false, "publication": false},
+  "affected_versions": "Current draft0.6.0 source at stated base; published0.5.2 affectedness unassessed.",
+  "limitations": ["macOS arm64 intermediate qualification only; Linux, final independent review, full release ladder and artifact seal remain open."]
+}

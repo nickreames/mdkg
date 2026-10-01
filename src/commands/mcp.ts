@@ -634,7 +634,7 @@ function jsonRpcResult(id: JsonRpcId, result: unknown): JsonRpcResponse {
 }
 
 function requestId(value: unknown): JsonRpcId {
-  if (typeof value === "string" || typeof value === "number" || value === null) {
+  if (typeof value === "string" || (typeof value === "number" && Number.isFinite(value)) || value === null) {
     return value;
   }
   return null;
@@ -650,9 +650,18 @@ function errorCode(err: unknown): number {
   return -32000;
 }
 
-export function handleMcpRequest(context: McpContext, raw: JsonRpcRequest): JsonRpcResponse | undefined {
+export function handleMcpRequest(context: McpContext, input: unknown): JsonRpcResponse | undefined {
+  // JSON.parse and batch members are untrusted values, not request objects.
+  // Validate before field access or dispatch so one malformed member cannot
+  // terminate the stdio session or be mistaken for a valid notification.
+  if (input === null || typeof input !== "object" || Array.isArray(input)) {
+    return jsonRpcError(null, -32600, "Invalid Request");
+  }
+  const raw = input as JsonRpcRequest;
   const id = requestId(raw.id);
-  if (raw.jsonrpc !== "2.0" || typeof raw.method !== "string") {
+  if (raw.jsonrpc !== "2.0" || typeof raw.method !== "string" ||
+      (raw.id !== undefined && raw.id !== id) ||
+      (raw.params !== undefined && (raw.params === null || typeof raw.params !== "object"))) {
     return jsonRpcError(id, -32600, "Invalid Request");
   }
   if (raw.id === undefined && raw.method !== "notifications/initialized") {
@@ -711,10 +720,10 @@ export function handleMcpMessage(context: McpContext, message: unknown): JsonRpc
       return [jsonRpcError(null, -32600, `batch item count must be between 1 and ${MAX_MCP_BATCH_ITEMS}`)];
     }
     return message
-      .map((item) => handleMcpRequest(context, item as JsonRpcRequest))
+      .map((item) => handleMcpRequest(context, item))
       .filter((item): item is JsonRpcResponse => Boolean(item));
   }
-  const response = handleMcpRequest(context, message as JsonRpcRequest);
+  const response = handleMcpRequest(context, message);
   return response ? [response] : [];
 }
 
