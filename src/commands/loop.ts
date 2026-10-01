@@ -3,9 +3,7 @@ import fs from "fs";
 import path from "path";
 import { loadConfig, Config } from "../core/config";
 import {
-  containedPathExists,
   readContainedFile,
-  withContainedTreeSink,
   writeContainedFileExclusive,
 } from "../core/filesystem_authority";
 import { formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/frontmatter";
@@ -26,6 +24,7 @@ import { toNodeDetailJson, toNodeSummaryJson, writeJson } from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
 import { bindNewIdentityGroup, validateProspectiveNodes } from "../graph/identity_authoring";
 import { identityRef, NodeIdentity, readNodeIdentity } from "../graph/identity";
+import { loadLoopSeed, loadLoopSeedCatalog } from "../templates/loop_seeds";
 
 type MaterializationMode = "default_children" | "planning_only" | "manual";
 
@@ -385,30 +384,14 @@ function seedSlugFromInput(input: string): string {
     .replace(/\.md$/, "");
 }
 
-function seedTemplatePath(root: string, config: Config, slug: string): string {
-  return path.resolve(root, config.templates.root_path, "loops", `${slug}.loop.md`);
-}
-
 function loadSeedTemplates(root: string, config: Config): LoopTemplate[] {
-  const dir = path.resolve(root, config.templates.root_path, "loops");
-  const relativeDir = relativeNodePath(root, dir);
-  if (!containedPathExists({ root, relativePath: relativeDir })) {
-    return [];
-  }
-  return withContainedTreeSink(
-    { root, relativePath: relativeDir, operation: "read" },
-    ({ absolutePath }) => fs.readdirSync(absolutePath)
-  )
-    .filter((entry) => entry.endsWith(".loop.md"))
-    .sort()
-    .map((entry) => {
-      const filePath = path.join(dir, entry);
-      const content = readContainedFile({ root, relativePath: relativeNodePath(root, filePath) });
+  return loadLoopSeedCatalog(root, config)
+    .map(({ path: relativePath, slug, content }) => {
+      const filePath = path.resolve(root, relativePath);
       const { frontmatter, body } = parseFrontmatter(content, filePath);
       if (frontmatter.type !== "loop") {
         throw new UsageError(`seed loop template must use type: loop: ${path.relative(root, filePath)}`);
       }
-      const slug = entry.replace(/\.loop\.md$/, "");
       return {
         kind: "seed" as const,
         ref: `template://loops/${slug}`,
@@ -450,10 +433,9 @@ function resolveLoopTemplate(root: string, config: Config, index: Index, raw: st
   }
 
   const slug = seedSlugFromInput(raw);
-  const filePath = seedTemplatePath(root, config, slug);
-  const relativeTemplatePath = relativeNodePath(root, filePath);
-  if (containedPathExists({ root, relativePath: relativeTemplatePath })) {
-    const content = readContainedFile({ root, relativePath: relativeTemplatePath });
+  const seed = loadLoopSeed(root, config, slug);
+  if (seed) {
+    const filePath = path.resolve(root, seed.path), content = seed.content;
     const { frontmatter, body } = parseFrontmatter(content, filePath);
     if (frontmatter.type !== "loop") {
       throw new UsageError(`seed loop template must use type: loop: ${path.relative(root, filePath)}`);

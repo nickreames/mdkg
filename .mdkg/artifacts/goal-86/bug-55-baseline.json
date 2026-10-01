@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-86",
+  "work": "root:bug-55",
+  "finding": "g86-graph-001",
+  "date": "2026-09-21",
+  "source_base": "47e2c1673a07644598c315d9020663495c04a00e",
+  "branch": "main",
+  "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+  "cached_ahead": 62,
+  "cached_behind": 0,
+  "remote_verified": false,
+  "owner": "mdkg-project-agent",
+  "entry_dirty": [
+    ".mdkg/index/mdkg.sqlite"
+  ],
+  "prepatch": {
+    "runtime": "v26.0.0",
+    "tests": 48,
+    "pass": 20,
+    "fail": 28,
+    "log_sha256": "adcd46f559ab7ffadb54492de8d88f9e5f6951a54cb656355b9cf112991c8642",
+    "source_hashes": {
+      "src/commands/new.ts": "f47b29aa4e3fd076e478ac52a38a8b067d9a02852a291d6eba7f45de5522739f",
+      "src/commands/loop.ts": "da2c1e7c3bc82050f328910935f22f67bb522f6e9238a96db5e900145bbadb2b"
+    },
+    "harness": "initial 48-case synthetic CLI regression, subsequently expanded with external-open traps and shared-loader coverage",
+    "observed": "External seed titles disclosed; FIFO and linked-FIFO reads timed out; malformed or non-file seed failures left authored/cache changes. Ancestor-link controls and 16 legitimate creation controls passed."
+  },
+  "review": {
+    "prepatch": "fresh read-only boundary investigator plus independent parent source tracing",
+    "candidate": "fresh read-only bypass/regression reviewer; no concrete findings in bounded candidate; source-only, not Task828 final acceptance"
+  },
+  "protected": {
+    "selected_goal_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_db_sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3_bundle_sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": {
+    "blocked_context_accessed": false,
+    "old_findings_recovered_or_rerun": false,
+    "remote_actions": false,
+    "publication": false
+  },
+  "affected_versions": "Reproduced in current draft 0.6.0 source at the stated base; published 0.5.2 affectedness remains unassessed."
+}
