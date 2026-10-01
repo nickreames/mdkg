@@ -265,7 +265,7 @@ test("v2 upgrades resume or recover after each interruption with exact identitie
   }
 });
 
-test("legacy v2 journals cannot resume unbound plans but valid original identities remain recoverable", () => {
+test("legacy journals cannot resume or recover even with valid original v2 identities", () => {
   for (const corruptOriginal of [false, true]) {
     const { root, seed, receipt, relative } = interrupted();
     const p = path.join(root, ".mdkg/state/upgrade-journal.json"), journal = JSON.parse(fs.readFileSync(p, "utf8"));
@@ -280,15 +280,9 @@ test("legacy v2 journals cannot resume unbound plans but valid original identiti
     assert.throws(() => quiet(() => runUpgradeCommand({ root, seedRoot: seed, resume: true,
       planHash: receipt.plan_hash })), /unbound|dependenc|identity|graph_id/);
     assert.deepEqual(snapshot(root), before);
-    if (corruptOriginal) {
-      assert.throws(() => quiet(() => runUpgradeCommand({ root, seedRoot: seed, recover: true,
-        planHash: receipt.plan_hash })), /identity|graph_id/);
-      assert.deepEqual(snapshot(root), before);
-    } else {
-      quiet(() => runUpgradeCommand({ root, seedRoot: seed, recover: true, planHash: receipt.plan_hash }));
-      assert.equal(fs.readFileSync(path.join(root, relative), "base64"), op.before);
-      validate(root);
-    }
+    assert.throws(() => quiet(() => runUpgradeCommand({ root, seedRoot: seed, recover: true,
+      planHash: receipt.plan_hash })), /unbound legacy/);
+    assert.deepEqual(snapshot(root), before);
   }
 });
 
@@ -302,10 +296,13 @@ test("recovery rejects path aliases and canonical manifest or ownership changes"
     journal.operations = [{path: alias ? target.replace(/\//g, "\\") : target, before: Buffer.from(JSON.stringify(replacement)).toString("base64"), after: current.toString("base64")}];
     journal.operations_hash = hash(JSON.stringify(journal.operations));
     journal.dependencies = {files:[], directories:[]}; journal.dependencies_hash = hash(JSON.stringify(journal.dependencies));
+    // Even an explicitly approved payload cannot override independent graph,
+    // ownership, or path guards. Binding tamper tests live in upgrade_approval.
+    bindJournal(journal);
     writeFile(p, JSON.stringify(journal));
     const before = snapshot(root);
     assert.throws(() => quiet(() => runUpgradeCommand({ root, seedRoot: seed, recover: true,
-      planHash: receipt.plan_hash })), /canonical|path|journal operation|manifest|ownership/);
+      planHash: journal.plan_hash })), /canonical|path|journal operation|manifest|ownership/);
     assert.deepEqual(snapshot(root), before);
   }
 });
@@ -318,12 +315,20 @@ test("journal validation rejects self-target and duplicate separator aliases", (
     const journal = structuredClone(original);
     journal.operations.push({path:relative, before:null, after:Buffer.from("bad").toString("base64")});
     journal.operations_hash = hash(JSON.stringify(journal.operations));
+    bindJournal(journal);
     writeFile(p, JSON.stringify(journal));
     const before = snapshot(root);
     assert.throws(() => readUpgradeJournal(root), /canonical|path|journal operation/);
     assert.deepEqual(snapshot(root), before);
   }
 });
+
+function bindJournal(journal: any): void {
+  journal.approved_plan.operations = journal.operations;
+  journal.approved_plan.dependencies = journal.dependencies;
+  journal.plan_hash = hash(JSON.stringify(journal.approved_plan, (_key, value) => value && typeof value === "object" && !Array.isArray(value)
+    ? Object.fromEntries(Object.entries(value).sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)) : value));
+}
 
 test("safe non-node upgrade does not count directories as Markdown files", () => {
   const { root, seed } = fixture(), p = path.join(root, ".mdkg/config.json"), config = JSON.parse(fs.readFileSync(p,"utf8"));

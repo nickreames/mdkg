@@ -699,9 +699,6 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
     const journal = continueUpgrade(root, options.recover ? "recover" : "resume", options.planHash, initialConfig.index.lock_timeout_ms, journal => {
       const currentFormat = readGraphFormat(root);
       const recovering = options.recover || journal.state === "recovered";
-      if (currentFormat.format_version === 2 && !recovering && journal.schema_version === 1) {
-        throw new UsageError("unbound legacy upgrade journal cannot resume a v2 graph; preserve evidence and use verified original-byte recovery");
-      }
       const operations = new Map(journal.operations.map(op => [op.path, op]));
       if (operations.has(GRAPH_FORMAT_PATH)) throw new UsageError("scaffold recovery cannot modify the graph format manifest; use reviewed identity migration");
       const overlay = (side: "before" | "after") => (file: string): Buffer | null => {
@@ -715,8 +712,8 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
         throw new UsageError("scaffold recovery cannot change graph workspace ownership");
       }
       // Recovery validates the original graph, not an intentionally interrupted
-      // intermediate graph. Old journals may restore valid original v2 bytes,
-      // but cannot restore identity-free bytes into an adopted graph.
+      // intermediate graph. Plan binding is enforced by continueUpgrade; even
+      // approved operations cannot restore identity-free bytes into a v2 graph.
       assertUpgradeIdentities(root, originalConfig, currentFormat, operations.keys(), original, candidate);
     });
     return emit({ action: "upgrade", dry_run: false, version, safe_to_apply: true, summary: createSummary(),

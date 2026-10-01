@@ -22,6 +22,17 @@ updated: 2026-09-21
 ---
 # Overview
 
+2026-09-21 Bug52 intermediate local evidence:1718 full,82 independent focused,
+and219 installed cases pass; three exact Node versions on macOS arm64 use one
+hash-bound tarball. Complete plan binding rejects operation/dependency/payload
+substitution, legacy downgrade and terminal-state bypass attempts before effects.
+Normal interrupted upgrade/identity/Git-custody controls remain intact. Evidence:
+.mdkg/artifacts/goal-86/bug-52-baseline.json,
+.mdkg/artifacts/goal-86/bug-52-full-verification.json,
+.mdkg/artifacts/goal-86/bug-52-installed-verification.json.
+No blocked context accessed or historical scan rerun. This is not final artifact,
+cross-platform, Task828 or test488 acceptance; aggregate status stays open.
+
 Bind every fresh Task837 finding and adjacent qualification correction to exact
 failing-before/passing-after and final-artifact evidence. Preserve the original
 fourteen-finding count: five medium, nine low. An audit report is not remediation.

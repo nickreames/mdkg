@@ -2,22 +2,22 @@
 id: bug-52
 type: bug
 title: Recovery journal operations are not bound to the approved upgrade plan hash
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-52-baseline.json, .mdkg/artifacts/goal-86/bug-52-full-verification.json, .mdkg/artifacts/goal-86/bug-52-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, test-488, bug-53]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -100,5 +100,46 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-21 local remedy verified from current source and retained finding only.
+No blocked context accessed, recovered, or historical scan rerun. Goal85 remains
+paused; final release NOT_READY.
+
+Prepatch at67743f5 reproduced ordinary README replacement in both resume and
+recover while keeping the original approved hash and recomputing auxiliary
+operation/dependency hashes. This is synthetic local transaction-helper evidence,
+not a remote exploit or a claim about published0.5.2 affectedness.
+
+Schema3 persists the complete canonical approved plan (ordered operation bytes,
+file and directory observations, and extra preview data). Recovery compares its
+digest to the operator-retained hash and verifies effective operation/dependency
+membership before selected-path reads, locks, terminal shortcuts or writes.
+Progress is separate. Apply requires a captured fresh approval and executes its
+snapshot rather than mutable plan-map references. Legacy schema1/2 journals stay
+inspectable but automatically resume/recover on neither legacy nor v2 graphs;
+preserve evidence for explicit investigation. README/install guidance records
+the intentional refusal and distinguishes local consistency from attestation.
+
+Verification: build/build:test pass;1718/1718 full discovered tests,82 independent
+focused checks and219 installed cases pass with zero failures/skips. The installed
+matrix uses exact Node24.15.0/24.18.0/26.0.0 on macOS arm64,73 cases each. The
+intermediate tarball SHA256 is
+2e31963463aeb550272a5204a4b90cda93fa172d06f399ef1a526191fd82ade3;
+all230 package input/installed file hashes remain unchanged. Offline pack/install
+with lifecycle scripts disabled. Full source run421775ms. Normal interrupted
+upgrades, customization, graph identities, stale custody and unchanged Git staging
+remain covered; tampering, dependency removal, downgraded schemas and altered
+terminal journals refuse without filesystem changes. Independent source-only
+candidate review found no concrete in-scope bypass or new regression.
+
+CLI/docs/workflow parity, graph validation and diff checks pass. Three existing
+stale-subgraph warnings remain; no bundle refresh. An initial mistyped compiled
+test path ran no tests and was corrected, not counted as a product failure.
+
+Review limitation: the existing unfinished-journal diagnostic displays its stored
+hash; this is not trusted approval evidence. Revised guidance requires the saved
+reviewed-preview hash. Nonblocking diagnostic wording can be aligned in the
+release-critical guidance pass; no original-hash bypass was found.
+
+Linux/macOS x86_64, final independent Task828 acceptance, full release ladder and
+final artifact seal remain open. Bugs46/47 native-filesystem concerns remain
+separate. Next retained finding: Bug53 hard-linked init manifest peers.

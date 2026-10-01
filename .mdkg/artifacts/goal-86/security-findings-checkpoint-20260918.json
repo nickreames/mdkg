@@ -1,5 +1,14 @@
 {
   "schema": "mdkg.goal86.security-findings-checkpoint.v1",
+  "bug52_local_update_20260921": {
+    "status": "locally verified; final independent/platform acceptance remains open",
+    "full_tests": {"pass": 1718, "fail": 0, "skipped": 0},
+    "focused_tests": 82,
+    "installed_cases": 219,
+    "evidence": [".mdkg/artifacts/goal-86/bug-52-baseline.json", ".mdkg/artifacts/goal-86/bug-52-full-verification.json", ".mdkg/artifacts/goal-86/bug-52-installed-verification.json"],
+    "local_remedies": ["bug-44", "bug-45", "bug-48", "bug-49", "bug-50", "bug-51", "bug-52"],
+    "scope": "Complete approved-plan binding, immutable intent versus progress, and fail-closed legacy continuation. No blocked context inspected, recovered or rerun; historical fields remain historical."
+  },
   "bug51_local_update_20260921": {
     "status": "locally verified; final independent/platform acceptance remains open",
     "full_tests": {"pass": 1670, "fail": 0, "skipped": 0},
