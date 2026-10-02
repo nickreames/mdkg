@@ -7,6 +7,7 @@ priority: 1
 goal_state: paused
 goal_condition: Fresh init generates only root AGENTS.md; reviewed legacy migration preserves custom instructions; canonical content and both native plus configured additional skill mirrors pass installed local acceptance and exact-candidate prepublication gates.
 scope_refs: [task-844, task-845, task-846, test-494, task-847]
+active_node: task-844
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, verify-close-and-checkpoint]
 required_checks: [npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node dist/cli.js skill validate --json, node dist/cli.js validate --json, git diff --check]
 max_iterations: 25
@@ -46,8 +47,13 @@ owns final-byte evidence and retained qualification gaps.
 # Dependencies and Execution Authority
 
 First goal in the three-release sequence.
-Nick must review/merge this planning PR before implementation, then explicitly
-Run the scoped goal. The cloud-only git-gud waiver does not apply to execution.
+The planning PR originally required review/merge before implementation.
+Nick's 2026-10-02 sequential cloud-stack instruction supersedes that gate and
+expressly authorizes this implementation from the unmerged planning branch,
+with the narrow cloud exception to local git-gud. Only Goal88 runs in this turn;
+commit/push and one stacked draft PR are authorized on its new branch. No human
+merge or publication authority is granted. Task844's named design choice remains
+pending at chk672; no acceptance approval is invented.
 Reconcile unpublished Mac/concurrent branch changes without copying or overwrite.
 One writer per checkout; implementations proceed sequentially.
 
@@ -80,12 +86,18 @@ Nick separately approves publication and adoption; readiness grants neither.
 
 # Current State
 
-Backlog, paused, unclaimed; no active node. All future implementation tests and
-checkpoints are NOT_RUN. chk-681 records docs-only evidence.
+Paused pending the named compatibility/removal decision; task844 is claimed
+and in review. Selected-goal state remains none. Chk672 records the actual
+baseline audit/proposal, with approval pending. Feature tasks, test494 and
+chk673/chk674 remain unmet. Chk681 is historical planning evidence only.
 
 # Iteration Log
 
 - 2026-10-02: Cloud planning proposal authored from verified remote main.
+- 2026-10-02: New authorized cloud branch from verified plan head ddafe083;
+  task844 baseline audit/proposal prepared at chk672. 219 focused cases passed;
+  source-built audit found nested/case target admission gaps. Design choice
+  requested; no feature/code/version change or Goal89 continuation.
 
 # Skill Improvement Candidates
 
@@ -93,7 +105,9 @@ None implemented. Revisit only under an explicitly owned maintenance task.
 
 # Completion Evidence
 
-NOT_RUN for implementation and prepublication. Planning receipt is context only.
+Implementation/prepublication NOT_RUN; Goal88 remains NOT_READY. Actual task844
+evidence is at chk672 and docs/cloud-goal88-experiment.md. Planning passes are
+not inherited as future installed-artifact acceptance.
 
 # Required Checks
 
