@@ -70,9 +70,16 @@ test("diagnostic cache reader rejects oversized sparse files before reading thei
 });
 test("status accepts a normal contained changelog and reports a missing one honestly", t => {
   const f = fixture(t);
-  assert.equal(f.run(["status"]).value.release.changelog_path, null);
-  writeFile(path.join(f.root, "CHANGELOG.md"), "## 0.6.0\nFixture\n");
-  assert.equal(f.run(["status"]).value.release.changelog_has_version, true);
+  const missing = f.run(["status"]).value.release;
+  assert.equal(missing.changelog_path, null);
+  assert.equal(missing.changelog_has_version, false);
+  assert.match(missing.package_version, /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/);
+  writeFile(path.join(f.root, "CHANGELOG.md"), "## 0.0.0-fixture-mismatch\nFixture\n");
+  assert.equal(f.run(["status"]).value.release.changelog_has_version, false);
+  writeFile(path.join(f.root, "CHANGELOG.md"), `## ${missing.package_version}\nFixture\n`);
+  const contained = f.run(["status"]).value.release;
+  assert.equal(contained.package_version, missing.package_version);
+  assert.equal(contained.changelog_has_version, true);
 });
 
 test("fix planning refuses linked cache and selection evidence without reading or repairing it", t => {

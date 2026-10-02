@@ -1,0 +1,28 @@
+{
+  "actual_modes": {
+    "0600": 103
+  },
+  "expected": "sha256:dfa6461bf076cf003aa0afbcc06928e9214f7e3f8230cf95fafffb306b817fe8",
+  "in_memory_variants_only": [
+    {
+      "label": "all644",
+      "identity": "sha256:dfa6461bf076cf003aa0afbcc06928e9214f7e3f8230cf95fafffb306b817fe8",
+      "matches": true
+    },
+    {
+      "label": "config600",
+      "identity": "sha256:10c9bbcb3259e19d898c826255a699283f23596fb3f6765d73571e5661c97134",
+      "matches": false
+    },
+    {
+      "label": "config-and-manifest600",
+      "identity": "sha256:515a906831897286b4e09a0a32c4af9354659c774ca662d5a9f7ccd60f249259",
+      "matches": false
+    },
+    {
+      "label": "config-and-manifests600",
+      "identity": "sha256:c2c509fd21d2fc6661f73b5b53303adb9300fb7e14f4cac029609004196de70e",
+      "matches": false
+    }
+  ]
+}

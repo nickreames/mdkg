@@ -5,6 +5,15 @@ retained baseline audit. Fresh init generates AGENTS.md only; existing legacy
 instructions survive. Mirror admission is hardened. Qualification and review
 remain in progress, and Goal88 is NOT_READY.
 
+Latest checkpoint: the independent review's two stale test assumptions were
+reproduced and corrected without changing runtime source or package bytes.
+The corrected full thresholded suite passed2403/0 with1skip across185files;
+coverage92.59/84.27/97.58 exceeded unchanged89/77/96 floors. Affected45/45 and
+minimum-runtime26/26 passed. See
+[the bounded comparison](../.mdkg/artifacts/goal-88/qualification-4/COMPARISON.md)
+and [current receipts](../.mdkg/artifacts/goal-88/qualification-4/checks.json).
+Complete release/platform readiness and corrected-candidate review remain pending.
+
 | Verified input | Observation |
 | --- | --- |
 | Environment/cwd | Saved cloud environment; original /workspace/mdkg identified from https://github.com/nickreames/mdkg.git |
@@ -192,3 +201,18 @@ The parent reported a cloud disconnect notification at the save boundary.
 Fresh commands in the same executor succeeded: pwd matched the owned worktree,
 git HEAD remainedc13c7ad and Node24.19.0 responded; graph/skill validators then
 completed. No replacement executor, writer or Mac access was used.
+
+## Continued qualification and review intervention log
+
+| Event | Actual outcome |
+| --- | --- |
+| Exact hosted evidence request | Official connector obtained artifact11211594942; native signed-reference transfer failed curl56 CONNECT proxy403. No archive bytes or credentials committed; no alternate executor or denial bypass. Raw failures remain unclassified; small approved extracts are needed. |
+| Site initial setup | Three scripts failed at Astro home config before assertions. Scoped XDG_CONFIG_HOME and ASTRO_TELEMETRY_DISABLED fixed setup; HOME/global config unchanged. All9 then ran,8passed/1failed. |
+| Site baseline comparison | Pass5's forbidden `--pack-profile concise` predicate is identical on plan/candidate; offending quickstart line64 unchanged. No baseline example or assertion altered. |
+| Demo deeper diagnosis | All103cloud rows mode0600; in-memory0644 projection matches exact accepted seal. Plan/candidate rows and verifier identical. No chmod, reseal, canonical source edit or acceptance waiver. Owner proposals are retained in the comparison. |
+| Minimum Node runtime | Official24.18.0Linuxx64 archive verified with HTTPS SHASUMS256. Extracted to owned cache only. Initial prefix guard refused its legitimate top-level directory and was corrected without permitting traversal. Installed18cases/51CLIpassed, using bundlednpm11.16.0. Native default remains24.19.0/npm11.9.0. |
+| Independent review steering | Parent returned NOT_READY with two P2 test findings; no Goal89. Cloud reproduced23pass/3fail in26cases. Only cli_onboarding and diagnostic_containment tests corrected, with stronger preservation/idempotency and mismatched-version controls. |
+| Affected checks | Node24.19.0:45/45 in3716ms; pinned24.18.0:26/26 in4537ms. Build:test and CLI/docs499/0/workflow/security/static publish checks passed. |
+| Full frozen run | One unchanged complete thresholded coverage run, external15minute bound, clean owned fixtures/subreaper.2403pass/0fail/1skip across185files;548470ms, no timeout, coverage92.59/84.27/97.58 above89/77/96. All tracked/package/qualification/artifact custody checks passed;366owned descendants reaped. No broader repeat or gate weakening. |
+| Evidence durability | Raw13519V8files/3695750601bytes retained in owned saved cloud cache; compressed manifest, event, command log, summary and hashes committed. Raw cache persistence across executor loss is not guaranteed. |
+| Checkpoint | Two test files plus evidence/graph narratives; runtime/package inputs unchanged fromc13. Open NOT_READY review checkpoint; complete ladder/platform/local review pending. PR10 remains unmerged; no Goal89/merge/publication/tag/deploy. |

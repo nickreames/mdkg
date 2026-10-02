@@ -1,0 +1,8 @@
+{
+  "kind": "external-raw-coverage-custody",
+  "directory": "/workspace/mdkg-cloud-goal88-cache/qualification-4/coverage/raw",
+  "files": 13519,
+  "bytes": 3695750601,
+  "manifest_sha256": "a87d26868c3fa1f9dda344827d813577ded0a5d359c3b56492544029bb7df75f",
+  "durability": "Raw V8 files retained only in this saved cloud execution cache, not uploaded in PR or guaranteed across executor loss. Compressed manifest hashes, structured coverage event, summary and command log are committed. No publication-ready sealed artifact claim."
+}
