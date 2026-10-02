@@ -8,6 +8,18 @@ CHANGELOG.md
 
 This page gives a product-level summary of the public-alpha release line. Use the root changelog for exact dates and patch-level details.
 
+The earlier `0.6.0` line introduced compact bootstrap and branch-safe project memory.
+
+## `0.6.1` candidate
+
+Draft, unpublished and awaiting complete qualification and local owner review.
+Fresh initialization generates only root AGENTS.md, with canonical guidance
+under `.mdkg`. Existing legacy instructions are preserved; both native skill
+mirrors and configured extras remain supported. Unsafe overlapping, nested or
+case-alias mirror destinations refuse before effects. Legacy retirement awaits
+a separately reviewed migration. These notes describe candidate behavior and
+do not authorize publication or professional adoption.
+
 Recent release cards:
 
 - `0.5.2` latest public alpha, 2026-07-15: strict generic Git source

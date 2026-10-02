@@ -2,10 +2,10 @@
 id: test-494
 type: test
 title: Qualify minimal init behavior with synthetic installed fixtures
-status: backlog
+status: progress
 priority: 1
 parent: goal-88
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -63,8 +63,11 @@ Linux portable qualification; missing proof means NOT_READY.
 
 # Current State
 
-NOT_RUN. This documentation PR creates test requirements, not executable
-feature tests or a passing implementation receipt.
+Progress. Fifteen new Goal88 behavior cases passed in the first focused run.
+Baseline219 cases are retained independently. The first candidate234 run had
+two stale diagnostic assertions, corrected and rechecked in shared callers.
+Installed artifact and final broad qualification are in progress. No complete
+acceptance or required platform proof is claimed.
 
 # Target / Scope
 

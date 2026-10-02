@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "release_id": "mdkg-v0.6.0-branch-safe-project-memory",
-  "target_version": "0.6.0",
+  "release_id": "mdkg-v0.6.1-minimal-init",
+  "target_version": "0.6.1",
   "state": "draft",
   "qualifier": "Pre-v1 public alpha"
 }

@@ -2,10 +2,10 @@
 id: task-847
 type: task
 title: Prepare exact-candidate minimal init prepublication evidence
-status: backlog
+status: progress
 priority: 1
 parent: goal-88
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -40,8 +40,10 @@ Stop before npm publication, tags, deploy or adoption; Nick's approval is separa
 # Implementation Notes
 
 Owned by goal-88; follow edd-83. Depends on chk-673.
-This record is a future task, not execution authorization in this PR. Resolve
-the design decisions at the named design checkpoint before changing behavior.
+Nick expressly authorized the sequential cloud implementation before PR10 merge.
+The follow-up asks continued Goal88 work. Only the preservation-first slice is
+implemented: no new legacy retirement, compatibility expiry or approval is inferred.
+The named design checkpoint remains for review of any removal policy.
 
 # Acceptance Criteria
 
@@ -53,7 +55,10 @@ gates apply. No unrelated project/graph writes or publication authority.
 
 # Current State
 
-Backlog, unclaimed. Implementation and acceptance: NOT_RUN.
+Progress, preparation only. Source/lock/release metadata target unpublished0.6.1.
+A frozen candidate will receive bounded full/package checks with exact retained
+artifact custody. Chk673 is not approved or complete. This does not claim
+prepublication readiness, local platform acceptance or publication authority.
 
 # Files Affected
 

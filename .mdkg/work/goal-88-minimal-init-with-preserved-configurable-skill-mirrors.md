@@ -7,7 +7,7 @@ priority: 1
 goal_state: paused
 goal_condition: Fresh init generates only root AGENTS.md; reviewed legacy migration preserves custom instructions; canonical content and both native plus configured additional skill mirrors pass installed local acceptance and exact-candidate prepublication gates.
 scope_refs: [task-844, task-845, task-846, test-494, task-847]
-active_node: task-844
+active_node: test-494
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, verify-close-and-checkpoint]
 required_checks: [npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node dist/cli.js skill validate --json, node dist/cli.js validate --json, git diff --check]
 max_iterations: 25
@@ -35,8 +35,8 @@ Increment goal-81 and goal-41; do not redo delivered compact startup or configur
 # End Condition
 
 Fresh init generates only root AGENTS.md; reviewed legacy migration preserves custom instructions; canonical content and both native plus configured additional skill mirrors pass installed local acceptance and exact-candidate prepublication gates. Planning metadata target: 0.6.1, provisional until rechecked.
-The complete contract and decisions are in edd-83; source version stays
-0.6.0 in this PR. This goal stops at a readiness decision, before publication.
+The complete contract and decisions are in edd-83; this implementation targets
+unpublished0.6.1. This goal stops at a readiness decision, before publication.
 
 # Acceptance Criteria
 
@@ -59,7 +59,7 @@ One writer per checkout; implementations proceed sequentially.
 
 # Non-Goals
 
-No implementation in this PR, other release-goal execution, merge queue/permanent
+No other release-goal execution, merge queue/permanent
 ID integration, implicit federation, company data, graph migration, bundle refresh,
 history rewrite, publication/tag/deploy, production/credential changes or
 professional adoption. Later execution must explicitly scope any needed Git actions.
@@ -86,10 +86,11 @@ Nick separately approves publication and adoption; readiness grants neither.
 
 # Current State
 
-Paused pending the named compatibility/removal decision; task844 is claimed
-and in review. Selected-goal state remains none. Chk672 records the actual
-baseline audit/proposal, with approval pending. Feature tasks, test494 and
-chk673/chk674 remain unmet. Chk681 is historical planning evidence only.
+Paused for independent review and qualification. Task844 is in review;
+task845/846/test494/task847 are progress. Selected-goal state remains none.
+Fresh-init and mirror changes are implemented with all existing legacy
+instructions preserved. No removal policy is inferred. Chk672 design review,
+complete test494 acceptance and chk673/chk674 remain unmet. Chk681 is historical.
 
 # Iteration Log
 
@@ -99,15 +100,21 @@ chk673/chk674 remain unmet. Chk681 is historical planning evidence only.
   source-built audit found nested/case target admission gaps. Design choice
   requested; no feature/code/version change or Goal89 continuation.
 
+- 2026-10-02: Parent requested continued authorized Goal88 work. Implemented
+  independent AGENTS-only generation and safe mirrors; preserved every existing
+  CLAUDE file and existing startup compatibility behavior. No retirement policy
+  or local/platform approval inferred. Candidate target0.6.1; checks in progress.
+
 # Skill Improvement Candidates
 
 None implemented. Revisit only under an explicitly owned maintenance task.
 
 # Completion Evidence
 
-Implementation/prepublication NOT_RUN; Goal88 remains NOT_READY. Actual task844
-evidence is at chk672 and docs/cloud-goal88-experiment.md. Planning passes are
-not inherited as future installed-artifact acceptance.
+Preservation-first implementation exists; qualification is in progress and
+Goal88 remains NOT_READY. Actual historical audit is at chk672, with current
+results in docs/cloud-goal88-experiment.md. Planning and baseline passes are not
+inherited as final installed-artifact acceptance.
 
 # Required Checks
 

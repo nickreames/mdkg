@@ -5,7 +5,7 @@ title: Lock minimal init contracts and migration decisions
 status: review
 priority: 1
 parent: goal-88
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-88/design-proposal.md, .mdkg/artifacts/goal-88/baseline-init.json, .mdkg/artifacts/goal-88/checks.json, docs/cloud-goal88-experiment.md]
@@ -51,9 +51,10 @@ gates apply. No unrelated project/graph writes or publication authority.
 # Current State
 
 Claimed root:task-844 by mdkg-project-agent; review. Source-built baseline audit
-and concrete path/migration proposal are present at chk672. Awaiting the named
-compatibility/preservation decision; not marked done. No feature implementation
-or installed0.6.1 acceptance. See attached artifacts for actual results/gaps.
+and concrete path/migration proposal are present at chk672. The removal/compatibility choice remains pending; task is not done. Following
+the request to continue Goal88, the independent fresh-init and mirror changes
+preserve all existing legacy instructions. Candidate qualification is in progress.
+See the experiment log for the explicit boundary and retained baseline.
 
 # Files Affected
 

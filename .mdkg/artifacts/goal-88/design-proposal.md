@@ -1,7 +1,7 @@
 # Goal88 migration boundary for review
 
-This is task844's source-grounded design checkpoint, not an approved migration
-or an implemented 0.6.1 candidate. Nick's new sequential cloud-stack instruction
+This retains task844's original source-grounded design checkpoint. It is not
+an approved legacy retirement policy. Nick's new sequential cloud-stack instruction
 supersedes the plan-merge and local git-gud gates for this experiment. It does
 not invent the compatibility decision that task844 reserves for Nick.
 
@@ -107,3 +107,15 @@ security acceptance and platform qualification are NOT_RUN for Goal88.
 Baseline failed full CI and unclassified failures remain separate retained
 limitations. No new unbounded full-suite rerun or gate weakening is justified
 by this audit checkpoint. Chk673/chk674 remain unmet; Goal88 is NOT_READY.
+
+## Preservation-first implementation boundary
+
+After the first audit draft, the parent relayed Nick's request to keep doing
+authorized Goal88 work while Nick sleeps, followed by owner review. No response
+to the optional retirement choice is inferred. The implementation takes only
+the independent preservation-first slice: stop fresh CLAUDE generation, never
+recreate it, preserve every existing CLAUDE byte, and harden mirror admission.
+No retirement, retained-originals feature or new compatibility expiry is added.
+Existing verified startup redirects keep their already established behavior.
+The historical baseline results above remain baseline results; candidate results
+are recorded separately. Chk672, local owner review and full readiness remain open.

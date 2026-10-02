@@ -475,7 +475,6 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
   const root = path.resolve(options.root);
   const seedRoot = options.seedRoot ? path.resolve(options.seedRoot) : DEFAULT_SEED_SUBDIR;
   const createAgents = agent;
-  const createClaude = agent;
   const createStartupDocs = agent;
   const force = Boolean(options.force);
 
@@ -483,7 +482,6 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
   const seedCore = path.join(seedRoot, "core");
   const seedTemplates = path.join(seedRoot, "templates");
   const seedAgents = path.join(seedRoot, "AGENTS.md");
-  const seedClaude = path.join(seedRoot, "CLAUDE.md");
   const seedLlms = path.join(seedRoot, "llms.txt");
   const seedAgentStart = path.join(seedRoot, "AGENT_START.md");
   const seedCliMatrix = path.join(seedRoot, "CLI_COMMAND_MATRIX.md");
@@ -506,9 +504,6 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
   }
   if (createAgents && !fs.existsSync(seedAgents)) {
     throw new NotFoundError(`init assets missing AGENTS.md at ${seedRoot}`);
-  }
-  if (createClaude && !fs.existsSync(seedClaude)) {
-    throw new NotFoundError(`init assets missing CLAUDE.md at ${seedRoot}`);
   }
   if (createStartupDocs && !fs.existsSync(seedLlms)) {
     throw new NotFoundError(`init assets missing llms.txt at ${seedRoot}`);
@@ -537,7 +532,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
   }
   const previousManifest = readInitManifest(previousManifestPath);
   if (agent) {
-    for (const relativePath of ["AGENTS.md", "CLAUDE.md"]) {
+    for (const relativePath of ["AGENTS.md"]) {
       if (containedPathExists({ root, relativePath })) instructionSection(readContainedFile({ root, relativePath }));
     }
   }
@@ -589,9 +584,6 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
     copySeedDir(root, seedTemplates, path.join(mdkgDir, "templates"), force, stats);
     if (createAgents) {
       copyInstructionFile(root, seedAgents, "AGENTS.md", stats);
-    }
-    if (createClaude) {
-      copyInstructionFile(root, seedClaude, "CLAUDE.md", stats);
     }
     if (createStartupDocs) {
       copySeedFile(root, seedLlms, path.join(mdkgDir, "llms.txt"), force, stats);
@@ -653,7 +645,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
       if (file.category !== "agent_doc") return true;
       const section = instructionSection(readContainedFile({ root, relativePath: file.path }));
       if (!section) return false;
-      const seedSection = instructionSection(appendInstructions("", fs.readFileSync(file.path === "AGENTS.md" ? seedAgents : seedClaude, "utf8")));
+      const seedSection = instructionSection(appendInstructions("", fs.readFileSync(seedAgents, "utf8")));
       if (section.text.replace(/\r\n/g, "\n") !== seedSection?.text) return false;
       file.sha256 = sha256File(path.join(root, file.path));
       file.managed_section_sha256 = instructionHash(section.text);

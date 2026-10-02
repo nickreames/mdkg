@@ -181,13 +181,13 @@ test("runInitCommand agent mode creates complete startup and wrapper docs", () =
   runInitCommand({ root, seedRoot: seed, agent: true });
 
   assert.ok(fs.existsSync(path.join(root, "AGENTS.md")));
-  assert.ok(fs.existsSync(path.join(root, "CLAUDE.md")));
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "llms.txt")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "AGENT_START.md")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "CLI_COMMAND_MATRIX.md")));
   const manifestFiles = assertManifestPathsExistAndMatch(root);
   assert.ok(manifestFiles.some((file) => file.path === "AGENTS.md" && file.category === "agent_doc"));
-  assert.ok(manifestFiles.some((file) => file.path === "CLAUDE.md" && file.category === "agent_doc"));
+  assert.equal(manifestFiles.some((file) => file.path === "CLAUDE.md"), false);
   assert.ok(manifestFiles.some((file) => file.path === ".mdkg/AGENT_START.md" && file.category === "startup_doc"));
   assert.ok(
     manifestFiles.some(
@@ -260,7 +260,7 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.ok(fs.existsSync(agentsSkillsPath));
   assert.ok(fs.existsSync(claudeSkillsPath));
   assert.ok(fs.existsSync(agentsDocPath));
-  assert.ok(fs.existsSync(claudeDocPath));
+  assert.equal(fs.existsSync(claudeDocPath), false);
   assert.ok(fs.existsSync(agentStartPath));
   assert.ok(fs.existsSync(cliMatrixPath));
   assert.ok(fs.existsSync(llmsPath));
@@ -333,7 +333,7 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   const llms = fs.readFileSync(llmsPath, "utf8");
   assert.match(llms, /AGENT_START\.md/);
 
-  for (const docsPath of [agentStartPath, agentsDocPath, claudeDocPath, cliMatrixPath, path.join(root, ".mdkg", "README.md")]) {
+  for (const docsPath of [agentStartPath, agentsDocPath, cliMatrixPath, path.join(root, ".mdkg", "README.md")]) {
     const content = fs.readFileSync(docsPath, "utf8");
     assert.doesNotMatch(content, /mdkg init --llm/);
     assert.doesNotMatch(content, /--llm --agent/);

@@ -25,8 +25,8 @@ mdkg validate
 
 Typical outputs:
 
-- In the 0.6.0 candidate, `mdkg init` creates `.mdkg/` and compact root
-  `AGENTS.md` / `CLAUDE.md` sections routing to `.mdkg/AGENT_START.md`.
+- In the 0.6.1 candidate, `mdkg init` creates `.mdkg/` and compact root
+  `AGENTS.md` instructions routing to `.mdkg/AGENT_START.md`.
 - `mdkg index` rebuilds generated search and capability caches.
 - `mdkg status` summarizes git, graph, selected goal, cache, and DB health.
 - `mdkg validate` reports graph errors and warning categories.

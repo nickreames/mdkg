@@ -77,3 +77,12 @@ unclassified causes remain unresolved; no coverage/timeouts were weakened.
 
 edd-83; docs/cloud-planning-experiment.md (historical); the actual current
 artifacts listed above and docs/cloud-goal88-experiment.md.
+
+# Continued Implementation Boundary
+
+Following the parent's request to continue while Nick sleeps, the independent
+preservation-first slice is implemented. All existing CLAUDE.md files survive
+byte-for-byte; no legacy retirement or new compatibility expiry is selected.
+Fresh generation/missing-file repair is AGENTS-only and mirror admission is
+hardened. This checkpoint remains review, with no accepted design decision or
+local owner approval claimed. Historical baseline receipts above stay unchanged.
