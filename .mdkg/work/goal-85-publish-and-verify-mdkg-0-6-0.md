@@ -2,11 +2,12 @@
 id: goal-85
 type: goal
 title: Publish and verify mdkg 0.6.0
-status: blocked
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: Under fresh explicit publication authority publish the exact qualified 0.6.0 artifact after independent blocker and identity rechecks and verify its registry and installed behavior.
 scope_refs: [task-831, task-832]
+last_active_node: task-832
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -20,14 +21,70 @@ blocked_by: []
 blocks: []
 refs: []
 context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-75, goal-83, goal-84, goal-86, dec-96, dec-100, epic-258, epic-257]
-evidence_refs: [chk-570]
+evidence_refs: [chk-570, chk-670, chk-671]
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-30
+updated: 2026-10-01
 ---
 
-# Qualified local artifact handoff - 2026-09-30
+# Published and independently verified - 2026-10-01
+
+PUBLISHED_VERIFIED: mdkg@0.6.0 is independently visible on the public npm
+registry with latest=0.6.0. Nick completed the interactive browser/two-factor
+approval after the initial agent E403; account policy was not bypassed and
+the agent did not republish. Temporary registry/CDN propagation failures
+resolved before clean-install acceptance.
+
+The downloaded canonical registry tarball exactly matches the qualified
+SHA256 b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc
+and SHA512 seal. A clean registry installation, normal postinstall, executable
+version/help, compact and graph-only initialization, customized/repeated init,
+task/pack/search/skill/lifecycle validation, read-only Git inspection and all
+six removed Git command refusals passed. There were31 command checks:25
+positive controls and six expected no-effect refusals, zero unexpected failures.
+Post-publish execution used macOS ARM64 Node24.18.0; Linux qualification is
+reused prepublication proof for unchanged inputs and identical artifact bytes,
+not a fresh Linux registry-install claim.
+
+Tasks831/832 and the final publication checkpoint bind this goal's actual
+condition. The admission and initial failed-attempt receipts remain intact.
+The reviewed qualification/source commits were pushed fast-forward to
+origin/main at31c6c9a158224ccc865bb4cd1d5fa5c651c2c37c; release evidence
+will be committed/pushed separately under the same approved Git scope.
+
+Selected Goal73, runtime database, Demo3 bundle and website draft remain
+unchanged. The derived SQLite index is refreshed owned cache and excluded
+from staging. Bugs46/47 remain deferred/unresolved under Goal87; Windows,
+hosted CI, website qualification and consumer adoption are not passes.
+No tag, deployment/provider action, consumer change, repack, canonical graph
+migration, bundle refresh or history rewrite occurred. Supported goal closure
+clears active ownership; no runtime lease or transient lock is retained.
+
+# Historical initial authorized execution - 2026-10-01
+
+Nick explicitly authorized 0.6.0 npm publication, origin/main push, and
+post-publication validation. Task831 passed fresh identity, custody, blocker,
+registry, authentication and unchanged-input qualification checks. Task832 is
+blocked, not complete: npm refused the single exact-artifact publication
+attempt with E403 requiring two-factor approval. A subsequent public registry
+check returned E404 for 0.6.0. No publication or post-publish install is claimed.
+
+Origin/main was fast-forwarded without force or tags from 9652b855 to
+31c6c9a158224ccc865bb4cd1d5fa5c651c2c37c and independently verified. Chk670
+and the Goal85 publication admission/attempt receipts bind the partial outcome.
+The b5497c5f5e5f022e candidate, selected Goal73, runtime database, Demo3 bundle
+and website draft are unchanged. Bugs46/47 remain deferred/unresolved.
+
+Current approval remains in force; secure interactive npm two-factor approval
+is the external prerequisite. Do not retry blindly or bypass account policy.
+After independently observing publication, verify registry integrity and a
+clean installed workflow before closing Task832 or this goal. No tag,
+deployment, consumer change, repack, bundle refresh or history rewrite is
+authorized. No runtime writer lease or transient mutation lock is held; the
+blocked task remains the recorded scoped ownership lane.
+
+# Historical qualified local artifact handoff - 2026-09-30
 
 The0.6.0 candidate is locally qualified and sealed in Chk570 and
 .mdkg/artifacts/goal-86/candidate-seal-20260930.json, SHA256

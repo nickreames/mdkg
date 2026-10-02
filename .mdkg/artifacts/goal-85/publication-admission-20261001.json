@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "kind": "mdkg-0.6.0-publication-admission",
+  "date": "2026-10-01",
+  "owner": "mdkg-project-agent",
+  "goal": "root:goal-85",
+  "work": "root:task-831",
+  "authority": {
+    "source": "Nick's explicit publish 0.6.0, origin push, and post-publish validation instructions, renewed 2026-10-01",
+    "npm_publish": true,
+    "origin_main_push": true,
+    "existing_reviewed_local_commit_authority": true,
+    "tags": false,
+    "deployments": false,
+    "history_rewrite": false,
+    "consumer_changes": false
+  },
+  "git": {
+    "repository": "nickreames/mdkg",
+    "visibility": "PUBLIC",
+    "branch": "main",
+    "head": "31c6c9a158224ccc865bb4cd1d5fa5c651c2c37c",
+    "origin_main_before": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "fresh_fetch": true,
+    "ahead": 75,
+    "behind": 0
+  },
+  "auth": {
+    "github_identity": "nickreames",
+    "npm_identity": "nickreames",
+    "credential_values_recorded": false,
+    "method": "Existing npm login resolved only into the child-process environment; temporary npmrc contains an environment-variable reference. GitHub CLI credential helper is per-command."
+  },
+  "candidate": {
+    "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+    "sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+    "integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+    "bytes": 545431,
+    "files": 237,
+    "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+    "harness_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+    "current_admission": "passed",
+    "repacked": false,
+    "dry_run": "passed"
+  },
+  "registry_before": {
+    "latest": "0.5.2",
+    "target": "0.6.0",
+    "target_absent": true
+  },
+  "validation": {
+    "qualification": "Unchanged-input full qualification from Chk570 and the 2026-09-30 seal reused; no new qualification claim",
+    "full_tests": 2389,
+    "package_smokes": 37,
+    "installed_families_per_platform": 20,
+    "platforms": [
+      "macOS ARM64 native",
+      "Ubuntu24 ARM64 native",
+      "Ubuntu24 x86_64 emulated"
+    ],
+    "cli_matrix": "pass_current",
+    "docs": "pass_current",
+    "publish_readiness": "pass_current",
+    "current_working_diff_check": "pass",
+    "historical_whitespace": "One EOF blank line in execution-baseline-20260915.json retained to preserve historical receipt bytes; full outgoing-range diff check is not represented as clean."
+  },
+  "history_screen": {
+    "kind": "outgoing-public-history-preflight",
+    "commits": 75,
+    "blobs": 1601,
+    "scanned_text_blobs": 1599,
+    "total_bytes": 36322250,
+    "credential_pattern_hits": [],
+    "suspicious_names": [],
+    "binary_blobs": [
+      {
+        "oid": "6c28dc9a58ebf96234b5617b11c639b1521d78ce",
+        "path": ".mdkg/index/mdkg.sqlite",
+        "bytes": 4505600
+      },
+      {
+        "oid": "43b63a721d25b382b34a8aebffdf20d350f4d50b",
+        "path": ".mdkg/index/mdkg.sqlite",
+        "bytes": 4284416
+      }
+    ],
+    "oversized": [],
+    "limitations": [
+      "bounded credential-pattern screening is not exhaustive secret detection",
+      "historical binary cache is not npm payload",
+      "raw blocked security context was not accessed"
+    ]
+  },
+  "disposition": {
+    "bugs46_47": "deferred and unresolved under Goal87; not fixed or accepted",
+    "website_and_hosted_CI": "deferred/unqualified",
+    "windows": "unqualified",
+    "blocked_security_context": "not accessed or recovered",
+    "packaged_candidate_status_text": "Conservative draft qualification text retained with sealed package bytes; current qualification/publication truth is in immutable release receipts"
+  },
+  "preserved": {
+    "selected_goal73": true,
+    "runtime_database": true,
+    "demo3_bundle": true,
+    "public_website_draft": true,
+    "dirty_derived_index": "owned, excluded from staging"
+  },
+  "skill_coverage": [
+    "release-mdkg-package",
+    "pursue-mdkg-goal",
+    "verify-close-and-checkpoint",
+    "safe-git-publication-preflight"
+  ],
+  "skill_candidates": []
+}

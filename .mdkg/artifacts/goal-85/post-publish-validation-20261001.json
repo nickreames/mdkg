@@ -1,0 +1,554 @@
+{
+  "schema_version": 1,
+  "kind": "mdkg-0.6.0-post-publish-validation",
+  "observed_at": "2026-10-01T16:48:17.827Z",
+  "outcome": "POST_PUBLISH_VALIDATED",
+  "runtime": "v24.18.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "expected_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+  "checks": [
+    {
+      "label": "registry metadata",
+      "command": [
+        "npm",
+        "view",
+        "mdkg@0.6.0",
+        "version",
+        "dist.integrity",
+        "dist.shasum",
+        "dist.tarball",
+        "engines",
+        "bin",
+        "--json",
+        "--prefer-online"
+      ],
+      "exit_code": 0,
+      "duration_ms": 241,
+      "stdout_sha256": "e1ffbe4cc74901e7bbf32dde2070aa891cf9802586c9cfeefc27d8a82a5614a0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "registry dist-tags",
+      "command": [
+        "npm",
+        "view",
+        "mdkg",
+        "dist-tags",
+        "--json",
+        "--prefer-online"
+      ],
+      "exit_code": 0,
+      "duration_ms": 249,
+      "stdout_sha256": "79a2049e67e24a9cf383cf7b804142184196f8291cf9e6201d0e4c7f36e75f2a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "download published tarball without repacking",
+      "command": [
+        "npm",
+        "pack",
+        "mdkg@0.6.0",
+        "--ignore-scripts",
+        "--json",
+        "--pack-destination",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-download"
+      ],
+      "exit_code": 0,
+      "duration_ms": 517,
+      "stdout_sha256": "4efc774221d0291539a8cb65d6bf707b162c61586b31bdd76780ffcf5bb39b66",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "clean registry install with normal postinstall",
+      "command": [
+        "npm",
+        "install",
+        "--prefix",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install",
+        "mdkg@0.6.0",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "exit_code": 0,
+      "duration_ms": 280,
+      "stdout_sha256": "0ea36bda052c11ac2cb1a5547270e3b9a9f2f15fa48dbcc4181e8c9baa19b87e",
+      "stderr_sha256": "eec40dafd08c7207a1afd4379bc357c940be8cfbaf5bae4c10f2f71ed4d52ead"
+    },
+    {
+      "label": "installed version",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "--version"
+      ],
+      "exit_code": 0,
+      "duration_ms": 77,
+      "stdout_sha256": "97a5d6e540a6120d09c39ddb667e0e8e2bac7fcc2ffef813b82e08fd60365bce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "installed npm executable",
+      "command": [
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/.bin/mdkg",
+        "--version"
+      ],
+      "exit_code": 0,
+      "duration_ms": 267,
+      "stdout_sha256": "97a5d6e540a6120d09c39ddb667e0e8e2bac7fcc2ffef813b82e08fd60365bce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "installed help",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "--help"
+      ],
+      "exit_code": 0,
+      "duration_ms": 74,
+      "stdout_sha256": "3ddc25b1c1b4602eb14d09f6ffb425b05ee2e78aef29ca45ab2d107ad747b13d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "native Git fixture init",
+      "command": [
+        "git",
+        "init",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "duration_ms": 14,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "default compact init",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "init"
+      ],
+      "exit_code": 0,
+      "duration_ms": 661,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "create ordinary uncommitted task",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "new",
+        "task",
+        "Post publish synthetic task",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 519,
+      "stdout_sha256": "fb1d8437c2c4d62b3a2d41ede505379e379cc508bc5b004242a29c6529804160",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "show task",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "show",
+        "task-1",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 83,
+      "stdout_sha256": "f663dd630a555bfe7e3a0a850e2b2348ec10fb707cbe7bacc987edb51d4fa6d4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "search task",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "search",
+        "Post publish synthetic",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 84,
+      "stdout_sha256": "a5dec08d8e2a6affb837156e72de329b53b9413f2b04364b84c5d98b73947161",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "pack task",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "pack",
+        "task-1",
+        "--format",
+        "json",
+        "--dry-run"
+      ],
+      "exit_code": 0,
+      "duration_ms": 94,
+      "stdout_sha256": "4b87c23293903e12a4f32de1e7de2c55e8fc318c5d67486a58c3e073f87a403f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "skill discovery",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "skill",
+        "list",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 86,
+      "stdout_sha256": "83842299fd849e2eb4c4ad164a6b4e08913ac41520f4d3e87fd8a56d437ceff8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "focused skill show",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "skill",
+        "show",
+        "verify-close-and-checkpoint"
+      ],
+      "exit_code": 0,
+      "duration_ms": 85,
+      "stdout_sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "graph validation",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 139,
+      "stdout_sha256": "646f7f3725c7e9ba236e80d8551a3f7784b02ba77ca91ac4c6ff72f197e0c2bd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "task lifecycle start",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "task",
+        "start",
+        "task-1",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 443,
+      "stdout_sha256": "ae06673fa2fba497012afee446681afc2419198ae8d415875831cd1be2d35a8c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "task lifecycle done",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "task",
+        "done",
+        "task-1",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 436,
+      "stdout_sha256": "7d5a9ae1ebd8124b33f58220fe7d186535c5dd891c909ae56e7f636c4d7ab155",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "post-lifecycle validation",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 143,
+      "stdout_sha256": "646f7f3725c7e9ba236e80d8551a3f7784b02ba77ca91ac4c6ff72f197e0c2bd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "read-only Git observation",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "git",
+        "inspect",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 147,
+      "stdout_sha256": "c5a59f7a91bb088c36069db78f104ed522c763792caf8485cc1848a8ab319055",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "removed Git command refusal clone",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "git",
+        "clone"
+      ],
+      "exit_code": 1,
+      "duration_ms": 75,
+      "stdout_sha256": "dd7db7c3a1cbe2f267ab5a1135d33aecce6bb8664f122578ee536ca501d61bea",
+      "stderr_sha256": "01b4c74a041bfab231622a09d7d463e1a4e6a812e05f696a38b4b292344e2eb3"
+    },
+    {
+      "label": "removed Git command refusal fetch",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "git",
+        "fetch"
+      ],
+      "exit_code": 1,
+      "duration_ms": 73,
+      "stdout_sha256": "dd7db7c3a1cbe2f267ab5a1135d33aecce6bb8664f122578ee536ca501d61bea",
+      "stderr_sha256": "01b4c74a041bfab231622a09d7d463e1a4e6a812e05f696a38b4b292344e2eb3"
+    },
+    {
+      "label": "removed Git command refusal push",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "git",
+        "push"
+      ],
+      "exit_code": 1,
+      "duration_ms": 72,
+      "stdout_sha256": "dd7db7c3a1cbe2f267ab5a1135d33aecce6bb8664f122578ee536ca501d61bea",
+      "stderr_sha256": "01b4c74a041bfab231622a09d7d463e1a4e6a812e05f696a38b4b292344e2eb3"
+    },
+    {
+      "label": "removed Git command refusal materialize",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "git",
+        "materialize"
+      ],
+      "exit_code": 1,
+      "duration_ms": 73,
+      "stdout_sha256": "dd7db7c3a1cbe2f267ab5a1135d33aecce6bb8664f122578ee536ca501d61bea",
+      "stderr_sha256": "01b4c74a041bfab231622a09d7d463e1a4e6a812e05f696a38b4b292344e2eb3"
+    },
+    {
+      "label": "removed Git command refusal closeout",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "git",
+        "closeout"
+      ],
+      "exit_code": 1,
+      "duration_ms": 75,
+      "stdout_sha256": "dd7db7c3a1cbe2f267ab5a1135d33aecce6bb8664f122578ee536ca501d61bea",
+      "stderr_sha256": "01b4c74a041bfab231622a09d7d463e1a4e6a812e05f696a38b4b292344e2eb3"
+    },
+    {
+      "label": "removed Git command refusal push-ready",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "git",
+        "push-ready"
+      ],
+      "exit_code": 1,
+      "duration_ms": 78,
+      "stdout_sha256": "dd7db7c3a1cbe2f267ab5a1135d33aecce6bb8664f122578ee536ca501d61bea",
+      "stderr_sha256": "01b4c74a041bfab231622a09d7d463e1a4e6a812e05f696a38b4b292344e2eb3"
+    },
+    {
+      "label": "graph-only init",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "init",
+        "--graph-only"
+      ],
+      "exit_code": 0,
+      "duration_ms": 327,
+      "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "graph-only validation",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 88,
+      "stdout_sha256": "62aeb62d46c436a656d528cb803c2493adef7176cd910c6856ce1dc754e1e9e7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "customized compact init",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "init"
+      ],
+      "exit_code": 0,
+      "duration_ms": 457,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "repeat compact init",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "init"
+      ],
+      "exit_code": 0,
+      "duration_ms": 142,
+      "stdout_sha256": "4e60c99a28e27b63924763688180be59bb734284c48e206ecfd3b4de3bacc7c5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "customized validation",
+      "command": [
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/private/tmp/mdkg-release-060-final-puNcrv/registry-install/node_modules/mdkg/dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 102,
+      "stdout_sha256": "83e3d03face465f9f1f490659f2ad775a9ceb1898858982f1c27260d227efe3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "registry": {
+    "version": "0.6.0",
+    "dist.integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+    "dist.shasum": "beaccd9e1a295519c25828d3944ff62019a02281",
+    "dist.tarball": "https://registry.npmjs.org/mdkg/-/mdkg-0.6.0.tgz",
+    "engines": {
+      "node": ">=24.18.0 <25"
+    },
+    "bin": {
+      "mdkg": "dist/cli.js"
+    }
+  },
+  "dist_tags": {
+    "latest": "0.6.0"
+  },
+  "downloaded_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+  "installed_lock_integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+  "clean_registry_install": true,
+  "retired_commands_refused_without_changes": 6,
+  "source_imports_used": false,
+  "original_candidate_overwritten": false,
+  "qualification_reuse": "Full package/platform/security qualification reused only after published byte identity matched.",
+  "limitations": [
+    "Post-publish smoke executed on macOS ARM64 Node24.18.0; Linux platform qualification is prepublication unchanged-byte evidence.",
+    "Windows, hosted CI, website and consumer adoption remain unqualified; Bugs46/47 deferred unresolved."
+  ],
+  "owner": "mdkg-project-agent",
+  "goal": "root:goal-85",
+  "work": "root:task-832",
+  "publication": {
+    "publisher": "nickreames",
+    "mechanism": "Nick completed interactive npm browser/2FA approval using the exact sealed tarball.",
+    "agent_attempts": 1,
+    "initial_agent_attempt": "E403 requiring two-factor approval; no bypass.",
+    "user_observed_result": "+ mdkg@0.6.0",
+    "retry_publication_by_agent": false,
+    "registry_propagation": "Metadata and then canonical tarball became available after temporary CDN-cached E404; verification waited without republishing."
+  },
+  "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+  "git_source_head_pushed": "31c6c9a158224ccc865bb4cd1d5fa5c651c2c37c",
+  "authority": {
+    "npm_publication": "Nick current explicit approval",
+    "origin_main_push": "Nick current explicit approval",
+    "reviewed_local_evidence_commit": "existing current scope",
+    "tags": false,
+    "deployments": false,
+    "consumer_changes": false,
+    "history_rewrite": false
+  },
+  "protected_sha256": {
+    "selected_goal73": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "website_draft": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "qualification": {
+    "full_tests": 2389,
+    "package_smokes": 37,
+    "coverage_percent": {
+      "lines": 92.63,
+      "branches": 84.36,
+      "functions": 97.58
+    },
+    "reuse": "Unchanged package/harness inputs and byte-identical registry artifact; no fresh full-suite or Linux rerun claimed.",
+    "platforms": [
+      "macOS ARM64 native",
+      "Ubuntu24 ARM64 native",
+      "Ubuntu24 x86_64 emulated"
+    ],
+    "evidence": ".mdkg/artifacts/goal-86/candidate-seal-20260930.json"
+  },
+  "check_summary": {
+    "commands": 31,
+    "successful_positive_controls": 25,
+    "successful_expected_refusals": 6,
+    "unexpected_failures": 0
+  },
+  "skill_coverage": [
+    "release-mdkg-package",
+    "pursue-mdkg-goal",
+    "verify-close-and-checkpoint",
+    "safe-git-publication-preflight"
+  ],
+  "skill_candidates": [],
+  "local_closeout_validation": {
+    "full_graph": {
+      "ok": true,
+      "errors": 0,
+      "warnings": 3,
+      "warning_kind": "pre-existing stale imported bundles"
+    },
+    "changed_only_graph": {
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite_index_verify": {
+      "ok": true,
+      "failures": 0
+    },
+    "working_diff_check": "pass",
+    "goal_evaluate": "report-only completion_evidence_present; actual registry/install proof recorded independently",
+    "goal85": "achieved",
+    "tasks831_832": "done",
+    "active_node": "cleared by supported goal done",
+    "commit_allowlist": [
+      ".mdkg/artifacts/goal-85/publication-admission-20261001.json",
+      ".mdkg/artifacts/goal-85/publication-attempt-20261001.json",
+      ".mdkg/artifacts/goal-85/post-publish-validation-20261001.json",
+      ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+      ".mdkg/work/task-831-recheck-mdkg-0-6-0-approval-blockers-and-sealed-candidate.md",
+      ".mdkg/work/task-832-publish-exact-qualified-mdkg-0-6-0-artifact-and-verify-installation.md",
+      ".mdkg/work/chk-670-record-mdkg-0-6-0-origin-push-and-npm-two-factor-publication-gate.md",
+      ".mdkg/work/chk-671-verify-published-mdkg-0-6-0-registry-identity-and-clean-installed-workflows.md"
+    ],
+    "excluded_path": ".mdkg/index/mdkg.sqlite",
+    "excluded_custody": "pre-existing owned derived cache; refreshed, verified and deliberately unstaged"
+  }
+}

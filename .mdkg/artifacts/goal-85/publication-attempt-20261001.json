@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "mdkg-0.6.0-publication-attempt",
+  "date": "2026-10-01",
+  "owner": "mdkg-project-agent",
+  "goal": "root:goal-85",
+  "work": "root:task-832",
+  "outcome": "ORIGIN_PUSHED_NPM_NOT_PUBLISHED_2FA_REQUIRED",
+  "git": {
+    "remote": "https://github.com/nickreames/mdkg",
+    "saved_origin": "git@github.com:nickreames/mdkg.git",
+    "ref": "refs/heads/main",
+    "before": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "after": "31c6c9a158224ccc865bb4cd1d5fa5c651c2c37c",
+    "commits_pushed": 75,
+    "fast_forward": true,
+    "remote_sha_independently_verified": true,
+    "force": false,
+    "tags": false
+  },
+  "npm": {
+    "publisher": "nickreames",
+    "target": "mdkg@0.6.0",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest",
+    "attempts": 1,
+    "response": {
+      "code": "E403",
+      "summary": "403 Forbidden - PUT https://registry.npmjs.org/mdkg - Two-factor authentication or granular access token with bypass 2fa enabled is required to publish packages."
+    },
+    "exit_code": 1,
+    "post_attempt_version_check": "E404; version 0.6.0 absent",
+    "published": false,
+    "post_publish_install_validation": "not run; package is not published"
+  },
+  "candidate": {
+    "sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+    "integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+    "repacked": false,
+    "after_attempt_hash_verified": true
+  },
+  "boundaries": {
+    "credentials_not_recorded": true,
+    "two_factor_policy_not_bypassed": true,
+    "no_history_rewrite": true,
+    "no_tag_or_deployment": true,
+    "no_consumer_changes": true,
+    "selected_goal73_unchanged": true,
+    "runtime_db_unchanged": true,
+    "demo3_bundle_unchanged": true,
+    "website_draft_unchanged": true,
+    "canonical_graph_not_migrated": true
+  },
+  "remaining": "Interactive npm 2FA approval or a separately provisioned authorized publishing credential; once publication is independently observed, verify integrity and clean installed workflows. Current publication approval remains in force.",
+  "skill_coverage": [
+    "release-mdkg-package",
+    "verify-close-and-checkpoint",
+    "safe-git-publication-preflight"
+  ],
+  "skill_candidates": []
+}
