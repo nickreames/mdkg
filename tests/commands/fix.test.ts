@@ -7,7 +7,7 @@ import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
 
-const cliPath = path.resolve(__dirname, "..", "..", "cli.js");
+const cliPath = process.env.MDKG_TEST_PACKAGE ? path.join(process.env.MDKG_TEST_PACKAGE, "dist/cli.js") : path.resolve(__dirname, "..", "..", "cli.js");
 
 function createFixRepo(prefix: string): string {
   const root = makeTempDir(prefix);
@@ -690,6 +690,46 @@ test("fix apply ids family rewrites duplicate ids and rebuilds indexes", () => {
   assert.equal(JSON.parse(validate.stdout).ok, true);
 });
 
+test("base-ref duplicate repair preserves longer aliases and foreign evidence in every rewrite path", (t) => {
+  const root = createFixRepo("mdkg-fix-whole-identifiers-"); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  assertGit(root, ["init", "-q"]); assertGit(root, ["add", "."]); assertGit(root, ["commit", "--no-verify", "-qm", "base"]);
+  const duplicate = path.join(root, ".mdkg/work/duplicate.md"), longer = path.join(root, ".mdkg/work/task-10.md"), hundred = path.join(root, ".mdkg/work/task-100.md");
+  const protectedText = "task-10 task-100 other:task-1 artifact://task-1 https://example.invalid/task-1 https://example.invalid/?q=task-1";
+  writeFile(duplicate, taskNode("task-1", "incoming").replace("id: task-1", "id:task-1") + `\nSelf note for task-1. ${protectedText}\n`);
+  writeFile(longer, taskNode("task-10", "longer alias").replace("refs: []", "refs: [task-1]") + `\n${protectedText}\n`);
+  writeFile(hundred, taskNode("task-100", "unrelated") + "\nNothing about the repaired node.\n");
+  const hundredBefore = fs.readFileSync(hundred, "utf8"), gitIndexBefore = fs.readFileSync(path.join(root, ".git/index"));
+  const preview = run(root, ["fix", "ids", "--base-ref", "HEAD", "--target", "task-1", "--json"]);
+  assert.equal(preview.status, 0, preview.stderr);
+  const change = JSON.parse(preview.stdout).proposed_changes[0];
+  assert.equal(change.after.candidate_id, "task-2");
+  assert.equal(change.after.reference_paths.includes(".mdkg/work/task-100.md"), false);
+  assert.equal(change.after.safe_reference_rewrites.find((item: any) => item.path === ".mdkg/work/task-10.md").replacement_count, 1);
+  const applied = run(root, ["fix", "ids", "--base-ref", "HEAD", "--target", "task-1", "--apply", "--json"]);
+  assert.equal(applied.status, 0, applied.stderr);
+  const rewritten = fs.readFileSync(longer, "utf8"), duplicateAfter = fs.readFileSync(duplicate, "utf8");
+  assert.match(rewritten, /^id: task-10$/m); assert.match(rewritten, /refs: \[task-2\]/); assert.ok(rewritten.includes(protectedText));
+  assert.match(duplicateAfter, /^id:task-2$/m); assert.match(duplicateAfter, /Self note for task-2\./); assert.ok(duplicateAfter.includes(protectedText));
+  assert.equal(fs.readFileSync(hundred, "utf8"), hundredBefore); assert.deepEqual(fs.readFileSync(path.join(root, ".git/index")), gitIndexBefore);
+});
+
+for (const count of [2, 3]) test(`base-ref repair preserves the canonical node when ${count} duplicates all postdate the base`, (t) => {
+  const root = createFixRepo("mdkg-fix-postbase-duplicates-"); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  assertGit(root, ["init", "-q"]); assertGit(root, ["add", "."]); assertGit(root, ["commit", "--no-verify", "-qm", "base"]);
+  for (let i = 0; i < count; i++) writeFile(path.join(root, `.mdkg/work/task-900-${i}.md`), taskNode("task-900", `Incoming ${i}`));
+  const canonical = path.join(root, ".mdkg/work/task-900-0.md"), before = fs.readFileSync(canonical, "utf8");
+  const referrer = path.join(root, ".mdkg/work/task-20.md"), refContent = taskNode("task-20", "Unassigned reference").replace("refs: []", "refs: [task-900]");
+  writeFile(referrer, refContent);
+  const result = run(root, ["fix", "ids", "--target", "task-900", "--base-ref", "HEAD", "--apply", "--json"]);
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(fs.readFileSync(canonical, "utf8"), before); assert.equal(fs.readFileSync(referrer, "utf8"), refContent);
+  const receipt = JSON.parse(result.stdout);
+  assert.equal(receipt.applied_changes.length, count - 1);
+  assert.ok(receipt.ambiguous_reference_rewrites.some((item: any) => item.path === ".mdkg/work/task-20.md"));
+  const ids = Array.from({ length: count }, (_, i) => /^id: (.+)$/m.exec(fs.readFileSync(path.join(root, `.mdkg/work/task-900-${i}.md`), "utf8"))![1]);
+  assert.equal(new Set(ids).size, count);
+});
+
 test("fix ids --apply is an ids-family convenience apply command", () => {
   const root = createFixRepo("mdkg-fix-ids-convenience-");
   writeFile(path.join(root, ".mdkg", "work", "task-copy.md"), taskNode("task-1", "duplicate convenience task"));
@@ -939,7 +979,9 @@ for (const scenario of ["missing ancestry", "renamed ancestor", "quoted path", "
       assertGit(root, ["commit", "-qm", branch]);
     }
     assertGit(root, ["checkout", "-q", "target"]);
-    assert.notEqual(git(root, ["-c", "merge.renames=false", "merge", "--no-edit", "incoming"]).status, 0);
+    // Git 2.43's ort strategy can still detect this rename despite
+    // merge.renames=false. Require the intended add/add fixture explicitly.
+    assert.notEqual(git(root, ["merge", "-s", "recursive", "-X", "no-renames", "--no-edit", "incoming"]).status, 0);
     assert.ok(!git(root, ["ls-files", "-u", "--", relativePath]).stdout.includes(" 1\t"), "fixture has no path-local ancestor stage");
     if (scenario === "missing ancestry") fs.unlinkSync(path.join(root, ".git", "MERGE_HEAD"));
     const args = ["fix", "ids", "--target", "task-900", "--json"];

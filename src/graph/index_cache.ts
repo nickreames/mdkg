@@ -1,12 +1,13 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
-import { readContainedFile, withContainedPathSink } from "../core/filesystem_authority";
+import { withContainedPathSink } from "../core/filesystem_authority";
 import { sortIndexNodes } from "../util/sort";
 import { writeCacheFile } from "./cache_output";
 import { buildIndex, Index } from "./indexer";
 import { isIndexStale } from "./staleness";
 import { readGraphFormat } from "./identity";
+import { readJsonCacheText } from "./json_cache_fingerprint";
 import {
   buildSubgraphsIndex,
   isSubgraphsIndexStale,
@@ -40,8 +41,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function readIndex(root: string, indexPath: string): Index {
   try {
-    const relativePath = path.relative(root, indexPath).split(path.sep).join("/");
-    const parsed = JSON.parse(readContainedFile({ root, relativePath }, "utf8")) as unknown;
+    const parsed = JSON.parse(readJsonCacheText(root, indexPath)) as unknown;
     if (!isRecord(parsed) || !isRecord(parsed.meta) || !isRecord(parsed.workspaces) || !isRecord(parsed.nodes) || !isRecord(parsed.reverse_edges)) {
       throw new Error("index cache has an invalid shape");
     }

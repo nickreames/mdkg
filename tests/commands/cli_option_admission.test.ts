@@ -23,6 +23,8 @@ const rejected: string[][] = [
   ["fix", "ids", "--family", "refs"],
   ["graph", "refs", "task-1", "--target", "elsewhere"],
   ["graph", "migrate", "--xml"],
+  ["graph", "migrate", "--confirm-quiescent"],
+  ["graph", "recover", "sha256:fixture", "--confirm-quiescent=maybe"],
   ["mcp", "serve", "--stdio", "--bogus"],
   ["--bogus", "new", "task", "Title"],
   ["new", "task", "Title", "--note", "--not-an-output-path"],

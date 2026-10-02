@@ -292,6 +292,7 @@ function toLease(row: Record<string, unknown>): ProjectDbWriterLease {
 }
 
 function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T, observation = false): T {
+  if (observation) return withSelectedSqliteObservation(databasePath, fn);
   const DatabaseSync = loadDatabaseCtor();
   const run = (selectedPath: string): T => {
     const db = new DatabaseSync(selectedPath, { readOnly: observation });
@@ -302,7 +303,7 @@ function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T, observ
       db.close();
     }
   };
-  return observation ? withSelectedSqliteObservation(databasePath, run) : run(databasePath);
+  return run(databasePath);
 }
 
 function withImmediateTransaction<T>(db: DatabaseSyncType, fn: () => T): T {

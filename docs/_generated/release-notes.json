@@ -19,10 +19,11 @@
           "Compact agent setup by default: bounded root AGENTS.md/CLAUDE.md sections route to detailed guidance under `.mdkg`, with focused canonical skills and native projections. `init --graph-only` omits agent setup; `--agent` remains its compatible explicit spelling.",
           "Explicit format-v2 graph/node identities behind numeric aliases, stable selectors, ancestor-grounded migration and branch-local cross-linked nodes that are usable before Git commit. Indexing never invents identities.",
           "Reviewed identity reconciliation with deterministic incoming alias mappings, explicit same-node conflict decisions, immutable lineage, target acceptance receipts and repeat-integration checks. Native Git still owns branches, worktrees, staging, commits and ancestry-preserving merges.",
-          "Evidence-bound graph transaction recovery with exact journal/checkout/file custody and mode-specific orphan-lock approval. Live, ambiguous, legacy or incompletely recorded ownership refuses; age or PID absence alone never authorizes takeover. Interrupted metadata publication remains fail-closed.",
+          "Evidence-bound graph transaction recovery with exact journal/checkout/file custody, fresh mode-specific approval and explicit `--confirm-quiescent` for every recovery write. Operator-confirmed quiescence replaces OS-specific orphanhood probes; it is not authentication or proof across hosts/namespaces. Live/ambiguous PIDs and weak/incomplete ownership refuse. PID absence or age alone never authorizes takeover. No-lock terminal repeats remain read-only. Legacy evidence is preserved and requires fresh approval; interrupted metadata publication remains fail-closed.",
           "Reviewed schema-2 configuration fencing for v2 writers. All writers must be upgraded before adoption; a new client cannot retroactively control old `init` or `init --force` behavior. Legacy graphs remain explicitly supported."
         ],
         "Breaking changes": [
+          "The 0.6.0 candidate requires Node.js `>=24.18.0 <25` and the built-in SQLite deserialization, authorizer and defensive APIs plus available-memory reporting. Unsupported runtimes refuse commands before workspace discovery; help/version remain available. Node24.15 and tested Node26.0 are unsupported controls, not successful compatibility results. No mdkg-owned native helper or OS-specific SQLite pathname fallback is included.",
           "Removed `mdkg git clone`, `fetch`, `push`, `materialize`, `closeout` and `push-ready`, including their Git mutation/authentication behavior. No aliases or fallback wrappers remain. `mdkg git inspect` is observational; use native Git and independently reviewed authorization for repository operations.",
           "Removed `validate --profile` and `work validate --profile`, privileged `omni-room` policy, special `ochatr_` skill indexing/search/projections and first-class `--pricing-model` behavior. `room_orchestrated` becomes `orchestrated` with no old-token alias. Generic contracts, opaque policy references and optional local DB/queue/snapshot primitives remain.",
           "Legacy init flags `--llm`, `--agents`, `--claude` and `--omni` remain unsupported (already rejected in published 0.5.2). Use compact default initialization or explicit graph-only setup. Unsupported and wrong-command options fail before configuration discovery or side effects.",
@@ -39,6 +40,8 @@
           "Reduced repeated filesystem traversal in large graph transactions without skipping fresh custody checks. Remaining transaction costs are measured limitations, not a performance guarantee."
         ],
         "Security and qualification": [
+          "Restrictive per-file ACL/owner preservation and adversarial ancestor-directory replacement remain deferred, unresolved filesystem bugs under a separate hardening goal. They are not accepted or fixed findings. Use cooperative, access-controlled checkouts; existing Node link/type/custody checks remain.",
+          "Observational SQLite queries use a held-source image in memory, refuse journal/recovery state and SQL writes, and recheck source custody. Image memory is proportional to database size; resource admission cannot guarantee against concurrent system memory exhaustion. Final installed/platform proof remains required; local source tests alone do not qualify a release.",
           "Added containment, ownership, bounded-input and failure-preservation checks across graph discovery/transport, caches, archives, packs, event history, templates, skill resources and output writes. Shipped legacy defects and unreleased v2 defects retain separate affected-version assessments.",
           "Extended complete test discovery, installed-package/runtime fixtures, source/help/docs/package parity and manifest-backed release qualification. Coverage floors remain 89% lines, 77% branches and 96% functions. Structural receipt verification is not external execution/payment/attestation proof.",
           "Preserved removed consumer implementation in a source/hash-bound repository extraction package, excluded from npm. Consumer adoption is unverified and not required for mdkg publication; operational policy remains consumer-owned."
@@ -47,7 +50,7 @@
           "Made docs current-release supplements derive version, state, qualifier, date, note count, and highlights from the shared release manifest and generated changelog data so future releases do not require component or smoke-test version literals."
         ]
       },
-      "item_count": 22,
+      "item_count": 25,
       "highlights": [
         "Draft and unpublished. The date records candidate preparation, not npm publication. Final installed macOS/Linux qualification, security acceptance, release checks and exact artifact sealing remain required. Windows is unqualified. Local intermediate test passes are not a release-readiness claim.",
         "Compact agent setup by default: bounded root AGENTS.md/CLAUDE.md sections route to detailed guidance under `.mdkg`, with focused canonical skills and native projections. `init --graph-only` omits agent setup; `--agent` remains its compatible explicit spelling.",

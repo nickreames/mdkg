@@ -73,6 +73,24 @@ test("independent aliases reconcile deterministically with complete identity-bou
   assert.deepEqual(fs.readFileSync(path.join(root, ".mdkg/config.json")), before);
 });
 
+test("whitespace frontmatter boundaries preserve divergent evidence body conflicts", () => {
+  const withFence = (body: string) => {
+    const item = node("task-1", 1, {}, body);
+    item.content = item.content.replace("\n---\n", "\n--- \n");
+    item.hash = identityHash(item.content);
+    item.node = parseNode(item.content, item.path, parseOptions);
+    return item;
+  };
+  const ancestor = snapshot([withFence("Base evidence\n---\nSame suffix\n")]);
+  const target = snapshot([withFence("Target evidence\n---\nSame suffix\n")]);
+  const incoming = snapshot([withFence("Incoming evidence\n---\nSame suffix\n")]);
+  const result = reconcileIdentitySnapshots(ancestor, target, incoming);
+  assert.ok(result.blocking.some(value => value.includes("$body")));
+  const accepted = reconcileIdentitySnapshots(ancestor, target, incoming, { [ref(1)]: { take: "incoming", reason: "Explicitly reviewed body evidence" } });
+  assert.deepEqual(accepted.blocking, []);
+  assert.ok(accepted.documents[0].content.endsWith("Incoming evidence\n---\nSame suffix\n"));
+});
+
 test("same identity uses field ancestry, not duplicate splitting or whole-file last-writer wins", () => {
   const ancestor = snapshot([node("task-1", 1)]);
   const target = snapshot([node("task-1", 1, { title: "Target title" })]);

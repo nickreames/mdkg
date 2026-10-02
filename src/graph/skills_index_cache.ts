@@ -3,7 +3,7 @@ import path from "path";
 import { configPath } from "../core/paths";
 import { writeCacheFile } from "./cache_output";
 import { Config } from "../core/config";
-import { readContainedFile, withContainedPathSink } from "../core/filesystem_authority";
+import { withContainedPathSink } from "../core/filesystem_authority";
 import {
   buildSkillsIndex,
   resolveSkillsIndexPath,
@@ -11,7 +11,8 @@ import {
   SkillsIndex,
   currentSkillCacheSources,
 } from "./skills_indexer";
-import { readJsonCacheFingerprint, skillCacheFingerprint } from "./json_cache_fingerprint";
+import { readJsonCacheFingerprint, readJsonCacheText, skillCacheFingerprint } from "./json_cache_fingerprint";
+import { cacheSourceStats } from "./cache_sources";
 
 export type LoadSkillsIndexOptions = {
   root: string;
@@ -31,25 +32,6 @@ function mtimeMs(filePath: string): number {
   return fs.statSync(filePath).mtimeMs;
 }
 
-function listFilesAndDirectories(dir: string): string[] {
-  if (!fs.existsSync(dir)) {
-    return [];
-  }
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const items: string[] = [dir];
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      items.push(...listFilesAndDirectories(fullPath));
-      continue;
-    }
-    if (entry.isFile()) {
-      items.push(fullPath);
-    }
-  }
-  return items;
-}
-
 export function isSkillsIndexStale(root: string, config: Config): boolean {
   const indexPath = resolveSkillsIndexPath(root);
   if (!fs.existsSync(indexPath)) {
@@ -63,8 +45,8 @@ export function isSkillsIndexStale(root: string, config: Config): boolean {
   }
 
   const skillsRoot = resolveSkillsRoot(root, config);
-  for (const item of listFilesAndDirectories(skillsRoot)) {
-    if (mtimeMs(item) > indexMtime) {
+  for (const item of cacheSourceStats(root, skillsRoot, config.index.limits)) {
+    if (item.mtimeMs > indexMtime) {
       return true;
     }
   }
@@ -78,8 +60,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function readSkillsIndex(root: string, indexPath: string): SkillsIndex {
   try {
-    const relativePath = path.relative(root, indexPath).split(path.sep).join("/");
-    const parsed = JSON.parse(readContainedFile({ root, relativePath }, "utf8")) as unknown;
+    const parsed = JSON.parse(readJsonCacheText(root, indexPath)) as unknown;
     if (!isRecord(parsed) || !isRecord(parsed.meta) || !isRecord(parsed.skills)) {
       throw new Error("skills index cache has an invalid shape");
     }

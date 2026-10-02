@@ -2,6 +2,10 @@
 
 Agents should start with repo-owned guidance instead of guessing.
 
+Replace uppercase placeholders such as `GOAL_ID`, `WORK_ID` and `TASK_ID` with
+concrete ids from the repository and the explicitly authorized work item.
+Selected-goal state is a hint, not permission to start work.
+
 ```bash
 mdkg status
 mdkg goal current
@@ -50,10 +54,14 @@ downstream runtime needs a clearer semantic mirror:
 
 These fields are separate from MANIFEST `resource_profile`, WORK `kind`,
 WORK_ORDER `artifact_policy`, RECEIPT `redaction_policy`, and pack/bundle
-`--profile` flags. Use `mdkg validate --profile omni-room` or
-`mdkg work validate --profile omni-room` when you need explicit profile checks.
-mdkg owns generic mirror validation; downstream runtimes own runtime policy,
-queue execution, final receipt normalization, and adoption.
+`--profile` flags. Use `mdkg validate` or `mdkg work validate` for generic
+field/reference checks. Consumer validation profiles are not executed by mdkg;
+the former validation `--profile` option is unsupported without an alias.
+mdkg owns generic mirror validation; downstream runtimes own policy, queue
+execution, final receipt normalization, and adoption. Receipt verification
+checks structural/local-evidence consistency, not external execution, payment,
+or attestation authenticity. Convert old authored consumer-specific fields
+explicitly; validation and upgrade do not rewrite them for you.
 
 For a larger implementation goal:
 

@@ -198,6 +198,49 @@ test("fixture rename refuses a submodule whose gitdir is outside the accepted ro
   assert.deepEqual(inventory(f.parent.root), before);
 });
 
+test("submodule linked worktrees preserve parent and peer custody with inherited core.worktree", t => {
+  const f = fixture(t), parent = repository(f), source = repository(f, "source");
+  ok(f.git, parent, ["submodule", "add", "--force", source, "projects/child"]);
+  ok(f.git, parent, ["add", "--", ".gitmodules", "projects/child"]);
+  ok(f.git, parent, ["commit", "-qm", "register child"]);
+  const child = path.join(parent, "projects/child"), linked = path.join(f.root, "linked");
+  const parentDescription = f.git.describe(parent), childDescription = f.git.describe(child);
+  const parentIndex = fs.readFileSync(path.join(parentDescription.gitDir, "index"));
+  const childIndex = fs.readFileSync(path.join(childDescription.gitDir, "index"));
+  const parentHead = ok(f.git, parent, ["rev-parse", "HEAD"]), childHead = ok(f.git, child, ["rev-parse", "HEAD"]);
+  ok(f.git, child, ["worktree", "add", "-b", "parallel", linked]);
+  const linkedDescription = f.git.describe(linked);
+  assert.equal(linkedDescription.common, childDescription.common);
+  assert.notEqual(linkedDescription.gitDir, childDescription.gitDir);
+  fs.writeFileSync(path.join(linked, "parallel.txt"), "owned linked contribution\n");
+  ok(f.git, linked, ["add", "--", "parallel.txt"]); ok(f.git, linked, ["commit", "-qm", "parallel"]);
+  assert.deepEqual(fs.readFileSync(path.join(parentDescription.gitDir, "index")), parentIndex);
+  assert.deepEqual(fs.readFileSync(path.join(childDescription.gitDir, "index")), childIndex);
+  assert.equal(ok(f.git, parent, ["rev-parse", "HEAD"]), parentHead);
+  assert.equal(ok(f.git, child, ["rev-parse", "HEAD"]), childHead);
+
+  const backlink = path.join(linkedDescription.gitDir, "gitdir"), backlinkBytes = fs.readFileSync(backlink);
+  fs.writeFileSync(backlink, path.join(child, ".git") + "\n");
+  let before = inventory(f.parent.root);
+  assert.throws(() => f.git.run(linked, ["status", "--short"]), /backpointer/);
+  assert.deepEqual(inventory(f.parent.root), before);
+  fs.writeFileSync(backlink, backlinkBytes);
+
+  const commonConfig = path.join(childDescription.common, "config"), configBytes = fs.readFileSync(commonConfig);
+  for (const redirect of [source, f.parent.resolve("outside-worktree")]) {
+    fs.appendFileSync(commonConfig, `\n[core]\n worktree = ${JSON.stringify(redirect)}\n`);
+    before = inventory(f.parent.root);
+    assert.throws(() => f.git.run(linked, ["status", "--short"]), /does not own|escapes/);
+    assert.deepEqual(inventory(f.parent.root), before);
+    fs.writeFileSync(commonConfig, configBytes);
+  }
+  const localConfig = path.join(linkedDescription.gitDir, "config.worktree");
+  fs.writeFileSync(localConfig, `[core]\n worktree = ${JSON.stringify(source)}\n`);
+  before = inventory(f.parent.root);
+  assert.throws(() => f.git.run(linked, ["status", "--short"]), /checkout-local core.worktree/);
+  assert.deepEqual(inventory(f.parent.root), before);
+});
+
 test("native separate-git-dir repositories remain usable within the owned fixture", t => {
   const f = fixture(t), repo = path.join(f.root, "repo"), metadata = path.join(f.root, "metadata"); fs.mkdirSync(repo);
   ok(f.git, repo, ["init", "-b", "main", "--separate-git-dir", metadata]);

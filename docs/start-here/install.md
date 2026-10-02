@@ -2,9 +2,16 @@
 
 ## Requirements
 
-- Node.js `>=24.15.0`
+- Node.js `>=24.18.0 <25` for the unpublished 0.6.0 candidate
 - npm for the primary global install path
 - A Git repository when you want reviewable project memory
+
+The candidate requires built-in SQLite `deserialize`, `setAuthorizer` and
+`enableDefensive`, plus `process.availableMemory`. Unsupported runtimes refuse
+before graph discovery or mutation; help/version remain available. Node-only
+implementation is not universal platform qualification: final macOS/Linux
+evidence remains required and Windows remains unqualified. Published 0.5.2 has
+its own runtime contract; check the installed version after a registry install.
 
 Check your runtime:
 
@@ -32,13 +39,19 @@ Package-manager notes:
 ## Initialize A Repo
 
 ```bash
-mdkg init --agent
+mdkg init
 mdkg index
 mdkg status
 mdkg validate
 ```
 
 `mdkg index` builds rebuildable access caches. Markdown files remain the durable source of truth.
+
+The 0.6.0 candidate defaults to compact agent setup. Root `AGENTS.md` and
+`CLAUDE.md` route to `.mdkg/AGENT_START.md`; detailed generated guidance stays
+under `.mdkg`. Use `mdkg init --graph-only` to omit agent setup, or
+`mdkg init --agent` for its compatibility spelling. Project documentation and
+user content outside mdkg-managed instruction sections remain user-owned.
 
 Expected result:
 
@@ -66,12 +79,14 @@ Preview scaffold changes before applying them:
 ```bash
 mdkg upgrade
 mdkg upgrade --json
-mdkg upgrade --apply
+mdkg upgrade --apply --plan-hash PLAN_HASH
 ```
 
-`mdkg upgrade --apply` updates mdkg-managed assets only after the dry-run receipt
-is reviewable. It preserves local overlays, customized docs, customized skills,
-and configured mirror paths instead of turning every repo into a fork of mdkg.
+Replace `PLAN_HASH` with the exact hash from the reviewed preview. Apply refuses
+changed inputs; preview again rather than reusing stale approval. Upgrade
+preserves local overlays, customized docs, customized skills, configured mirrors
+and instructions outside managed sections. Explicitly review customized legacy
+files and unsafe mixed sections rather than overwriting them.
 
 For capability files, use canonical `MANIFEST.md` naming in new work. Legacy
 `SPEC.md` files and `mdkg spec ...` commands remain compatibility aliases for

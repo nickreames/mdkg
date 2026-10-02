@@ -21,6 +21,7 @@ import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { derivedIndexPaths } from "./reindex";
 import { preflightCacheOutputs } from "./cache_output";
+import { preflightSqliteIndexOutputs } from "./sqlite_index";
 import { templateSetRelativePath } from "../core/template_path";
 
 /** Version the validation coverage independently from the persisted graph format.
@@ -113,6 +114,7 @@ export function identityDerivedOutputConflicts(root: string, config: Config,
   const paths = Object.values(destinations).map((file) => relative(root, file));
   try {
     preflightCacheOutputs(root, Object.values(destinations));
+    if (destinations.sqlite) preflightSqliteIndexOutputs(root, config);
     for (const file of paths) assertExactPathSpelling(root, file, "derived cache");
   } catch (error) { return [`derived cache output ownership preflight: ${message(error)}`]; }
   const caseModes = new Map<string, boolean>();

@@ -1,7 +1,9 @@
 import fs from "fs";
 import path from "path";
+import { constants as bufferConstants } from "node:buffer";
 import { withContainedPathSink } from "./filesystem_authority";
 import { ValidationError } from "../util/errors";
+import { assertNodeRuntime } from "./node_runtime";
 
 /** Admission is separate from native open: readOnly alone can write WAL/SHM.
  * Native pathname substitution remains the independent filesystem-race boundary.
@@ -45,17 +47,73 @@ export function admitSelectedSqliteObservation(file: string): void {
   admitSqliteDatabase(path.dirname(absolute), path.basename(absolute));
 }
 
-/** Keep the admitted file descriptor alive for the entire native read. SQLite
- * derives WAL/journal names from the path it opens; using the descriptor path
- * makes a journal-mode transition fail instead of creating sidecars next to
- * the canonical database. This is supported only where a process-local fd
- * namespace exists. It is not a substitute for Bug47's directory-race fix.
+export type ObservedSqliteDatabase = {
+  exec(sql: string): void;
+  prepare(sql: string): {
+    run(...values: unknown[]): { changes?: number; lastInsertRowid?: number | bigint };
+    get(...values: unknown[]): Record<string, unknown> | undefined;
+    all(...values: unknown[]): Array<Record<string, unknown>>;
+  };
+  close(): void;
+};
+
+type MemoryDatabase = ObservedSqliteDatabase & {
+  deserialize(image: Uint8Array): void;
+  enableDefensive(active: boolean): void;
+  setAuthorizer(callback: (action: number, first: string | null, second: string | null) => number): void;
+};
+type ObservationSqlite = {
+  DatabaseSync: { new (file: string, options: { allowExtension: boolean }): MemoryDatabase; prototype: MemoryDatabase };
+  constants: Record<string, number>;
+};
+
+function observationSqlite(): ObservationSqlite {
+  assertNodeRuntime();
+  return require("node:sqlite") as ObservationSqlite;
+}
+
+function requireImageMemory(bytes: bigint, copies: number): void {
+  // An image plus SQLite's deserialized copy consumes linear memory. This is a
+  // current-resource admission check, not a fixed compatibility size ceiling
+  // or a promise against concurrent process/system memory exhaustion.
+  const available = process.availableMemory();
+  const required = bytes * BigInt(copies);
+  if (!Number.isSafeInteger(available) || available <= 0 || required > BigInt(available)) {
+    throw new ValidationError(`SQLite observation needs ${required} bytes of available image memory; Node reports ${available}. Free memory or inspect a smaller explicitly prepared snapshot; no temporary-file fallback is used`);
+  }
+}
+
+function restrictObservation(db: MemoryDatabase, sql: Record<string, number>): void {
+  db.enableDefensive(true);
+  db.exec("PRAGMA temp_store=MEMORY; PRAGMA trusted_schema=OFF; PRAGMA foreign_keys=ON; PRAGMA query_only=ON;");
+  const reads = new Set([sql.SQLITE_SELECT, sql.SQLITE_READ, sql.SQLITE_RECURSIVE]);
+  const valuePragmas = new Set(["integrity_check", "quick_check", "foreign_key_check", "database_list", "page_count", "page_size", "query_only", "temp_store", "trusted_schema", "foreign_keys", "schema_version", "user_version"]);
+  const schemaPragmas = new Set(["table_info", "table_xinfo", "index_list", "index_info", "index_xinfo"]);
+  // Callbacks are trusted synchronous package code, not arbitrary JS. The
+  // authorizer also prevents SQL in a supplied schema from enabling writes,
+  // attaching files, loading extensions or changing the connection's guards.
+  db.setAuthorizer((action, first, second) => {
+    if (reads.has(action)) return sql.SQLITE_OK;
+    // Keep ordinary built-in expressions (including authored generated columns)
+    // usable. No JS functions are registered and native extension loading is
+    // disabled; a narrow list of just today's query functions would regress
+    // otherwise valid project databases.
+    if (action === sql.SQLITE_FUNCTION && String(second).toLowerCase() !== "load_extension") return sql.SQLITE_OK;
+    if (action === sql.SQLITE_PRAGMA && first &&
+      (schemaPragmas.has(first.toLowerCase()) || (valuePragmas.has(first.toLowerCase()) && second === null))) return sql.SQLITE_OK;
+    return sql.SQLITE_DENY;
+  });
+}
+
+/** Read a held ordinary file into a Node-owned image, then query SQLite only in
+ * memory. SQLite never receives the canonical filename or a descriptor path,
+ * so a journal-mode transition cannot create sidecars next to the source.
+ * Source custody and rollback-journal state are checked before accepting a
+ * result. This does not resolve the separate adversarial ancestor-swap/ACL bugs.
  */
-export function withObservedSqlitePath<T>(root: string, relativePath: string, read: (descriptorPath: string) => T): T {
+export function withObservedSqliteDatabase<T>(root: string, relativePath: string, read: (database: ObservedSqliteDatabase) => T): T {
+  const sqlite = observationSqlite(); // Missing capabilities refuse before filesystem admission.
   admitSqliteDatabase(root, relativePath);
-  const descriptorRoot = process.platform === "darwin" ? "/dev/fd" :
-    process.platform === "linux" ? "/proc/self/fd" : null;
-  if (!descriptorRoot) throw new ValidationError("descriptor-backed SQLite observation is unsupported on this platform");
   return withContainedPathSink({ root, relativePath, pathSyntax: "native", operation: "read" }, ({ absolutePath }) => {
     const initial = fs.lstatSync(absolutePath, { bigint: true });
     if (!initial.isFile()) throw new ValidationError("SQLite database must be an existing regular file");
@@ -75,10 +133,36 @@ export function withObservedSqlitePath<T>(root: string, relativePath: string, re
       if (header[18] !== 1 || header[19] !== 1) {
         throw new ValidationError("SQLite observation refuses WAL or transient/recovery state");
       }
-      const descriptorPath = `${descriptorRoot}/${fd}`;
-      if (!fs.existsSync(descriptorPath)) throw new ValidationError("descriptor-backed SQLite observation is unavailable");
-      let result!: T; let readError: unknown;
-      try { result = read(descriptorPath); } catch (error) { readError = error; }
+      if (opened.size < 100n || opened.size > BigInt(bufferConstants.MAX_LENGTH)) {
+        throw new ValidationError("SQLite observation image is not representable in a Node buffer");
+      }
+      requireImageMemory(opened.size, 2);
+      let image: Buffer;
+      try { image = Buffer.alloc(Number(opened.size)); }
+      catch (error) { throw new ValidationError(`SQLite observation could not allocate its image: ${String(error)}`); }
+      let offset = 0;
+      while (offset < image.length) {
+        const n = fs.readSync(fd, image, offset, Math.min(image.length - offset, 64 * 1024), offset);
+        if (!n) throw new ValidationError("SQLite database was truncated during image capture");
+        offset += n;
+      }
+      const captured = fs.fstatSync(fd, { bigint: true });
+      if (captured.size !== opened.size || captured.mtimeNs !== opened.mtimeNs || captured.ctimeNs !== opened.ctimeNs) {
+        throw new ValidationError("SQLite database changed during image capture");
+      }
+      if (!image.subarray(0, 100).equals(header)) {
+        throw new ValidationError("SQLite database header changed during image capture");
+      }
+      let result!: T; let readError: unknown; let readFailed = false;
+      try {
+        requireImageMemory(opened.size, 1);
+        const db = new sqlite.DatabaseSync(":memory:", { allowExtension: false });
+        try {
+          db.deserialize(image);
+          restrictObservation(db, sqlite.constants);
+          result = read(db);
+        } finally { db.close(); }
+      } catch (error) { readError = error; readFailed = true; }
       let custodyError: unknown;
       try {
         admitSqliteDatabase(root, relativePath);
@@ -92,17 +176,17 @@ export function withObservedSqlitePath<T>(root: string, relativePath: string, re
           throw new ValidationError("SQLite database changed during observation");
         }
       } catch (error) { custodyError = error; }
-      if (readError && custodyError) {
+      if (readFailed && custodyError) {
         throw new ValidationError(`SQLite observation and custody checks both failed: ${String(readError)}; ${String(custodyError)}`);
       }
-      if (readError) throw readError;
+      if (readFailed) throw readError;
       if (custodyError) throw custodyError;
       return result;
     } finally { fs.closeSync(fd); }
   });
 }
 
-export function withSelectedSqliteObservation<T>(file: string, read: (descriptorPath: string) => T): T {
+export function withSelectedSqliteObservation<T>(file: string, read: (database: ObservedSqliteDatabase) => T): T {
   const absolute = path.resolve(file);
-  return withObservedSqlitePath(path.dirname(absolute), path.basename(absolute), read);
+  return withObservedSqliteDatabase(path.dirname(absolute), path.basename(absolute), read);
 }

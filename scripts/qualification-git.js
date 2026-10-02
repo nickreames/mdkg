@@ -177,6 +177,11 @@ function acceptOwnedGitFixture(directory, suppliedEnv = process.env) {
     let common = gitDir;
     if (fs.existsSync(path.join(gitDir, "commondir"))) common = contained(readControl(path.join(gitDir, "commondir")).trim(), gitDir);
     for (const d of new Set([gitDir, common])) { assertDirectoryChain(d); metadataTree(d); }
+    const linked = common !== gitDir;
+    if (linked && (bare || pointer === null ||
+        contained(readControl(path.join(gitDir, "gitdir")).trim(), gitDir) !== path.join(top, ".git"))) {
+      throw new Error("Git fixture linked worktree backpointer does not match its expected root");
+    }
     const commonRows = configRows(path.join(common, "config"));
     const worktreeRows = configRows(path.join(gitDir, "config.worktree"));
     const rows = [...commonRows, ...worktreeRows];
@@ -187,7 +192,28 @@ function acceptOwnedGitFixture(directory, suppliedEnv = process.env) {
           /^(?:core\.editor|sequence\.editor|commit\.template|gpg\.program|gpg\..*\.(?:program|defaultkeycommand))$/.test(key) && value) {
         throw new Error(`Git fixture executable/include/URL policy is unsupported: ${key}`);
       }
-      if (key === "core.worktree" && contained(value, gitDir) !== top) throw new Error("Git fixture core.worktree does not match its expected root");
+    }
+    for (const [key, value] of commonRows) {
+      if (key !== "core.worktree") continue;
+      // Submodule common config names its original checkout, not every linked
+      // checkout. Keep that authority inside this fixture and require its own
+      // reciprocal marker; the linked checkout is bound independently above.
+      const mainWorktree = contained(value, common);
+      if (!linked) {
+        if (mainWorktree !== top) throw new Error("Git fixture core.worktree does not match its expected root");
+        continue;
+      }
+      const marker = path.join(mainWorktree, ".git"), stat = fs.lstatSync(marker);
+      let mainGitDir = marker;
+      if (stat.isFile()) {
+        const match = /^gitdir: ([^\r\n]+)\r?\n?$/.exec(readControl(marker));
+        if (!match) throw new Error("invalid Git fixture original worktree pointer");
+        mainGitDir = contained(match[1], mainWorktree);
+      } else if (!stat.isDirectory()) throw new Error("Git fixture original worktree marker is linked or special");
+      if (mainGitDir !== common) throw new Error("Git fixture inherited core.worktree does not own its common directory");
+    }
+    for (const [key, value] of worktreeRows) {
+      if (key === "core.worktree" && contained(value, gitDir) !== top) throw new Error("Git fixture checkout-local core.worktree does not match its expected root");
     }
     const directoryIdentity = [top, gitDir, common].map(p => { const s = fs.lstatSync(p); return [p, s.dev, s.ino]; });
     const binding = JSON.stringify({ identity: directoryIdentity, pointer, bare });

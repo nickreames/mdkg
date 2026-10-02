@@ -15,7 +15,7 @@ import { atomicWriteFile } from "../util/atomic";
 import { UsageError, ValidationError } from "../util/errors";
 import { assertCompatibleWriter } from "../util/writer_admission";
 import { verifyProjectDbForMutation } from "./project_db_migrations";
-import { admitSqliteDatabase, withObservedSqlitePath } from "./sqlite_observation";
+import { admitSqliteDatabase, withObservedSqliteDatabase } from "./sqlite_observation";
 import {
   ProjectQueueSnapshotSummary,
   readProjectQueueSnapshotSummary,
@@ -208,10 +208,7 @@ function openSnapshotDatabaseForMutation(root: string, filePath: string): Databa
 
 function withSnapshotRead<T>(root: string, filePath: string, read: (db: DatabaseSyncType) => T): T {
   admitDatabase(root, filePath);
-  return withObservedSqlitePath(root, path.relative(root, filePath), (descriptorPath) => {
-    const db = new (loadDatabaseCtor())(descriptorPath, { readOnly: true });
-    try { return read(db); } finally { db.close(); }
-  });
+  return withObservedSqliteDatabase(root, path.relative(root, filePath), read);
 }
 
 function queueSummary(root: string, filePath: string): ProjectQueueSnapshotSummary {

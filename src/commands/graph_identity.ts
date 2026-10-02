@@ -29,11 +29,14 @@ export function runGraphMigrateCommand(options: MigrationParameters & { root: st
   console.log(JSON.stringify(result, null, 2));
 }
 
-export function runGraphRecoverCommand(options: { root: string; hash: string; resume?: boolean; rollback?: boolean; lockEvidence?: string; json?: boolean }): void {
+export function runGraphRecoverCommand(options: { root: string; hash: string; resume?: boolean; rollback?: boolean; lockEvidence?: string; confirmQuiescent?: boolean; json?: boolean }): void {
   if (options.resume && options.rollback) throw new UsageError("graph recover requires at most one of --resume or --rollback");
   if (options.lockEvidence && (!/^sha256:[0-9a-f]{64}$/.test(options.lockEvidence) || (!options.resume && !options.rollback))) throw new UsageError("--lock-evidence requires an exact inspected sha256 value and --resume or --rollback");
+  if (options.confirmQuiescent && !options.resume && !options.rollback) throw new UsageError("--confirm-quiescent applies only with --resume or --rollback; inspection makes no operator assertion");
   const result = options.resume || options.rollback
-    ? continueGraphTransaction(options.root, options.hash, options.rollback ? "rollback" : "resume", {}, options.lockEvidence)
+    ? continueGraphTransaction(options.root, options.hash, options.rollback ? "rollback" : "resume", {}, {
+      lockEvidence: options.lockEvidence, confirmQuiescent: options.confirmQuiescent,
+    })
     : inspectGraphTransaction(options.root, options.hash);
   console.log(JSON.stringify(result, null, 2));
 }

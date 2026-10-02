@@ -58,7 +58,7 @@ const LOOP_GRAPH_WRITE_SAFETY: LoopCommandSafetyDescriptor = {
     "append-loop-fork-event-when-event-logging-is-enabled",
   ],
   read_paths: [".mdkg/**"],
-  write_paths: [".mdkg/**/*.md", ".mdkg/index/**", ".mdkg/events/*.jsonl"],
+  write_paths: [".mdkg/**/*.md", "<workspace-mdkg>/**/*.md", ".mdkg/index/**", "<configured-index-cache-paths>", ".mdkg/work/events/events.jsonl", "<workspace-mdkg>/work/events/events.jsonl"],
   dry_run: {
     supported: true,
     flag: "--dry-run",
@@ -139,7 +139,7 @@ export const LOOP_COMMAND_DESCRIPTORS: LoopCommandDescriptor[] = [
     safety: {
       ...READ_ONLY_LOOP_SAFETY,
       side_effects: ["read-or-write-loop-graph-state"],
-      write_paths: [".mdkg/**/*.md", ".mdkg/index/**", ".mdkg/events/*.jsonl"],
+      write_paths: [...LOOP_GRAPH_WRITE_SAFETY.write_paths],
       dry_run: { supported: true, commands: ["fork"] },
       lock_policy: "mutation-lock-required-for-fork",
       atomic_write_policy: "exclusive-create-and-atomic-file-writes",

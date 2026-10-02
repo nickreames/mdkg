@@ -58,5 +58,5 @@ Keep narrative body edits, nuanced summaries, and manual parent closeout updates
   - name: `verify-close-and-checkpoint`
   - stage: `stage:review`
   - writer role: `writer:orchestrator`
-  - description: Verify code and mdkg state, attach evidence, and close work cleanly when the single-writer AI agent or human orchestrator is ready to perform durable writes.
+  - description: Select risk-based tests during iteration and require full pre-merge or pre-publish gates when verifying work, attaching evidence, and closing a task.
 <!-- mdkg:skill-registry:end -->

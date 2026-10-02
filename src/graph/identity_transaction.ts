@@ -7,7 +7,8 @@ import {
 } from "../core/filesystem_authority";
 import { UsageError } from "../util/errors";
 import { heldMutationLock, withMutationLock, withRecoveredMutationLock } from "../util/lock";
-import { assertOrphanLock, MutationLockRecord, readMutationLock, lockRecordHash } from "../util/lock_evidence";
+import { assertRecoveryLockEvidence, checkoutIdentity, MutationLockRecord, readMutationLock, lockRecordHash,
+  mutationLockChain, RECOVERY_CONFIRMATION, RECOVERY_CONTRACT } from "../util/lock_evidence";
 import { canonicalJson, GRAPH_FORMAT_PATH, identityHash, parseGraphFormat } from "./identity";
 import { GraphFileChange, IdentityPlanBase, publicMigrationPlan } from "./identity_migration";
 import { AuthoredSnapshot, graphControlSnapshot, indexAuthoredSnapshot, readAuthoredSnapshot, readIdentityEvidence } from "./identity_snapshot";
@@ -25,7 +26,13 @@ import { ACCEPTANCE_DIRECTORY, matchesReconciliationAcceptance, reconciliationAc
 
 const JOURNAL_DIR = ".mdkg/state/identity-transactions";
 type TransactionState = "applying" | "applied" | "rolling-back" | "rolled-back";
-type GraphJournal = { schema_version: 1; state: TransactionState; plan: IdentityPlanBase; lock_epochs?: MutationLockRecord[] };
+type RecoveryApproval = {
+  schema_version: 2; recovery_contract: typeof RECOVERY_CONTRACT; confirmation: typeof RECOVERY_CONFIRMATION;
+  mode: "resume" | "rollback"; approval_hash: string; journal_hash: string; lock_hash: string | null;
+  input_hash: string; owner_nonce: string;
+};
+type GraphJournal = { schema_version: 1; state: TransactionState; plan: IdentityPlanBase; lock_epochs?: MutationLockRecord[]; recovery_approvals?: RecoveryApproval[] };
+export type GraphRecoveryAuthorization = { lockEvidence?: string; confirmQuiescent?: boolean };
 export type GraphTransactionHooks = {
   /** Test-only in-process hook; never exposed as a CLI flag or environment variable. */
   afterWrite?: (path: string, index: number) => void;
@@ -415,22 +422,35 @@ function recoveryReview(root: string, journal: GraphJournal, mode: "resume" | "r
   if (value(root, journalPath(journal.plan.plan_hash)) !== expectedJournal || canonicalJson(JSON.parse(expectedJournal)) !== canonicalJson(journal)) throw new UsageError("graph journal byte custody changed; inspect again");
   const record = readMutationLock(root), journalHash = identityHash(expectedJournal);
   const journalRecord = journal.lock_epochs?.[journal.lock_epochs.length - 1];
-  if (record) assertOrphanLock(root, record, journalRecord, journal.plan.plan_hash, journalHash, mode);
+  if (record) assertRecoveryLockEvidence(root, record, journalRecord, journal.plan.plan_hash, journalHash, mode);
+  const hashValue = (value: unknown) => typeof value === "string" && /^sha256:[0-9a-f]{64}$/.test(value);
+  if (journal.recovery_approvals !== undefined && (!Array.isArray(journal.recovery_approvals) || journal.recovery_approvals.length >= 128 ||
+    journal.recovery_approvals.some(entry => !entry || entry.schema_version !== 2 || entry.recovery_contract !== RECOVERY_CONTRACT ||
+      entry.confirmation !== RECOVERY_CONFIRMATION || !["resume", "rollback"].includes(entry.mode) ||
+      !hashValue(entry.approval_hash) || !hashValue(entry.journal_hash) || !hashValue(entry.input_hash) ||
+      (entry.lock_hash !== null && !hashValue(entry.lock_hash)) || typeof entry.owner_nonce !== "string" || !/^[0-9a-f-]{36}$/.test(entry.owner_nonce)))) {
+    throw new UsageError("graph recovery approval history is invalid or full; preserve evidence for investigation");
+  }
   const bytes = recoveryBytes(root, journal);
-  const approval = record ? identityHash(canonicalJson({ schema_version: 1, action: "graph.recover.lock", mode,
-    plan_hash: journal.plan.plan_hash, journal_hash: journalHash, lock_hash: lockRecordHash(record), input_hash: bytes })) : null;
-  return { record, journal_record: journalRecord, journal_hash: journalHash, bytes, approval };
+  const mutates = !!record || !((mode === "resume" && journal.state === "applied") || (mode === "rollback" && journal.state === "rolled-back"));
+  const lockHash = record ? lockRecordHash(record) : null;
+  // Version/domain separation prevents a pre-quiescence token being reused as
+  // the new approval. Bind absent locks and checkout identity as well as files.
+  const approval = mutates ? identityHash(canonicalJson({ schema_version: 2, action: "graph.recover",
+    recovery_contract: RECOVERY_CONTRACT, confirmation: RECOVERY_CONFIRMATION, mode, checkout: checkoutIdentity(root),
+    plan_hash: journal.plan.plan_hash, journal_hash: journalHash, lock_hash: lockHash, input_hash: bytes })) : null;
+  return { record, journal_record: journalRecord, journal_hash: journalHash, lock_hash: lockHash, bytes, approval, mutates };
 }
 
-export function continueGraphTransaction(root: string, hash: string, mode: "resume" | "rollback", hooks: GraphTransactionHooks = {}, lockEvidence?: string) {
+export function continueGraphTransaction(root: string, hash: string, mode: "resume" | "rollback", hooks: GraphTransactionHooks = {}, authorization: GraphRecoveryAuthorization = {}) {
   const journal = readJournal(root, hash), raw = value(root, journalPath(hash))!;
   const review = recoveryReview(root, journal, mode, raw);
-  if (review.record && (!lockEvidence || lockEvidence !== review.approval)) throw new UsageError("orphan lock requires the exact fresh --lock-evidence from read-only graph recover inspection");
-  if (!review.record && lockEvidence) throw new UsageError("reviewed orphan lock is no longer present; no recovery attempted");
-  if ((mode === "resume" && journal.state === "applied") || (mode === "rollback" && journal.state === "rolled-back")) {
-    checkTerminal(root, journal, mode === "rollback");
-    if (!review.record) return receipt(journal); // Preserve observational terminal repeat.
+  if (!review.mutates) {
+    if (authorization.lockEvidence) throw new UsageError("reviewed recovery state changed or is already terminal; inspect again without stale approval");
+    return receipt(journal); // No assertion needed for an observational terminal repeat.
   }
+  if (authorization.confirmQuiescent !== true) throw new UsageError("graph recovery requires --confirm-quiescent: explicitly confirm all checkout writers are stopped; inspection and PID absence do not establish this");
+  if (!authorization.lockEvidence || authorization.lockEvidence !== review.approval) throw new UsageError("graph recovery requires the exact fresh --lock-evidence from read-only graph recover inspection");
   const execute = () => {
     if (review.record) hooks.afterClaim?.();
     const guard = journalGuard(root, hash, raw, hooks);
@@ -438,6 +458,12 @@ export function continueGraphTransaction(root: string, hash: string, mode: "resu
     checkRecoveryRequest(root, journal, mode);
     if (recoveryBytes(root, journal) !== review.bytes) throw new UsageError("graph recovery evidence changed after approval; preserve state and inspect again");
     bindCurrentLock(root, journal);
+    const owners = mutationLockChain(heldMutationLock(root), hash).owners;
+    journal.recovery_approvals = [...(journal.recovery_approvals ?? []), {
+      schema_version: 2, recovery_contract: RECOVERY_CONTRACT, confirmation: RECOVERY_CONFIRMATION,
+      mode, approval_hash: review.approval!, journal_hash: review.journal_hash, lock_hash: review.lock_hash,
+      input_hash: review.bytes, owner_nonce: owners[owners.length - 1].nonce,
+    }];
     journal.state = mode === "rollback" ? "rolling-back" : "applying";
     guard.save(journal);
     const changes = mode === "rollback" ? [...journal.plan.writes].reverse() : journal.plan.writes;
@@ -451,7 +477,7 @@ export function continueGraphTransaction(root: string, hash: string, mode: "resu
     return receipt(journal);
   };
   return review.record ? withRecoveredMutationLock(root, { ...review, record: review.record,
-    approval_hash: review.approval!, plan_hash: hash, mode }, execute)
+    approval_hash: review.approval!, plan_hash: hash, mode, confirm_quiescent: authorization.confirmQuiescent }, execute)
     : withMutationLock(root, loadConfig(root).index.lock_timeout_ms, execute, { plan_hash: hash, mode });
 }
 
@@ -466,7 +492,10 @@ export function inspectGraphTransaction(root: string, hash: string) {
   const recovery = Object.fromEntries((["resume", "rollback"] as const).map(mode => {
     try {
       const review = recoveryReview(root, journal, mode, raw);
-      return [mode, { ready: true, lock_evidence: review.approval, lock_state: review.record ? "proven-orphan" : "absent" }];
+      return [mode, { ready: true, evidence_valid: true, approval_contract: RECOVERY_CONTRACT,
+        quiescence: review.mutates ? "operator-confirmation-required" : "not-required-read-only",
+        lock_evidence: review.approval, lock_state: review.record ? "recorded-owner-not-observed-locally" : "absent",
+        mutation_required: review.mutates }];
     } catch (error) {
       return [mode, { ready: false, lock_evidence: null, reason: error instanceof Error ? error.message : "ownership evidence unavailable" }];
     }

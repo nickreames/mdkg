@@ -68,6 +68,42 @@ test("bounded reads preserve exact limits, encodings and empty files and reject 
   } finally { fs.rmSync(base, { recursive: true }); }
 });
 
+test("contained append refuses shared inodes while preserving single-link append", () => {
+  const { base, root, outside } = fixture();
+  try {
+    const target = path.join(root, "events.jsonl");
+    fs.writeFileSync(target, "before\n");
+    const original = fs.statSync(target);
+    for (const peer of [path.join(root, "peer"), path.join(outside, "peer")]) {
+      fs.linkSync(target, peer);
+      assert.throws(() => authority.appendContainedFile({ root, relativePath: "events.jsonl" }, "bad\n"),
+        (error: unknown) => error instanceof authority.ContainedPathError && error.code === "ERR_CONTAINED_PATH_LINK");
+      assert.equal(fs.readFileSync(target, "utf8"), "before\n");
+      assert.equal(fs.readFileSync(peer, "utf8"), "before\n");
+      fs.unlinkSync(peer);
+    }
+    authority.appendContainedFile({ root, relativePath: "events.jsonl" }, "after\n");
+    assert.equal(fs.readFileSync(target, "utf8"), "before\nafter\n");
+    assert.equal(fs.statSync(target).ino, original.ino);
+  } finally { fs.rmSync(base, { recursive: true }); }
+});
+
+test("contained append checks the opened descriptor for shared inodes", () => {
+  const { base, root, outside } = fixture();
+  const original = fs.openSync;
+  try {
+    const target = path.join(root, "events.jsonl"), peer = path.join(outside, "peer");
+    fs.writeFileSync(target, "before\n");
+    fs.openSync = ((...args: Parameters<typeof fs.openSync>) => {
+      const handle = original(...args);
+      if (String(args[0]) === target) fs.linkSync(target, peer);
+      return handle;
+    }) as typeof fs.openSync;
+    assert.throws(() => authority.appendContainedFile({ root, relativePath: "events.jsonl" }, "bad\n"), /single-link/);
+    assert.equal(fs.readFileSync(peer, "utf8"), "before\n");
+  } finally { fs.openSync = original; fs.rmSync(base, { recursive: true }); }
+});
+
 test("native layout adapters preserve contained filenames without weakening portable paths", () => {
   const { base, root, outside } = fixture();
   try {

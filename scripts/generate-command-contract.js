@@ -30,16 +30,35 @@ function loadLoopCommandDescriptors() {
 const LOOP_COMMAND_DESCRIPTOR_BY_KEY = loadLoopCommandDescriptors();
 
 const READ_WRITE_PATHS = {
-  graph: [".mdkg/**/*.md", ".mdkg/index/**"],
-  config: [".mdkg/config.json", ".mdkg/index/**"],
-  init: [".mdkg/**", "AGENT_START.md", "AGENTS.md", "CLAUDE.md", "CLI_COMMAND_MATRIX.md", "llms.txt"],
-  db: [".mdkg/db/**", ".mdkg/index/**"],
-  archive: [".mdkg/archive/**", ".mdkg/index/**"],
-  bundle: [".mdkg/bundles/**", ".mdkg/index/**"],
-  subgraph: [".mdkg/config.json", ".mdkg/subgraphs/**", ".mdkg/index/**"],
-  skill: [".mdkg/skills/**", ".agents/skills/**", ".claude/skills/**", ".mdkg/index/**"],
-  event: [".mdkg/events.jsonl"],
+  graph: [".mdkg/**/*.md", "<workspace-mdkg>/**/*.md", ".mdkg/index/**", "<configured-index-cache-paths>", ".mdkg/work/events/events.jsonl", "<workspace-mdkg>/work/events/events.jsonl"],
+  config: [".mdkg/config.json", ".mdkg/index/**", "<configured-index-cache-paths>"],
+  init: [".mdkg/**", "AGENT_START.md", "AGENTS.md", "CLAUDE.md", "CLI_COMMAND_MATRIX.md", "llms.txt", ".agents/skills/**", ".claude/skills/**", ".gitignore", ".npmignore", ".dockerignore"],
+  db: [".mdkg/config.json", ".mdkg/db/**", "<configured-project-db-runtime>", "<configured-project-db-state>", "<--out>", ".mdkg/index/**"],
+  archive: [".mdkg/archive/**", "<workspace-mdkg>/archive/**", ".mdkg/index/**", "<configured-index-cache-paths>", "<workspace-mdkg>/work/events/events.jsonl"],
+  bundle: [".mdkg/bundles/**", "<configured-bundle-output-dir>/**", "<--out>"],
+  subgraph: [".mdkg/config.json", ".mdkg/subgraphs/**", "<configured-subgraph-bundle-paths>", "<--target>/**", ".mdkg/index/**", "<configured-index-cache-paths>"],
+  skill: [".mdkg/skills/**", "<configured-skills-root>/**", ".agents/skills/**", ".claude/skills/**", "<configured-skill-mirror-roots>/**", ".mdkg/index/**", "<configured-index-cache-paths>", ".mdkg/work/events/events.jsonl"],
+  event: [".mdkg/work/events/events.jsonl", "<workspace-mdkg>/work/events/events.jsonl"],
 };
+
+// Read-only is an audited classification, not the fallback for a new command.
+// Family records conservatively describe every supported invocation; concrete
+// read-only modes remain documented below without granting execution authority.
+const READ_ONLY_TARGETS = new Set([
+  "global", "show", "list", "search", "next", "guide", "status", "mcp", "mcp serve",
+  "capability", "capability list", "capability search", "capability show",
+  "manifest", "manifest list", "manifest show", "manifest validate",
+  "spec", "spec list", "spec show", "spec validate",
+  "archive list", "archive show", "archive verify", "bundle list", "bundle show", "bundle verify",
+  "subgraph list", "subgraph show", "subgraph verify", "graph refs",
+  "goal show", "goal current", "goal next", "goal evaluate",
+  "skill list", "skill show", "skill search", "skill validate",
+]);
+
+function mixedSafety(effects, paths, lock, atomic, receipts = []) {
+  return { side_effects: effects, write_paths: paths, lock_policy: lock, atomic_write_policy: atomic,
+    receipts, danger_level: "mixed", dry_run: { supported: false } };
+}
 
 const SAFETY_OVERRIDES = {
   init: {
@@ -99,7 +118,7 @@ const SAFETY_OVERRIDES = {
   bundle: {
     side_effects: ["read-or-write-mdkg-bundles"],
     write_paths: READ_WRITE_PATHS.bundle,
-    lock_policy: "mutation-lock-required-for-create-import",
+    lock_policy: "no-command-level-mutation-lock; output-custody-preflight-for-create",
     atomic_write_policy: "zip-temp-rename-and-atomic-file-writes",
     dry_run: { supported: false },
     receipts: ["bundle-receipt"],
@@ -108,20 +127,20 @@ const SAFETY_OVERRIDES = {
   "bundle create": {
     side_effects: ["create-bundle-zip"],
     write_paths: READ_WRITE_PATHS.bundle,
-    lock_policy: "mutation-lock-required",
+    lock_policy: "no-command-level-mutation-lock; output-custody-preflight",
     atomic_write_policy: "zip-temp-rename",
     dry_run: { supported: false },
     receipts: ["bundle-create-receipt"],
     danger_level: "moderate",
   },
   "bundle import": {
-    side_effects: ["register-imported-subgraph-bundle"],
-    write_paths: READ_WRITE_PATHS.subgraph,
-    lock_policy: "mutation-lock-required",
-    atomic_write_policy: "atomic-config-write",
+    side_effects: ["none"],
+    write_paths: [],
+    lock_policy: "none-read-only",
+    atomic_write_policy: "none-read-only",
     dry_run: { supported: false },
     receipts: ["bundle-import-receipt"],
-    danger_level: "moderate",
+    danger_level: "read-only",
   },
   "graph refs": {
     side_effects: ["none"],
@@ -156,7 +175,7 @@ const SAFETY_OVERRIDES = {
     side_effects: ["inspect-or-resume-or-roll-back-reviewed-graph-transaction"],
     read_paths: [".mdkg/**", "<local-git-objects-and-index>"],
     write_paths: ["<reviewed-authored-graph-paths>", ".mdkg/graph.json", ".mdkg/identity/**", ".mdkg/state/identity-transactions/**", ".mdkg/index/**"],
-    lock_policy: "mutation-lock-or-explicit-evidence-bound-orphan-recovery",
+    lock_policy: "mutation-lock-and-explicit-quiescence-with-fresh-recovery-evidence",
     atomic_write_policy: "exact-owned-bytes-and-checkout-lock-journal-custody",
     dry_run: { supported: true, default: true },
     receipts: ["graph-transaction-inspect", "graph-transaction-receipt"],
@@ -181,10 +200,10 @@ const SAFETY_OVERRIDES = {
     danger_level: "read-only",
   },
   handoff: {
-    side_effects: ["create-sanitized-agent-handoff-when-out-is-provided"],
-    write_paths: [".mdkg/handoffs/**"],
-    lock_policy: "not-required-for-stdout-output",
-    atomic_write_policy: "atomic-file-write-when-out-is-provided",
+    side_effects: ["create-sanitized-agent-handoff-when-out-is-provided", "may-refresh-derived-caches-even-for-stdout"],
+    write_paths: [".mdkg/handoffs/**", "<--out>", ".mdkg/index/**", "<configured-index-cache-paths>"],
+    lock_policy: "no-command-level-mutation-lock; cache-writers-own-their-write-policy",
+    atomic_write_policy: "atomic-output-and-derived-cache-writes",
     dry_run: { supported: false },
     receipts: ["handoff-receipt"],
     danger_level: "moderate",
@@ -195,7 +214,7 @@ const SAFETY_OVERRIDES = {
     write_paths: READ_WRITE_PATHS.subgraph,
     lock_policy: "mutation-lock-required-for-add-rm-enable-disable-sync-materialize",
     atomic_write_policy: "atomic-config-writes-and-temp-tree-rename",
-    dry_run: { supported: true, commands: ["sync", "materialize", "audit", "upgrade-plan"] },
+    dry_run: { supported: true, commands: ["sync"] },
     receipts: ["subgraph-receipt"],
     danger_level: "mixed",
   },
@@ -236,10 +255,10 @@ const SAFETY_OVERRIDES = {
     danger_level: "moderate",
   },
   "subgraph refresh": {
-    side_effects: ["refresh-root-owned-subgraph-bundle"],
-    write_paths: READ_WRITE_PATHS.subgraph,
+    side_effects: ["reload-configured-bundle-snapshots-and-rebuild-derived-indexes"],
+    write_paths: [".mdkg/index/**", "<configured-index-cache-paths>"],
     lock_policy: "mutation-lock-required",
-    atomic_write_policy: "bundle-temp-rename",
+    atomic_write_policy: "atomic-derived-cache-writes",
     dry_run: { supported: false },
     receipts: ["subgraph-refresh-receipt"],
     danger_level: "moderate",
@@ -254,17 +273,17 @@ const SAFETY_OVERRIDES = {
     danger_level: "moderate",
   },
   "subgraph materialize": {
-    side_effects: ["write-materialized-read-only-inspection-tree"],
-    write_paths: [".mdkg/subgraphs/**"],
+    side_effects: ["write-materialized-read-only-inspection-tree", "replace-owned-generated-tree-with-clean"],
+    write_paths: ["<--target>/<alias>/**", "<--target>/.gitignore"],
     lock_policy: "mutation-lock-required-for-write",
     atomic_write_policy: "temp-tree-rename",
-    dry_run: { supported: true, flag: "--dry-run" },
+    dry_run: { supported: false },
     receipts: ["subgraph-materialize-receipt"],
     danger_level: "moderate",
   },
   work: {
     side_effects: ["read-or-write-work-contract-mirrors"],
-    write_paths: READ_WRITE_PATHS.graph,
+    write_paths: [...READ_WRITE_PATHS.graph, ...READ_WRITE_PATHS.archive, "<configured-project-db-runtime>"],
     lock_policy: "mutation-lock-required-for-contract-trigger-receipt-artifact-writes",
     atomic_write_policy: "exclusive-create-and-atomic-file-writes",
     dry_run: { supported: false },
@@ -282,7 +301,7 @@ const SAFETY_OVERRIDES = {
   },
   "work trigger": {
     side_effects: ["create-submitted-work-order-and-optionally-enqueue-message"],
-    write_paths: [".mdkg/work_orders/**", ".mdkg/db/**", ".mdkg/index/**"],
+    write_paths: [...READ_WRITE_PATHS.graph, ".mdkg/work/**/WORK_ORDER.md", "<configured-project-db-runtime>"],
     lock_policy: "mutation-lock-required",
     atomic_write_policy: "exclusive-create-and-sqlite-transaction",
     dry_run: { supported: false },
@@ -291,7 +310,7 @@ const SAFETY_OVERRIDES = {
   },
   "work receipt": {
     side_effects: ["create-or-update-work-receipt"],
-    write_paths: [".mdkg/receipts/**", ".mdkg/index/**"],
+    write_paths: [...READ_WRITE_PATHS.graph, ".mdkg/work/**/RECEIPT.md"],
     lock_policy: "mutation-lock-required-for-new-update",
     atomic_write_policy: "exclusive-create-or-atomic-file-write",
     dry_run: { supported: false },
@@ -299,10 +318,10 @@ const SAFETY_OVERRIDES = {
     danger_level: "mixed",
   },
   "work artifact": {
-    side_effects: ["create-work-artifact-record"],
-    write_paths: [".mdkg/artifacts/**", ".mdkg/index/**"],
+    side_effects: ["create-work-artifact-record-and-update-owning-order-or-receipt"],
+    write_paths: [...READ_WRITE_PATHS.archive, "<workspace-mdkg>/archive/**", ...READ_WRITE_PATHS.graph],
     lock_policy: "mutation-lock-required",
-    atomic_write_policy: "exclusive-create",
+    atomic_write_policy: "exclusive-archive-create-and-atomic-node-update",
     dry_run: { supported: false },
     receipts: ["work-artifact-receipt"],
     danger_level: "moderate",
@@ -319,7 +338,7 @@ const SAFETY_OVERRIDES = {
   },
   goal: {
     side_effects: ["read-or-update-selected-goal-state"],
-    write_paths: READ_WRITE_PATHS.graph,
+    write_paths: [...READ_WRITE_PATHS.graph, ".mdkg/state/selected-goal.json"],
     lock_policy: "mutation-lock-required-for-select-clear-claim-pause-resume-done",
     atomic_write_policy: "atomic-file-writes",
     dry_run: { supported: false },
@@ -439,7 +458,7 @@ const SAFETY_OVERRIDES = {
   event: {
     side_effects: ["read-or-append-jsonl-event-log"],
     write_paths: READ_WRITE_PATHS.event,
-    lock_policy: "mutation-lock-required-for-enable-append",
+    lock_policy: "mutation-lock-for-v2-append; no-command-lock-for-legacy-append-or-enable",
     atomic_write_policy: "append-or-exclusive-create",
     dry_run: { supported: false },
     receipts: ["event-receipt"],
@@ -448,7 +467,7 @@ const SAFETY_OVERRIDES = {
   "event enable": {
     side_effects: ["create-event-log"],
     write_paths: READ_WRITE_PATHS.event,
-    lock_policy: "mutation-lock-required",
+    lock_policy: "no-command-level-mutation-lock; exclusive-log-create",
     atomic_write_policy: "exclusive-create",
     dry_run: { supported: false },
     receipts: ["event-enable-receipt"],
@@ -457,7 +476,7 @@ const SAFETY_OVERRIDES = {
   "event append": {
     side_effects: ["append-event-log-row"],
     write_paths: READ_WRITE_PATHS.event,
-    lock_policy: "mutation-lock-required",
+    lock_policy: "mutation-lock-required-for-v2; no-command-lock-for-legacy",
     atomic_write_policy: "append-only-jsonl",
     dry_run: { supported: false },
     receipts: ["event-append-receipt"],
@@ -511,13 +530,13 @@ const SAFETY_OVERRIDES = {
     write_paths: READ_WRITE_PATHS.graph,
     lock_policy: "mutation-lock-required",
     atomic_write_policy: "atomic-file-writes",
-    dry_run: { supported: true, default: false, flag: "--dry-run" },
+    dry_run: { supported: true, requires: "--headings", default_when: "--headings without --apply", flag: "--dry-run", side_effects: ["acquire-and-release-mutation-lock"], write_paths: [".mdkg/index/write.lock/**"] },
     receipts: ["format-receipt"],
     danger_level: "moderate",
   },
   workspace: {
     side_effects: ["read-or-update-workspace-config"],
-    write_paths: READ_WRITE_PATHS.config,
+    write_paths: [...READ_WRITE_PATHS.config, "<workspace-mdkg>/core/", "<workspace-mdkg>/design/", "<workspace-mdkg>/work/"],
     lock_policy: "mutation-lock-required-for-add-rm-enable-disable",
     atomic_write_policy: "atomic-config-write",
     dry_run: { supported: false },
@@ -535,7 +554,7 @@ const SAFETY_OVERRIDES = {
   },
   "db index": {
     side_effects: ["read-or-rebuild-sqlite-index"],
-    write_paths: [".mdkg/index/**"],
+    write_paths: [".mdkg/index/**", "<configured-index-cache-paths>"],
     lock_policy: "mutation-lock-required-for-rebuild",
     atomic_write_policy: "sqlite-transaction-and-temp-files",
     dry_run: { supported: false },
@@ -544,7 +563,7 @@ const SAFETY_OVERRIDES = {
   },
   "db queue": {
     side_effects: ["read-or-write-local-project-db-queue-delivery-state", "emit-read-only-adapter-contract"],
-    write_paths: [".mdkg/db/runtime/**"],
+    write_paths: [".mdkg/db/runtime/**", "<configured-project-db-runtime>"],
     lock_policy: "mutation-lock-required-for-create-pause-resume-enqueue-claim-ack-fail-dead-letter-release-expired",
     atomic_write_policy: "sqlite-transactions",
     dry_run: { supported: false },
@@ -554,7 +573,7 @@ const SAFETY_OVERRIDES = {
   },
   "db snapshot": {
     side_effects: ["read-or-seal-project-db-snapshot"],
-    write_paths: [".mdkg/db/state/**"],
+    write_paths: [".mdkg/db/state/**", "<configured-project-db-state>", "<configured-project-db-runtime>", "<--out>"],
     lock_policy: "mutation-lock-required-for-seal",
     atomic_write_policy: "atomic-file-writes",
     dry_run: { supported: false },
@@ -563,19 +582,45 @@ const SAFETY_OVERRIDES = {
   },
   index: {
     side_effects: ["rebuild-generated-index-cache"],
-    write_paths: [".mdkg/index/**"],
+    write_paths: [".mdkg/index/**", "<configured-index-cache-paths>"],
     lock_policy: "mutation-lock-required",
     atomic_write_policy: "sqlite-transaction-and-atomic-cache-write",
     dry_run: { supported: false },
     receipts: ["index-rebuild-receipt"],
     danger_level: "moderate",
   },
+  pack: {
+    ...mixedSafety(["write-pack-and-optional-statistics-or-truncation-reports"],
+      [".mdkg/pack/**", "<--out>", "<--stats-out>", "<--truncation-report>", "<pack-output>.stats.json", "<pack-output>.truncation.json"],
+      "no-command-level-mutation-lock; output-custody-preflight", "atomic-output-replacement", ["pack-output", "pack-statistics", "pack-truncation-report"]),
+    dry_run: { supported: true, flag: "--dry-run", side_effects: ["none"], write_paths: [] },
+  },
+  validate: mixedSafety(["write-explicit-report-when-out-or-json-out-is-provided"], ["<--out>", "<--json-out>"],
+    "no-command-level-mutation-lock", "direct-report-writes-not-transactional", ["validation-receipt"]),
+  doctor: mixedSafety(["may-refresh-derived-caches-unless-strict-or-no-reindex"], [".mdkg/index/**", "<configured-index-cache-paths>"],
+    "no-command-level-mutation-lock; cache-writers-own-their-write-policy", "atomic-derived-cache-writes", ["doctor-receipt"]),
+  "work order": mixedSafety(["create-or-update-work-order; status-is-observational"], [...READ_WRITE_PATHS.graph, ".mdkg/work/**/WORK_ORDER.md"],
+    "mutation-lock-required-for-new-update", "exclusive-create-or-atomic-file-write", ["work-order-receipt", "work-order-status"]),
+  graph: mixedSafety(["read-or-write-graph-transport-identity-and-reconciliation-state"],
+    [...READ_WRITE_PATHS.graph, ".mdkg/graph.json", ".mdkg/identity/**", ".mdkg/state/**", "<--target>/**"],
+    "operation-specific; target-index-lock-for-clone-fork; mutation-lock-for-apply", "operation-specific-exclusive-create-or-journaled-atomic-writes", ["graph-receipt"]),
+  "graph clone": mixedSafety(["create-new-target-graph-and-derived-indexes"], ["<--target>/**"],
+    "exclusive-empty-target-admission-and-target-index-lock", "exclusive-file-creation; failed-target-may-remain", ["graph-clone-receipt"]),
+  "graph fork": mixedSafety(["create-independent-target-graph-and-optional-selected-goal"], ["<--target>/**"],
+    "exclusive-empty-target-admission-and-target-index-lock", "exclusive-file-creation; failed-target-may-remain", ["graph-fork-receipt"]),
+  "graph import-template": {
+    ...mixedSafety(["preview-or-import-template-nodes-and-identity-provenance"], [...READ_WRITE_PATHS.graph, ".mdkg/identity/**", ".mdkg/state/selected-goal.json"],
+      "mutation-lock-required-for-apply", "exclusive-node-creation-and-atomic-state-writes", ["graph-import-template-receipt"]),
+    dry_run: { supported: true, default: true, apply_flag: "--apply", side_effects: ["none"], write_paths: [] },
+  },
+  fix: mixedSafety(["preview-or-apply-reviewed-duplicate-id-repair"], READ_WRITE_PATHS.graph,
+    "mutation-lock-required-for-apply", "atomic-file-writes", ["fix-plan-receipt", "fix-apply-receipt"]),
 };
 
 function goalStateMutation(action) {
   return {
     side_effects: [action],
-    write_paths: READ_WRITE_PATHS.graph,
+    write_paths: [...READ_WRITE_PATHS.graph, ".mdkg/state/selected-goal.json"],
     lock_policy: "mutation-lock-required",
     atomic_write_policy: "atomic-file-writes",
     dry_run: { supported: false },
@@ -730,7 +775,10 @@ function categoryFor(target) {
   return target[0];
 }
 
-function defaultSafety(helpText) {
+function defaultSafety(key, helpText) {
+  if (!READ_ONLY_TARGETS.has(key) && !SAFETY_OVERRIDES[key] && !LOOP_COMMAND_DESCRIPTOR_BY_KEY.has(key)) {
+    throw new Error(`command ${key} lacks an explicit reviewed safety classification`);
+  }
   const jsonSchemaRef = helpText.includes("--json") ? "mdkg.command_output.v1" : null;
   return {
     json_schema_ref: jsonSchemaRef,
@@ -747,6 +795,9 @@ function defaultSafety(helpText) {
 
 function normalizeRecord(record) {
   const normalized = { ...record };
+  if (normalized.danger_level !== "read-only" && normalized.lock_policy.startsWith("mutation-lock-")) {
+    normalized.write_paths = [...normalized.write_paths, ".mdkg/index/write.lock/**"];
+  }
   if (!normalized.json_schema_ref) {
     normalized.json_schema_ref = null;
   }
@@ -789,7 +840,7 @@ function commandRecord(target) {
   const key = helpTargetKey(target);
   const help = runHelp(target);
   const usage = collectUsageLines(help);
-  const base = defaultSafety(help);
+  const base = defaultSafety(key, help);
   const override = SAFETY_OVERRIDES[key] || {};
   const record = applyLoopDescriptor({
     key,
@@ -814,7 +865,10 @@ function commandRecord(target) {
     aliases: [],
     exit_codes: [
       { code: 0, meaning: "success" },
-      { code: 1, meaning: "validation-or-runtime-error" },
+      { code: 1, meaning: "usage-error" },
+      { code: 2, meaning: "validation-error" },
+      { code: 3, meaning: "not-found" },
+      { code: 4, meaning: "unexpected-runtime-error" },
     ],
     examples: usage.slice(0, 3),
     docs: {
@@ -983,4 +1037,5 @@ function main() {
   process.stdout.write(`${JSON.stringify(contract, null, 2)}\n`);
 }
 
-main();
+module.exports = { defaultSafety, validateContract };
+if (require.main === module) main();

@@ -84,7 +84,7 @@ const definitions: Record<string, string> = {
   "bundle verify": "json",
   "graph migrate": "graph-id origin ancestor decisions apply plan-hash json",
   "graph reconcile": "ancestor incoming target decisions apply plan-hash json",
-  "graph recover": "resume rollback lock-evidence json",
+  "graph recover": "resume rollback lock-evidence confirm-quiescent json",
   "graph clone": "target json",
   "graph fork": "target start-goal json",
   "graph import-template": "start-goal id-prefix dry-run apply select-goal json",

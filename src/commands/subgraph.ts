@@ -22,6 +22,7 @@ import { withMutationLock } from "../util/lock";
 import { buildBundle, bundlePayloadErrors, parseBundle, sha256Buffer, verifyBundle } from "./bundle";
 import { bundleTransportState } from "../graph/transport_policy";
 import { readGraphFormat } from "../graph/identity";
+import { assertNoGitMetadataDestinations } from "../util/git_metadata";
 
 export type SubgraphAddOptions = {
   root: string;
@@ -975,6 +976,15 @@ function syncOneAlias(options: {
   }
 
   const planned: Array<{ source: SubgraphSourceConfig; outputPath: string; zip: Buffer; newBundleHash: string; newZipSha256: string }> = [];
+  try {
+    assertNoGitMetadataDestinations(options.root, activeSources.map(source => source.path));
+    for (const source of activeSources) withContainedPathSink(
+      { root: options.root, relativePath: source.path, operation: "replace", createParents: false }, () => undefined
+    );
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : String(error));
+    return receipt;
+  }
   for (const source of activeSources) {
     const outputPath = path.resolve(options.root, source.path);
     let oldBundleHash: string | undefined;
@@ -1048,6 +1058,7 @@ function syncOneAlias(options: {
   for (const item of planned) {
     const sourceReceipt = sources.find((source) => source.path === item.source.path);
     try {
+      assertNoGitMetadataDestinations(options.root, [item.source.path]);
       atomicReplaceContainedFile(
         { root: options.root, relativePath: relativeToRoot(options.root, item.outputPath) },
         item.zip
@@ -1083,6 +1094,11 @@ export function runSubgraphSyncCommand(options: SubgraphSyncOptions): void {
     const aliases = selectAliases(config, options.alias, options.all);
     const { configPath, raw } = readRawConfig(options.root);
     const rawSubgraphs = getSubgraphs(raw);
+    // Admit all selected destinations before an earlier alias can refresh its
+    // bundle. Sink checks below still re-observe the current Git topology.
+    assertNoGitMetadataDestinations(options.root, aliases.flatMap(alias =>
+      config.subgraphs[alias].enabled ? enabledSources(config.subgraphs[alias]).map(source => source.path) : []
+    ));
     const results = aliases.map((alias) =>
       syncOneAlias({
         root: options.root,
@@ -1146,6 +1162,7 @@ function safeZipEntryPath(entryName: string): string {
 
 function writeMaterializeGitignore(root: string, targetRoot: string): void {
   const gitignoreRelative = relativeToRoot(root, path.join(targetRoot, ".gitignore"));
+  assertNoGitMetadataDestinations(root, [gitignoreRelative]);
   const required = ["*", "!.gitignore"];
   const existing = containedPathExists({ root, relativePath: gitignoreRelative })
     ? readContainedFile({ root, relativePath: gitignoreRelative }, "utf8").split(/\r?\n/)
@@ -1172,6 +1189,7 @@ function materializeOneAlias(options: {
   const outputDir = path.join(options.targetRoot, options.alias);
   const outputRelative = relativeToRoot(options.root, outputDir);
   try {
+    assertNoGitMetadataDestinations(options.root, [outputRelative]);
     withContainedPathSink(
       { root: options.root, relativePath: outputRelative, operation: "replace", createParents: false },
       () => undefined
@@ -1221,6 +1239,7 @@ function materializeOneAlias(options: {
     const skippedPaths: string[] = [];
     // A predictable temporary name is not custody. Never clear a pre-existing
     // directory, including when admission fails before any extraction begins.
+    assertNoGitMetadataDestinations(options.root, [tempRelative, outputRelative]);
     withContainedPathSink(
       { root: options.root, relativePath: tempRelative, operation: "create", createParents: true },
       ({ absolutePath }) => fs.mkdirSync(absolutePath)
@@ -1256,15 +1275,18 @@ function materializeOneAlias(options: {
       `${JSON.stringify(marker, null, 2)}\n`
     );
     if (fs.existsSync(outputDir)) {
+      assertNoGitMetadataDestinations(options.root, [outputRelative]);
       removeContainedPath({ root: options.root, relativePath: outputRelative, recursive: true, force: true });
     }
     withContainedPathSink(
       { root: options.root, relativePath: outputRelative, operation: "replace", createParents: true },
-      ({ absolutePath: safeOutput }) =>
-        withContainedPathSink(
+      ({ absolutePath: safeOutput }) => {
+        assertNoGitMetadataDestinations(options.root, [outputRelative, tempRelative]);
+        return withContainedPathSink(
           { root: options.root, relativePath: tempRelative, operation: "read" },
           ({ absolutePath: safeTemp }) => fs.renameSync(safeTemp, safeOutput)
-        )
+        );
+      }
     );
     createdTemp = false;
     return {
@@ -1278,7 +1300,10 @@ function materializeOneAlias(options: {
       errors,
     };
   } catch (err) {
-    if (createdTemp) removeContainedPath({ root: options.root, relativePath: tempRelative, recursive: true, force: true });
+    if (createdTemp) {
+      assertNoGitMetadataDestinations(options.root, [tempRelative]);
+      removeContainedPath({ root: options.root, relativePath: tempRelative, recursive: true, force: true });
+    }
     errors.push(err instanceof Error ? err.message : String(err));
     return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
   }
@@ -1289,6 +1314,7 @@ export function runSubgraphMaterializeCommand(options: SubgraphMaterializeOption
     const config = loadConfig(options.root);
     const aliases = selectAliases(config, options.alias, options.all);
     const targetRoot = path.resolve(options.root, normalizeContained(options.target, "--target"));
+    assertNoGitMetadataDestinations(options.root, aliases.map(alias => relativeToRoot(options.root, path.join(targetRoot, alias))));
     const results = aliases.map((alias) =>
       materializeOneAlias({
         root: options.root,

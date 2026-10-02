@@ -261,6 +261,7 @@ function requireQueueActive(queue: ProjectQueue, action: string): void {
 }
 
 function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T, options?: { readOnly?: boolean }): T {
+  if (options?.readOnly) return withSelectedSqliteObservation(databasePath, fn);
   const DatabaseSync = loadDatabaseCtor();
   const run = (selectedPath: string): T => {
     const db = new DatabaseSync(selectedPath, options ?? {});
@@ -271,7 +272,7 @@ function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T, option
       db.close();
     }
   };
-  return options?.readOnly ? withSelectedSqliteObservation(databasePath, run) : run(databasePath);
+  return run(databasePath);
 }
 
 function withImmediateTransaction<T>(db: DatabaseSyncType, fn: () => T): T {

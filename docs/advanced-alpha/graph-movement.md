@@ -74,15 +74,27 @@ versions refuse, but old init/force-init cannot be controlled retroactively.
 For pre-fence v2 graphs, preview `mdkg upgrade --only .mdkg/config.json --json`
 and apply only the exact reviewed plan. Reads do not silently add this fence.
 
-For a killed writer, `graph recover` inspection reports mode-specific
-`recovery.resume` / `recovery.rollback` readiness and `lock_evidence` hashes.
-Pass the requested mode's exact value as `--lock-evidence <sha256>` with explicit
-resume/rollback. Approval binds checkout/OS owner proof, lock chain, journal
-inventory and current authored/dependency bytes. Live, suspended, reused,
-foreign or insufficient ownership refuses; PID absence/age alone is never enough.
-Unknown/partial metadata also refuses. Do not manually delete evidence to bypass
-recovery. Complete published transaction boundaries, not universal power-loss
-recovery or hostile same-user pathname-race fencing, are the supported contract.
+`graph recover` inspection reports mode-specific `recovery.resume` /
+`recovery.rollback` evidence readiness and `lock_evidence` hashes. `ready: true`
+means evidence is reviewable, **not** that mdkg proved all writers stopped.
+Before any recovery write, stop all checkout writers and explicitly pass
+`--confirm-quiescent` plus the requested mode's exact fresh
+`--lock-evidence <sha256>` with `--resume` or `--rollback`. This also applies to
+unfinished journals whose previous lock was released after a caught error.
+No-lock terminal repeats remain observational and need neither approval flag.
+
+The versioned approval binds checkout identity, lock presence/absence and chain,
+journal inventory, current authored/control/dependency bytes and requested mode.
+The private journal records the operator assertion separately from evidence.
+It is not authentication or OS-proven orphanhood. Node PID probes only reject
+observably live, suspended/reused or ambiguous owners; an absent local PID does
+not prove another host/namespace is inactive. No OS utilities or platform
+allowlist establish eligibility. Complete legacy lock/journal evidence remains
+inspectable and requires a new approval and assertion; old approvals are not
+silently upgraded. Foreign checkouts, unknown/partial metadata and changed bytes
+refuse. Never delete evidence to bypass recovery. Complete published transaction
+boundaries, not universal power-loss recovery, ACL/owner preservation or hostile
+ancestor-replacement fencing, are the supported contract.
 
 New Git-backed migration application/resume requires reviewed continuity
 evidence. An older interrupted journal without it remains inspectable and can

@@ -8,10 +8,12 @@ import { spawn, spawnSync } from "node:child_process";
 import { writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
+import { reviewedFixtureRecovery } from "../helpers/identity_recovery";
 const { planLegacyIdentityMigration } = require("../../graph/identity_migration");
 const { applyGraphMigrationPlan, continueGraphTransaction, inspectGraphTransaction } = require("../../graph/identity_transaction");
 const { graphControlSnapshot } = require("../../graph/identity_snapshot");
-const { localLockEnvironment, readMutationLock, assertOrphanLock } = require("../../util/lock_evidence");
+const { readMutationLock, assertRecoveryLockEvidence } = require("../../util/lock_evidence");
+const recoverOwnedFixture = reviewedFixtureRecovery(require("../../graph/identity_transaction"));
 const { identityHash } = require("../../graph/identity");
 const dist = path.resolve(__dirname, "../.."), cli = path.join(dist, "cli.js");
 const parameters = { graphId: "e7403372-f270-4cd7-902d-64b792c781df", origin: "ddf626b6-073f-4f99-9d30-5e30912922fd" };
@@ -24,7 +26,7 @@ const plan=action==='apply'?require(path.join(dist,'graph/identity_migration.js'
 const stop=()=>{fs.writeSync(1,JSON.stringify({pid:process.pid,hash:hash||plan.plan_hash})+'\\n');Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,120000);throw Error('fixture parent did not terminate owned child');};
 const hooks={afterWrite:(p,i)=>{if(boundary==='write:'+i)stop();},afterJournal:s=>{if(boundary==='journal:'+s)stop();},afterClaim:()=>{if(boundary==='claim')stop();}};
 if(action==='apply')tx.applyGraphMigrationPlan(root,plan,plan.plan_hash,hooks);
-else tx.continueGraphTransaction(root,hash,mode,hooks,evidence||undefined);
+else tx.continueGraphTransaction(root,hash,mode,hooks,{lockEvidence:evidence||tx.inspectGraphTransaction(root,hash).recovery[mode].lock_evidence,confirmQuiescent:true});
 throw Error('requested interruption boundary was not reached');
 `;
 
@@ -71,7 +73,6 @@ async function halted(root: string, boundary: string, hash = "", mode = "resume"
 }
 
 async function interrupted(t: { after(fn: () => void): void }, boundary = "write:0") {
-  assert.ok(localLockEnvironment(), "positive killed-writer proof requires available local OS boot/namespace evidence; do not count a restricted-host refusal as a pass");
   const f = fixture(t), owned = await halted(f.root, boundary);
   await owned.kill();
   assert.equal(owned.marker.hash, f.plan.plan_hash);
@@ -82,17 +83,19 @@ function approval(root: string, hash: string, mode: "resume" | "rollback"): stri
   const before = inventory(root), result = inspectGraphTransaction(root, hash);
   assert.deepEqual(inventory(root), before, "inspection must remain observational");
   assert.equal(result.recovery[mode].ready, true, JSON.stringify(result.recovery));
+  assert.equal(result.recovery[mode].quiescence, "operator-confirmation-required");
   assert.match(result.recovery[mode].lock_evidence, /^sha256:[0-9a-f]{64}$/);
   return result.recovery[mode].lock_evidence;
 }
 
 for (const mode of ["resume", "rollback"] as const) for (const boundary of ["journal:applying", "write:0", "write:2", "write:5", "journal:applied"]) {
-  test(`proven killed writer ${mode} after ${boundary} preserves exact transaction bytes`, async t => {
+  test(`operator-confirmed killed writer ${mode} after ${boundary} preserves exact transaction bytes`, async t => {
     const f = await interrupted(t, boundary), control = graphControlSnapshot(f.root);
     const evidence = approval(f.root, f.plan.plan_hash, mode), before = inventory(f.root);
-    assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, mode), /exact fresh --lock-evidence/);
+    assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, mode), /confirm-quiescent/);
+    assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, mode, {}, { confirmQuiescent: true }), /exact fresh --lock-evidence/);
     assert.deepEqual(inventory(f.root), before);
-    const result = f.run(["graph", "recover", f.plan.plan_hash, `--${mode}`, "--lock-evidence", evidence, "--json"]);
+    const result = f.run(["graph", "recover", f.plan.plan_hash, `--${mode}`, "--lock-evidence", evidence, "--confirm-quiescent", "--json"]);
     assert.equal(result.status, 0, result.stderr + result.stdout);
     assert.equal(JSON.parse(result.stdout).state, mode === "resume" ? "applied" : "rolled-back");
     assert.equal(fs.existsSync(path.join(f.root, ".mdkg/index/write.lock")), false);
@@ -103,6 +106,8 @@ for (const mode of ["resume", "rollback"] as const) for (const boundary of ["jou
     const journal = JSON.parse(fs.readFileSync(path.join(f.root, `.mdkg/state/identity-transactions/${f.plan.plan_hash.slice(7)}.json`), "utf8"));
     assert.equal(journal.lock_epochs.length, 1);
     assert.equal(journal.lock_epochs[0].files.length, 2, "original owner and recovery approval remain journaled");
+    assert.equal(journal.recovery_approvals[0].confirmation, "all-checkout-writers-stopped");
+    assert.equal(journal.recovery_approvals[0].approval_hash, evidence);
     assert.equal(graphControlSnapshot(f.root).git_index, control.git_index);
     const terminal = inventory(f.root);
     continueGraphTransaction(f.root, f.plan.plan_hash, mode);
@@ -123,7 +128,7 @@ for (const mode of ["resume", "rollback"] as const) for (const boundary of ["cla
     }
     const next = approval(f.root, f.plan.plan_hash, mode);
     assert.notEqual(next, evidence);
-    continueGraphTransaction(f.root, f.plan.plan_hash, mode, {}, next);
+    continueGraphTransaction(f.root, f.plan.plan_hash, mode, {}, { lockEvidence: next, confirmQuiescent: true });
     assert.equal(fs.existsSync(path.join(f.root, ".mdkg/index/write.lock")), false);
   });
 }
@@ -135,7 +140,7 @@ test("a fresh normal-recovery epoch remains recoverable after a caught error the
   const owned = await halted(f.root, "write:1", f.plan.plan_hash);
   await owned.kill();
   const evidence = approval(f.root, f.plan.plan_hash, "resume");
-  continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, evidence);
+  continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, { lockEvidence: evidence, confirmQuiescent: true });
   const journal = JSON.parse(fs.readFileSync(path.join(f.root, `.mdkg/state/identity-transactions/${f.plan.plan_hash.slice(7)}.json`), "utf8"));
   assert.equal(journal.lock_epochs.length, 2);
 });
@@ -148,13 +153,13 @@ test("live and suspended owners refuse inspection approval and cannot be displac
       const before = inventory(f.root), result = inspectGraphTransaction(f.root, f.plan.plan_hash);
       assert.equal(result.recovery.resume.ready, false);
       assert.match(result.recovery.resume.reason, /live, suspended or reused/);
-      assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, `sha256:${"0".repeat(64)}`), /live, suspended or reused/);
+      assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, { lockEvidence: `sha256:${"0".repeat(64)}`, confirmQuiescent: true }), /live, suspended or reused/);
       assert.deepEqual(inventory(f.root), before);
     }
   } finally { await owned.kill(); }
 });
 
-for (const mutation of ["journal-whitespace", "owned-before-to-after", "unknown-node", "unknown-lock-file", "legacy-owner", "partial-owner", "journal-temp", "invalid-utf8"] as const) {
+for (const mutation of ["journal-whitespace", "owned-before-to-after", "unknown-node", "unknown-lock-file", "legacy-owner", "partial-owner", "journal-temp", "invalid-utf8", "lock-mode"] as const) {
   test(`recovery approval refuses stale or insufficient ${mutation} evidence without writes`, async t => {
     const f = await interrupted(t), evidence = approval(f.root, f.plan.plan_hash, "resume");
     const journal = path.join(f.root, `.mdkg/state/identity-transactions/${f.plan.plan_hash.slice(7)}.json`);
@@ -167,8 +172,9 @@ for (const mutation of ["journal-whitespace", "owned-before-to-after", "unknown-
     if (mutation === "partial-owner") fs.writeFileSync(owner, '{"schema_version":');
     if (mutation === "journal-temp") fs.writeFileSync(`${journal}.interrupted.tmp`, "partial journal bytes\n");
     if (mutation === "invalid-utf8") fs.appendFileSync(journal, Buffer.from([0xff]));
+    if (mutation === "lock-mode") fs.chmodSync(owner, 0o644);
     const before = inventory(f.root);
-    assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, evidence));
+    assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, { lockEvidence: evidence, confirmQuiescent: true }));
     assert.deepEqual(inventory(f.root), before);
   });
 }
@@ -177,25 +183,61 @@ test("ambiguous liveness and reused PID proof refuse even when other evidence is
   const f = await interrupted(t), journalPath = path.join(f.root, `.mdkg/state/identity-transactions/${f.plan.plan_hash.slice(7)}.json`);
   const journal = JSON.parse(fs.readFileSync(journalPath, "utf8")), record = readMutationLock(f.root), before = inventory(f.root);
   const probe = t.mock.method(process, "kill", () => { throw Object.assign(Error("permission denied"), { code: "EPERM" }); });
-  assert.throws(() => assertOrphanLock(f.root, record, journal.lock_epochs[0], f.plan.plan_hash, identityHash(fs.readFileSync(journalPath)), "resume"), /ambiguous or inaccessible/);
+  assert.throws(() => assertRecoveryLockEvidence(f.root, record, journal.lock_epochs[0], f.plan.plan_hash, identityHash(fs.readFileSync(journalPath)), "resume"), /ambiguous or inaccessible/);
   probe.mock.restore();
   const live = t.mock.method(process, "kill", () => true);
-  assert.throws(() => assertOrphanLock(f.root, record, journal.lock_epochs[0], f.plan.plan_hash, identityHash(fs.readFileSync(journalPath)), "resume"), /live, suspended or reused/);
+  assert.throws(() => assertRecoveryLockEvidence(f.root, record, journal.lock_epochs[0], f.plan.plan_hash, identityHash(fs.readFileSync(journalPath)), "resume"), /live, suspended or reused/);
   live.mock.restore(); assert.deepEqual(inventory(f.root), before);
 });
 
-for (const changed of ["boot", "namespace", "checkout", "directory-epoch"] as const) {
+test("complete legacy owner evidence is preserved but requires the new operator approval", async t => {
+  const f = await interrupted(t), jp = path.join(f.root, `.mdkg/state/identity-transactions/${f.plan.plan_hash.slice(7)}.json`);
+  const ownerPath = path.join(f.root, ".mdkg/index/write.lock/owner.json");
+  const owner = JSON.parse(fs.readFileSync(ownerPath, "utf8"));
+  owner.schema_version = 1;
+  owner.environment = { platform: "historical-fixture", boot_hash: "untrusted-historical-only" };
+  const originalOwner = JSON.stringify(owner, null, 2) + "\n";
+  fs.writeFileSync(ownerPath, originalOwner);
+  const journal = JSON.parse(fs.readFileSync(jp, "utf8"));
+  journal.lock_epochs[0] = readMutationLock(f.root);
+  fs.writeFileSync(jp, JSON.stringify(journal, null, 2) + "\n");
+  const evidence = approval(f.root, f.plan.plan_hash, "resume"), before = inventory(f.root);
+  assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, evidence), /confirm-quiescent/);
+  assert.deepEqual(inventory(f.root), before);
+  continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, { lockEvidence: evidence, confirmQuiescent: true });
+  const completed = JSON.parse(fs.readFileSync(jp, "utf8"));
+  assert.equal(completed.lock_epochs[0].files.find((file: any) => file.name === "owner.json").content, originalOwner);
+  const claim = JSON.parse(completed.lock_epochs[0].files.find((file: any) => file.name.startsWith("claim-")).content);
+  assert.equal(claim.schema_version, 2);
+  assert.equal(claim.recovery_contract, "operator-confirmed-quiescence-v1");
+  assert.equal(claim.confirmation, "all-checkout-writers-stopped");
+});
+
+test("a malformed portable recovery assertion never becomes recovery authority", async t => {
+  const f = await interrupted(t), evidence = approval(f.root, f.plan.plan_hash, "resume");
+  const owned = await halted(f.root, "claim", f.plan.plan_hash, "resume", evidence);
+  await owned.kill();
+  const lock = path.join(f.root, ".mdkg/index/write.lock"), claimPath = path.join(lock, fs.readdirSync(lock).find(file => file.startsWith("claim-"))!);
+  const claim = JSON.parse(fs.readFileSync(claimPath, "utf8"));
+  claim.confirmation = "PID-was-absent";
+  fs.writeFileSync(claimPath, JSON.stringify(claim));
+  const before = inventory(f.root), inspection = inspectGraphTransaction(f.root, f.plan.plan_hash);
+  assert.equal(inspection.recovery.resume.ready, false);
+  assert.match(inspection.recovery.resume.reason, /complete evidence binding/);
+  assert.throws(() => continueGraphTransaction(f.root, f.plan.plan_hash, "resume", {}, { lockEvidence: evidence, confirmQuiescent: true }), /complete evidence binding/);
+  assert.deepEqual(inventory(f.root), before);
+});
+
+for (const changed of ["checkout", "directory-epoch"] as const) {
   test(`recovery refuses foreign ${changed} proof`, async t => {
     const f = await interrupted(t), jp = path.join(f.root, `.mdkg/state/identity-transactions/${f.plan.plan_hash.slice(7)}.json`);
     const journal = JSON.parse(fs.readFileSync(jp, "utf8")), record = readMutationLock(f.root);
     const base = record.files.find((file: any) => file.name === "owner.json"), owner = JSON.parse(base.content);
-    if (changed === "boot") owner.environment.boot_hash = `sha256:${"0".repeat(64)}`;
-    if (changed === "namespace") owner.environment.namespace_hash = `sha256:${"0".repeat(64)}`;
     if (changed === "checkout") owner.checkout.path_hash = `sha256:${"0".repeat(64)}`;
     if (changed !== "directory-epoch") { base.content = JSON.stringify(owner); journal.lock_epochs[0] = record; }
     else journal.lock_epochs[0].directory.inode = "0";
     const before = inventory(f.root);
-    assert.throws(() => assertOrphanLock(f.root, record, journal.lock_epochs[0], f.plan.plan_hash, identityHash(fs.readFileSync(jp)), "resume"), /unproven|does not bind/);
+    assert.throws(() => assertRecoveryLockEvidence(f.root, record, journal.lock_epochs[0], f.plan.plan_hash, identityHash(fs.readFileSync(jp)), "resume"), /different checkout|does not bind/);
     assert.deepEqual(inventory(f.root), before);
   });
 }
@@ -222,7 +264,7 @@ test("a new unknown journal entry between owned writes stops the next mutation",
 test("changed other terminal journal bytes invalidate custody during apply", t => {
   const f = fixture(t);
   applyGraphMigrationPlan(f.root, f.plan, f.plan.plan_hash);
-  continueGraphTransaction(f.root, f.plan.plan_hash, "rollback");
+  recoverOwnedFixture(f.root, f.plan.plan_hash, "rollback");
   const previous = path.join(f.root, `.mdkg/state/identity-transactions/${f.plan.plan_hash.slice(7)}.json`);
   const expected = fs.readFileSync(previous, "utf8") + "\n";
   const plan = planLegacyIdentityMigration(f.root, { ...parameters, graphId: "12a5dbb3-fb65-4b82-8170-75bcd8e8ace7" });
@@ -236,7 +278,7 @@ test("changed other terminal journal bytes invalidate custody during apply", t =
 for (const mode of ["resume", "rollback"] as const) test(`terminal ${mode} inspection cannot promise recovery of nonterminal owned bytes`, t => {
   const f = fixture(t);
   applyGraphMigrationPlan(f.root, f.plan, f.plan.plan_hash);
-  if (mode === "rollback") continueGraphTransaction(f.root, f.plan.plan_hash, "rollback");
+  if (mode === "rollback") recoverOwnedFixture(f.root, f.plan.plan_hash, "rollback");
   const op = f.plan.writes.find((entry: any) => entry.path.startsWith(".mdkg/work/"));
   fs.writeFileSync(path.join(f.root, op.path), mode === "resume" ? op.before : op.after);
   const before = inventory(f.root), inspection = inspectGraphTransaction(f.root, f.plan.plan_hash);
@@ -249,7 +291,7 @@ test("simultaneous opposite recovery modes have one owner and one terminal outco
   const f = await interrupted(t);
   const approvals = { resume: approval(f.root, f.plan.plan_hash, "resume"), rollback: approval(f.root, f.plan.plan_hash, "rollback") };
   const results = await Promise.all((["resume", "rollback"] as const).map(mode => new Promise<{ mode: string; code: number | null; output: string }>(resolve => {
-    const child = spawn(process.execPath, [cli, "graph", "recover", f.plan.plan_hash, `--${mode}`, "--lock-evidence", approvals[mode], "--json"], { cwd: f.root });
+    const child = spawn(process.execPath, [cli, "graph", "recover", f.plan.plan_hash, `--${mode}`, "--lock-evidence", approvals[mode], "--confirm-quiescent", "--json"], { cwd: f.root });
     let output = ""; child.stdout!.on("data", chunk => { output += String(chunk); }); child.stderr!.on("data", chunk => { output += String(chunk); });
     child.once("exit", code => resolve({ mode, code, output }));
   })));
@@ -282,10 +324,10 @@ test("native linked worktrees retain independent lock authority, graph writes an
   fs.cpSync(path.join(f.root, ".mdkg/index/write.lock"), path.join(peer, ".mdkg/index/write.lock"), { recursive: true });
   const peerBefore = inventory(peer), peerReview = inspectGraphTransaction(peer, plan.plan_hash);
   assert.equal(peerReview.recovery.resume.ready, false);
-  assert.throws(() => continueGraphTransaction(peer, plan.plan_hash, "resume", {}, `sha256:${"0".repeat(64)}`));
+  assert.throws(() => continueGraphTransaction(peer, plan.plan_hash, "resume", {}, { lockEvidence: `sha256:${"0".repeat(64)}`, confirmQuiescent: true }));
   assert.deepEqual(inventory(peer), peerBefore);
   const evidence = approval(f.root, plan.plan_hash, "resume");
-  continueGraphTransaction(f.root, plan.plan_hash, "resume", {}, evidence);
+  continueGraphTransaction(f.root, plan.plan_hash, "resume", {}, { lockEvidence: evidence, confirmQuiescent: true });
   assert.deepEqual(inventory(peer), peerBefore, "recovery must never retire another checkout's lock");
   assert.equal(graphControlSnapshot(f.root).git_index, initialA.git_index);
   assert.equal(graphControlSnapshot(peer).git_index, initialB.git_index);

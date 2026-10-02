@@ -63,7 +63,7 @@ function parseJson(output) {
 }
 
 function buildSite(env = {}) {
-  assertDependencyTreesReady(repoRoot);
+  assertDependencyTreesReady(repoRoot, "repository");
   run(NPM_CMD, ["--prefix", "mdkg-dev", "run", "build"], { env });
 }
 

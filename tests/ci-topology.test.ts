@@ -17,6 +17,7 @@ const ladder = require(path.join(repoRoot, "scripts", "release-ladder.js")) as {
     candidate: unknown,
     mode: "ci" | "prepublish" | "full-prepare" | "full-shard",
     shardId?: string,
+    scope?: "package" | "repository",
   ): Array<{ canonical: string; prerequisites: string[] }>;
   writeFullContext(
     contextDir: string,
@@ -61,7 +62,7 @@ function runGit(root: string, args: string[]) {
 
 test("accepted manifest topology has exact fast membership and five complete full shards", () => {
   assert.doesNotThrow(() => ladder.validateManifest(manifest, packageJson));
-  const full = ladder.canonicalEntries(manifest, "prepublish");
+  const full = ladder.canonicalEntries(manifest, "prepublish", undefined, "repository");
   const fast = ladder.canonicalEntries(manifest, "ci");
   const sharded: Array<{ canonical: string; prerequisites: string[] }> =
     manifest.ci_topology.full.shards.flatMap((shard: { id: string }) =>
@@ -69,16 +70,27 @@ test("accepted manifest topology has exact fast membership and five complete ful
   );
 
   assert.equal(manifest.ci_topology.decision_ref, "root:dec-91");
+  assert.equal(manifest.ci_topology.runtime_decision_ref, "root:dec-98");
   assert.deepEqual(
     manifest.ci_topology.fast.runtimes,
     [
-      { id: "minimum", version: "24.15.0" },
+      { id: "minimum", version: "24.18.0" },
       { id: "floating", version: "24.x" },
     ],
   );
   assert.equal(fast.length, 13);
   assert.deepEqual(fast.map((entry) => entry.canonical), manifest.ci_topology.fast.canonical);
   assert.equal(manifest.ci_topology.full.shards.length, 5);
+  assert.deepEqual(manifest.ci_topology.full.linux_filesystem, {
+    state: "unqualified_stub",
+    qualification_scope: "portable-node-installed-contracts",
+    test_ref: "root:test-487",
+    timeout_minutes: 5,
+    runners: [
+      { id: "x64", label: "ubuntu-24.04" },
+      { id: "arm64", label: "ubuntu-24.04-arm" },
+    ],
+  });
   assert.equal(sharded.length, 46);
   assert.equal(new Set(sharded.map((entry) => entry.canonical)).size, 46);
   assert.deepEqual(
@@ -88,6 +100,9 @@ test("accepted manifest topology has exact fast membership and five complete ful
 });
 
 test("topology validation identifies runtime timeout membership partition and profile drift", () => {
+  assert.throws(() => ladder.validateManifest(manifest, { ...packageJson, engines: { node: ">=24.15.0" } }), /package Node range/);
+  expectInvalid(candidate => { candidate.ci_topology.runtime_decision_ref = "root:dec-91"; }, /runtime root:dec-98/);
+  expectInvalid(candidate => { candidate.ci_topology.full.linux_filesystem.qualification_scope = "native-helper"; }, /unqualified stub/);
   expectInvalid(
     (candidate) => {
       candidate.ci_topology.fast.runtimes[0].version = "24.x";
@@ -99,6 +114,18 @@ test("topology validation identifies runtime timeout membership partition and pr
       candidate.ci_topology.fast.timeout_minutes = 0;
     },
     /fast timeout/,
+  );
+  expectInvalid(
+    (candidate) => {
+      candidate.ci_topology.full.linux_filesystem.state = "qualified";
+    },
+    /Test487 x64\/ARM64 unqualified stub/,
+  );
+  expectInvalid(
+    (candidate) => {
+      candidate.ci_topology.full.linux_filesystem.runners.pop();
+    },
+    /Test487 x64\/ARM64 unqualified stub/,
   );
   expectInvalid(
     (candidate) => {
@@ -137,7 +164,7 @@ test("generated workflow byte-matches source-owned topology and exposes the acce
   assert.equal(workflow, generated);
   for (const expected of [
     "Fast / ${{ matrix.id }} / Node ${{ matrix.node }}",
-    'node: "24.15.0"',
+    'node: "24.18.0"',
     'node: "24.x"',
     "timeout-minutes: 15",
     "npm run deps:bootstrap",
@@ -145,8 +172,14 @@ test("generated workflow byte-matches source-owned topology and exposes the acce
     "full_prepare:",
     "full_smoke:",
     "needs: full_prepare",
+    "full_linux_filesystem:",
+    "runner: ubuntu-24.04",
+    "runner: ubuntu-24.04-arm",
+    "Refuse missing Test487 installed-artifact qualification",
+    "exit 1",
     "full_release:",
-    "needs: [full_prepare, full_smoke]",
+    "needs: [full_prepare, full_smoke, full_linux_filesystem]",
+    "test \"$LINUX_FILESYSTEM_RESULT\" = success",
     "npm run ci:full:prepare",
     "npm run ci:full:shard",
     "if: ${{ always() }}",
@@ -160,6 +193,7 @@ test("generated workflow byte-matches source-owned topology and exposes the acce
   for (const shard of manifest.ci_topology.full.shards) {
     assert.match(workflow, new RegExp(`shard: ${shard.id}`));
   }
+  assert.doesNotMatch(workflow, /continue-on-error/);
   assert.equal(Object.keys(packageJson.dependencies || {}).some((name) => /ya?ml/i.test(name)), false);
   assert.equal(Object.keys(packageJson.devDependencies || {}).some((name) => /ya?ml/i.test(name)), false);
   assert.doesNotMatch(generatorSource, /require\(["']ya?ml/);
@@ -174,7 +208,7 @@ test("workflow projection check fails at the exact first removed topology contra
   for (const contract of [
     "    timeout-minutes: 15\n",
     "        if: ${{ always() }}\n",
-    "    needs: [full_prepare, full_smoke]\n",
+    "    needs: [full_prepare, full_smoke, full_linux_filesystem]\n",
     "          name: mdkg-full-context-${{ inputs.commit_sha }}\n",
   ]) {
     const changed = expected.replace(contract, "");

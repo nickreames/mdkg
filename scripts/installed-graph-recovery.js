@@ -7,13 +7,13 @@ const { acceptOwnedGitFixture } = require("./qualification-git");
 
 // Exercise installed CLI bytes; do not import graph implementation or expose a
 // production fault flag. All repository and filesystem operations are fixtures.
-function exerciseInstalledGraphRecovery(bin, ownedRoot, suppliedEnv = process.env) {
+function exerciseInstalledGraphRecovery(bin, ownedRoot, suppliedEnv = process.env, { nodeArgs = [] } = {}) {
   const base = path.join(ownedRoot, "installed-graph-recovery"); fs.mkdirSync(base);
   const fixtureGit = acceptOwnedGitFixture(ownedRoot, suppliedEnv);
   const env = fixtureGit.environment;
   const run = (root, args, fault) => runFixtureNode(ownedRoot, bin, args,
     { cwd: root, env: { ...env, ...(fault ? { MDKG_FIXTURE_ROOT: root, MDKG_FIXTURE_TARGETS: JSON.stringify(fault.paths), MDKG_FIXTURE_FAULT: String(fault.index) } : {}) },
-      nodeArgs: fault ? ["--require", preload] : [], timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
+      nodeArgs: [...nodeArgs, ...(fault ? ["--require", preload] : [])], timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
   const cli = (root, args) => { const r = run(root, [...args, "--json"]); assert.equal(r.status, 0, `${args.join(" ")}\n${r.stderr}\n${r.stdout}`); return JSON.parse(r.stdout); };
   const git = (root, args) => { const r = fixtureGit.run(root, args); assert.equal(r.status,0,r.stderr); return r.stdout.trim(); };
   const digest = data => crypto.createHash("sha256").update(data).digest("hex");
@@ -31,6 +31,14 @@ function exerciseInstalledGraphRecovery(bin, ownedRoot, suppliedEnv = process.en
   const unchangedRefusal = (root,args,pattern) => {
     const before=snapshot(root), r=run(root,args);assert.notEqual(r.status,0,args.join(" "));
     assert.equal(r.signal,null);assert.equal(r.error,undefined);assert.match(r.stdout+r.stderr,pattern);assert.deepEqual(snapshot(root),before,"refusal must preserve every file");
+  };
+  // Only this disposable-fixture operator may confirm that its writers stopped.
+  // Approval is refreshed after each interruption; production has no shortcut.
+  const approvedArgs = (root,hash,mode) => {
+    const before=snapshot(root),review=cli(root,["graph","recover",hash]).recovery[mode];
+    assert.deepEqual(snapshot(root),before);assert.equal(review.ready,true,JSON.stringify(review));
+    assert.equal(review.quiescence,"operator-confirmation-required");assert.match(review.lock_evidence,/^sha256:[0-9a-f]{64}$/);
+    return ["graph","recover",hash,"--"+mode,"--lock-evidence",review.lock_evidence,"--confirm-quiescent"];
   };
   const preload = path.join(base,"fault.cjs");
   fs.writeFileSync(preload, `const fs=require('node:fs'),path=require('node:path');
@@ -83,6 +91,8 @@ fs.rmSync=function(p){const out=remove.apply(this,arguments);finish(p);return ou
     const paused=snapshot(root),inspection=cli(root,["graph","recover",plan.plan_hash]);assert.deepEqual(snapshot(root),paused);
     assert.equal(inspection.state,"applying");assert.equal(inspection.completed_write_paths.length,observed);
     assert.equal(fs.existsSync(path.join(root,".mdkg/index/write.lock")),false);
+    unchangedRefusal(root,["graph","recover",plan.plan_hash,"--"+mode,"--json"],/confirm-quiescent/);
+    unchangedRefusal(root,["graph","recover",plan.plan_hash,"--"+mode,"--lock-evidence",inspection.recovery[mode].lock_evidence,"--json"],/confirm-quiescent/);
     if(process.platform!=="win32")assert.equal(fs.statSync(journalPath).mode&0o777,0o600);
     if(position==="middle"){
       const op=journal.plan.writes.find(w=>w.after!==null&&w.path.endsWith(".md")&&read(root,w.path)===w.after);assert.ok(op);
@@ -100,13 +110,13 @@ fs.rmSync=function(p){const out=remove.apply(this,arguments);finish(p);return ou
       // a product recovery mechanism for user data or Git state.
       fs.writeFileSync(path.join(root,".git/index"),gitIndex);
       if(mode==="rollback"){
-        const failed=run(root,["graph","recover",plan.plan_hash,"--rollback","--json"],{paths:plan.writes.map(w=>w.path),index:0});
+        const failed=run(root,[...approvedArgs(root,plan.plan_hash,"rollback"),"--json"],{paths:plan.writes.map(w=>w.path),index:0});
         assert.notEqual(failed.status,0);assert.match(failed.stdout+failed.stderr,/installed graph fixture interruption/);
         assert.equal(JSON.parse(fs.readFileSync(journalPath)).state,"rolling-back");
         unchangedRefusal(root,["graph","recover",plan.plan_hash,"--resume","--json"],/rollback was requested/);
       }
     }
-    const result=cli(root,["graph","recover",plan.plan_hash,"--"+mode]);assert.equal(result.state,mode==="resume"?"applied":"rolled-back");
+    const result=cli(root,approvedArgs(root,plan.plan_hash,mode));assert.equal(result.state,mode==="resume"?"applied":"rolled-back");
     for(const w of journal.plan.writes)assert.equal(read(root,w.path),w[mode==="resume"?"after":"before"],w.path);
     assert.deepEqual(fs.readFileSync(path.join(root,".git/index")),gitIndex);
     if(mode==="rollback")assert.deepEqual(snapshot(root,true),before,"rollback must restore all authored/Git files exactly");

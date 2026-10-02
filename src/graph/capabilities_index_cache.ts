@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
+import { ContainedPathError } from "../core/filesystem_authority";
+import { UsageError } from "../util/errors";
 import { configPath } from "../core/paths";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
@@ -10,9 +12,11 @@ import { readGraphFormat } from "./identity";
 import { buildIndex } from "./indexer";
 import { currentNodeCacheFingerprint } from "./staleness";
 import { currentSkillCacheSources } from "./skills_indexer";
-import { capabilityCacheFingerprint, readJsonCacheFingerprint } from "./json_cache_fingerprint";
+import { capabilityCacheFingerprint, readJsonCacheFingerprint, readJsonCacheText } from "./json_cache_fingerprint";
+import { cacheSourceStats } from "./cache_sources";
 import {
   buildCapabilitiesIndex,
+  bindCapabilityLinkage,
   CapabilitiesIndex,
   projectCapabilityRecord,
   resolveCapabilitiesIndexPath,
@@ -34,27 +38,6 @@ export type LoadCapabilitiesIndexResult = {
 
 function mtimeMs(filePath: string): number {
   return fs.statSync(filePath).mtimeMs;
-}
-
-function listFilesAndDirectories(dir: string, owns: (file: string) => boolean): string[] {
-  if (!owns(dir)) return [];
-  if (!fs.existsSync(dir)) {
-    return [];
-  }
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const items: string[] = [dir];
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (!owns(fullPath)) continue;
-    if (entry.isDirectory()) {
-      items.push(...listFilesAndDirectories(fullPath, owns));
-      continue;
-    }
-    if (entry.isFile()) {
-      items.push(fullPath);
-    }
-  }
-  return items;
 }
 
 function workspaceSkillsRoots(root: string, config: Config): Array<{ alias: string; root: string }> {
@@ -87,8 +70,8 @@ export function isCapabilitiesIndexStale(root: string, config: Config): boolean 
 
   const owner = absoluteWorkspaceDocumentOwner(root, config);
   for (const { alias, root: skillsRoot } of workspaceSkillsRoots(root, config)) {
-    for (const item of listFilesAndDirectories(skillsRoot, (file) => owner(file) === alias)) {
-      if (mtimeMs(item) > indexMtime) {
+    for (const item of cacheSourceStats(root, skillsRoot, config.index.limits, (file) => owner(file) === alias)) {
+      if (item.mtimeMs > indexMtime) {
         return true;
       }
     }
@@ -99,11 +82,21 @@ export function isCapabilitiesIndexStale(root: string, config: Config): boolean 
     currentNodeCacheFingerprint(root, config), currentSkillCacheSources(root, config, true));
 }
 
-function readCapabilitiesIndex(indexPath: string): CapabilitiesIndex {
+function readCapabilitiesIndex(root: string, config: Config, indexPath: string, allowStale = false): CapabilitiesIndex {
   try {
-    const raw = fs.readFileSync(indexPath, "utf8");
+    const raw = readJsonCacheText(root, indexPath);
     const index = JSON.parse(raw) as CapabilitiesIndex;
-    return { ...index, records: index.records.map(projectCapabilityRecord) };
+    try {
+      const nodes = buildIndex(root, config);
+      return { ...index, records: index.records.map(record => bindCapabilityLinkage(nodes, record)) };
+    } catch (error) {
+      if (!allowStale || error instanceof ContainedPathError || error instanceof UsageError) throw error;
+      // Explicit stale discovery is still useful with an incomplete authored
+      // graph. Return its metadata, never unverified workflow associations.
+      return { ...index, meta: { ...index.meta, inspection_errors: [...(index.meta.inspection_errors ?? []),
+        "cached workflow linkage withheld: current authored graph could not be verified"] },
+        records: index.records.map(record => { const { linkage: _unverified, ...metadata } = projectCapabilityRecord(record); return metadata; }) };
+    }
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     throw new Error(`failed to read capabilities index: ${message}`);
@@ -136,7 +129,7 @@ export function loadCapabilitiesIndex(
 
   const stale = isCapabilitiesIndexStale(options.root, options.config);
   if (fs.existsSync(indexPath) && !stale) {
-    return { index: readCapabilitiesIndex(indexPath), rebuilt: false, stale: false };
+    return { index: readCapabilitiesIndex(options.root, options.config, indexPath), rebuilt: false, stale: false };
   }
 
   if (allowReindex) {
@@ -148,7 +141,7 @@ export function loadCapabilitiesIndex(
   }
 
   if (fs.existsSync(indexPath)) {
-    return { index: readCapabilitiesIndex(indexPath), rebuilt: false, stale: true };
+    return { index: readCapabilitiesIndex(options.root, options.config, indexPath, true), rebuilt: false, stale: true };
   }
 
   throw new Error("capabilities index missing and auto-reindex is disabled");

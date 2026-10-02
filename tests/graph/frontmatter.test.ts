@@ -1,6 +1,23 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-const { parseFrontmatter } = require("../../graph/frontmatter");
+const { parseFrontmatter, frontmatterSourceBounds } = require("../../graph/frontmatter");
+
+test("frontmatter source spans share parser grammar without normalizing body bytes", () => {
+  for (const eol of ["\n", "\r\n"]) {
+    const prefix = [" ---\t", "title: a---b", " \t--- ", ""].join(eol);
+    const body = `first${eol}---${eol}last${eol}`;
+    const content = prefix + body;
+    const bounds = frontmatterSourceBounds(content, "spans.md");
+    assert.equal(content.slice(0, bounds.bodyStart), prefix);
+    assert.equal(content.slice(bounds.bodyStart), body);
+    assert.equal(bounds.eol, eol);
+    assert.equal(content.slice(bounds.headerEnd, bounds.bodyStart), eol);
+    assert.deepEqual(parseFrontmatter(content, "spans.md"), { frontmatter: { title: "a---b" }, body: body.replace(/\r\n/g, "\n") });
+    const empty = frontmatterSourceBounds(["---", "id: task-1", "---"].join(eol), "empty.md");
+    assert.equal(empty.bodyStart, empty.headerEnd);
+  }
+  assert.throws(() => frontmatterSourceBounds("---\nid: task-1\n", "missing.md"), /closing/);
+});
 
 test("parseFrontmatter parses lists and body", () => {
   const content = [

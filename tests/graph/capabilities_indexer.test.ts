@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
+import { spawnSync } from "node:child_process";
 const { loadConfig } = require("../../core/config");
 const {
   buildCapabilitiesIndex,
@@ -406,4 +407,122 @@ test("loadCapabilitiesIndex can return stale cache when reindex is disabled", ()
   const stale = loadCapabilitiesIndex({ root, config, allowReindex: false });
   assert.equal(stale.rebuilt, false);
   assert.equal(stale.stale, true);
+});
+
+function workflowFixture(backend: string): string {
+  const root = makeTempDir("mdkg-workflow-owner-");
+  writeConfig(root, { ...rootWorkspaceConfig(), child: { path: "child", enabled: true, mdkg_dir: ".mdkg" } });
+  const configPath = path.join(root, ".mdkg/config.json");
+  const raw = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  raw.index.backend = backend;
+  writeFile(configPath, JSON.stringify(raw));
+  writeDefaultTemplates(root);
+  for (const workspace of [".", "child"]) {
+    writeManifest(root, workspace); writeWork(root, workspace);
+    writeWorkOrder(root, workspace); writeReceipt(root, workspace);
+  }
+  return root;
+}
+
+// The same cases can be exercised against retained installed bytes for
+// failing-before evidence, without importing the candidate's source tree.
+const subjectDist = process.env.MDKG_TEST_PACKAGE
+  ? path.join(process.env.MDKG_TEST_PACKAGE, "dist") : path.resolve(__dirname, "../..");
+function subject(module: string): any { return require(path.join(subjectDist, module)); }
+
+for (const backend of ["json", "sqlite"]) {
+  test(`workflow evidence remains workspace-owned in ${backend} projections and status`, () => {
+    const root = workflowFixture(backend);
+    const config = subject("core/config").loadConfig(root);
+    subject("graph/reindex").writeDerivedIndexes(root, config);
+    const file = path.join(root, ".mdkg/index/capabilities.json");
+    const records = JSON.parse(fs.readFileSync(file, "utf8")).records;
+    for (const ws of ["root", "child"]) {
+      for (const id of ["work.capability-route", "agent.capability-worker"]) {
+        const record = records.find((item: any) => item.qid === `${ws}:${id}`);
+        assert.deepEqual(record.linkage.work_order_qids, [`${ws}:order.capability-route`]);
+        assert.deepEqual(record.linkage.receipt_qids, [`${ws}:receipt.capability-route`]);
+      }
+      const result = spawnSync(process.execPath, [path.join(subjectDist, "cli.js"), "work", "order", "status", `${ws}:order.capability-route`, "--json"], { cwd: root, encoding: "utf8" });
+      assert.equal(result.status, 0, result.stderr);
+      assert.deepEqual(JSON.parse(result.stdout).receipts.map((item: any) => item.qid), [`${ws}:receipt.capability-route`]);
+    }
+    if (backend === "sqlite") {
+      const { DatabaseSync } = require("node:sqlite");
+      const db = new DatabaseSync(path.resolve(root, config.index.sqlite_path), { readOnly: true });
+      try {
+        const projected = db.prepare("SELECT json FROM capabilities WHERE qid = ?").get("root:work.capability-route");
+        assert.deepEqual(JSON.parse(projected.json).linkage.receipt_qids, ["root:receipt.capability-route"]);
+      } finally { db.close(); }
+    }
+  });
+}
+
+test("warm and stale capability caches cannot lend another workspace's receipt evidence", () => {
+  const root = workflowFixture("json"), config = subject("core/config").loadConfig(root);
+  const producer = subject("graph/capabilities_indexer"), consumer = subject("graph/capabilities_index_cache");
+  const file = producer.resolveCapabilitiesIndexPath(root, config);
+  const initial = producer.buildCapabilitiesIndex(root, config);
+  initial.records.find((item: any) => item.qid === "root:work.capability-route").linkage.receipt_qids = ["child:receipt.capability-route"];
+  consumer.writeCapabilitiesIndex(root, file, initial);
+  const before = fs.readFileSync(file);
+  for (const stale of [false, true]) {
+    if (stale) touch(file, Date.now() - 60_000);
+    const result = consumer.loadCapabilitiesIndex({ root, config, allowReindex: false, persistReindex: false });
+    assert.equal(result.stale, stale);
+    assert.equal(result.rebuilt, false);
+    assert.deepEqual(result.index.records.find((item: any) => item.qid === "root:work.capability-route").linkage.receipt_qids, ["root:receipt.capability-route"]);
+    assert.deepEqual(fs.readFileSync(file), before);
+  }
+});
+
+test("explicit qualified cross-workspace workflow references retain their intended target", () => {
+  const root = workflowFixture("json");
+  const file = path.join(root, "child/.mdkg/work/receipt.capability-route/RECEIPT.md");
+  writeFile(file, fs.readFileSync(file, "utf8").replace("work_order_id: order.capability-route", "work_order_id: root:order.capability-route"));
+  const config = subject("core/config").loadConfig(root);
+  const records = subject("graph/capabilities_indexer").buildCapabilitiesIndex(root, config).records;
+  assert.deepEqual(records.find((item: any) => item.qid === "root:work.capability-route").linkage.receipt_qids, ["child:receipt.capability-route", "root:receipt.capability-route"]);
+  assert.deepEqual(records.find((item: any) => item.qid === "child:work.capability-route").linkage.receipt_qids, []);
+});
+
+test("workflow status and verification derive reference ownership rather than trusting cached attributes", () => {
+  const root = workflowFixture("json"), config = subject("core/config").loadConfig(root);
+  subject("graph/reindex").writeDerivedIndexes(root, config);
+  const file = path.resolve(root, config.index.global_index_path);
+  const cached = JSON.parse(fs.readFileSync(file, "utf8"));
+  cached.nodes["child:receipt.capability-route"].attributes.work_order_id = "root:order.capability-route";
+  writeFile(file, JSON.stringify(cached));
+  const before = fs.readFileSync(file);
+  for (const stale of [false, true]) {
+    if (stale) touch(file, Date.now() - 60_000);
+    const run = (args: string[]) => {
+      const result = spawnSync(process.execPath, [path.join(subjectDist, "cli.js"), ...args, "--json"], { cwd: root, encoding: "utf8" });
+      assert.equal(result.status, 0, result.stderr);
+      return JSON.parse(result.stdout);
+    };
+    const status = run(["work", "order", "status", "root:order.capability-route"]);
+    assert.deepEqual(status.receipts.map((item: any) => item.qid), ["root:receipt.capability-route"]);
+    const verification = run(["work", "receipt", "verify", "child:receipt.capability-route"]);
+    assert.equal(verification.receipt.work_order_qid, "child:order.capability-route");
+    assert.equal(verification.work_order.work_qid, "child:work.capability-route");
+    assert.deepEqual(fs.readFileSync(file), before);
+  }
+});
+
+test("explicit stale capability discovery survives malformed unrelated nodes without unverified linkage", () => {
+  const root = workflowFixture("json"), config = subject("core/config").loadConfig(root);
+  writeSkill(root, "available-skill");
+  const producer = subject("graph/capabilities_indexer"), consumer = subject("graph/capabilities_index_cache");
+  const file = producer.resolveCapabilitiesIndexPath(root, config);
+  consumer.writeCapabilitiesIndex(root, file, producer.buildCapabilitiesIndex(root, config));
+  const before = fs.readFileSync(file);
+  writeFile(path.join(root, ".mdkg/work/broken.md"), "---\nid: malformed\ntype: not-a-node-type\n---\n");
+  touch(file, Date.now() - 60_000);
+  const result = consumer.loadCapabilitiesIndex({ root, config, allowReindex: false, persistReindex: false });
+  assert.equal(result.stale, true);
+  assert.ok(result.index.records.some((item: any) => item.slug === "available-skill"));
+  assert.ok(result.index.records.every((item: any) => item.linkage === undefined));
+  assert.match(result.index.meta.inspection_errors.join(" "), /linkage withheld/);
+  assert.deepEqual(fs.readFileSync(file), before);
 });

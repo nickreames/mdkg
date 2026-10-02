@@ -28,6 +28,10 @@ import { archiveIdFromUri } from "../util/refs";
 import { withMutationLock } from "../util/lock";
 import { rebuildDerivedIndexCaches } from "./index";
 import { readGraphFormat } from "../graph/identity";
+import { readJsonCacheText } from "../graph/json_cache_fingerprint";
+import { readLocalGoalSelection } from "../graph/selected_goal";
+import { frontmatterSourceBounds } from "../graph/frontmatter";
+import { rewriteLegacyIdReferences } from "../util/legacy_id_rewrite";
 
 export type FixFamily = "index" | "refs" | "ids" | "all";
 
@@ -179,15 +183,13 @@ function emptyFamilySummaries(selected: Array<Exclude<FixFamily, "all">>): FixFa
   }));
 }
 
-function readJsonProblem(filePath: string): string | undefined {
-  if (!fs.existsSync(filePath)) {
-    return undefined;
-  }
+function readJsonProblem(root: string, filePath: string): { missing: boolean; error?: string } {
   try {
-    JSON.parse(fs.readFileSync(filePath, "utf8"));
-    return undefined;
+    const content = readJsonCacheText(root, filePath, true);
+    if (content !== null) JSON.parse(content);
+    return { missing: content === null };
   } catch (err) {
-    return err instanceof Error ? err.message : "unreadable json";
+    return { missing: false, error: err instanceof Error ? err.message : "unreadable json" };
   }
 }
 
@@ -248,15 +250,18 @@ function planIndexRepairs(root: string): FixPlannerResult {
     const relativePath = rel(root, entry.path);
     let reason: string | undefined;
     let detail: Record<string, unknown> | undefined;
-    if (!fs.existsSync(entry.path)) {
+    if (entry.json) {
+      const readProblem = readJsonProblem(root, entry.path);
+      if (readProblem.missing) {
+        reason = "generated_cache_missing";
+        detail = { cache: entry.name };
+      } else if (readProblem.error) {
+        reason = "generated_cache_unreadable";
+        detail = { cache: entry.name, error: readProblem.error };
+      }
+    } else if (!fs.existsSync(entry.path)) {
       reason = "generated_cache_missing";
       detail = { cache: entry.name };
-    } else if (entry.json) {
-      const readProblem = readJsonProblem(entry.path);
-      if (readProblem) {
-        reason = "generated_cache_unreadable";
-        detail = { cache: entry.name, error: readProblem };
-      }
     }
     if (!reason) {
       try {
@@ -522,29 +527,8 @@ function resolveTargetFilter(index: Index, target: string | undefined): { qids?:
 }
 
 function readSelectedGoalState(root: string): { qid: string; id: string; ws: string; selected_at: string } | undefined | "malformed" {
-  const filePath = path.join(root, ".mdkg", "state", "selected-goal.json");
-  if (!fs.existsSync(filePath)) {
-    return undefined;
-  }
-  try {
-    const parsed = JSON.parse(fs.readFileSync(filePath, "utf8")) as Record<string, unknown>;
-    if (
-      typeof parsed.qid === "string" &&
-      typeof parsed.id === "string" &&
-      typeof parsed.ws === "string" &&
-      typeof parsed.selected_at === "string"
-    ) {
-      return {
-        qid: parsed.qid.toLowerCase(),
-        id: parsed.id.toLowerCase(),
-        ws: parsed.ws.toLowerCase(),
-        selected_at: parsed.selected_at,
-      };
-    }
-    return "malformed";
-  } catch {
-    return "malformed";
-  }
+  const selected = readLocalGoalSelection(root);
+  return selected.warning ? "malformed" : selected.state;
 }
 
 function planSelectedGoalState(root: string, index: Index): FixPlanChange[] {
@@ -817,31 +801,16 @@ function baseRefIdPaths(root: string, baseRef: string | undefined, files: string
   return pathsById;
 }
 
-function rewriteIdInNodeContent(content: string, fromId: string, toId: string): string {
-  const lines = content.split(/\n/);
-  let inFrontmatter = false;
-  let frontmatterClosed = false;
-  let idRewritten = false;
-  const rewritten = lines.map((line, index) => {
-    if (index === 0 && line.trim() === "---") {
-      inFrontmatter = true;
-      return line;
-    }
-    if (inFrontmatter && !frontmatterClosed && line.trim() === "---") {
-      frontmatterClosed = true;
-      inFrontmatter = false;
-      return line;
-    }
-    if (inFrontmatter && !idRewritten && line === `id: ${fromId}`) {
-      idRewritten = true;
-      return `id: ${toId}`;
-    }
-    return line.split(fromId).join(toId);
-  });
-  if (!idRewritten) {
+function rewriteIdInNodeContent(content: string, fromId: string, toId: string, workspace: string): string {
+  const { bodyStart } = frontmatterSourceBounds(content, "legacy duplicate-ID repair");
+  const escaped = fromId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const idField = new RegExp(`^(id:[ \\t]*)(["']?)${escaped}\\2([ \\t]*\\r?)$`, "m");
+  const header = content.slice(0, bodyStart);
+  if (!idField.test(header)) {
     throw new UsageError(`unable to rewrite id ${fromId}; frontmatter id line not found`);
   }
-  return rewritten.join("\n");
+  const rewritten = header.replace(idField, (_match, field: string, quote: string, suffix: string) => field + quote + toId + quote + suffix) + content.slice(bodyStart);
+  return rewriteLegacyIdReferences(rewritten, fromId, toId, workspace).text;
 }
 
 function isInsideRoot(root: string, filePath: string): boolean {
@@ -851,8 +820,8 @@ function isInsideRoot(root: string, filePath: string): boolean {
 
 function replaceIdInRelativePath(relativePath: string, fromId: string, toId: string, usedPaths: Set<string>): string {
   const parsed = path.posix.parse(relativePath);
-  const baseName = parsed.base.includes(fromId)
-    ? parsed.base.replace(fromId, toId)
+  const baseName = parsed.base === fromId || parsed.base.startsWith(fromId + "-") || parsed.base.startsWith(fromId + ".")
+    ? toId + parsed.base.slice(fromId.length)
     : `${toId}-${parsed.base}`;
   let candidate = path.posix.join(parsed.dir, baseName);
   if (!usedPaths.has(candidate)) {
@@ -967,11 +936,11 @@ function workspaceAliasForPath(root: string, config: ReturnType<typeof loadConfi
   return alias && config.workspaces[alias].enabled ? alias : undefined;
 }
 
-function filesContaining(root: string, files: string[], needle: string, maxBytes: number): string[] {
+function filesContaining(root: string, files: string[], needle: string, maxBytes: number, workspace: string): string[] {
   return files
     .filter((filePath) => {
       try {
-        return readWorkspaceDocument(root, filePath, maxBytes).includes(needle);
+        return rewriteLegacyIdReferences(readWorkspaceDocument(root, filePath, maxBytes), needle, needle, workspace).count > 0;
       } catch (error) {
         if (error instanceof ContainedPathError) throw error;
         return false;
@@ -981,27 +950,11 @@ function filesContaining(root: string, files: string[], needle: string, maxBytes
     .sort();
 }
 
-function countOccurrences(value: string, needle: string): number {
-  if (needle.length === 0) {
-    return 0;
-  }
-  let count = 0;
-  let offset = 0;
-  for (;;) {
-    const index = value.indexOf(needle, offset);
-    if (index === -1) {
-      return count;
-    }
-    count += 1;
-    offset = index + needle.length;
-  }
-}
-
-function referenceRewriteItems(root: string, files: string[], from: string, to: string, maxBytes: number) {
+function referenceRewriteItems(root: string, files: string[], from: string, to: string, maxBytes: number, workspace: string) {
   return files
     .map((filePath) => {
       try {
-        const replacementCount = countOccurrences(readWorkspaceDocument(root, filePath, maxBytes), from);
+        const replacementCount = rewriteLegacyIdReferences(readWorkspaceDocument(root, filePath, maxBytes), from, to, workspace).count;
         if (replacementCount === 0) {
           return undefined;
         }
@@ -1255,7 +1208,7 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
       const basePaths = basePathsById.get(id);
       const baseCanonical = basePaths ? group.find((record) => basePaths.has(record.path)) : undefined;
       const canonical = baseCanonical ?? group[0];
-      const referencePaths = filesContaining(root, files, id, config.index.limits.max_file_bytes);
+      const referencePaths = filesContaining(root, files, id, config.index.limits.max_file_bytes, alias);
       const duplicateRecords = group.filter((record) => record.path !== canonical.path);
       const groupPaths = group.map((record) => record.path).sort();
       const deterministicRule = baseCanonical
@@ -1263,16 +1216,17 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
         : "keep the lexicographically first path unchanged; propose the next unused canonical numeric id for each later path";
       for (const duplicate of duplicateRecords) {
         const candidate = candidateDuplicateId(id, usedIds);
-        const selfReferenceRewrites = referenceRewriteItems(root, [duplicate.absPath], id, candidate, config.index.limits.max_file_bytes);
+        const selfReferenceRewrites = referenceRewriteItems(root, [duplicate.absPath], id, candidate, config.index.limits.max_file_bytes, alias);
         const externalReferenceRewrites = referenceRewriteItems(
           root,
           files.filter((filePath) => filePath !== duplicate.absPath),
           id,
           candidate,
-          config.index.limits.max_file_bytes
+          config.index.limits.max_file_bytes,
+          alias
         );
-        const safeReferenceRewrites = baseRef
-          ? externalReferenceRewrites.filter((item) => gitShow(root, `${baseRef}:${item.path}`) === undefined)
+        const safeReferenceRewrites = baseRef && baseCanonical && duplicateRecords.length === 1
+          ? externalReferenceRewrites.filter((item) => !groupPaths.includes(item.path) && gitShow(root, `${baseRef}:${item.path}`) === undefined)
           : [];
         const safeReferencePaths = new Set(safeReferenceRewrites.map((item) => item.path));
         const ambiguousReferenceRewrites = externalReferenceRewrites.filter((item) => !safeReferencePaths.has(item.path));
@@ -1469,15 +1423,15 @@ function applyDuplicateIdChange(root: string, change: FixPlanChange): FixApplyCh
   if (!isInsideRoot(root, absPath)) {
     throw new UsageError(`fix apply refused path outside repo: ${relativePath}`);
   }
-  const before = change.before as { duplicate_id?: unknown };
+  const before = change.before as { duplicate_id?: unknown; workspace?: unknown };
   const after = change.after as { candidate_id?: unknown };
   const fromId = typeof before.duplicate_id === "string" ? before.duplicate_id : undefined;
   const toId = typeof after.candidate_id === "string" ? after.candidate_id : undefined;
-  if (!fromId || !toId) {
+  if (!fromId || !toId || typeof before.workspace !== "string") {
     throw new UsageError(`fix apply change ${change.id} is missing duplicate id rewrite details`);
   }
   const current = readContainedFile({ root, relativePath });
-  const rewritten = rewriteIdInNodeContent(current, fromId, toId);
+  const rewritten = rewriteIdInNodeContent(current, fromId, toId, before.workspace);
   if (rewritten === current) {
     throw new UsageError(`fix apply change ${change.id} produced no file changes`);
   }
@@ -1496,7 +1450,7 @@ function applyDuplicateIdChange(root: string, change: FixPlanChange): FixApplyCh
       continue;
     }
     const rewriteCurrent = readContainedFile({ root, relativePath: rewrite.path });
-    const rewriteNext = rewriteCurrent.split(rewrite.from).join(rewrite.to);
+    const rewriteNext = rewriteLegacyIdReferences(rewriteCurrent, rewrite.from, rewrite.to, before.workspace).text;
     if (rewriteNext !== rewriteCurrent) {
       atomicReplaceContainedFile({ root, relativePath: rewrite.path }, rewriteNext);
       touchedPaths.add(rewrite.path);
@@ -1521,6 +1475,7 @@ function applyGitStageDuplicateIdChange(root: string, change: FixPlanChange): Fi
   }
   const before = change.before as {
     duplicate_id?: unknown;
+    workspace?: unknown;
     conflict_path?: unknown;
     canonical_stage?: unknown;
     duplicate_stage?: unknown;
@@ -1543,7 +1498,8 @@ function applyGitStageDuplicateIdChange(root: string, change: FixPlanChange): Fi
   if (!isInsideRoot(root, canonicalAbs) || !isInsideRoot(root, candidateAbs)) {
     throw new UsageError(`fix apply refused path outside repo while resolving ${conflictPath}`);
   }
-  const rewrittenDuplicate = rewriteIdInNodeContent(duplicateContent, fromId, candidateId);
+  if (typeof before.workspace !== "string") throw new UsageError("Git-stage repair lacks owning workspace");
+  const rewrittenDuplicate = rewriteIdInNodeContent(duplicateContent, fromId, candidateId, before.workspace);
   for (const relativePath of [conflictPath, candidatePath]) {
     withContainedPathSink(
       { root, relativePath, operation: "replace", createParents: true },

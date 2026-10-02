@@ -40,7 +40,7 @@ jobs:
       matrix:
         include:
           - id: minimum
-            node: "24.15.0"
+            node: "24.18.0"
           - id: floating
             node: "24.x"
     steps:
@@ -96,7 +96,7 @@ jobs:
         run: node scripts/generate-ci-workflow.js --verify-sha "$COMMIT_SHA"
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.15.0"
+          node-version: "24.18.0"
           cache: npm
           cache-dependency-path: |
             package-lock.json
@@ -155,7 +155,7 @@ jobs:
         run: node scripts/generate-ci-workflow.js --verify-sha "$COMMIT_SHA"
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.15.0"
+          node-version: "24.18.0"
           cache: npm
           cache-dependency-path: |
             package-lock.json
@@ -183,9 +183,33 @@ jobs:
           retention-days: 30
           if-no-files-found: error
 
+  # This deliberate stub keeps Test487 unqualified until exact-artifact
+  # portable Node installed cases and independent platform evidence exist.
+  # Bugs46/47 remain deferred/unresolved, not required native-helper fixes.
+  # It runs only for an explicitly dispatched full tier, never for PR/push.
+  full_linux_filesystem:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.tier == 'full' }}
+    needs: full_prepare
+    name: Full / Linux portable Node / ${{ matrix.id }} (unqualified)
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: x64
+            runner: ubuntu-24.04
+          - id: arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - name: Refuse missing Test487 installed-artifact qualification
+        run: |
+          echo "::error title=Test487 unqualified::Portable Node installed cases are not yet qualified on Linux for the exact 0.6.0 artifact. Bugs46/47 remain deferred/unresolved; no platform acceptance is recorded."
+          exit 1
+
   full_release:
     if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.tier == 'full' }}
-    needs: [full_prepare, full_smoke]
+    needs: [full_prepare, full_smoke, full_linux_filesystem]
     name: Full / aggregate release authority
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -194,6 +218,8 @@ jobs:
         env:
           PREPARE_RESULT: ${{ needs.full_prepare.result }}
           SHARD_RESULT: ${{ needs.full_smoke.result }}
+          LINUX_FILESYSTEM_RESULT: ${{ needs.full_linux_filesystem.result }}
         run: |
           test "$PREPARE_RESULT" = success
           test "$SHARD_RESULT" = success
+          test "$LINUX_FILESYSTEM_RESULT" = success

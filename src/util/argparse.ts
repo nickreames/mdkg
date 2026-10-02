@@ -134,6 +134,7 @@ const BOOLEAN_FLAGS = new Set([
   "--resume",
   "--recover",
   "--rollback",
+  "--confirm-quiescent",
   "--force",
   "--update-gitignore",
   "--update-npmignore",

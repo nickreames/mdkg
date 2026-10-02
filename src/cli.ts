@@ -2,6 +2,7 @@
 
 import fs from "fs";
 import path from "path";
+import { assertNodeRuntime } from "./core/node_runtime";
 import { parseArgs } from "./util/argparse";
 import { ParsedArgs } from "./util/argparse";
 import { commandOptionError, commandOptionKind, optionCommandsForHelp } from "./commands/option_contract";
@@ -827,12 +828,14 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       break;
     case "recover":
       log("Usage:");
-      log("  mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]");
+      log("  mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]");
       log("\nNotes:");
       log("  - defaults to read-only journal inspection with raw graph bodies omitted");
       log("  - explicit resume/rollback requires unchanged control inputs and exact owned before/after bytes");
-      log("  - a proven orphan requires the mode-specific --lock-evidence from a fresh inspection");
-      log("  - live, weak, foreign or incomplete ownership evidence refuses; age/PID alone never permits takeover");
+      log("  - every recovery write requires fresh mode-specific --lock-evidence and --confirm-quiescent");
+      log("  - confirm-quiescent asserts all checkout writers are stopped; a hash/PID probe is not OS proof or authentication");
+      log("  - live/ambiguous PIDs, foreign checkout, weak or incomplete evidence refuse; no age/PID-only takeover");
+      log("  - no-lock terminal repeats stay read-only; inspect again after any evidence or lock change");
       log("  - changed or unowned inputs stop recovery without overwriting user work");
       break;
     case "clone":
@@ -2207,6 +2210,7 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       if (!source || parsed.positionals.length !== 3) throw new UsageError("graph recover requires <plan-hash>");
       runGraphRecoverCommand({ root, hash: source,
         lockEvidence: requireFlagValue("--lock-evidence", parsed.flags["--lock-evidence"]),
+        confirmQuiescent: parseBooleanFlag("--confirm-quiescent", parsed.flags["--confirm-quiescent"]),
         resume: parseBooleanFlag("--resume", parsed.flags["--resume"]),
         rollback: parseBooleanFlag("--rollback", parsed.flags["--rollback"]), json });
       return 0;
@@ -3633,6 +3637,8 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
     }
   }
 
+  try { assertNodeRuntime(); }
+  catch (err) { return handleCommandError(err, command, io); }
   const root = parsed.root ? path.resolve(parsed.root) : io.cwd();
   if (shouldRequireConfig(command, parsed.flags) && !hasConfig(root)) {
     printRootError(io.error, root);
@@ -3691,6 +3697,8 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
     }
   }
 
+  try { assertNodeRuntime(); }
+  catch (err) { return handleCommandError(err, command, io); }
   const root = parsed.root ? path.resolve(parsed.root) : io.cwd();
   if (shouldRequireConfig(command, parsed.flags) && !hasConfig(root)) {
     printRootError(io.error, root);

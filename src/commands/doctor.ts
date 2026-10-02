@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import { containedPathExists, forEachContainedDirectoryEntry, withContainedPathSink } from "../core/filesystem_authority";
 import { loadIndex } from "../graph/index_cache";
 import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
 import { buildSubgraphsIndex } from "../graph/subgraphs";
@@ -11,6 +12,7 @@ import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
 import { listProjectDbRuntimePolicyFiles } from "../core/project_db";
 import { verifyProjectDb } from "../core/project_db_migrations";
 import { ValidationError } from "../util/errors";
+import { nodeRuntimeIssue, SUPPORTED_NODE_RANGE } from "../core/node_runtime";
 import { readLocalGoalSelection, resolveLocalGoalSelection } from "../graph/selected_goal";
 
 export type DoctorCommandOptions = {
@@ -35,8 +37,6 @@ type CheckResult = {
   strictFail?: boolean;
 };
 
-const REQUIRED_NODE_MAJOR = 24;
-const REQUIRED_NODE_MINOR = 15;
 const ARCHIVE_RAW_ALLOWED_DIRS = new Set(["source"]);
 
 type CheckInput = {
@@ -76,46 +76,14 @@ function publicCheck(result: CheckResult): Omit<CheckResult, "strictFail"> {
   return publicResult;
 }
 
-function parseNodeVersion(version: string): { major: number; minor: number; patch: number } | null {
-  const [majorRaw, minorRaw, patchRaw] = version.split(".");
-  const major = Number.parseInt(majorRaw ?? "", 10);
-  const minor = Number.parseInt(minorRaw ?? "", 10);
-  const patch = Number.parseInt(patchRaw ?? "", 10);
-  if (!Number.isInteger(major) || !Number.isInteger(minor) || !Number.isInteger(patch)) {
-    return null;
-  }
-  return { major, minor, patch };
-}
-
 function runNodeVersionCheck(): CheckResult {
-  const nodeVersion = process.versions.node;
-  const parsed = parseNodeVersion(nodeVersion);
-  if (parsed === null) {
-    return makeCheck({
-      id: "runtime.node_version",
-      name: "node-version",
-      ok: false,
-      detail: `unable to parse Node.js version: ${nodeVersion}`,
-      remediation: `Run mdkg with Node.js >=${REQUIRED_NODE_MAJOR}.${REQUIRED_NODE_MINOR}.0.`,
-    });
-  }
-  if (
-    parsed.major < REQUIRED_NODE_MAJOR ||
-    (parsed.major === REQUIRED_NODE_MAJOR && parsed.minor < REQUIRED_NODE_MINOR)
-  ) {
-    return makeCheck({
-      id: "runtime.node_version",
-      name: "node-version",
-      ok: false,
-      detail: `Node.js ${nodeVersion} is unsupported (requires >=${REQUIRED_NODE_MAJOR}.${REQUIRED_NODE_MINOR}.0)`,
-      remediation: `Install Node.js >=${REQUIRED_NODE_MAJOR}.${REQUIRED_NODE_MINOR}.0 and rerun mdkg.`,
-    });
-  }
+  const issue = nodeRuntimeIssue();
   return makeCheck({
     id: "runtime.node_version",
     name: "node-version",
-    ok: true,
-    detail: `Node.js ${nodeVersion} (ok)`,
+    ok: !issue,
+    detail: issue ?? `Node.js ${process.versions.node} (ok; SQLite observation capabilities present)`,
+    remediation: issue ? `Install Node.js ${SUPPORTED_NODE_RANGE} with built-in SQLite capabilities and rerun mdkg.` : undefined,
   });
 }
 
@@ -157,26 +125,34 @@ function runSqliteCheck(root: string, config: ReturnType<typeof loadConfig>): Ch
   });
 }
 
-function walkFiles(root: string): string[] {
-  if (!fs.existsSync(root)) {
-    return [];
-  }
-  const entries = fs.readdirSync(root, { withFileTypes: true });
+function walkFiles(root: string, storageRoot: string, limits: ReturnType<typeof loadConfig>["index"]["limits"]): string[] {
+  const start = path.relative(root, storageRoot) || ".";
+  if (start !== "." && !containedPathExists({ root, relativePath: start, pathSyntax: "native" })) return [];
   const files: string[] = [];
-  for (const entry of entries) {
-    const fullPath = path.join(root, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...walkFiles(fullPath));
-    } else if (entry.isFile()) {
-      files.push(fullPath);
-    }
+  const pending = [{ relativePath: start, depth: 0 }];
+  let entries = 0;
+  while (pending.length) {
+    const directory = pending.pop()!;
+    if (directory.depth > limits.max_depth) throw new ValidationError("diagnostic storage walk exceeds depth limit");
+    forEachContainedDirectoryEntry({ root, relativePath: directory.relativePath, pathSyntax: "native" }, entry => {
+      if (++entries > limits.max_files) throw new ValidationError("diagnostic storage walk exceeds entry limit");
+      const relativePath = path.join(directory.relativePath, entry.name);
+      // Inspect links and special entries instead of silently treating them as
+      // absent. The same root authority is retained for every descendant.
+      withContainedPathSink({ root, relativePath, pathSyntax: "native", operation: "read" }, ({ absolutePath }) => {
+        const stat = fs.lstatSync(absolutePath);
+        if (stat.isDirectory()) pending.push({ relativePath, depth: directory.depth + 1 });
+        else if (stat.isFile()) files.push(absolutePath);
+        else throw new ValidationError(`diagnostic storage entry is not a regular file or directory: ${relativePath}`);
+      });
+    });
   }
   return files;
 }
 
-function runArchiveStorageCheck(root: string): CheckResult {
+function runArchiveStorageCheck(root: string, limits: ReturnType<typeof loadConfig>["index"]["limits"]): CheckResult {
   const archiveRoot = path.join(root, ".mdkg", "archive");
-  const files = walkFiles(archiveRoot);
+  const files = walkFiles(root, archiveRoot, limits);
   const strayRaw = files
     .filter((filePath) => {
       const relative = path.relative(archiveRoot, filePath).split(path.sep);
@@ -208,7 +184,7 @@ function runArchiveStorageCheck(root: string): CheckResult {
   });
 }
 
-function runArchiveLargeCacheCheck(root: string, warningBytes: number): CheckResult {
+function runArchiveLargeCacheCheck(root: string, warningBytes: number, limits: ReturnType<typeof loadConfig>["index"]["limits"]): CheckResult {
   if (warningBytes === 0) {
     return makeCheck({
       id: "archive.large_cache",
@@ -218,11 +194,11 @@ function runArchiveLargeCacheCheck(root: string, warningBytes: number): CheckRes
     });
   }
   const archiveRoot = path.join(root, ".mdkg", "archive");
-  const largeCaches = walkFiles(archiveRoot)
+  const largeCaches = walkFiles(root, archiveRoot, limits)
     .filter((filePath) => filePath.endsWith(".zip"))
     .map((filePath) => ({
       path: path.relative(root, filePath).split(path.sep).join("/"),
-      size: fs.statSync(filePath).size,
+      size: withContainedPathSink({ root, relativePath: path.relative(root, filePath), pathSyntax: "native", operation: "read" }, ({ absolutePath }) => fs.lstatSync(absolutePath).size),
     }))
     .filter((entry) => entry.size > warningBytes)
     .sort((a, b) => a.path.localeCompare(b.path));
@@ -249,9 +225,10 @@ function runArchiveLargeCacheCheck(root: string, warningBytes: number): CheckRes
   });
 }
 
-function runBundleStorageCheck(root: string, outputDir: string): CheckResult {
+function runBundleStorageCheck(root: string, outputDir: string, limits: ReturnType<typeof loadConfig>["index"]["limits"]): CheckResult {
   const bundleRoot = path.resolve(root, outputDir);
-  if (!fs.existsSync(bundleRoot)) {
+  const relativePath = path.relative(root, bundleRoot) || ".";
+  if (relativePath !== "." && !containedPathExists({ root, relativePath, pathSyntax: "native" })) {
     return makeCheck({
       id: "bundle.storage",
       name: "bundle-storage",
@@ -260,7 +237,7 @@ function runBundleStorageCheck(root: string, outputDir: string): CheckResult {
       remediation: "Run `mdkg bundle create --profile private` when a snapshot should be tracked.",
     });
   }
-  const bundles = walkFiles(bundleRoot)
+  const bundles = walkFiles(root, bundleRoot, limits)
     .filter((filePath) => filePath.endsWith(".mdkg.zip"))
     .map((filePath) => path.relative(root, filePath).split(path.sep).join("/"))
     .sort();
@@ -281,6 +258,15 @@ function runBundleStorageCheck(root: string, outputDir: string): CheckResult {
     remediation: "Run `mdkg bundle verify <path>` to check freshness before handoff.",
     refs: bundles,
   });
+}
+
+function storageCheck(id: string, name: string, check: () => CheckResult): CheckResult {
+  try { return check(); }
+  catch (error) {
+    return makeCheck({ id, name, ok: false,
+      detail: `storage inspection refused: ${error instanceof Error ? error.message : String(error)}`,
+      remediation: "Review storage path ownership and configured discovery limits; no repair was attempted." });
+  }
 }
 
 function runProjectDbRuntimePolicyCheck(root: string): CheckResult {
@@ -592,9 +578,10 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
   }
 
   if (config) {
-    results.push(runArchiveStorageCheck(options.root));
-    results.push(runArchiveLargeCacheCheck(options.root, config.archive.large_cache_warning_bytes));
-    results.push(runBundleStorageCheck(options.root, config.bundles.output_dir));
+    const storageConfig = config;
+    results.push(storageCheck("archive.storage", "archive-storage", () => runArchiveStorageCheck(options.root, storageConfig.index.limits)));
+    results.push(storageCheck("archive.large_cache", "archive-large-cache", () => runArchiveLargeCacheCheck(options.root, storageConfig.archive.large_cache_warning_bytes, storageConfig.index.limits)));
+    results.push(storageCheck("bundle.storage", "bundle-storage", () => runBundleStorageCheck(options.root, storageConfig.bundles.output_dir, storageConfig.index.limits)));
     results.push(runProjectDbRuntimePolicyCheck(options.root));
     results.push(runProjectDbVerifyCheck(options.root, config));
     results.push(runSqliteCheck(options.root, config));

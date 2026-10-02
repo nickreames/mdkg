@@ -71,7 +71,7 @@ function updateConfig(root: string, mutate: (config: any) => void): void {
   fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
 }
 
-function createChildBundle(root: string): string {
+function createChildBundle(root: string, qualified = false): string {
   const child = path.join(root, "child-repo");
   fs.mkdirSync(child, { recursive: true });
   run(["init", "--agent"], child);
@@ -101,7 +101,7 @@ function createChildBundle(root: string): string {
     "--id",
     "order.child-order-1",
     "--work-id",
-    "work.child-work",
+    qualified ? "root:work.child-work" : "work.child-work",
     "--requester",
     "user://child",
     "--json",
@@ -114,7 +114,7 @@ function createChildBundle(root: string): string {
     "--id",
     "receipt.child-order-1",
     "--work-order-id",
-    "order.child-order-1",
+    qualified ? "root:order.child-order-1" : "order.child-order-1",
     "--outcome",
     "success",
     "--json",
@@ -123,6 +123,58 @@ function createChildBundle(root: string): string {
   run(["bundle", "create", "--profile", "private", "--json"], child);
   return "child-repo/.mdkg/bundles/private/all.mdkg.zip";
 }
+
+for (const qualified of [false, true]) test(`imported workflow evidence preserves source ownership (${qualified ? "qualified" : "local"} refs)`, () => {
+  const root = makeTempDir("mdkg-import-workflow-");
+  run(["init", "--agent"], root);
+  const bundle = createChildBundle(root, qualified);
+  run(["new", "spec", "Host Agent", "--id", "agent.child-agent", "--json"], root);
+  run(["work", "contract", "new", "Host Work", "--id", "work.child-work", "--agent-id", "agent.child-agent", "--kind", "test", "--inputs", "request:text:required", "--outputs", "result:text:required", "--json"], root);
+  run(["work", "order", "new", "Host Order", "--id", "order.child-order-1", "--work-id", "work.child-work", "--requester", "user://host", "--json"], root);
+  run(["subgraph", "add", "child", bundle, "--json"], root);
+  const imported = json<any>(run(["work", "order", "status", "child:order.child-order-1", "--json"], root).stdout);
+  assert.equal(imported.order.work_qid, "child:work.child-work");
+  assert.deepEqual(imported.receipts.map((item: any) => item.qid), ["child:receipt.child-order-1"]);
+  const verified = spawnSync(process.execPath, [cliPath, "work", "receipt", "verify", "child:receipt.child-order-1", "--json"], { cwd: root, encoding: "utf8" });
+  const verification = json<any>(verified.stdout);
+  assert.equal(verification.receipt.work_order_qid, "child:order.child-order-1");
+  assert.equal(verification.work_order.work_qid, "child:work.child-work");
+  const host = json<any>(run(["work", "order", "status", "root:order.child-order-1", "--json"], root).stdout);
+  assert.equal(host.receipt_count, 0);
+  const record = json<any>(run(["capability", "search", "Child Work", "--json"], root).stdout).items.find((item: any) => item.qid === "child:work.child-work");
+  assert.deepEqual(record.linkage.work_order_qids, ["child:order.child-order-1"]);
+  assert.deepEqual(record.linkage.receipt_qids, ["child:receipt.child-order-1"]);
+});
+
+for (const topology of ["normal", "separate"]) test(`subgraph outputs preserve ${topology} Git metadata`, (t) => {
+  const root = makeTempDir("mdkg-subgraph-git-metadata-");
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  if (topology === "separate") git(root, ["init", "--separate-git-dir", path.join(root, "admin")]);
+  else git(root, ["init"]);
+  run(["init", "--agent"], root);
+  const child = createGitChildBundle(root, "child_native");
+  const native = topology === "separate" ? "admin/config" : ".git/config";
+  updateConfig(root, config => {
+    const source = { enabled: true, visibility: "private", permissions: ["read"], max_stale_seconds: 86400, source_path: "projects/child_native" };
+    config.subgraphs.a_safe = { ...source, sources: [{ path: "safe/new.mdkg.zip", enabled: true, expected_profile: "private" }] };
+    config.subgraphs.z_unsafe = { ...source, sources: [{ path: native, enabled: true, expected_profile: "private" }] };
+  });
+  const before = sha256File(path.join(root, native)), configBefore = sha256File(path.join(root, ".mdkg/config.json"));
+  for (const flags of [["--dry-run"], []]) {
+    const failure = runFailure(["subgraph", "sync", "--all", ...flags, "--json"], root);
+    assert.match(failure.stdout + failure.stderr, /Git metadata/);
+    assert.equal(sha256File(path.join(root, native)), before);
+    assert.equal(sha256File(path.join(root, ".mdkg/config.json")), configBefore);
+    assert.equal(fs.existsSync(path.join(root, "safe")), false, "later unsafe alias must refuse before an earlier output");
+  }
+  updateConfig(root, config => { delete config.subgraphs.z_unsafe; config.subgraphs.a_safe.sources[0].path = child.bundlePath; });
+  const failure = runFailure(["subgraph", "materialize", "a_safe", "--target", topology === "separate" ? "admin" : ".git", "--clean", "--gitignore", "--json"], root);
+  assert.match(failure.stdout + failure.stderr, /Git metadata/);
+  assert.equal(sha256File(path.join(root, native)), before);
+  run(["subgraph", "materialize", "a_safe", "--target", ".", "--json"], root);
+  assert.ok(fs.existsSync(path.join(root, "a_safe/.mdkg-materialized.json")));
+  assert.equal(sha256File(path.join(root, native)), before);
+});
 
 function commitAll(repo: string, message: string): string {
   git(repo, ["add", "."]);

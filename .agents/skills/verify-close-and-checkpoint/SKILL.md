@@ -1,8 +1,8 @@
 ---
 name: verify-close-and-checkpoint
-description: Verify code and mdkg state, attach evidence, and close work cleanly when the single-writer AI agent or human orchestrator is ready to perform durable writes.
-tags: [stage:review, writer:orchestrator, mdkg, validation, evidence]
-version: 0.2.0
+description: Select risk-based tests during iteration and require full pre-merge or pre-publish gates when verifying work, attaching evidence, and closing a task.
+tags: [stage:review, writer:orchestrator, mdkg, testing, validation, evidence]
+version: 0.3.0
 authors: [mdkg]
 links: [.mdkg/README.md]
 ---
@@ -14,6 +14,7 @@ Finish work with evidence, validation, and minimal memory drift.
 ## When To Use
 
 - After implementation
+- When choosing focused tests during iteration or full readiness gates
 - Before commit
 - Before marking a task done
 - Before creating a checkpoint
@@ -43,7 +44,8 @@ separate approval.
 
 ## Steps
 
-1. Run the relevant technical gates for the changed surface.
+1. Use Selective Test Execution and Readiness Gates below to choose and run the
+   checks required for this change and its current acceptance boundary.
 2. Run `mdkg validate` before closing the task.
 3. For scaffold work, preview `mdkg upgrade --json`. Apply only a safe reviewed
    receipt with `mdkg upgrade --apply --plan-hash <sha256>` in an authorized
@@ -59,6 +61,58 @@ separate approval.
 12. Parent status edits remain manual; do not invent a hidden parent-closeout workflow.
 13. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
 14. If `events.jsonl` is missing, recreate it with `mdkg event enable` before expecting automatic JSONL provenance.
+
+## Selective Test Execution and Readiness Gates
+
+Choose tests by changed behavior, risk and acceptance obligations, not by a
+habit of running everything after every edit. This policy controls cadence;
+it does not waive a task's explicit checks or lower release coverage.
+
+| Boundary | Required evidence |
+| --- | --- |
+| Iterating on a bounded edit | Focused regression, nearby positive controls and applicable static checks. |
+| Completing a fix | Affected subsystem and shared-helper callers; record deferred integration gates. |
+| Pre-merge readiness | Full repository suite and required integration checks on the exact proposed integrated source-plus-graph state. |
+| Pre-publish readiness | Full release ladder, required runtime/platform matrix, coverage, security and installed-artifact checks bound to the final candidate. |
+
+1. Before running commands, record the changed surfaces, dependent callers,
+   selected test families, selection reason and wider checks deferred to a
+   named boundary. Inspect actual scripts/help; do not invent a test selector.
+   Explicit user/task gates take precedence over these default tiers.
+2. During iteration, run the smallest representative failure and success
+   controls. For guidance-only changes, use skill/schema/link/seed/projection
+   checks rather than unrelated runtime suites. Keep subprocess fixtures where
+   process isolation, CLI dispatch, permissions or crash recovery is the point.
+3. Broaden promptly for shared filesystem/transaction/identity helpers, schema
+   or dependency changes, cross-cutting behavior, unexpected failures, or an
+   uncertain impact map. A full suite before merge may be necessary even during
+   iteration; explain why. Never hide failing tests by narrowing the selection.
+4. Reuse a build only when its source, configuration, dependencies and generated
+   inputs still match. Prefer supported already-built commands; do not rebuild
+   independently for every validator. Reuse isolated copies of immutable
+   fixture seeds, never shared writable fixtures or unsafe hard-linked state.
+5. Record command, source/artifact identity, environment, duration and
+   pass/fail/skip/unverified counts. Distinguish compilation, setup and execution
+   timing where available. Preserve failure evidence; fix a harness problem and
+   rerun its affected cases before claiming coverage.
+6. Run full tests before claiming pre-merge readiness. Bind evidence to the
+   reviewed integration result; a changed target or dependency invalidates
+   affected evidence. Passing feature-branch tests alone does not prove the
+   source-plus-graph merge. Preparation does not grant merge authority.
+7. Before claiming pre-publish readiness, run the complete required release
+   gates against finalized inputs and qualify the exact publishable artifact.
+   Do not substitute source imports, intermediate builds, another runtime, or
+   an earlier candidate for installed final-byte evidence. Input changes require
+   requalification of affected gates and a current complete readiness record.
+8. Reuse already complete, applicable full-run evidence for unchanged inputs;
+   do not repeat it only because another checkpoint is being written. If required
+   platforms, infrastructure or authority are missing, report NOT_READY with the
+   exact gap rather than deleting a gate or quietly accepting focused results.
+
+A normal local checkpoint or commit is not automatically a pre-merge or
+pre-publish assertion. State precisely whether evidence is focused,
+subsystem-complete, pre-merge-complete or pre-publish-complete. Do not close a
+task whose own acceptance requires checks that are still deferred.
 
 ## Authority-Separated Release Handoff
 

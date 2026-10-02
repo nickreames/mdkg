@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { spawnSync } from "node:child_process";
-import { makeTempDir, writeFile } from "../helpers/fs";
+import { initializeTestGitIndex, makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
 const runtime = process.env.MDKG_TEST_PACKAGE ? path.join(process.env.MDKG_TEST_PACKAGE, "dist") : path.resolve(__dirname, "../..");
@@ -33,7 +33,7 @@ function fixture() {
     const r = run(root, ["loop", "fork", "safe", "--scope", "repo", "--planning-only", "--json"]);
     assert.equal(r.status, 0, r.stderr); forks.push(JSON.parse(r.stdout).loop.path);
   }
-  writeFile(path.join(root, ".git/index"), "index sentinel");
+  initializeTestGitIndex(root);
   writeFile(path.join(root, ".mdkg/state/selected-goal.json"), "{}\n");
   writeFile(path.join(root, ".mdkg/db/runtime/preserved"), "runtime sentinel");
   return { root, seed, source, forks };

@@ -30,15 +30,17 @@ test("unsafe optional runtime refuses before any native snapshot open", t => {
   assert.throws(() => sealProjectDbSnapshot(f.root, f.config), /symbolic link/);
 });
 
-test("snapshot observations use explicitly read-only SQLite connections", t => {
+test("snapshot observations use memory-only SQLite connections", t => {
   const f = fixture(t), Original = sqlite.DatabaseSync; let opens = 0;
-  t.mock.method(sqlite, "DatabaseSync", function(filename: string, options: any) {
-    assert.equal(options?.readOnly, true); opens++; return new Original(filename, options);
-  });
+  const observed = function(filename: string, options: any) {
+    assert.equal(filename, ":memory:"); assert.equal(options?.allowExtension, false); opens++; return new Original(filename, options);
+  };
+  observed.prototype = Original.prototype;
+  t.mock.method(sqlite, "DatabaseSync", observed);
   assert.equal(verifyProjectDbSnapshot(f.root, f.config).ok, true); assert(opens >= 3);
 });
 
-test("large regular snapshots and runtime hashes stream without whole-file reads", t => {
+test("snapshot hashing and memory-image capture use bounded-size reads", t => {
   const f = fixture(t), db = new sqlite.DatabaseSync(f.runtime); db.exec("CREATE TABLE synthetic_blob(value BLOB); INSERT INTO synthetic_blob VALUES(zeroblob(4194304));"); db.close();
   sealProjectDbSnapshot(f.root, f.config);
   const readFile = fs.readFileSync, read = fs.readSync; let streamed = 0;

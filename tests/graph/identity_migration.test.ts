@@ -6,8 +6,11 @@ import { spawnSync } from "child_process";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
+import { reviewedFixtureRecovery } from "../helpers/identity_recovery";
 const { planLegacyIdentityMigration, publicMigrationPlan, replaceGraphFrontmatter } = require("../../graph/identity_migration");
-const { applyGraphMigrationPlan, continueGraphTransaction } = require("../../graph/identity_transaction");
+const transaction = require("../../graph/identity_transaction");
+const { applyGraphMigrationPlan } = transaction;
+const continueGraphTransaction = reviewedFixtureRecovery(transaction);
 const { readAuthoredSnapshot, graphControlSnapshot } = require("../../graph/identity_snapshot");
 
 const GRAPH = "e7403372-f270-4cd7-902d-64b792c781df";
@@ -182,6 +185,19 @@ test("frontmatter replacement changes headers only and rejects absent boundaries
   assert.equal(replaceGraphFrontmatter("---\nid: task-1\n---\nBODY\n", { id: "task-2" }), "---\nid: task-2\n---\nBODY\n");
   assert.equal(replaceGraphFrontmatter("---\r\nid: task-1\r\n---\r\nBODY\r\n", { id: "task-2" }), "---\r\nid: task-2\r\n---\r\nBODY\r\n");
   assert.throws(() => replaceGraphFrontmatter("BODY", { id: "task-1" }), /header/);
+});
+
+test("frontmatter replacement preserves exact body across accepted delimiter spellings", () => {
+  for (const eol of ["\n", "\r\n"]) {
+    for (const fence of ["--- ", " \t---\t"]) {
+      const body = `Evidence before rule${eol}---${eol}Immutable suffix${eol}`;
+      const content = [` --- `, "id: task-1", "title: a---b", fence, ""].join(eol) + body;
+      const result = replaceGraphFrontmatter(content, { id: "task-2", title: "a---b" });
+      assert.equal(result, ["---", "id: task-2", "title: a---b", "---", ""].join(eol) + body);
+    }
+    assert.equal(replaceGraphFrontmatter(["---", "id: task-1", "--- "].join(eol), { id: "task-2" }),
+      ["---", "id: task-2", "---", ""].join(eol));
+  }
 });
 
 test("reviewed migration applies with durable mappings and leaves Git and execution state unchanged", () => {

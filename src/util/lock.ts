@@ -4,8 +4,9 @@ import { assertCompatibleWriter } from "./writer_admission";
 import { ensureContainedDirectory, withContainedPathSink, writeContainedFileExclusive } from "../core/filesystem_authority";
 import { canonicalJson, identityHash } from "../graph/identity";
 import {
-  assertMutationLockRecord, assertOrphanLock, LockClaim, lockCustodyError, lockFileIdentity, lockJson,
+  assertMutationLockRecord, assertRecoveryLockEvidence, LockClaim, lockCustodyError, lockFileIdentity, lockJson,
   LockTransaction, MUTATION_LOCK_PATH, MutationLockRecord, mutationLockChain, newLockOwner, readMutationLock,
+  RECOVERY_CONFIRMATION, RECOVERY_CONTRACT,
 } from "./lock_evidence";
 
 const HELD_LOCKS = new Map<string, MutationLockRecord>();
@@ -87,16 +88,17 @@ export function withMutationLock<T>(root: string, timeoutMs: number, fn: () => T
  */
 export function withRecoveredMutationLock<T>(root: string, input: {
   record: MutationLockRecord; journal_record: MutationLockRecord | undefined; journal_hash: string;
-  approval_hash: string; plan_hash: string; mode: "resume" | "rollback";
+  approval_hash: string; plan_hash: string; mode: "resume" | "rollback"; confirm_quiescent: boolean;
 }, fn: () => T): T {
+  if (input.confirm_quiescent !== true) throw lockCustodyError("explicit operator confirmation that all checkout writers are stopped is required");
   assertCompatibleWriter(root);
   if (HELD_LOCKS.has(lockKey(root))) throw lockCustodyError("recovery cannot borrow a held lock");
-  assertOrphanLock(root, input.record, input.journal_record, input.plan_hash, input.journal_hash, input.mode);
+  assertRecoveryLockEvidence(root, input.record, input.journal_record, input.plan_hash, input.journal_hash, input.mode);
   const chain = mutationLockChain(input.record, input.plan_hash);
   const owner = newLockOwner(root, { plan_hash: input.plan_hash, mode: input.mode });
-  if (!owner.environment || canonicalJson(owner.environment) !== canonicalJson(chain.owners[0].environment) ||
-    canonicalJson(owner.checkout) !== canonicalJson(chain.owners[0].checkout)) throw lockCustodyError("local OS or checkout evidence changed");
-  const claim: LockClaim = { schema_version: 1, previous_hash: chain.tip_hash,
+  if (canonicalJson(owner.checkout) !== canonicalJson(chain.owners[0].checkout)) throw lockCustodyError("checkout evidence changed");
+  const claim: LockClaim = { schema_version: 2, previous_hash: chain.tip_hash,
+    recovery_contract: RECOVERY_CONTRACT, confirmation: RECOVERY_CONFIRMATION,
     approval_hash: input.approval_hash, journal_hash: input.journal_hash, owner };
   const name = `claim-${chain.tip_hash.slice(7)}.json`, content = lockJson(claim);
   assertMutationLockRecord(root, input.record);

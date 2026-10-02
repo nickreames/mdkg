@@ -105,6 +105,25 @@ test("v2 heading preview and apply preserve exact identity frontmatter", t => {
   assert.deepEqual(snapshot(f.root), after);
 });
 
+for (const eol of ["\n", "\r\n"]) test(`heading format preserves exact header with scalar dashes and spaced fences ${JSON.stringify(eol)}`, t => {
+  const f = fixture(t);
+  const original = fs.readFileSync(f.file, "utf8");
+  const header = original.slice(0, original.indexOf("\n---\n") + 5)
+    .replace("title: Second", "title: a---b").replace(/\n---\n$/, "\n --- \n").replace(/\n/g, eol);
+  const body = `Evidence before rule${eol}---${eol}Evidence suffix${eol}`;
+  writeFile(f.file, header + body);
+  const before = snapshot(f.root), fields = f.parsed().frontmatter;
+  success(f.root, ["format", "--headings", "--dry-run", "--json"]);
+  assert.deepEqual(snapshot(f.root), before);
+  success(f.root, ["format", "--headings", "--apply", "--json"]);
+  const formatted = fs.readFileSync(f.file, "utf8");
+  assert.ok(formatted.startsWith(header));
+  assert.deepEqual(f.parsed().frontmatter, fields);
+  assert.match(f.parsed().body, /Evidence before rule\n---\nEvidence suffix/);
+  success(f.root, ["format", "--headings", "--apply", "--json"]);
+  assert.equal(fs.readFileSync(f.file, "utf8"), formatted);
+});
+
 const invalid: Record<string, (f: ReturnType<typeof fixture>) => void> = {
   "missing identity": f => { f.edit(`graph_id: ${f.parsed().frontmatter.graph_id}\n`, ""); f.edit(`node_id: ${f.parsed().frontmatter.node_id}\n`, ""); },
   "partial identity": f => f.edit(`node_id: ${f.parsed().frontmatter.node_id}\n`, ""),

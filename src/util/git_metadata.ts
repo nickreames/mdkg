@@ -74,29 +74,40 @@ function alternateNames(raw: string, delimiter: string): string[] {
 }
 
 /** Refuse infrastructure, never invoke Git workflow/authentication helpers. */
-export function assertNoGitMetadataDestinations(root: string, paths: string[]): void {
+export function assertNoGitMetadataDestinations(root: string, paths: string[], options: { pathSyntax?: "native" } = {}): void {
   if (!paths.length) return;
+  const components = (value: string) => options.pathSyntax === "native" ? value.split(path.sep) : value.split(/[\\/]/);
   for (const relative of paths) {
-    if (relative.split(/[\\/]/).some(part => part.toLowerCase() === ".git")) {
+    if (components(relative).some(part => part.toLowerCase() === ".git")) {
       throw new UsageError(`destination overlaps native Git metadata: ${relative}`);
     }
   }
-  const environments: NodeJS.ProcessEnv[] = [];
+  const observations: Array<{ cwd: string; env: NodeJS.ProcessEnv }> = [];
   const natural = naturalGitContext(root);
-  if (natural) {
-    const env = { ...process.env };
-    for (const key of REDIRECTS) delete env[key];
-    environments.push(env);
+  const naturalRoots = new Set<string>(natural ? [root] : []);
+  // A configured destination may belong to a nested checkout or bare store.
+  // Inspect its ancestors, not only the command root and not an unbounded
+  // repository-wide search. Each observation retains natural Git discovery.
+  for (const relative of paths) {
+    for (let current = path.dirname(path.resolve(root, components(relative).join(path.sep))); ; current = path.dirname(current)) {
+      const within = path.relative(path.resolve(root), current);
+      if (within === ".." || within.startsWith(`..${path.sep}`) || path.isAbsolute(within)) break;
+      if (exists(path.join(current, ".git")) || ["HEAD", "objects", "config"].every(name => exists(path.join(current, name)))) naturalRoots.add(current);
+      if (current === path.resolve(root) || path.dirname(current) === current) break;
+    }
   }
-  if (process.env.GIT_DIR || (natural && REDIRECTS.some(key => process.env[key] !== undefined))) environments.push(process.env);
+  const env = { ...process.env };
+  for (const key of REDIRECTS) delete env[key];
+  for (const cwd of naturalRoots) observations.push({ cwd, env });
+  if (process.env.GIT_DIR || (natural && REDIRECTS.some(key => process.env[key] !== undefined))) observations.push({ cwd: root, env: process.env });
   // Non-Git bootstrap must not require an installed Git executable.
-  if (!environments.length) return;
+  if (!observations.length) return;
   const protectedPaths = new Set<string>();
   const objectStores = new Set<string>();
-  for (const env of environments) {
+  for (const { cwd, env } of observations) {
     for (const args of [["--absolute-git-dir"], ["--git-common-dir"], ["--git-path", "index"],
       ["--git-path", "objects"], ["--git-path", "hooks"]]) {
-      const raw = observeGit(root, ["rev-parse", "--path-format=absolute", ...args], { env }).stdout;
+      const raw = observeGit(cwd, ["rev-parse", "--path-format=absolute", ...args], { env }).stdout;
       const value = raw.replace(/\r?\n$/, "");
       if (!raw.endsWith("\n") || !path.isAbsolute(value) || /[\r\n\0]/.test(value)) {
         throw new UsageError("native Git metadata observation is ambiguous; destination refused");
@@ -127,7 +138,7 @@ export function assertNoGitMetadataDestinations(root: string, paths: string[]): 
     }
   }
   for (const relative of paths) {
-    const candidate = physical(path.resolve(root, relative.split(/[\\/]/).join(path.sep)));
+    const candidate = physical(path.resolve(root, components(relative).join(path.sep)));
     if ([...protectedPaths].some(metadata => overlaps(candidate, metadata))) {
       throw new UsageError(`destination overlaps native Git metadata: ${relative}`);
     }

@@ -14,7 +14,7 @@ import {
 } from "./project_db";
 import { readPackageVersion } from "./version";
 import { ValidationError } from "../util/errors";
-import { admitSqliteDatabase, withObservedSqlitePath } from "./sqlite_observation";
+import { admitSqliteDatabase, withObservedSqliteDatabase } from "./sqlite_observation";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -854,19 +854,18 @@ function inspectProjectDb(root: string, config: Config, observation: boolean): P
     checks.push(checkMigrationFiles(root, config));
     const DatabaseSync = loadDatabaseCtor();
     try {
-      const inspect = (selectedPath: string): void => {
-          const db = new DatabaseSync(selectedPath, { readOnly: observation });
-          try {
-            checks.push(integrityCheck(db));
-            checks.push(migrationTableCheck(db, config));
-          } finally {
-            db.close();
-          }
-        };
-      if (observation) withObservedSqlitePath(root, config.db.runtime_path, inspect);
+      const inspect = (db: DatabaseSyncType): void => {
+        checks.push(integrityCheck(db));
+        checks.push(migrationTableCheck(db, config));
+      };
+      if (observation) withObservedSqliteDatabase(root, config.db.runtime_path, inspect);
       else withContainedPathSink(
         { root, relativePath: config.db.runtime_path, operation: "read" },
-        ({ absolutePath }) => { admitSqliteDatabase(root, config.db.runtime_path, false); inspect(absolutePath); }
+        ({ absolutePath }) => {
+          admitSqliteDatabase(root, config.db.runtime_path, false);
+          const db = new DatabaseSync(absolutePath, { readOnly: false });
+          try { inspect(db); } finally { db.close(); }
+        }
       );
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -905,52 +904,46 @@ export function projectDbStats(root: string, config: Config): ProjectDbStatsRece
     throw new ValidationError(`db stats requires a valid project DB; run mdkg db verify: ${verification.errors.join("; ")}`);
   }
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
-  const DatabaseSync = loadDatabaseCtor();
-  return withObservedSqlitePath(root, config.db.runtime_path, (descriptorPath) => {
-      const absolutePath = layout.runtimeFile;
-      const db = new DatabaseSync(descriptorPath, { readOnly: true });
-      try {
-        const applied = readAppliedMigrations(db, config.db.migration_table);
-        const migrationStatuses: ProjectDbMigrationStatus[] = BUILTIN_MIGRATIONS
-          .map((migration): ProjectDbMigrationStatus | undefined => {
-            const row = applied.get(migration.key);
-            return row
-              ? {
-                  key: migration.key,
-                  ordinal: migration.ordinal,
-                  checksum: row.checksum,
-                  status: "already_applied" as const,
-                  applied_at_ms: row.applied_at_ms,
-                }
-              : undefined;
-          })
-          .filter((item): item is ProjectDbMigrationStatus => item !== undefined);
-        const latestMigration = migrationStatuses[migrationStatuses.length - 1] ?? null;
-        const receiptFiles = walkFiles(layout.receipts);
-        return {
-          action: "db-stats",
-          ok: true,
-          enabled: config.db.enabled,
-          database: rel(root, absolutePath),
-          schema_version: config.db.schema_version,
-          migration_table: config.db.migration_table,
-          db_size: fs.statSync(absolutePath).size,
-          transient_files: transientFiles(root, absolutePath),
-          migration_count: migrationStatuses.length,
-          latest_migration: latestMigration,
-          tables: tableCounts(db),
-          state_snapshot: {
-            path: rel(root, layout.stateFile),
-            exists: fs.existsSync(layout.stateFile),
-            size: fs.existsSync(layout.stateFile) ? fs.statSync(layout.stateFile).size : 0,
-          },
-          receipt_files: {
-            path: rel(root, layout.receipts),
-            count: receiptFiles.length,
-          },
-        };
-      } finally {
-        db.close();
-      }
-    });
+  return withObservedSqliteDatabase(root, config.db.runtime_path, (db) => {
+    const absolutePath = layout.runtimeFile;
+    const applied = readAppliedMigrations(db, config.db.migration_table);
+    const migrationStatuses: ProjectDbMigrationStatus[] = BUILTIN_MIGRATIONS
+      .map((migration): ProjectDbMigrationStatus | undefined => {
+        const row = applied.get(migration.key);
+        return row
+          ? {
+              key: migration.key,
+              ordinal: migration.ordinal,
+              checksum: row.checksum,
+              status: "already_applied" as const,
+              applied_at_ms: row.applied_at_ms,
+            }
+          : undefined;
+      })
+      .filter((item): item is ProjectDbMigrationStatus => item !== undefined);
+    const latestMigration = migrationStatuses[migrationStatuses.length - 1] ?? null;
+    const receiptFiles = walkFiles(layout.receipts);
+    return {
+      action: "db-stats",
+      ok: true,
+      enabled: config.db.enabled,
+      database: rel(root, absolutePath),
+      schema_version: config.db.schema_version,
+      migration_table: config.db.migration_table,
+      db_size: fs.statSync(absolutePath).size,
+      transient_files: transientFiles(root, absolutePath),
+      migration_count: migrationStatuses.length,
+      latest_migration: latestMigration,
+      tables: tableCounts(db),
+      state_snapshot: {
+        path: rel(root, layout.stateFile),
+        exists: fs.existsSync(layout.stateFile),
+        size: fs.existsSync(layout.stateFile) ? fs.statSync(layout.stateFile).size : 0,
+      },
+      receipt_files: {
+        path: rel(root, layout.receipts),
+        count: receiptFiles.length,
+      },
+    };
+  });
 }

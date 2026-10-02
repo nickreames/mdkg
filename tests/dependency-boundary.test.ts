@@ -148,7 +148,7 @@ test("bootstrap dry-run is bounded, explicit, and does not execute registry-capa
 test("smoke utility preflights dependency owners and contains no hidden install", () => {
   const packageJson = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8"));
   const source = fs.readFileSync(path.join(repoRoot, "scripts", "mdkg-dev-smoke-utils.js"), "utf8");
-  const preflightIndex = source.indexOf("assertDependencyTreesReady(repoRoot)");
+  const preflightIndex = source.indexOf('assertDependencyTreesReady(repoRoot, "repository")');
   const buildIndex = source.indexOf('["--prefix", "mdkg-dev", "run", "build"]');
 
   assert.ok(packageJson.scripts.build.startsWith("npm run deps:preflight && "));

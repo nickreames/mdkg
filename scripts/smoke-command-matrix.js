@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { runInstalledSmoke } = require("./qualification-smoke");
 const { HELP_TARGETS } = require("./cli_help_targets");
+const { runCliOptionFixtures } = require("../tests/fixtures/cli-options.cjs");
 
 
 const repoRoot = path.resolve(__dirname, "..");
@@ -333,7 +334,11 @@ function prepareInstall(tempRoot) {
       : path.join(prefix, "bin", "mdkg");
     assertExists(binPath);
 
-    return { binPath, tarballPath };
+    const packageRoot = process.platform === "win32"
+      ? path.join(prefix, "node_modules", "mdkg")
+      : path.join(prefix, "lib", "node_modules", "mdkg");
+    assertExists(path.join(packageRoot, "dist", "command-contract.json"));
+    return { binPath, tarballPath, packageRoot };
   } };
 }
 function runSmoke() {
@@ -346,7 +351,10 @@ function runSmoke() {
     exerciseHelp(binPath, tempRoot);
     exerciseInit(binPath, tempRoot);
     exerciseWorkflow(binPath, tempRoot);
-    return { ok: true, smoke: "command-matrix", version };
+    const option_qualification = runCliOptionFixtures({
+      packageRoot, root: path.join(tempRoot, "option-qualification"), ownedRoot: tempRoot, commands,
+    });
+    return { ok: true, smoke: "command-matrix", version, option_qualification };
     },
   });
   console.log(JSON.stringify(receipt));

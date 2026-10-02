@@ -11,6 +11,14 @@ CHANGELOG.md
 
 This page gives a product-level summary of the public-alpha release line. Use the root changelog for exact dates and patch-level details.
 
+The 0.6.0 candidate is unpublished and still requires release qualification.
+It removes the Git mutation wrappers and consumer-specific validation profiles
+described in older entries. Use the current command reference and
+[native Git migration guide](/advanced-alpha/git-materialization/) for candidate
+behavior; no old command is restored by its appearance in release history.
+
+## Historical version notes
+
 Recent release cards cover `0.5.2`, `0.5.1`, and `0.5.0`; earlier milestones
 remain listed below for continuity.
 

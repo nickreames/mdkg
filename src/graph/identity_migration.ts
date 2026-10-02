@@ -4,7 +4,7 @@ import { readContainedFile } from "../core/filesystem_authority";
 import { identityWriterConfig } from "../core/migrate";
 import { UsageError } from "../util/errors";
 import { archiveIdFromUri, isUriRef } from "../util/refs";
-import { formatFrontmatter, FrontmatterValue } from "./frontmatter";
+import { formatFrontmatter, frontmatterSourceBounds, FrontmatterValue } from "./frontmatter";
 import {
   canonicalJson, createGraphFormat, deriveIdentityUuid, GRAPH_FORMAT_PATH,
   identityHash, identityRef, NodeIdentity, requireIdentityUuid,
@@ -61,11 +61,8 @@ export type MigrationPlan = IdentityPlanBase & {
 // Preserve body bytes (including CRLF and immutable quoted receipt material).
 // Only the explicitly approved structured header is serialized differently.
 export function replaceGraphFrontmatter(content: string, frontmatter: Record<string, FrontmatterValue>): string {
-  if (!/^---\r?\n/.test(content)) throw new UsageError("graph node is missing its frontmatter header");
-  const end = /\r?\n---(?:\r?\n|$)/g.exec(content);
-  if (!end) throw new UsageError("graph node is missing its frontmatter boundary");
-  const eol = content.startsWith("---\r\n") ? "\r\n" : "\n";
-  const body = content.slice(end.index + end[0].length);
+  const { bodyStart, eol } = frontmatterSourceBounds(content, "graph node frontmatter header");
+  const body = content.slice(bodyStart);
   return ["---", ...formatFrontmatter(frontmatter), "---", ""].join(eol) + body;
 }
 
