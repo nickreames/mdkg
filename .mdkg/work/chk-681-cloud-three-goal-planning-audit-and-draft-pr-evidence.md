@@ -25,7 +25,7 @@ checkpoint_kind: review
 # Summary
 
 Cloud-only design proposal from verified remote main d9b74c3fa172688a99406fd908571c7e3f666395. Exactly three new
-goals: goal-88 / goal-89 / goal-90, sequential provisional 0.7/0.8/0.9.
+goals: goal-88 / goal-89 / goal-90, sequential provisional 0.6.1/0.6.2/0.6.3.
 No source implementation, package bump, graph migration or feature-test passes.
 
 # Scope Covered

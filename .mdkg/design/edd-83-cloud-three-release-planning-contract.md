@@ -1,7 +1,7 @@
 ---
 id: edd-83
 type: edd
-title: Cloud three-release planning contract
+title: Cloud planning contract for three patch releases
 tags: [cloud-planning, design-only]
 owners: []
 links: []
@@ -16,15 +16,15 @@ updated: 2026-10-02
 # Overview
 
 Nick's first cloud-only planning PR defines exactly three new goals, delivered
-sequentially through pre-publication readiness. This is a documentation/design
-proposal. Nick reviews and merges it before any feature implementation. A later
+sequentially as patch releases through pre-publication readiness. This is a
+documentation/design proposal. Nick reviews and merges it before any feature implementation. A later
 explicit Run instruction must authorize each implementation's owned scope.
 
-| Order | Goal | Provisional minor | Scope | Final checkpoint |
+| Order | Goal | Provisional patch release | Scope | Final checkpoint |
 | --- | --- | --- | --- | --- |
-| 1 | goal-88 | 0.7.0 | Minimal init; preserve configurable skill mirrors | chk-674 |
-| 2 | goal-89 | 0.8.0 | Persistent working artifacts; explicit promotion and GC | chk-677 |
-| 3 | goal-90 | 0.9.0 | Explicit selection of independent sibling graphs | chk-680 |
+| 1 | goal-88 | 0.6.1 | Minimal init; preserve configurable skill mirrors | chk-674 |
+| 2 | goal-89 | 0.6.2 | Persistent working artifacts; explicit promotion and GC | chk-677 |
+| 3 | goal-90 | 0.6.3 | Explicit selection of independent sibling graphs | chk-680 |
 
 These versions are planning metadata, not package bumps or claims of shipped
 features. At the verified base, package.json/package-lock.json and public npm

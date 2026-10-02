@@ -1,7 +1,8 @@
 # Cloud planning experiment
 
 This is Nick's first cloud-only mdkg documentation/design PR. It defines three
-sequential implementation goals and stops before implementation or publication.
+sequential implementation goals for patch releases and stops before implementation
+or publication.
 The detailed contract is [edd-83](../.mdkg/design/edd-83-cloud-three-release-planning-contract.md).
 Executed results are in [checks.json](../.mdkg/artifacts/cloud-planning/checks.json).
 
@@ -35,11 +36,11 @@ SQLite cache bytes are preserved in the proposed commit; no bundle refresh.
 
 ## Plan inventory
 
-| Goal / provisional minor | Tasks | Future test | Future design / acceptance / prepublication checkpoints |
+| Goal / provisional patch release | Tasks | Future test | Future design / acceptance / prepublication checkpoints |
 | --- | --- | --- | --- |
-| goal-88 / 0.7.0: minimal init and mirrors | task-844, task-845, task-846, task-847 | test-494 | chk-672, chk-673, chk-674 |
-| goal-89 / 0.8.0: working storage | task-848, task-849, task-850, task-851 | test-495 | chk-675, chk-676, chk-677 |
-| goal-90 / 0.9.0: independent sibling graphs | task-852, task-853, task-854, task-855 | test-496 | chk-678, chk-679, chk-680 |
+| goal-88 / 0.6.1: minimal init and mirrors | task-844, task-845, task-846, task-847 | test-494 | chk-672, chk-673, chk-674 |
+| goal-89 / 0.6.2: working storage | task-848, task-849, task-850, task-851 | test-495 | chk-675, chk-676, chk-677 |
+| goal-90 / 0.6.3: independent sibling graphs | task-852, task-853, task-854, task-855 | test-496 | chk-678, chk-679, chk-680 |
 
 Exactly three new goal nodes. Each is backlog/paused, with five executable scope
 nodes (four tasks and a test); checkpoints are linked context and dependency
@@ -73,7 +74,7 @@ the concise observations below; /tmp logs alone are not durable backups.
 | Review correction1 | Initial graph validation failed9 scope_refs type checks: checkpoints are unsupported goal scope types. Removed checkpoints from executable scope_refs; linked as context/dependencies. No source change. |
 | Review correction2 |125 recommended-heading warnings were caused by custom body headings; aligned new nodes with supported templates. Rerun validates with0 errors and only the original stale-cache warning. |
 | Review correction3 | Historical EDD wording suggested skill audit/prune CLI commands. Current help/source shows only skill sync with internal audit/pruning. Rejected audit attempts had no effects; corrected new plan, then direct byte parity and supported skill validation passed. |
-| Current behavior controls | Synthetic graph-only/init invalid-combination/custom-instruction repeat and extra mirror destination controls passed; canonical 8 skills match both native mirrors. These are current 0.6.0 audit checks, not future0.7 acceptance. |
+| Current behavior controls | Synthetic graph-only/init invalid-combination/custom-instruction repeat and extra mirror destination controls passed; canonical 8 skills match both native mirrors. These are current 0.6.0 audit checks, not future goal-88 acceptance. |
 | Parent intervention | Parent requested a concrete setup checkpoint; reported exact checkout/base/worktree/branch, usable toolchain and no setup blocker, then continued. No new authority or scope change. |
 | Automated checks | Fast CI failed its coverage/test gate after342021ms: reported1380passes/1008failures/2389total (one count unclassified). Lines79.87%, branches75.19%, functions87.11% fell below89/77/96 floors. Root causes remain undiagnosed; later gates and 13 smokes were not run. Future feature cases remain NOT_RUN. |
 | Review correction4 | Documentation was edited/staged while CI ran, invalidating its custody boundary. No source, lockfile, main, HEAD or selection change occurred. Repeat the appropriate run only after freezing all proposed inputs; no complete CI/readiness claim. |
@@ -260,3 +261,20 @@ warning; all eight skills passed; docs checks passed with 499 examples and zero
 failures; JSON preservation, links and diff-scope/whitespace checks passed.
 The expensive full suite was not rerun for this wording correction. No new goal,
 task/checkpoint status change, feature edit, release or merge is included.
+
+## Requested patch release targets
+
+Nick requested the smaller sequence on 2026-10-02: goal-88 targets 0.6.1,
+goal-89 targets 0.6.2, and goal-90 targets 0.6.3. These planned patch releases
+supersede the original 0.7.0 / 0.8.0 / 0.9.0 labels; they are planning metadata.
+This is a separate small correction after wording commit
+`d57a2fbaf977242508466f2204212ba3cbbb29d2`. Goal scopes, tasks, tests,
+checkpoint IDs, dependencies and implementation/publication gates are unchanged.
+Actual package/lock version stays 0.6.0. Earlier executed receipts, tested SHAs
+and frozen digests retain their historical inputs, including superseded labels;
+no past execution facts or future NOT_RUN statuses are rewritten. Nick reviews
+this draft after the correction; no readiness, feature, merge or release claim.
+For this correction, graph validation passed with zero errors and the existing
+stale-cache warning; docs checks passed with 499 examples and zero failures.
+Target consistency, unchanged scope/receipt checks and diff whitespace passed.
+The expensive full suite was not rerun.

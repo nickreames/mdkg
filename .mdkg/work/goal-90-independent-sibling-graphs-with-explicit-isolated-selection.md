@@ -11,7 +11,7 @@ required_skills: [select-work-and-ground-context, service-boundary-ownership-che
 required_checks: [npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node dist/cli.js skill validate --json, node dist/cli.js validate --json, git diff --check]
 max_iterations: 25
 blocked_after_attempts: 3
-tags: [cloud-planning, design-only, planned-0.9.0]
+tags: [cloud-planning, design-only, planned-0.6.3]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -33,7 +33,7 @@ Keep .mdkg default while selecting independent siblings explicitly; reuse graph 
 
 # End Condition
 
-Explicit selection isolates independent sibling graphs across every command and storage surface; synthetic tracked-team and ignored-private fixtures prove no cross-graph access disclosure or publication and exact-candidate prepublication gates are satisfied. Planning metadata target: 0.9.0, provisional until rechecked.
+Explicit selection isolates independent sibling graphs across every command and storage surface; synthetic tracked-team and ignored-private fixtures prove no cross-graph access disclosure or publication and exact-candidate prepublication gates are satisfied. Planning metadata target: 0.6.3, provisional until rechecked.
 The complete contract and decisions are in edd-83; source version stays
 0.6.0 in this PR. This goal stops at a readiness decision, before publication.
 

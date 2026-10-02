@@ -11,7 +11,7 @@ required_skills: [select-work-and-ground-context, service-boundary-ownership-che
 required_checks: [npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node dist/cli.js skill validate --json, node dist/cli.js validate --json, git diff --check]
 max_iterations: 25
 blocked_after_attempts: 3
-tags: [cloud-planning, design-only, planned-0.7.0]
+tags: [cloud-planning, design-only, planned-0.6.1]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -33,7 +33,7 @@ Increment goal-81 and goal-41; do not redo delivered compact startup or configur
 
 # End Condition
 
-Fresh init generates only root AGENTS.md; reviewed legacy migration preserves custom instructions; canonical content and both native plus configured additional skill mirrors pass installed local acceptance and exact-candidate prepublication gates. Planning metadata target: 0.7.0, provisional until rechecked.
+Fresh init generates only root AGENTS.md; reviewed legacy migration preserves custom instructions; canonical content and both native plus configured additional skill mirrors pass installed local acceptance and exact-candidate prepublication gates. Planning metadata target: 0.6.1, provisional until rechecked.
 The complete contract and decisions are in edd-83; source version stays
 0.6.0 in this PR. This goal stops at a readiness decision, before publication.
 
