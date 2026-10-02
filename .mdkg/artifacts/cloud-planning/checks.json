@@ -193,7 +193,7 @@
       "receipt_directory": "/tmp/mdkg-cloud-fast-ci/run-O3tYBJ",
       "log": "/tmp/mdkg-cloud-fast-ci.log",
       "session_id": 92863,
-      "notes": "Original failure/invalidated custody retained. Root causes reproduced on pristine base; focused corrected-runner comparison passed149/149 each. The subsequent full-run failure and stable custody are recorded below.",
+      "notes": "Original failure/invalidated custody retained. Representative environment-caused failures reproduced on pristine base; focused corrected-runner comparison passed149/149 each. Failures beyond those reproduced representative cases remain unclassified. The subsequent full-run failure and stable custody are recorded below.",
       "exit_code": 1,
       "test_summary": {
         "tests": 2389,
@@ -270,7 +270,7 @@
         "diff_check_clean": true
       },
       "changed_tracked_paths": [],
-      "notes": "Full ladder overrides TMPDIR to receipt_dir/tmp. Receipt dir under /tmp retained invalid ancestor marker; subreaper resolved five supervision failures but clean outer TMPDIR was overridden. No full pass or hosted/platform qualification asserted."
+      "notes": "Full ladder overrides TMPDIR to receipt_dir/tmp. Receipt dir under /tmp retained invalid ancestor marker; subreaper resolved five supervision failures but clean outer TMPDIR was overridden. The local CI gap remains unresolved; failures beyond the reproduced representative cases remain unclassified. No full pass or hosted/platform qualification asserted."
     }
   ],
   "future_tests": {
@@ -344,7 +344,7 @@
     "source_or_package_or_threshold_changes": false,
     "remaining_gaps": [
       "Local fast CI full ladder FAILED under receipt-root setup; later gates/smokes NOT_RUN.",
-      "All original failing cases not individually classified; same-base controls establish observed environment categories.",
+      "Representative environment-caused failures reproduced on pristine base; remaining failures are unclassified, so no environment-only conclusion is supported.",
       "Current-head unmodified hosted PR checks in progress/pending final verification. Full Linux portable/macOS/adoption qualification NOT_RUN.",
       "Names/compatibility/retention/selector decisions require Nick design review; original implementation/git-gud gate and unknown Mac reconciliation remain."
     ]
@@ -444,7 +444,7 @@
         "error": null
       }
     ],
-    "not_exhaustive": "Representative categories and149affected cases compared; not every original failure individually traced."
+    "not_exhaustive": "Representative environment-caused failures reproduced on pristine base and149affected cases compared; not every failure in either full run individually traced. Remaining failures outside the reproduced representative cases are unclassified."
   },
   "resources": {
     "os": {

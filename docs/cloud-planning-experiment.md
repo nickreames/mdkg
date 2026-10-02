@@ -210,8 +210,10 @@ with /tmp receipts and pass with permitted /dev/shm receipts. The source helper,
 actual effective paths, real exit codes, runner source and SHA256 hashes are
 retained in checks.json. No test output, Git executable or safe-path guard was
 faked, and no project implementation/threshold was changed. No third expensive
-full suite was run; the draft explicitly retains this environment-only CI gap.
-Not every one of the original 1008 failures was individually traced.
+full suite was run; the draft retains an unresolved local CI gap. Representative
+environment-caused failures were reproduced on pristine base and candidate;
+not every failure in either full run was individually traced. Failures beyond
+those reproduced representative cases remain unclassified.
 
 This custom cloud runner is separate from unmodified GitHub-hosted CI. It does
 not qualify macOS, full Linux portable installed artifacts, the deferred
@@ -243,3 +245,18 @@ receipt, then the current head/check statuses are independently verified in the
 PR description and final handoff. Main, package/source, skills/mirrors, SQLite,
 selected state and existing bundles remain unchanged. No merge, release, feature
 implementation or Mac access occurred.
+
+## Independent review wording correction
+
+On 2026-10-02, independent review of head
+`200cd2586f9b7fec7d535bf0d470e39c2ffce7b2` identified the unsupported blanket
+environmental attribution. The requested correction changes only this record,
+four narrative fields in checks.json, and consistent PR description wording.
+The local CI gap remains unresolved: representative environment-caused failures
+reproduced on pristine base; failures beyond those cases remain unclassified.
+Both failed-run counts, coverage failures and future NOT_RUN statuses are
+preserved. Graph validation passed with zero errors and the existing stale-cache
+warning; all eight skills passed; docs checks passed with 499 examples and zero
+failures; JSON preservation, links and diff-scope/whitespace checks passed.
+The expensive full suite was not rerun for this wording correction. No new goal,
+task/checkpoint status change, feature edit, release or merge is included.
