@@ -78,7 +78,7 @@ the concise observations below; /tmp logs alone are not durable backups.
 | Automated checks | Fast CI failed its coverage/test gate after342021ms: reported1380passes/1008failures/2389total (one count unclassified). Lines79.87%, branches75.19%, functions87.11% fell below89/77/96 floors. Root causes remain undiagnosed; later gates and 13 smokes were not run. Future feature cases remain NOT_RUN. |
 | Review correction4 | Documentation was edited/staged while CI ran, invalidating its custody boundary. No source, lockfile, main, HEAD or selection change occurred. Repeat the appropriate run only after freezing all proposed inputs; no complete CI/readiness claim. |
 | Requested progress boundary | Parent asked to finish this turn with partial concrete evidence and continue the same task afterward. Work preserved:32staged paths, no commit/push/PR. CI finished with a failed coverage/test gate; /tmp/mdkg-cloud-fast-ci/run-O3tYBJ retains failure evidence. |
-| Draft PR | NOT_CREATED; commit/push and connected draft creation remain. Final URL/head/remote-base verification will be recorded after success. |
+| Draft PR | Created and verified draft PR10 at https://github.com/nickreames/mdkg/pull/10 on2026-10-02T03:30:29Z; base d9b74c3, creation head8fbb01b;32files. Final current-head checks are queried separately. |
 
 ## Check selection and interpretation
 
@@ -226,3 +226,20 @@ This evidence is appended in a separate normal commit after the frozen run;
 only experiment/results metadata changes. Relevant graph/link/diff checks are
 rerun on the resulting docs; the full runtime ladder is not represented as a
 pass on either commit. Draft creation and verified URL are recorded next.
+
+## Verified draft creation
+
+Exactly one draft was created through the authorized connected GitHub tool:
+[PR10](https://github.com/nickreames/mdkg/pull/10), open/draft/unmerged, created
+2026-10-02T03:30:29Z. Verified base is
+`d9b74c3fa172688a99406fd908571c7e3f666395`; creation head is
+`8fbb01bc1bdce247bb7524151d44e4ec1589a785`. GitHub confirmed32changed files and
+Nick's existing identity. No duplicate PR existed for the branch before creation.
+The unmodified Release readiness pull_request workflow started as
+[run36960478488](https://github.com/nickreames/mdkg/actions/runs/36960478488),
+in progress at observation. This is separate from the failed local custom runner;
+no hosted pass was asserted. A final normal evidence-only commit records this
+receipt, then the current head/check statuses are independently verified in the
+PR description and final handoff. Main, package/source, skills/mirrors, SQLite,
+selected state and existing bundles remain unchanged. No merge, release, feature
+implementation or Mac access occurred.

@@ -193,7 +193,7 @@
       "receipt_directory": "/tmp/mdkg-cloud-fast-ci/run-O3tYBJ",
       "log": "/tmp/mdkg-cloud-fast-ci.log",
       "session_id": 92863,
-      "notes": "Original failure/invalidated custody retained. Root causes reproduced on pristine base; focused corrected-runner comparison passed149/149 each. Final corrected full CI result pending.",
+      "notes": "Original failure/invalidated custody retained. Root causes reproduced on pristine base; focused corrected-runner comparison passed149/149 each. The subsequent full-run failure and stable custody are recorded below.",
       "exit_code": 1,
       "test_summary": {
         "tests": 2389,
@@ -286,7 +286,21 @@
     "publication and professional adoption"
   ],
   "pr": {
-    "status": "pending authorized draft creation after this evidence commit"
+    "status": "created-and-verified",
+    "url": "https://github.com/nickreames/mdkg/pull/10",
+    "number": 10,
+    "created_at": "2026-10-02T03:30:29Z",
+    "draft": true,
+    "state": "open",
+    "merged": false,
+    "base_branch": "main",
+    "base_sha": "d9b74c3fa172688a99406fd908571c7e3f666395",
+    "head_branch": "docs/cloud-three-release-plan",
+    "head_sha_at_creation": "8fbb01bc1bdce247bb7524151d44e4ec1589a785",
+    "changed_files_at_creation": 32,
+    "plan_commit": "ca15ecb60b2019b76b7a12f11cc62dfb2b354726",
+    "evidence_commit": "8fbb01bc1bdce247bb7524151d44e4ec1589a785",
+    "notes": "A subsequent normal creation-receipt commit changes only two evidence files. Final head is independently verified in PR description/final handoff."
   },
   "nodes": {
     "design": "edd-83",
@@ -326,12 +340,12 @@
     "plan_commit": "ca15ecb60b2019b76b7a12f11cc62dfb2b354726",
     "plan_freeze_sha256": "0bf5254f74c4c5c929fd487e75cf4fa1712daa9700159d3a57b7882723e531f4",
     "push": "passed",
-    "pr": "pending creation",
+    "pr": "verified draft PR10; open and unmerged",
     "source_or_package_or_threshold_changes": false,
     "remaining_gaps": [
       "Local fast CI full ladder FAILED under receipt-root setup; later gates/smokes NOT_RUN.",
       "All original failing cases not individually classified; same-base controls establish observed environment categories.",
-      "Unmodified hosted PR checks pending PR creation; full Linux portable/macOS/adoption qualification NOT_RUN.",
+      "Current-head unmodified hosted PR checks in progress/pending final verification. Full Linux portable/macOS/adoption qualification NOT_RUN.",
       "Names/compatibility/retention/selector decisions require Nick design review; original implementation/git-gud gate and unknown Mac reconciliation remain."
     ]
   },
@@ -518,5 +532,15 @@
     "effective_ladder_tmpdir": "/tmp/mdkg-cloud-corrected-ci/run-K3omp9/tmp",
     "separate_extra_filesystem_permission": "/dev/shm/mdkg-cloud-fixtures",
     "hosted_ci": "Unmodified hosted workflow was not exercised by this local harness. Full Linux portable qualification remains an explicit stub; do not conflate results."
+  },
+  "hosted_pr_ci_observation": {
+    "head_sha": "8fbb01bc1bdce247bb7524151d44e4ec1589a785",
+    "workflow": "Release readiness",
+    "event": "pull_request",
+    "run_id": 36960478488,
+    "url": "https://github.com/nickreames/mdkg/actions/runs/36960478488",
+    "status": "in_progress",
+    "conclusion": null,
+    "notes": "Actual unmodified hosted workflow, distinct from local custom harness. Creation receipt push will trigger current-head CI; verify separately without claiming a pass."
   }
 }
