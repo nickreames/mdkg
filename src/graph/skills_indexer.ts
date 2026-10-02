@@ -204,13 +204,22 @@ export function skillCacheSource(skill: SkillIndexEntry, content: string): Skill
     hash: identityHash(content), has_scripts: skill.has_scripts, has_references: skill.has_references };
 }
 
-export function createSkillDocumentReader(root: string, config: Config): (file: string) => string {
+export function createSkillDocumentReader(root: string, config: Config,
+  pending?: { filePath: string; content: string }): (file: string) => string {
   let files = 0, bytes = 0;
+  const admitted = new Map<string, string>();
   return file => {
+    const key = path.resolve(file);
+    if (admitted.has(key)) return admitted.get(key)!;
     if (++files > config.index.limits.max_files) throw new Error("skill source inventory exceeds file limit");
-    const content = readContainedFile({ root, relativePath: path.relative(root, file), pathSyntax: "native",
-      maxBytes: Math.min(config.index.limits.max_file_bytes, config.index.limits.max_total_bytes - bytes) });
-    bytes += Buffer.byteLength(content); return content;
+    const maxBytes = Math.min(config.index.limits.max_file_bytes, config.index.limits.max_total_bytes - bytes);
+    const content = pending && key === path.resolve(pending.filePath) ? pending.content
+      : readContainedFile({ root, relativePath: path.relative(root, file), pathSyntax: "native", maxBytes });
+    const size = Buffer.byteLength(content, "utf8");
+    if (size > maxBytes) throw new Error(`skill source exceeds byte limit: ${maxBytes}`);
+    bytes += size;
+    admitted.set(key, content);
+    return content;
   };
 }
 

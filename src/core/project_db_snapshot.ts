@@ -14,6 +14,7 @@ import { readPackageVersion } from "./version";
 import { atomicWriteFile } from "../util/atomic";
 import { UsageError, ValidationError } from "../util/errors";
 import { assertCompatibleWriter } from "../util/writer_admission";
+import { assertNoGitMetadataDestinations } from "../util/git_metadata";
 import { verifyProjectDbForMutation } from "./project_db_migrations";
 import { admitSqliteDatabase, withObservedSqliteDatabase } from "./sqlite_observation";
 import {
@@ -201,6 +202,8 @@ function hashFile(root: string, filePath: string): { hash: string; size: number 
 }
 
 function openSnapshotDatabaseForMutation(root: string, filePath: string): DatabaseSyncType {
+  assertNoGitMetadataDestinations(root, [filePath, ...["-wal", "-shm", "-journal"].map(suffix => filePath + suffix)]
+    .map(file => path.relative(root, file)), { pathSyntax: "native" });
   admitDatabase(root, filePath);
   admitSqliteDatabase(root, path.relative(root, filePath), false);
   return new (loadDatabaseCtor())(filePath, { readOnly: false });
@@ -396,6 +399,16 @@ export function sealProjectDbSnapshot(
 ): ProjectDbSnapshotSealReceipt {
   assertCompatibleWriter(root);
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
+  const suffix = `${process.pid}-${crypto.randomUUID()}`;
+  const tempSnapshot = path.join(layout.stateDir, `.project.sqlite.${suffix}.tmp`);
+  const tempManifest = path.join(layout.stateDir, `.project.manifest.${suffix}.tmp`);
+  const mutationPaths = [layout.runtimeFile, layout.stateFile, tempSnapshot]
+    .flatMap(file => [file, ...["-wal", "-shm", "-journal"].map(extension => file + extension)])
+    .concat(layout.stateManifest, tempManifest).map(file => path.relative(root, file));
+  const admitGitCustody = () => assertNoGitMetadataDestinations(root, mutationPaths, { pathSyntax: "native" });
+  // Reject the complete configured output set before verification can trigger
+  // SQLite recovery, checkpointing or any temporary/generated state writes.
+  admitGitCustody();
   // Admit every existing input/output before project verification can open the
   // runtime, or seal can checkpoint it or replace authored snapshot state.
   const runtimePresent = admitDatabase(root, layout.runtimeFile, true);
@@ -407,14 +420,11 @@ export function sealProjectDbSnapshot(
     throw new ValidationError(`db snapshot seal requires a valid project DB; run mdkg db verify`);
   }
 
+  admitGitCustody();
   const runtimeQueues = readProjectQueueSnapshotSummaryForMutation(layout.runtimeFile);
   assertQueueSnapshotPolicy(queuePolicy, runtimeQueues);
   const oldHash = oldPresent ? hashFile(root, layout.stateFile).hash : null;
   ensureContainedDirectory(inputPath(root, layout.stateDir));
-  const suffix = `${process.pid}-${crypto.randomUUID()}`;
-  const tempSnapshot = path.join(layout.stateDir, `.project.sqlite.${suffix}.tmp`);
-  const tempManifest = path.join(layout.stateDir, `.project.manifest.${suffix}.tmp`);
-
   const db = openSnapshotDatabaseForMutation(root, layout.runtimeFile);
   try {
     db.exec("PRAGMA foreign_keys = ON;");
@@ -424,8 +434,10 @@ export function sealProjectDbSnapshot(
     } catch {
       // WAL checkpoint can be a no-op or unavailable depending on journal mode.
     }
+    admitGitCustody();
     db.exec(`VACUUM INTO ${quoteSqlString(tempSnapshot)}`);
   } catch (err) {
+    admitGitCustody();
     fs.rmSync(tempSnapshot, { force: true });
     const message = err instanceof Error ? err.message : String(err);
     throw err instanceof ValidationError ? err : new ValidationError(`db snapshot seal failed: ${message}`);
@@ -440,11 +452,12 @@ export function sealProjectDbSnapshot(
     const manifest = buildManifest(root, config, tempSnapshot, runtimeHash, queuePolicy, sealedQueueSummary);
     const manifestText = `${JSON.stringify(manifest, null, 2)}\n`;
     if (Buffer.byteLength(manifestText) > config.index.limits.max_file_bytes) throw new ValidationError(`snapshot manifest exceeds byte limit: ${config.index.limits.max_file_bytes}`);
+    admitGitCustody();
     atomicWriteFile(tempManifest, manifestText);
     admitDatabase(root, layout.stateFile, true);
     admitInput(root, layout.stateManifest, true);
-    withContainedPathSink({ ...inputPath(root, layout.stateFile), operation: "replace" }, ({ absolutePath }) => fs.renameSync(tempSnapshot, absolutePath));
-    withContainedPathSink({ ...inputPath(root, layout.stateManifest), operation: "replace" }, ({ absolutePath }) => fs.renameSync(tempManifest, absolutePath));
+    withContainedPathSink({ ...inputPath(root, layout.stateFile), operation: "replace" }, ({ absolutePath }) => { admitGitCustody(); fs.renameSync(tempSnapshot, absolutePath); });
+    withContainedPathSink({ ...inputPath(root, layout.stateManifest), operation: "replace" }, ({ absolutePath }) => { admitGitCustody(); fs.renameSync(tempManifest, absolutePath); });
     return {
       action: "db-snapshot-seal",
       ok: true,
@@ -461,6 +474,7 @@ export function sealProjectDbSnapshot(
       warnings: verification.warnings,
     };
   } catch (err) {
+    admitGitCustody();
     fs.rmSync(tempSnapshot, { force: true });
     fs.rmSync(tempManifest, { force: true });
     throw err;

@@ -5,6 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { createRunDirectory, prepareEmptyDirectory } = require("./qualification-output");
+const { isolatedFixtureEnvironment } = require("./qualification-fixture");
 
 const repoRoot = path.resolve(__dirname, "..");
 const configPath = path.join(repoRoot, "scripts", "coverage-contract.json");
@@ -309,7 +310,7 @@ function execute(mode, root = repoRoot) {
   const result = spawnSync(process.execPath, args, {
     cwd: root,
     env: {
-      ...process.env,
+      ...isolatedFixtureEnvironment(process.env),
       NODE_V8_COVERAGE: rawDir,
       MDKG_COVERAGE_EVENT_PATH: eventPath,
     },

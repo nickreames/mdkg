@@ -51,3 +51,19 @@ test("URL parser normalization cannot move credentials outside the redacted auth
   }
   assert.equal(redactRemoteRef("https://\\user:secret@example.invalid/repo"), "<redacted remote descriptor>");
 });
+
+test("non-special authority backslashes never leave userinfo in a display suffix", () => {
+  for (const scheme of ["ssh", "git", "ftps", "SSH", "GIT", "FTPS"]) {
+    for (const credential of ["user:prefix@part\\SYNTHETIC_SECRET", "user\\SYNTHETIC_SECRET",
+      "user:part%40first\\SYNTHETIC_SECRET", "user:part@first\\second@SYNTHETIC_SECRET"]) {
+      const value = `${scheme}://${credential}@example.invalid/repo%3Fpart?unknown=secret#fragment`;
+      const redacted = redactRemoteRef(value);
+      assert.equal(redacted, `${scheme}://<redacted>@example.invalid/repo%3Fpart`);
+      assert.equal(redactRemoteRef(redacted), redacted);
+      assert.doesNotMatch(redacted, /SYNTHETIC_SECRET|unknown=secret|fragment/);
+    }
+  }
+  // A backslash in a special-scheme path is not userinfo; safe spelling stays.
+  assert.equal(redactRemoteRef("https://example.invalid\\path@name"), "https://example.invalid\\path@name");
+  assert.equal(redactRemoteRef("ssh://example.invalid/repo\\path@name"), "ssh://example.invalid/repo\\path@name");
+});

@@ -3,6 +3,7 @@
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { discoverTestContract } = require("./coverage-contract.js");
+const { isolatedFixtureEnvironment } = require("./qualification-fixture.js");
 
 function execute(root = path.resolve(__dirname, "..")) {
   if (process.env.NODE_TEST_CONTEXT !== undefined) {
@@ -13,7 +14,7 @@ function execute(root = path.resolve(__dirname, "..")) {
   const tests = discoverTestContract(root);
   const result = spawnSync(process.execPath,
     ["--test", ...tests.compiled_typescript, ...tests.root_mjs],
-    { cwd: root, stdio: "inherit" });
+    { cwd: root, env: isolatedFixtureEnvironment(process.env), stdio: "inherit" });
   if (result.error) throw result.error;
   return result.status ?? 1;
 }
