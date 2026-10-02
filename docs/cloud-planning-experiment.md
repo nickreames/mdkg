@@ -75,7 +75,7 @@ the concise observations below; /tmp logs alone are not durable backups.
 | Review correction3 | Historical EDD wording suggested skill audit/prune CLI commands. Current help/source shows only skill sync with internal audit/pruning. Rejected audit attempts had no effects; corrected new plan, then direct byte parity and supported skill validation passed. |
 | Current behavior controls | Synthetic graph-only/init invalid-combination/custom-instruction repeat and extra mirror destination controls passed; canonical 8 skills match both native mirrors. These are current 0.6.0 audit checks, not future0.7 acceptance. |
 | Parent intervention | Parent requested a concrete setup checkpoint; reported exact checkout/base/worktree/branch, usable toolchain and no setup blocker, then continued. No new authority or scope change. |
-| Automated checks | Fast CI failed its coverage/test gate after342021ms: reported1380passes/1008failures/2389total (one count unclassified). Lines79.87%, branches75.19%, functions87.11% fell below89/77/96 floors. Root causes remain undiagnosed; later gates and13smokes were not run. Future feature cases remain NOT_RUN. |
+| Automated checks | Fast CI failed its coverage/test gate after342021ms: reported1380passes/1008failures/2389total (one count unclassified). Lines79.87%, branches75.19%, functions87.11% fell below89/77/96 floors. Root causes remain undiagnosed; later gates and 13 smokes were not run. Future feature cases remain NOT_RUN. |
 | Review correction4 | Documentation was edited/staged while CI ran, invalidating its custody boundary. No source, lockfile, main, HEAD or selection change occurred. Repeat the appropriate run only after freezing all proposed inputs; no complete CI/readiness claim. |
 | Requested progress boundary | Parent asked to finish this turn with partial concrete evidence and continue the same task afterward. Work preserved:32staged paths, no commit/push/PR. CI finished with a failed coverage/test gate; /tmp/mdkg-cloud-fast-ci/run-O3tYBJ retains failure evidence. |
 | Draft PR | NOT_CREATED; commit/push and connected draft creation remain. Final URL/head/remote-base verification will be recorded after success. |
@@ -148,11 +148,11 @@ without failure stacks, so representative TAP reruns supplied actual causes:
   filesystem grant for /dev/shm/mdkg-cloud-fixtures worked; create the owned root
   for each command. This temporary mount is not a persistence guarantee.
 
-With those two runner corrections, all149selected cases in nine affected
+With those two runner corrections, all 149 selected cases in nine affected
 families passed on both candidate and pristine base (184817ms/183965ms): Agent
 workflow types, archive ownership, init identity, Git helper observations, public
 skill projection, harness guidance, test-CI audit template, fixture supervision
-and Git supervision. Each wrapper reaped38owned descendants. These are current
+and Git supervision. Each wrapper reaped 38 owned descendants. These are current
 0.6.0 regression controls; the three planned future feature tests remain NOT_RUN.
 The first full run is retained as failed/invalidated, not rewritten as passing.
 
@@ -162,7 +162,7 @@ nodes. Goal prerequisites are enforced on each first task and subsequent chain;
 checkpoints/design stay in context/refs. This is a docs-only constraint correction.
 Final candidate checks must bind the subsequent reviewed freeze.
 
-| Resource | Read-only observation on2026-10-02 |
+| Resource | Read-only observation on 2026-10-02 |
 | --- | --- |
 | OS/kernel | Debian13.6, x86_64, Linux6.18.44 |
 | CPU |5logical/affinity-visible CPUs; cpuset0-4; cpu.max400000/100000 equals4CPU quota |
@@ -181,3 +181,48 @@ lifetime. Setup commands/lockfiles are reusable configuration. Committed PR
 content is Git-persisted after push; uncommitted files, installed tools, generated
 caches, /tmp logs and running processes have different unverified lifecycle
 boundaries. No restart, migration or durability experiment was requested/run.
+
+## Frozen full-run result and terminal planning evidence
+
+The reviewed 32-file candidate was committed and pushed as
+`ca15ecb60b2019b76b7a12f11cc62dfb2b354726`, with freeze digest
+`0bf5254f74c4c5c929fd487e75cf4fa1712daa9700159d3a57b7882723e531f4`.
+SQLite was restored to verified-base bytes and excluded. Goal-next now returns
+only task-844 for goal-88, no candidate for goals 89/90, and zero scope warnings.
+Source-built graph validation passes with zero errors/one original stale-cache
+warning; all 8 skills pass; CLI matrix/contract, workflow drift and docs checks pass
+(499 examples,0 failures). All three future feature tests remain NOT_RUN.
+
+The existing corrected session 88811 completed; it was never duplicated. Result:
+FAILED after 351216 ms;2389 tests / 1385 passed / 1003 failed / 1 skipped. Subreaper collected
+122 owned descendants and resolved the five supervision failures. Coverage floors
+still failed (79.87/75.19/87.11% versus89/77/96%). Later CLI/docs/graph/security/
+package-artifact gates and 13 smokes were NOT_RUN by that ladder. All custody checks
+passed: HEAD/branch/status/tracked tree/selected goal/lockfiles unchanged; no
+changed tracked paths. The frozen 32-file digest matched before and after.
+
+The intended outer TMPDIR correction did not reach test fixtures: current
+releaseEnvironment replaces it with `<receipt-directory>/tmp`. Because the
+configured receipt directory was under /tmp, the invalid /tmp/.git ancestor
+remained. This setup oversight is recorded as a failed attempt, not a pass.
+Actual helper controls on BOTH pristine base and candidate reproduce failure
+with /tmp receipts and pass with permitted /dev/shm receipts. The source helper,
+actual effective paths, real exit codes, runner source and SHA256 hashes are
+retained in checks.json. No test output, Git executable or safe-path guard was
+faked, and no project implementation/threshold was changed. No third expensive
+full suite was run; the draft explicitly retains this environment-only CI gap.
+Not every one of the original 1008 failures was individually traced.
+
+This custom cloud runner is separate from unmodified GitHub-hosted CI. It does
+not qualify macOS, full Linux portable installed artifacts, the deferred
+filesystem guarantees, or future releases/professional adoption. Full hosted
+Linux remains an explicit unqualified Test487 stub. GitHub PR checks must be
+queried separately after draft creation and recorded with their actual status.
+
+Parent interventions requested preserved checkpoint boundaries for progress and
+VM specs, then explicitly instructed continuation and one draft PR with honest
+remaining failures. No extra publication/merge/implementation authority resulted.
+This evidence is appended in a separate normal commit after the frozen run;
+only experiment/results metadata changes. Relevant graph/link/diff checks are
+rerun on the resulting docs; the full runtime ladder is not represented as a
+pass on either commit. Draft creation and verified URL are recorded next.
