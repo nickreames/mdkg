@@ -4,7 +4,9 @@ const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { createOwnedFixture, finalizeFixture } = require("../../scripts/qualification-fixture");
+const { acceptOwnedGitFixture } = require("../../scripts/qualification-git");
+const { runFixtureProcess } = require("../../scripts/qualification-process");
 
 const sha = bytes => crypto.createHash("sha256").update(bytes).digest("hex");
 const hash = file => sha(fs.readFileSync(file));
@@ -28,7 +30,8 @@ function inventory(root) {
 function qualifyGitObservation({ cli, tempRoot, node = process.execPath, topologies = ["standalone", "worktrees", "submodule", "gitdir"] }) {
   assert(path.isAbsolute(cli) && fs.statSync(cli).isFile(), "CLI must be an existing absolute path");
   assert(path.isAbsolute(tempRoot) && fs.statSync(tempRoot).isDirectory(), "fixture parent must already exist");
-  const owned = fs.mkdtempSync(path.join(tempRoot, "git-observation-"));
+  const fixture = createOwnedFixture({ base: tempRoot, prefix: "git-observation-" });
+  const owned = fixture.root, fixtureGit = acceptOwnedGitFixture(owned);
   // Do not inherit the caller's Git directory/index/config overrides. In
   // particular, target commands must not inherit an optional-lock workaround.
   const env = {
@@ -37,16 +40,25 @@ function qualifyGitObservation({ cli, tempRoot, node = process.execPath, topolog
     GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: process.platform === "win32" ? "NUL" : "/dev/null",
     GIT_TERMINAL_PROMPT: "0",
   };
-  const run = (command, args, cwd, additions = {}, expectedExit = 0) => {
-    const r = spawnSync(command, args, { cwd, env: { ...env, ...additions }, encoding: "utf8",
+  const execute = (command, args, cwd, additions = {}) => {
+    fixture.assertOwned();
+    const supervisedArgs = command === node && node !== process.execPath
+      ? ["--require", path.resolve(__dirname, "../../scripts/qualification-process-context.js"), ...args] : args;
+    return runFixtureProcess(owned, command, supervisedArgs, { cwd, env: { ...env, ...additions },
       maxBuffer: 32 * 1024 * 1024, timeout: 30000 });
-    assert.equal(r.error, undefined, `${command} ${args.join(" ")}: ${r.error}`);
+  };
+  const run = (command, args, cwd, additions = {}, expectedExit = 0) => {
+    const r = execute(command, args, cwd, additions);
     assert.equal(r.status, expectedExit, `${command} ${args.join(" ")}\n${r.stdout}\n${r.stderr}`);
     return r.stdout.trim();
   };
-  const gitArgs = ["-c", "core.fsmonitor=false", "-c", "core.hooksPath=/dev/null",
-    "-c", "user.name=mdkg observation fixture", "-c", "user.email=fixture@example.invalid"];
-  const git = (cwd, args, optional = "0") => run("git", [...gitArgs, ...args], cwd, { GIT_OPTIONAL_LOCKS: optional });
+  const git = (cwd, args, optional = "0") => {
+    if (optional === "1") assert.deepEqual(args, ["status", "--porcelain=v1"]);
+    else assert.equal(optional, "0");
+    const r = optional === "1" ? fixtureGit.refreshIndexForControl(cwd) : fixtureGit.run(cwd, args);
+    assert.equal(r.status, 0, `fixture Git ${args.join(" ")}\n${r.stdout}\n${r.stderr}`);
+    return r.stdout.trim();
+  };
   const mdkg = (cwd, args, policy = "unset", expectedExit = 0) => run(node, [cli, ...args], cwd,
     policy === "unset" ? {} : { GIT_OPTIONAL_LOCKS: policy }, expectedExit);
   const commit = (cwd, message) => {
@@ -80,6 +92,7 @@ function qualifyGitObservation({ cli, tempRoot, node = process.execPath, topolog
     }
   };
   const results = [], controls = [];
+  let receipt, error;
   try {
     for (const topology of topologies) {
       assert(["standalone", "worktrees", "submodule", "gitdir"].includes(topology));
@@ -91,7 +104,7 @@ function qualifyGitObservation({ cli, tempRoot, node = process.execPath, topolog
         const origin = path.join(base, "local-child-source");
         seedGraph(origin);
         // Local synthetic source only. No provider, network remote or host config.
-        git(root, ["-c", "protocol.file.allow=always", "submodule", "add", "--force", origin, "projects/child"]);
+        git(root, ["submodule", "add", "--force", origin, "projects/child"]);
       } else seedGraph(child);
       const bundleRel = ".mdkg/bundles/private/subgraphs/child.mdkg.zip";
       mdkg(child, ["bundle", "create", "--profile", "private", "--output", path.join(root, bundleRel), "--json"]);
@@ -249,8 +262,7 @@ for(const name of ['mkdirSync','rmSync','unlinkSync','renameSync','writeFileSync
       const preview = JSON.parse(run(node, previewArgs, root, trapEnv));
       assert.equal(preview.action, "sync_dry_run");
       assert.equal(preview.ok, true);
-      const apply = spawnSync(node, [cli, "subgraph", "sync", "child", "--allow-dirty", "--json"],
-        { cwd: root, env: { ...env, ...trapEnv }, encoding: "utf8", timeout: 30000 });
+      const apply = execute(node, [cli, "subgraph", "sync", "child", "--allow-dirty", "--json"], root, trapEnv);
       assert.equal(apply.error, undefined);
       assert.notEqual(apply.status, 0, "real sync must still attempt mutation locking");
       assert.match(apply.stderr, /MDKG_FIXTURE_WRITE_ATTEMPT mkdirSync index\n/);
@@ -265,8 +277,7 @@ for(const name of ['mkdirSync','rmSync','unlinkSync','renameSync','writeFileSync
       fs.writeFileSync(path.join(lock, "owner.json"), JSON.stringify({ owner: "other-fixture-writer" }));
       const lockedBefore = inventory(base);
       assert.equal(JSON.parse(run(node, previewArgs, root, trapEnv)).ok, true, "preview must not acquire or clear another writer's lock");
-      const busy = spawnSync(node, [cli, "subgraph", "sync", "child", "--allow-dirty", "--json"],
-        { cwd: root, env, encoding: "utf8", timeout: 30000 });
+      const busy = execute(node, [cli, "subgraph", "sync", "child", "--allow-dirty", "--json"], root);
       assert.equal(busy.error, undefined);
       assert.notEqual(busy.status, 0);
       assert.match(busy.stderr, /timed out waiting for mdkg mutation lock/);
@@ -279,7 +290,7 @@ for(const name of ['mkdirSync','rmSync','unlinkSync','renameSync','writeFileSync
       assert.equal(fs.existsSync(manifest), false);
       fs.writeFileSync(manifest, JSON.stringify({ format: "mdkg-graph", format_version: 999 }));
       const unsupportedBefore = inventory(base);
-      const unsupported = spawnSync(node, previewArgs, { cwd: root, env: { ...env, ...trapEnv }, encoding: "utf8", timeout: 30000 });
+      const unsupported = execute(node, previewArgs, root, trapEnv);
       assert.equal(unsupported.error, undefined);
       assert.notEqual(unsupported.status, 0);
       assert.match(unsupported.stderr, /unsupported graph format\/version/);
@@ -308,15 +319,14 @@ for(const name of ['mkdirSync','rmSync','unlinkSync','renameSync','writeFileSync
         real_sync_mutation_attempt_verified: true, competing_lock_preserved: true, unsupported_format_refused: true,
         missing_output_parent_preview_preserved: true, real_sync_creates_output_parents: true });
     }
-    return { schema: "mdkg.git-observation-qualification.v1", node: run(node, ["--version"], owned),
-      platform: process.platform, cli_sha256: hash(cli), git: git(owned, ["--version"]),
+    receipt = { schema: "mdkg.git-observation-qualification.v1", node: run(node, ["--version"], owned),
+      platform: process.platform, cli_sha256: hash(cli), git: run("git", ["--version"], owned),
       topologies, cases: results.length, controls, results,
       scope: "persistent path/mode/content and Git index custody; not proof against transient helper execution or lock syscalls",
       external_actions: "none" };
-  } finally {
-    // owned is the exact mkdtemp result created by this invocation.
-    fs.rmSync(owned, { recursive: true, force: true });
-  }
+  } catch (failure) { error = failure; }
+  const cleanup = finalizeFixture(fixture, { error });
+  return { ...receipt, cleanup };
 }
 
 module.exports = { qualifyGitObservation };

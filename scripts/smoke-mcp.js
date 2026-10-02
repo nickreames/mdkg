@@ -1,42 +1,42 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawn, spawnSync } = require("node:child_process");
+const { spawn } = require("node:child_process");
 const crypto = require("node:crypto");
 const strict = require("node:assert/strict");
+const { acceptOwnedGitFixture } = require("./qualification-git");
+const { runFixtureNode } = require("./qualification-process");
+const { runInstalledSmoke } = require("./qualification-smoke");
+const { within } = require("./qualification-output");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = process.env.MDKG_SMOKE_TMPDIR || (fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir());
-const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
+let ownedRoot, fixtureGit, smokeCommands;
 
 function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
+  return { ...process.env, ...extra };
+}
+
+function formatFailure(error, seen = new Set()) {
+  if (!(error instanceof Error)) return String(error);
+  if (seen.has(error)) return "[previously reported failure]";
+  seen.add(error);
+  return [error.stack || error.message,
+    ...(error instanceof AggregateError ? error.errors.map(item => formatFailure(item, seen)) : []),
+    ...(error.cause === undefined ? [] : [formatFailure(error.cause, seen)])].join("\n");
 }
 
 function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
+  const cwd = options.cwd || ownedRoot;
+  const result = runFixtureNode(ownedRoot, command, args, {
+    cwd, env: commandEnv(options.env || {}), timeout: 60000, maxBuffer: 16 * 1024 * 1024,
   });
   if (result.status !== 0) {
     throw new Error(
       [
         `command failed: ${command} ${args.join(" ")}`,
-        `cwd: ${options.cwd || repoRoot}`,
+        `cwd: ${cwd}`,
         `exit: ${result.status}`,
         `stdout:\n${result.stdout}`,
         `stderr:\n${result.stderr}`,
@@ -65,7 +65,9 @@ function mdkg(binPath, args, cwd) {
 }
 
 function git(cwd, args) {
-  return run("git", args, { cwd }).stdout;
+  const result = fixtureGit.run(cwd, args);
+  if (result.status !== 0) throw new Error(`fixture Git ${args.join(" ")} failed: ${result.stderr}`);
+  return result.stdout.trim();
 }
 
 function commitAll(repo, message) {
@@ -74,14 +76,15 @@ function commitAll(repo, message) {
   return git(repo, ["rev-parse", "HEAD"]);
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot, commands) {
+  smokeCommands = commands;
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "npm-prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-    cwd: repoRoot,
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir], {
+    cwd: tempRoot,
   }).stdout;
   const tarballName = packOutput
     .split(/\r?\n/)
@@ -94,15 +97,14 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarballName));
   assertExists(tarballPath);
 
-  const install = run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  assert(install.combined.includes(`mdkg ${packageVersion} installed.`), "postinstall output missing version");
-
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return { binPath, tarballPath };
+  return { tarballPath, install() {
+    const install = commands.npm(["install", "-g", tarballPath, "--prefix", prefix,
+      "--foreground-scripts", "--offline"], { cwd: tempRoot, env: { npm_config_prefix: prefix } });
+    assert(`${install.stdout}${install.stderr}`.includes(`mdkg ${packageVersion} installed.`), "postinstall output missing version");
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, tarballPath };
+  } };
 }
 
 function initializeGraph(binPath, root, options) {
@@ -178,10 +180,11 @@ function setupRoot(binPath, tempRoot, options = {}) {
 }
 
 function startMcp(binPath, root) {
-  const child = spawn(binPath, ["mcp", "serve", "--stdio", "--root", root], {
+  const child = spawn(process.execPath, [binPath, "mcp", "serve", "--stdio", "--root", root], {
     cwd: root,
     env: commandEnv(),
     stdio: ["pipe", "pipe", "pipe"],
+    detached: false,
   });
   child.stdout.setEncoding("utf8");
   child.stderr.setEncoding("utf8");
@@ -189,6 +192,24 @@ function startMcp(binPath, root) {
   let stdoutBuffer = "";
   let stderr = "";
   let nextId = 1;
+  let failure, closed;
+  function rejectPending(error) {
+    failure ||= error;
+    for (const entry of pending.values()) {
+      clearTimeout(entry.timeout);
+      entry.reject(error);
+    }
+    pending.clear();
+  }
+  const exited = new Promise(resolve => {
+    child.once("close", (code, signal) => {
+      closed = { code, signal };
+      if (pending.size) rejectPending(new Error(`MCP server closed: code=${code} signal=${signal}; stderr:\n${stderr}`));
+      resolve(closed);
+    });
+  });
+  child.once("error", error => rejectPending(error));
+  child.stdin.on("error", error => rejectPending(error));
 
   child.stdout.on("data", (chunk) => {
     stdoutBuffer += chunk;
@@ -197,22 +218,26 @@ function startMcp(binPath, root) {
       const line = stdoutBuffer.slice(0, newline).trim();
       stdoutBuffer = stdoutBuffer.slice(newline + 1);
       if (line) {
-        const message = JSON.parse(line);
-        const entry = pending.get(message.id);
-        if (entry) {
-          pending.delete(message.id);
-          clearTimeout(entry.timeout);
-          entry.resolve(message);
-        }
+        try {
+          const message = JSON.parse(line);
+          const entry = pending.get(message.id);
+          if (entry) {
+            pending.delete(message.id);
+            clearTimeout(entry.timeout);
+            entry.resolve(message);
+          }
+        } catch (error) { rejectPending(error); }
       }
       newline = stdoutBuffer.indexOf("\n");
     }
+    if (stdoutBuffer.length > 16 * 1024 * 1024) rejectPending(new Error("MCP response exceeded fixture limit"));
   });
   child.stderr.on("data", (chunk) => {
     stderr += chunk;
   });
 
   function request(method, params) {
+    if (failure || closed) return Promise.reject(failure || new Error("MCP server is closed"));
     const id = nextId++;
     const payload = { jsonrpc: "2.0", id, method, ...(params === undefined ? {} : { params }) };
     return new Promise((resolve, reject) => {
@@ -221,28 +246,33 @@ function startMcp(binPath, root) {
         reject(new Error(`timed out waiting for MCP response to ${method}; stderr:\n${stderr}`));
       }, 10000);
       pending.set(id, { resolve, reject, timeout });
-      child.stdin.write(`${JSON.stringify(payload)}\n`);
+      try { child.stdin.write(`${JSON.stringify(payload)}\n`); }
+      catch (error) { rejectPending(error); }
     });
   }
 
   function notify(method, params) {
+    if (failure || closed) throw failure || new Error("MCP server is closed");
     const payload = { jsonrpc: "2.0", method, ...(params === undefined ? {} : { params }) };
     child.stdin.write(`${JSON.stringify(payload)}\n`);
   }
 
   async function stop() {
-    child.stdin.end();
-    const exit = await new Promise((resolve) => {
-      const timeout = setTimeout(() => {
-        child.kill("SIGTERM");
-      }, 5000);
-      child.on("exit", (code) => {
-        clearTimeout(timeout);
-        resolve(code);
-      });
+    if (!child.stdin.destroyed) child.stdin.end();
+    const wait = ms => new Promise(resolve => {
+      const timer = setTimeout(() => resolve(null), ms);
+      exited.then(value => { clearTimeout(timer); resolve(value); });
     });
-    assert(exit === 0, `mcp server exited nonzero: ${exit}\nstderr:\n${stderr}`);
-    assert(stderr.trim() === "", `mcp server wrote to stderr:\n${stderr}`);
+    let exit = closed || await wait(5000);
+    if (!exit) { child.kill("SIGTERM"); exit = await wait(3000); }
+    if (!exit) { child.kill("SIGKILL"); exit = await wait(3000); }
+    const failures = [];
+    if (failure) failures.push(failure);
+    if (!exit) failures.push(new Error(`MCP server did not close after SIGKILL; stderr:\n${stderr}`));
+    else if (exit.code !== 0 || exit.signal !== null) failures.push(new Error(`mcp server exited nonzero: ${JSON.stringify(exit)}`));
+    if (stderr.trim()) failures.push(new Error(`mcp server wrote to stderr:\n${stderr}`));
+    if (failures.length === 1) throw failures[0];
+    if (failures.length > 1) throw new AggregateError(failures, "MCP protocol and shutdown checks failed");
   }
 
   return { request, notify, stop };
@@ -340,7 +370,7 @@ async function exerciseMcp(binPath, fixture, options = {}) {
 
     const unknown = await call("mdkg_task_update", { id: fixture.task.id, status: "done" });
     assert(unknown.error && unknown.error.code === -32602, "unknown mutation-shaped tool did not fail closed");
-    return {
+    const result = {
       shown: shown.result.structuredContent.item,
       search: searchRoot.result.structuredContent.items,
       packNodes: packed.result.structuredContent.pack.nodes,
@@ -348,8 +378,12 @@ async function exerciseMcp(binPath, fixture, options = {}) {
       current: current.result.structuredContent.goal,
       next: next.result.structuredContent.node,
     };
-  } finally {
     await server.stop();
+    return result;
+  } catch (error) {
+    try { await server.stop(); }
+    catch (shutdownError) { throw new AggregateError([error, shutdownError], "MCP exercise and shutdown both failed"); }
+    throw error;
   }
 }
 
@@ -426,31 +460,51 @@ async function exerciseV2Reads(binPath, tempRoot, backend) {
   return receipts;
 }
 
-async function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-mcp-smoke."));
-  const { binPath, tarballPath } = packAndInstall(tempRoot);
+async function exerciseInstalled(binPath, tempRoot) {
   const fixture = setupRoot(binPath, tempRoot);
   await exerciseMcp(binPath, fixture);
   const identityReads = [];
   for (const backend of ["json", "sqlite"]) identityReads.push(...await exerciseV2Reads(binPath, tempRoot, backend));
-  console.log(
-    JSON.stringify(
-      {
-        smoke: "mcp",
-        ok: true,
-        packageVersion,
-        tempRoot,
-        tarballPath,
-        root: fixture.root,
-        identityReads,
-      },
-      null,
-      2
-    )
-  );
+  return { smoke: "mcp", ok: true, packageVersion, identityReads,
+    root: fixture.root, server_shutdown: "bounded-and-observed" };
 }
 
-main().catch((err) => {
-  console.error(err instanceof Error ? err.stack || err.message : String(err));
-  process.exit(1);
-});
+async function ownedWorker(args) {
+  assert(args.length === 2, "MCP worker requires exact fixture root and installed CLI");
+  ownedRoot = fs.realpathSync(args[0]);
+  assert(within(ownedRoot, path.resolve(args[1])), "installed CLI must be inside the accepted fixture");
+  fixtureGit = acceptOwnedGitFixture(ownedRoot, process.env);
+  const result = await exerciseInstalled(args[1], ownedRoot);
+  process.stdout.write(JSON.stringify(result) + "\n");
+}
+
+function main() {
+  return runInstalledSmoke({
+    prefix: "mdkg-mcp-smoke-",
+    prepare: prepareInstall,
+    exercise(root, { binPath, tarballPath }) {
+      // The complete async conversation runs in one supervised worker/process
+      // group. Nested Git and CLI children share that group; the outer owner
+      // refuses cleanup if any descendant survives the worker.
+      const result = smokeCommands.node(__filename, ["--owned-worker", root, binPath], root, { timeout: 300000 });
+      const worker = JSON.parse(result.stdout);
+      assert(worker.ok && worker.smoke === "mcp", "MCP worker did not report success");
+      return { ...worker, tarballPath };
+    },
+  });
+}
+
+if (require.main === module && process.argv[2] === "--owned-worker") {
+  ownedWorker(process.argv.slice(3)).catch(err => {
+    console.error(formatFailure(err));
+    process.exitCode = 1;
+  });
+} else if (require.main === module) {
+  try { console.log(JSON.stringify(main(), null, 2)); }
+  catch (err) {
+    console.error(formatFailure(err));
+    process.exitCode = 1;
+  }
+}
+
+module.exports = { main, startMcp, formatFailure };

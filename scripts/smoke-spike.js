@@ -1,60 +1,23 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
-const GIT_CMD = process.env.GIT || (process.platform === "win32" ? "git.exe" : "git");
 
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
+let commands;
+
+function run(binPath, args, options = {}) {
+  const result = commands.node(binPath, args, options.cwd, options);
+  return { status: result.status, stdout: result.stdout.trim(), stderr: result.stderr.trim(),
+    combined: `${result.stdout}${result.stderr}` };
 }
 
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(
-      [
-        `command failed: ${command} ${args.join(" ")}`,
-        `cwd: ${options.cwd || repoRoot}`,
-        `exit: ${result.status}`,
-        `stdout:\n${result.stdout}`,
-        `stderr:\n${result.stderr}`,
-      ].join("\n")
-    );
-  }
-  return { stdout: result.stdout.trim(), stderr: result.stderr.trim(), status: result.status };
-}
-
-function runExpectFailure(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status === 0) {
-    throw new Error(`command unexpectedly succeeded: ${command} ${args.join(" ")}`);
-  }
-  return { stdout: result.stdout.trim(), stderr: result.stderr.trim(), status: result.status };
+function runExpectFailure(binPath, args, options = {}) {
+  const result = run(binPath, args, { ...options, allowFailure: true });
+  if (result.status === 0) throw new Error(`command unexpectedly succeeded: ${binPath} ${args.join(" ")}`);
+  return result;
 }
 
 function assert(condition, message) {
@@ -79,13 +42,13 @@ function mdkg(binPath, args, cwd) {
   return run(binPath, args, { cwd }).stdout;
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir]).stdout;
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir], { cwd: tempRoot }).stdout;
   const tarball = packOutput
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -95,16 +58,18 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarball));
   assertExists(tarballPath);
 
-  run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
+  return { tarballPath, install() {
+    commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
 
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  const packageRoot = path.join(prefix, "lib", "node_modules", "mdkg");
-  assertExists(binPath);
-  assertExists(path.join(packageRoot, "dist", "init", "templates", "default", "spike.md"));
-  return { binPath, packageRoot, tarballPath };
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    const packageRoot = path.join(prefix, "lib", "node_modules", "mdkg");
+    assertExists(binPath);
+    assertExists(path.join(packageRoot, "dist", "init", "templates", "default", "spike.md"));
+    return { binPath, packageRoot, tarballPath };
+  } };
 }
 
 function replaceFrontmatterValue(filePath, key, value) {
@@ -227,7 +192,7 @@ function assertPackageDocs(packageRoot, binPath, root) {
 function assertMalformedSpikeUx(binPath, tempRoot) {
   const root = path.join(tempRoot, "malformed-repo");
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
   mdkg(binPath, ["init", "--agent"], root);
 
   const workRoot = path.join(root, ".mdkg", "work");
@@ -300,12 +265,14 @@ function assertMalformedSpikeUx(binPath, tempRoot) {
   return root;
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-spike."));
-  const { binPath, packageRoot, tarballPath } = packAndInstall(tempRoot);
+function runSmoke() {
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-spike-",
+    prepare(tempRoot, ownedCommands) { commands = ownedCommands; return prepareInstall(tempRoot); },
+    exercise(tempRoot, { binPath, tarballPath, packageRoot }) {
   const root = path.join(tempRoot, "repo");
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 
   mdkg(binPath, ["init", "--agent"], root);
   assertPackageDocs(packageRoot, binPath, root);
@@ -446,24 +413,15 @@ function main() {
   assert(status.action === "status", "status json failed");
   const malformedRoot = assertMalformedSpikeUx(binPath, tempRoot);
 
-  console.log(
-    JSON.stringify(
-      {
-        ok: true,
-        smoke: "spike",
-        temp_root: tempRoot,
-        repo: root,
-        tarball: tarballPath,
-        spike: "root:spike-1",
-        malformed_repo: malformedRoot,
-        follow_up_task: `root:${followTask.id}`,
-        follow_up_test: `root:${followTest.id}`,
-        skill_count: initialSkills.length,
-      },
-      null,
-      2
-    )
-  );
+  return { ok: true, smoke: "spike", temp_root: tempRoot, repo: root, tarball: tarballPath,
+    spike: "root:spike-1", malformed_repo: malformedRoot, follow_up_task: `root:${followTask.id}`,
+    follow_up_test: `root:${followTest.id}`, skill_count: initialSkills.length };
+    },
+  });
+  console.log(JSON.stringify(receipt));
 }
 
-main();
+if (require.main === module) {
+  try { runSmoke(); }
+  catch (error) { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; }
+}

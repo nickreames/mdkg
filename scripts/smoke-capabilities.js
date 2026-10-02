@@ -1,20 +1,16 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { createOwnedFixture, finalizeFixture } = require("./qualification-fixture");
+const { createSmokeCommands } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
 const binPath = path.join(repoRoot, "dist", "cli.js");
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
+let commands;
 
 function run(args, cwd) {
-  const result = spawnSync(process.execPath, [binPath, ...args], {
-    cwd,
-    encoding: "utf8",
-    stdio: "pipe",
-  });
+  const result = commands.node(binPath, args, cwd);
   if (result.status !== 0) {
     throw new Error(
       [
@@ -49,9 +45,12 @@ function readJson(filePath) {
 }
 
 function main() {
-  let tempRoot;
+  const fixture = createOwnedFixture({ base: process.env.MDKG_SMOKE_TMPDIR || undefined,
+    prefix: "mdkg-capabilities-" });
+  let error;
   try {
-    tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-capabilities-"));
+    commands = createSmokeCommands(fixture);
+    const tempRoot = fixture.root;
     const root = path.join(tempRoot, "root");
     const child = path.join(root, "child-repo");
     fs.mkdirSync(root, { recursive: true });
@@ -124,18 +123,18 @@ function main() {
     run(["doctor", "--json"], root);
     run(["validate"], root);
 
-    console.log("capability cache smoke passed");
-  } finally {
-    if (tempRoot && fs.existsSync(tempRoot)) {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
+  } catch (failure) { error = failure; }
+  const cleanup = finalizeFixture(fixture, { error });
+  console.log("capability cache smoke passed");
+  return { smoke: "capabilities", ok: true, cleanup };
+}
+
+if (require.main === module) {
+  try { console.log(JSON.stringify(main())); }
+  catch (err) {
+    console.error(err instanceof Error ? err.stack || err.message : String(err));
+    process.exitCode = 1;
   }
 }
 
-try {
-  main();
-} catch (err) {
-  const message = err instanceof Error ? err.message : String(err);
-  console.error(message);
-  process.exit(1);
-}
+module.exports = { main };

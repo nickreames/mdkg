@@ -1,43 +1,18 @@
 #!/usr/bin/env node
 
-const { spawnSync } = require("node:child_process");
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
 const crypto = require("node:crypto");
 const { preparePublishedBaseline, verifyBaseline } = require("./published-upgrade-baseline");
 const { exerciseInstalledUpgradeRecovery } = require("./installed-upgrade-recovery");
+const { createOwnedFixture, finalizeFixture } = require("./qualification-fixture");
+const { createSmokeCommands } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = process.env.MDKG_SMOKE_TMPDIR || os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || "npm";
-const GIT_CMD = process.env.GIT || "git";
-let isolatedConfig = {};
+let commands;
 
-function commandEnv(extra = {}) {
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: process.env.NPM_CONFIG_CACHE || "/private/tmp/mdkg-npm-cache",
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...isolatedConfig,
-    ...extra,
-  };
-}
-
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(
-      `${command} ${args.join(" ")} failed with ${result.status}\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`
-    );
-  }
+function output(result) {
   return {
     stdout: result.stdout.trim(),
     stderr: result.stderr.trim(),
@@ -88,11 +63,11 @@ function assertManifestTemplate(root, label) {
 
 function initGit(root) {
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 }
 
 function mdkg(binPath, args, cwd) {
-  return run(binPath, args, { cwd });
+  return output(commands.node(binPath, args, cwd));
 }
 
 function packAndInstall(tempRoot) {
@@ -101,9 +76,7 @@ function packAndInstall(tempRoot) {
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-    cwd: repoRoot,
-  }).stdout;
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir]).stdout;
   const tarballName = packOutput
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -115,10 +88,10 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarballName));
   assertExists(tarballPath);
 
-  const install = run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
+  const install = output(commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
     cwd: tempRoot,
     env: { npm_config_prefix: prefix },
-  });
+  }));
   assertIncludes(install.combined, `mdkg ${packageVersion} installed.`, "postinstall");
 
   const binPath = process.platform === "win32"
@@ -377,7 +350,9 @@ function exerciseUpgrade(binPath, tempRoot) {
 async function exercisePublishedUpgrade(binPath, tempRoot, customizedSkills = false) {
   const baseline = await preparePublishedBaseline(tempRoot);
   const prefix = path.join(tempRoot, "published-prefix");
-  run(NPM_CMD, ["install", "-g", baseline.path, "--prefix", prefix, "--offline", "--no-audit", "--no-fund"], { cwd: tempRoot });
+  commands.npm(["install", "-g", baseline.path, "--prefix", prefix, "--offline", "--no-audit", "--no-fund"], {
+    cwd: tempRoot, env: { MDKG_SMOKE_BASELINE_TARBALL: baseline.path },
+  });
   verifyBaseline(fs.readFileSync(baseline.path));
   const oldBin = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
   if (mdkg(oldBin, ["--version"], tempRoot).stdout !== "0.5.2") throw new Error("published baseline version mismatch");
@@ -397,7 +372,7 @@ async function exercisePublishedUpgrade(binPath, tempRoot, customizedSkills = fa
   if (customizedSkills) fs.appendFileSync(path.join(root, customSkill), "\nUser-owned project grounding convention.\n");
   const skillBytes = fs.readFileSync(path.join(root, customSkill));
   const indexPath = path.join(root, ".git/index");
-  run(GIT_CMD, ["add", "--", "README.md"], { cwd: root });
+  commands.git(["add", "--", "README.md"], root);
   const staging = fs.readFileSync(indexPath);
   const digest = p => crypto.createHash("sha256").update(fs.readFileSync(p)).digest("hex");
   const snapshot = () => {
@@ -410,7 +385,7 @@ async function exercisePublishedUpgrade(binPath, tempRoot, customizedSkills = fa
   if (JSON.stringify(snapshot()) !== JSON.stringify(before)) throw new Error("published upgrade preview changed workspace bytes");
   if (customizedSkills) {
     if (preview.safe_to_apply || preview.blocking_conflicts.length !== 1 || preview.blocking_conflicts[0].path !== customSkill) throw new Error("custom canonical skill requires explicit preservation review");
-    const blocked = spawnSync(binPath, ["upgrade", "--apply", "--plan-hash", preview.plan_hash, "--json"], { cwd: root, env: commandEnv(), encoding: "utf8" });
+    const blocked = commands.node(binPath, ["upgrade", "--apply", "--plan-hash", preview.plan_hash, "--json"], root, { allowFailure: true });
     if (blocked.status === 0 || JSON.stringify(snapshot()) !== JSON.stringify(before)) throw new Error("conflicting upgrade did not refuse without writes");
     // Explicit fixture decision: retain the custom skill, select every other
     // pending direct managed unit, and review its required native projections.
@@ -445,36 +420,45 @@ async function exercisePublishedUpgrade(binPath, tempRoot, customizedSkills = fa
     git_index_unchanged: true, repeated_preview_noop: true, repeated_apply_noop: !customizedSkills };
 }
 
+function createUpgradeFixture(env = process.env) {
+  // Let the shared helper canonicalize its internal OS default. An explicit
+  // operator override remains subject to physical-path admission, not rewriting.
+  return createOwnedFixture({ base: env.MDKG_SMOKE_TMPDIR || undefined, prefix: "mdkg-upgrade-smoke-" });
+}
+
 async function runSmoke() {
   let tempRoot;
+  let fixture;
+  let primaryFailure;
   try {
-    tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-upgrade-smoke-"));
-    const userConfig = path.join(tempRoot, "user.npmrc"), globalConfig = path.join(tempRoot, "global.npmrc");
-    fs.writeFileSync(userConfig, "audit=false\nfund=false\n"); fs.writeFileSync(globalConfig, "audit=false\nfund=false\n");
-    isolatedConfig = { npm_config_userconfig: userConfig, NPM_CONFIG_USERCONFIG: userConfig,
-      npm_config_globalconfig: globalConfig, NPM_CONFIG_GLOBALCONFIG: globalConfig,
-      npm_config_cache: path.join(tempRoot, "npm-cache"), NPM_CONFIG_CACHE: path.join(tempRoot, "npm-cache") };
+    fixture = createUpgradeFixture();
+    tempRoot = fixture.root;
+    commands = createSmokeCommands(fixture);
     const binPath = packAndInstall(tempRoot);
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
     if (version !== packageVersion) {
       throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
     }
     exerciseUpgrade(binPath, tempRoot);
+    console.log(JSON.stringify({ action: "current-upgrade-qualified", runtime: process.version,
+      cases: ["missing-managed-files", "custom-root-guidance", "old-template-fallback", "legacy-spec-migration",
+        "manifest-spec-sibling-conflict", "custom-spike-template", "ignored-event-log"], final_acceptance: false }));
     const published = await exercisePublishedUpgrade(binPath, tempRoot);
     console.log(JSON.stringify({ action: "published-upgrade-qualified", runtime: process.version, ...published }));
     const customRoot = path.join(tempRoot, "customized-published"); fs.mkdirSync(customRoot);
     const customized = await exercisePublishedUpgrade(binPath, customRoot, true);
     console.log(JSON.stringify({ action: "published-customized-upgrade-qualified", runtime: process.version, ...customized }));
     const oldBin = process.platform === "win32" ? path.join(tempRoot, "published-prefix/mdkg.cmd") : path.join(tempRoot, "published-prefix/bin/mdkg");
-    const recovery = exerciseInstalledUpgradeRecovery(binPath, oldBin, tempRoot, commandEnv());
+    const recovery = exerciseInstalledUpgradeRecovery(binPath, oldBin, tempRoot, commands.environment);
     console.log(JSON.stringify({ action: "installed-upgrade-recovery-qualified", ...recovery }));
-    console.log("upgrade smoke passed");
     console.log(`version=${version}`);
-  } finally {
-    if (tempRoot && process.env.MDKG_KEEP_SMOKE_TMP !== "1") {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
+  } catch (error) {
+    primaryFailure = error;
   }
+  if (fixture && process.env.MDKG_KEEP_SMOKE_TMP !== "1") finalizeFixture(fixture, { error: primaryFailure });
+  else if (primaryFailure) throw primaryFailure;
+  console.log("upgrade smoke passed");
 }
 
-runSmoke().catch(error => { console.error(error); process.exitCode = 1; });
+if (require.main === module) runSmoke().catch(error => { console.error(error); process.exitCode = 1; });
+module.exports = { createUpgradeFixture };

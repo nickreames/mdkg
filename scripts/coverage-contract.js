@@ -4,6 +4,7 @@ const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { createRunDirectory, prepareEmptyDirectory } = require("./qualification-output");
 
 const repoRoot = path.resolve(__dirname, "..");
 const configPath = path.join(repoRoot, "scripts", "coverage-contract.json");
@@ -279,19 +280,31 @@ function buildNodeArgs(config, tests, mode) {
 }
 
 function writeJson(filePath, value) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, { encoding: "utf8", flag: "wx", mode: 0o600 });
+}
+
+function prepareCoverageOutput(config, root = repoRoot, env = process.env) {
+  if (Object.hasOwn(env, "MDKG_COVERAGE_DIR")) {
+    if (!env.MDKG_COVERAGE_DIR?.trim()) throw new Error("MDKG_COVERAGE_DIR requires a fresh output directory");
+    return prepareEmptyDirectory(path.resolve(root, env.MDKG_COVERAGE_DIR), { forbiddenRoots: [root] });
+  }
+  if (typeof config.output_dir !== "string" || !config.output_dir.trim()) {
+    throw new Error("coverage contract requires an output directory");
+  }
+  // Standalone runs retain prior evidence instead of deleting it. The ladder
+  // supplies an exact fresh directory, preserving its summary/manifest contract.
+  return createRunDirectory(path.resolve(root, config.output_dir), { forbiddenRoots: [root] });
 }
 
 function execute(mode, root = repoRoot) {
   const config = loadJson(path.join(root, "scripts", "coverage-contract.json"));
   validateCoverageConfig(config, { requireThresholds: mode === "run" });
   const tests = discoverTestContract(root);
-  const outputDir = path.resolve(root, process.env.MDKG_COVERAGE_DIR || config.output_dir);
+  const outputDir = prepareCoverageOutput(config, root);
   const rawDir = path.join(outputDir, "raw");
   const eventPath = path.join(outputDir, "coverage-event.json");
-  fs.rmSync(outputDir, { recursive: true, force: true });
-  fs.mkdirSync(rawDir, { recursive: true });
+  fs.mkdirSync(rawDir, { mode: 0o700 });
+  process.stderr.write(`coverage evidence directory: ${outputDir}\n`);
   const args = buildNodeArgs(config, tests, mode);
   const result = spawnSync(process.execPath, args, {
     cwd: root,
@@ -318,6 +331,7 @@ function execute(mode, root = repoRoot) {
     contract: config.contract,
     decision_ref: config.decision_ref,
     ok: result.status === 0,
+    output_dir: outputDir,
     runtime: {
       node: process.version,
       platform: process.platform,
@@ -391,6 +405,7 @@ module.exports = {
   buildNodeArgs,
   discoverTestContract,
   execute,
+  prepareCoverageOutput,
   summarizeCoverage,
   validateBaseline,
   validateCoverageConfig,

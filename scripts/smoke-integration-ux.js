@@ -1,49 +1,13 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
-const GIT_CMD = process.env.GIT || (process.platform === "win32" ? "git.exe" : "git");
 
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
-
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(
-      [
-        `command failed: ${command} ${args.join(" ")}`,
-        `cwd: ${options.cwd || repoRoot}`,
-        `exit: ${result.status}`,
-        `stdout:\n${result.stdout}`,
-        `stderr:\n${result.stderr}`,
-      ].join("\n")
-    );
-  }
-  return { stdout: result.stdout.trim(), stderr: result.stderr.trim(), combined: `${result.stdout}${result.stderr}` };
-}
+let commands;
 
 function assert(condition, message) {
   if (!condition) {
@@ -60,22 +24,21 @@ function parseJson(output) {
 }
 
 function mdkg(binPath, args, cwd) {
-  return run(binPath, args, { cwd });
+  const result = commands.node(binPath, args, cwd);
+  return { ...result, stdout: result.stdout.trim(), stderr: result.stderr.trim(), combined: `${result.stdout}${result.stderr}` };
 }
 
 function git(cwd, args) {
-  return run(GIT_CMD, args, { cwd });
+  return commands.git(args, cwd);
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "npm-prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-    cwd: repoRoot,
-  }).stdout;
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir]).stdout;
   const tarballName = packOutput
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -85,15 +48,17 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarballName));
   assertExists(tarballPath);
 
-  const install = run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  assert(install.combined.includes(`mdkg ${packageVersion} installed.`), "postinstall output missing package version");
+  return { tarballPath, install() {
+    const install = commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
+    assert(`${install.stdout}${install.stderr}`.includes(`mdkg ${packageVersion} installed.`), "postinstall output missing package version");
 
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return { binPath, tarballPath };
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, tarballPath };
+  } };
 }
 
 function updateFrontmatter(filePath, replacements) {
@@ -172,220 +137,212 @@ function createSpecAndWork(binPath, root) {
   return { spec, work };
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-integration-ux-smoke-"));
-  try {
-    const { binPath, tarballPath } = packAndInstall(tempRoot);
-    const root = path.join(tempRoot, "repo");
-    fs.mkdirSync(root, { recursive: true });
-    git(root, ["init", "-q"]);
-    git(root, ["config", "user.email", "mdkg@example.test"]);
-    git(root, ["config", "user.name", "mdkg smoke"]);
+function exerciseSmoke(tempRoot, installed) {
+  const { binPath, tarballPath } = installed;
+  const root = path.join(tempRoot, "repo");
+  fs.mkdirSync(root, { recursive: true });
+  git(root, ["init", "-q"]);
+  git(root, ["config", "user.email", "mdkg@example.test"]);
+  git(root, ["config", "user.name", "mdkg smoke"]);
 
-    mdkg(binPath, ["init", "--agent"], root);
-    const goal = parseJson(mdkg(binPath, ["new", "goal", "integration UX implementation goal", "--json"], root).stdout).node;
-    const task = parseJson(
-      mdkg(binPath, ["new", "task", "integration UX executable task", "--status", "progress", "--priority", "1", "--json"], root).stdout
-    ).node;
-    const context = parseJson(
-      mdkg(binPath, ["new", "task", "integration UX context note", "--status", "todo", "--priority", "2", "--json"], root).stdout
-    ).node;
-    const evidence = parseJson(
-      mdkg(binPath, ["new", "task", "integration UX evidence note", "--status", "done", "--priority", "3", "--json"], root).stdout
-    ).node;
+  mdkg(binPath, ["init", "--agent"], root);
+  const goal = parseJson(mdkg(binPath, ["new", "goal", "integration UX implementation goal", "--json"], root).stdout).node;
+  const task = parseJson(
+    mdkg(binPath, ["new", "task", "integration UX executable task", "--status", "progress", "--priority", "1", "--json"], root).stdout
+  ).node;
+  const context = parseJson(
+    mdkg(binPath, ["new", "task", "integration UX context note", "--status", "todo", "--priority", "2", "--json"], root).stdout
+  ).node;
+  const evidence = parseJson(
+    mdkg(binPath, ["new", "task", "integration UX evidence note", "--status", "done", "--priority", "3", "--json"], root).stdout
+  ).node;
 
-    updateFrontmatter(path.join(root, goal.path), {
-      status: "progress",
-      goal_state: "active",
-      active_node: task.id,
-      scope_refs: `[${task.id}]`,
-      context_refs: `[${context.id}, https://example.invalid/integration-context]`,
-      evidence_refs: `[${evidence.id}, proof://integration-ux/evidence]`,
-      required_checks: "[node dist/cli.js validate --json, npm run smoke:handoff]",
-    });
-    updateFrontmatter(path.join(root, task.path), {
-      parent: goal.id,
-      context_refs: `[${context.id}]`,
-      evidence_refs: `[${evidence.id}, proof://integration-ux/task-proof]`,
-    });
+  updateFrontmatter(path.join(root, goal.path), {
+    status: "progress",
+    goal_state: "active",
+    active_node: task.id,
+    scope_refs: `[${task.id}]`,
+    context_refs: `[${context.id}, https://example.invalid/integration-context]`,
+    evidence_refs: `[${evidence.id}, proof://integration-ux/evidence]`,
+    required_checks: "[node dist/cli.js validate --json, npm run smoke:handoff]",
+  });
+  updateFrontmatter(path.join(root, task.path), {
+    parent: goal.id,
+    context_refs: `[${context.id}]`,
+    evidence_refs: `[${evidence.id}, proof://integration-ux/task-proof]`,
+  });
 
-    const taskPath = path.join(root, task.path);
-    fs.appendFileSync(taskPath, "\n# Private Notes\n\nRAW_PAYLOAD_MARKER should warn but never appear in handoff content.\n", "utf8");
+  const taskPath = path.join(root, task.path);
+  fs.appendFileSync(taskPath, "\n# Private Notes\n\nRAW_PAYLOAD_MARKER should warn but never appear in handoff content.\n", "utf8");
 
-    const checkpointKinds = ["implementation", "test-proof", "goal-closeout", "audit", "handoff"];
-    const checkpointIds = [];
-    for (const kind of checkpointKinds) {
-      const receipt = parseJson(
-        mdkg(
-          binPath,
-          [
-            "checkpoint",
-            "new",
-            `${kind} integration checkpoint`,
-            "--kind",
-            kind,
-            "--relates",
-            goal.id,
-            "--scope",
-            task.id,
-            "--json",
-          ],
-          root
-        ).stdout
-      );
-      assertCheckpointBody(root, receipt, kind);
-      checkpointIds.push(receipt.checkpoint.id);
-    }
-
-    const workflow = createSpecAndWork(binPath, root);
-    const triggered = parseJson(
+  const checkpointKinds = ["implementation", "test-proof", "goal-closeout", "audit", "handoff"];
+  const checkpointIds = [];
+  for (const kind of checkpointKinds) {
+    const receipt = parseJson(
       mdkg(
         binPath,
         [
-          "work",
-          "trigger",
-          workflow.work.id,
-          "--id",
-          "order.integration-ux",
-          "--title",
-          "Integration UX Work Order",
-          "--requester",
-          "user://integration-smoke",
+          "checkpoint",
+          "new",
+          `${kind} integration checkpoint`,
+          "--kind",
+          kind,
+          "--relates",
+          goal.id,
+          "--scope",
+          task.id,
           "--json",
         ],
         root
       ).stdout
     );
-    assert(triggered.trigger.executed === false, "work trigger must not execute work");
+    assertCheckpointBody(root, receipt, kind);
+    checkpointIds.push(receipt.checkpoint.id);
+  }
+
+  const workflow = createSpecAndWork(binPath, root);
+  const triggered = parseJson(
     mdkg(
       binPath,
       [
         "work",
-        "receipt",
-        "new",
-        "Integration UX Receipt",
+        "trigger",
+        workflow.work.id,
         "--id",
-        "receipt.integration-ux",
-        "--work-order-id",
         "order.integration-ux",
-        "--outcome",
-        "success",
-        "--receipt-status",
-        "recorded",
-        "--proof-refs",
-        "proof://integration-ux/work-order",
-        "--evidence-hashes",
-        triggered.trigger.payload_hash,
+        "--title",
+        "Integration UX Work Order",
+        "--requester",
+        "user://integration-smoke",
         "--json",
       ],
       root
-    );
-    assert(parseJson(mdkg(binPath, ["work", "receipt", "verify", "receipt.integration-ux", "--json"], root).stdout).ok === true, "receipt verify failed");
-    const workflowValidation = parseJson(mdkg(binPath, ["work", "validate", "--json"], root).stdout);
-    assert(workflowValidation.ok === true, "workflow validation failed");
-    assert(workflowValidation.checked_count >= 4, "workflow validation inspected too few records");
+    ).stdout
+  );
+  assert(triggered.trigger.executed === false, "work trigger must not execute work");
+  mdkg(
+    binPath,
+    [
+      "work",
+      "receipt",
+      "new",
+      "Integration UX Receipt",
+      "--id",
+      "receipt.integration-ux",
+      "--work-order-id",
+      "order.integration-ux",
+      "--outcome",
+      "success",
+      "--receipt-status",
+      "recorded",
+      "--proof-refs",
+      "proof://integration-ux/work-order",
+      "--evidence-hashes",
+      triggered.trigger.payload_hash,
+      "--json",
+    ],
+    root
+  );
+  assert(parseJson(mdkg(binPath, ["work", "receipt", "verify", "receipt.integration-ux", "--json"], root).stdout).ok === true, "receipt verify failed");
+  const workflowValidation = parseJson(mdkg(binPath, ["work", "validate", "--json"], root).stdout);
+  assert(workflowValidation.ok === true, "workflow validation failed");
+  assert(workflowValidation.checked_count >= 4, "workflow validation inspected too few records");
 
-    const queueContract = parseJson(mdkg(binPath, ["db", "queue", "contract", "--json"], root).stdout);
-    assert(queueContract.contract.contract_id === "mdkg.project_db.queue.adapter.v1", "queue adapter contract id mismatch");
-    assert(
-      queueContract.contract.payload_hash.canonicalization.includes("serialized deterministically"),
-      "queue contract missing payload hash semantics"
-    );
-    assert(queueContract.contract.claim.selection.includes("oldest ready"), "queue contract missing oldest-ready claim semantics");
-    assert(queueContract.contract.claim.lease.includes("lease_owner"), "queue contract missing lease-owner claim semantics");
-    assert(queueContract.contract.settlement.ack.includes("lease owner"), "queue contract missing lease-owner settlement semantics");
+  const queueContract = parseJson(mdkg(binPath, ["db", "queue", "contract", "--json"], root).stdout);
+  assert(queueContract.contract.contract_id === "mdkg.project_db.queue.adapter.v1", "queue adapter contract id mismatch");
+  assert(
+    queueContract.contract.payload_hash.canonicalization.includes("serialized deterministically"),
+    "queue contract missing payload hash semantics"
+  );
+  assert(queueContract.contract.claim.selection.includes("oldest ready"), "queue contract missing oldest-ready claim semantics");
+  assert(queueContract.contract.claim.lease.includes("lease_owner"), "queue contract missing lease-owner claim semantics");
+  assert(queueContract.contract.settlement.ack.includes("lease owner"), "queue contract missing lease-owner settlement semantics");
 
-    mdkg(binPath, ["index"], root);
-    const refs = parseJson(mdkg(binPath, ["graph", "refs", task.id, "--json"], root).stdout);
-    assert(refs.outgoing.context_refs.some((edge) => edge.qid === `root:${context.id}`), "graph refs missing context ref");
-    assert(refs.outgoing.evidence_refs.some((edge) => edge.qid === `root:${evidence.id}`), "graph refs missing evidence ref");
+  mdkg(binPath, ["index"], root);
+  const refs = parseJson(mdkg(binPath, ["graph", "refs", task.id, "--json"], root).stdout);
+  assert(refs.outgoing.context_refs.some((edge) => edge.qid === `root:${context.id}`), "graph refs missing context ref");
+  assert(refs.outgoing.evidence_refs.some((edge) => edge.qid === `root:${evidence.id}`), "graph refs missing evidence ref");
 
-    const handoff = parseJson(mdkg(binPath, ["handoff", "create", goal.id, "--depth", "2", "--json"], root).stdout);
-    assert(handoff.ok === true, "handoff creation failed");
-    assert(handoff.included_qids.includes(`root:${task.id}`), "handoff missing executable task");
-    assert(handoff.included_qids.includes(`root:${checkpointIds[checkpointIds.length - 1]}`), "handoff missing latest checkpoint");
-    assert(handoff.content.includes("integration UX executable task"), "handoff missing task summary");
-    assert(handoff.content.includes("proof://integration-ux/task-proof"), "handoff missing evidence ref");
-    assert(handoff.content.includes("raw_payload"), "handoff missing raw marker warning");
-    assert(!handoff.content.includes("RAW_PAYLOAD_MARKER"), "handoff leaked raw marker content");
+  const handoff = parseJson(mdkg(binPath, ["handoff", "create", goal.id, "--depth", "2", "--json"], root).stdout);
+  assert(handoff.ok === true, "handoff creation failed");
+  assert(handoff.included_qids.includes(`root:${task.id}`), "handoff missing executable task");
+  assert(handoff.included_qids.includes(`root:${checkpointIds[checkpointIds.length - 1]}`), "handoff missing latest checkpoint");
+  assert(handoff.content.includes("integration UX executable task"), "handoff missing task summary");
+  assert(handoff.content.includes("proof://integration-ux/task-proof"), "handoff missing evidence ref");
+  assert(handoff.content.includes("raw_payload"), "handoff missing raw marker warning");
+  assert(!handoff.content.includes("RAW_PAYLOAD_MARKER"), "handoff leaked raw marker content");
 
-    const outPath = ".mdkg/handoffs/integration-ux.md";
-    mdkg(binPath, ["handoff", "create", goal.id, "--out", outPath, "--json"], root);
-    const writtenHandoff = fs.readFileSync(path.join(root, outPath), "utf8");
-    assert(writtenHandoff.includes("mdkg Agent Handoff"), "written handoff missing title");
-    assert(!writtenHandoff.includes("RAW_PAYLOAD_MARKER"), "written handoff leaked raw marker content");
+  const outPath = ".mdkg/handoffs/integration-ux.md";
+  mdkg(binPath, ["handoff", "create", goal.id, "--out", outPath, "--json"], root);
+  const writtenHandoff = fs.readFileSync(path.join(root, outPath), "utf8");
+  assert(writtenHandoff.includes("mdkg Agent Handoff"), "written handoff missing title");
+  assert(!writtenHandoff.includes("RAW_PAYLOAD_MARKER"), "written handoff leaked raw marker content");
 
-    fs.writeFileSync(
-      taskPath,
-      fs.readFileSync(taskPath, "utf8").replace("\n# Private Notes\n\nRAW_PAYLOAD_MARKER should warn but never appear in handoff content.\n", "\n"),
-      "utf8"
-    );
+  fs.writeFileSync(
+    taskPath,
+    fs.readFileSync(taskPath, "utf8").replace("\n# Private Notes\n\nRAW_PAYLOAD_MARKER should warn but never appear in handoff content.\n", "\n"),
+    "utf8"
+  );
 
-    const packPath = ".mdkg/pack/integration-ux.json";
-    mdkg(
-      binPath,
-      [
-        "pack",
-        task.id,
-        "--format",
-        "json",
-        "--edges",
-        "context_refs,evidence_refs",
-        "--depth",
-        "2",
-        "--out",
-        packPath,
-      ],
-      root
-    );
-    const packed = JSON.parse(fs.readFileSync(path.join(root, packPath), "utf8"));
-    const packedQids = packed.nodes.map((node) => node.qid);
-    assert(packedQids.includes(`root:${task.id}`), "pack missing task");
-    assert(packedQids.includes(`root:${context.id}`), "pack missing context ref");
-    assert(packedQids.includes(`root:${evidence.id}`), "pack missing evidence ref");
+  const packPath = ".mdkg/pack/integration-ux.json";
+  mdkg(
+    binPath,
+    [
+      "pack",
+      task.id,
+      "--format",
+      "json",
+      "--edges",
+      "context_refs,evidence_refs",
+      "--depth",
+      "2",
+      "--out",
+      packPath,
+    ],
+    root
+  );
+  const packed = JSON.parse(fs.readFileSync(path.join(root, packPath), "utf8"));
+  const packedQids = packed.nodes.map((node) => node.qid);
+  assert(packedQids.includes(`root:${task.id}`), "pack missing task");
+  assert(packedQids.includes(`root:${context.id}`), "pack missing context ref");
+  assert(packedQids.includes(`root:${evidence.id}`), "pack missing evidence ref");
 
-    const search = parseJson(mdkg(binPath, ["search", "integration UX", "--json"], root).stdout);
-    assert(search.count >= 4, "search missed integration UX records");
-    const shownGoal = parseJson(mdkg(binPath, ["show", goal.id, "--json"], root).stdout).item;
-    assert(shownGoal.edges.context_refs.includes(`root:${context.id}`), "show missing goal context ref");
-    assert(shownGoal.edges.evidence_refs.includes("proof://integration-ux/evidence"), "show missing goal evidence URI");
-    const formatDryRun = parseJson(mdkg(binPath, ["format", "--headings", "--dry-run", "--json"], root).stdout);
-    assert(formatDryRun.action === "format.headings" && formatDryRun.dry_run === true, "heading formatter dry-run action mismatch");
-    // Removing the raw-marker source text after the earlier index must make
-    // that derived cache stale. Observational commands do not refresh it.
-    const staleValidation = parseJson(mdkg(binPath, ["validate", "--json"], root).stdout);
-    assert(staleValidation.ok === true, "edited source must remain valid before refresh");
-    assert(staleValidation.warning_diagnostics.some(warning => warning.id === "cache.index"), "authored edit must invalidate the derived cache");
-    mdkg(binPath, ["index"], root);
-    const validate = parseJson(mdkg(binPath, ["validate", "--json"], root).stdout);
-    assert(validate.ok === true, "integration UX repo did not validate");
-    assert(validate.warning_count === 0, `expected zero validation warnings, got ${validate.warning_count}: ${JSON.stringify(validate.warning_diagnostics)}`);
+  const search = parseJson(mdkg(binPath, ["search", "integration UX", "--json"], root).stdout);
+  assert(search.count >= 4, "search missed integration UX records");
+  const shownGoal = parseJson(mdkg(binPath, ["show", goal.id, "--json"], root).stdout).item;
+  assert(shownGoal.edges.context_refs.includes(`root:${context.id}`), "show missing goal context ref");
+  assert(shownGoal.edges.evidence_refs.includes("proof://integration-ux/evidence"), "show missing goal evidence URI");
+  const formatDryRun = parseJson(mdkg(binPath, ["format", "--headings", "--dry-run", "--json"], root).stdout);
+  assert(formatDryRun.action === "format.headings" && formatDryRun.dry_run === true, "heading formatter dry-run action mismatch");
+  // Removing the raw-marker source text after the earlier index must make
+  // that derived cache stale. Observational commands do not refresh it.
+  const staleValidation = parseJson(mdkg(binPath, ["validate", "--json"], root).stdout);
+  assert(staleValidation.ok === true, "edited source must remain valid before refresh");
+  assert(staleValidation.warning_diagnostics.some(warning => warning.id === "cache.index"), "authored edit must invalidate the derived cache");
+  mdkg(binPath, ["index"], root);
+  const validate = parseJson(mdkg(binPath, ["validate", "--json"], root).stdout);
+  assert(validate.ok === true, "integration UX repo did not validate");
+  assert(validate.warning_count === 0, `expected zero validation warnings, got ${validate.warning_count}: ${JSON.stringify(validate.warning_diagnostics)}`);
 
-    console.log(
-      JSON.stringify(
-        {
-          smoke: "integration-ux",
-          ok: true,
-          packageVersion,
-          tempRoot,
-          tarballPath,
-          root,
-        },
-        null,
-        2
-      )
-    );
-  } finally {
-    if (tempRoot && fs.existsSync(tempRoot)) {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
-  }
+  return {
+    smoke: "integration-ux",
+    ok: true,
+    packageVersion,
+    tempRoot,
+    tarballPath,
+    root,
+  };
 }
 
-try {
-  main();
-} catch (err) {
-  const message = err instanceof Error ? err.message : String(err);
-  console.error(message);
-  process.exit(1);
+function main() {
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-integration-ux-smoke-",
+    prepare: (root, ownedCommands) => { commands = ownedCommands; return prepareInstall(root); },
+    exercise: exerciseSmoke,
+  });
+  console.log(JSON.stringify(receipt, null, 2));
+}
+
+if (require.main === module) {
+  try { main(); } catch (error) { console.error(error); process.exitCode = 1; }
 }

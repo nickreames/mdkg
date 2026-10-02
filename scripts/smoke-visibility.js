@@ -1,40 +1,20 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
-
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
+let commands;
 
 function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
+  const result = commands.node(command, args, options.cwd, options);
   if (result.status !== 0) {
     throw new Error(
       [
         `command failed: ${command} ${args.join(" ")}`,
-        `cwd: ${options.cwd || repoRoot}`,
+        `cwd: ${options.cwd}`,
         `exit: ${result.status}`,
         `stdout:\n${result.stdout}`,
         `stderr:\n${result.stderr}`,
@@ -45,12 +25,7 @@ function run(command, args, options = {}) {
 }
 
 function runFailure(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
+  const result = commands.node(command, args, options.cwd, { ...options, allowFailure: true });
   if (result.status === 0) {
     throw new Error(`command unexpectedly succeeded: ${command} ${args.join(" ")}`);
   }
@@ -79,14 +54,15 @@ function mdkgFailure(binPath, args, cwd) {
   return runFailure(binPath, args, { cwd });
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot, ownedCommands) {
+  commands = ownedCommands;
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "npm-prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-    cwd: repoRoot,
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir], {
+    cwd: tempRoot,
   }).stdout;
   const tarballName = packOutput
     .split(/\r?\n/)
@@ -99,15 +75,14 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarballName));
   assertExists(tarballPath);
 
-  const install = run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  assert(install.combined.includes(`mdkg ${packageVersion} installed.`), "postinstall output missing version");
-
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return { binPath, tarballPath };
+  return { tarballPath, install() {
+    const install = commands.npm(["install", "-g", tarballPath, "--prefix", prefix,
+      "--foreground-scripts", "--offline"], { cwd: tempRoot, env: { npm_config_prefix: prefix } });
+    assert(`${install.stdout}${install.stderr}`.includes(`mdkg ${packageVersion} installed.`), "postinstall output missing version");
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, tarballPath };
+  } };
 }
 
 function updateConfig(root, mutate) {
@@ -278,28 +253,27 @@ function exerciseVisibility(binPath, tempRoot) {
 }
 
 function runSmoke() {
-  let tempRoot;
-  try {
-    tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-visibility-"));
-    const { binPath, tarballPath } = packAndInstall(tempRoot);
+  const receipt = runInstalledSmoke({ prefix: "mdkg-visibility-", prepare: prepareInstall,
+    exercise(tempRoot, { binPath, tarballPath }) {
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
     if (version !== packageVersion) {
       throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
     }
     exerciseVisibility(binPath, tempRoot);
-    console.log("visibility smoke passed");
-    console.log(`version=${version}`);
-    console.log(`tarball=${path.basename(tarballPath)}`);
-  } finally {
-    if (tempRoot && process.env.MDKG_KEEP_SMOKE_TMP !== "1") {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
+    return { smoke: "visibility", ok: true, version, tarball: path.basename(tarballPath) };
+  } });
+  console.log("visibility smoke passed");
+  console.log(`version=${receipt.version}`);
+  console.log(`tarball=${receipt.tarball}`);
+  return receipt;
+}
+
+if (require.main === module) {
+  try { console.log(JSON.stringify(runSmoke())); }
+  catch (err) {
+    console.error(err instanceof Error ? err.stack || err.message : String(err));
+    process.exitCode = 1;
   }
 }
 
-try {
-  runSmoke();
-} catch (err) {
-  console.error(err instanceof Error ? err.message : String(err));
-  process.exit(1);
-}
+module.exports = { runSmoke };

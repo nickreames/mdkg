@@ -2,50 +2,14 @@
 
 const crypto = require("node:crypto");
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { createOwnedFixture, finalizeFixture } = require("./qualification-fixture");
+const { createSmokeCommands } = require("./qualification-smoke");
 const { exerciseIdentityCollaboration } = require("./installed-identity-collaboration");
 const { exerciseInstalledGraphRecovery } = require("./installed-graph-recovery");
 
 const repoRoot = path.resolve(__dirname, "..");
-const tempBase = process.env.MDKG_SMOKE_TMPDIR || (fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir());
-const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
-const GIT_CMD = process.env.GIT || (process.platform === "win32" ? "git.exe" : "git");
-
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
-
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0 && !options.allowFailure) {
-    throw new Error(
-      [
-        `command failed: ${command} ${args.join(" ")}`,
-        `cwd: ${options.cwd || repoRoot}`,
-        `exit: ${result.status}`,
-        `stdout:\n${result.stdout}`,
-        `stderr:\n${result.stderr}`,
-      ].join("\n")
-    );
-  }
-  return result;
-}
+let commands;
 
 function assert(condition, message) {
   if (!condition) {
@@ -62,12 +26,12 @@ function assertExists(filePath) {
 }
 
 function mdkg(binPath, args, cwd, options = {}) {
-  const result = run(binPath, args, { cwd, allowFailure: options.allowFailure });
+  const result = commands.node(binPath, args, cwd, { allowFailure: options.allowFailure });
   return options.raw ? result : result.stdout.trim();
 }
 
 function git(args, cwd) {
-  return run(GIT_CMD, ["-c", "user.name=mdkg smoke", "-c", "user.email=mdkg-smoke@example.invalid", ...args], { cwd });
+  return commands.git(args, cwd);
 }
 
 function packAndInstall(tempRoot) {
@@ -76,7 +40,7 @@ function packAndInstall(tempRoot) {
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const pack = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir]);
+  const pack = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir]);
   const tarball = pack.stdout
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -86,7 +50,7 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarball));
   assertExists(tarballPath);
 
-  run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
+  commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
     cwd: tempRoot,
     env: { npm_config_prefix: prefix },
   });
@@ -164,9 +128,7 @@ function assertNoMutation(root, before, label) {
   assert(JSON.stringify(after) === JSON.stringify(before), `${label} mutated files`);
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-branch-conflicts."));
-  const { binPath, tarballPath } = packAndInstall(tempRoot);
+function exerciseBranchConflicts(binPath, tempRoot) {
   const root = path.join(tempRoot, "repo");
   fs.mkdirSync(root, { recursive: true });
   git(["init", "-q"], root);
@@ -216,23 +178,38 @@ function main() {
   assertNoMutation(root, before, "fix plan duplicate-id branch conflict check");
 
   const identity = exerciseIdentityCollaboration(binPath, tempRoot);
-  const recovery = exerciseInstalledGraphRecovery(binPath, tempRoot, commandEnv());
+  const recovery = exerciseInstalledGraphRecovery(binPath, tempRoot, commands.environment);
 
-  console.log(
-    JSON.stringify(
-      {
-        action: "smoke-branch-conflicts",
-        ok: true,
-        temp_root: tempRoot,
-        tarball: tarballPath,
-        plan_hash: first.plan_hash,
-        identity,
-        recovery,
-      },
-      null,
-      2
-    )
-  );
+  return {
+    action: "smoke-branch-conflicts",
+    ok: true,
+    temp_root: tempRoot,
+    plan_hash: first.plan_hash,
+    identity,
+    recovery,
+  };
 }
 
-main();
+function createBranchFixture(env = process.env) {
+  return createOwnedFixture({ base: env.MDKG_SMOKE_TMPDIR || undefined, prefix: "mdkg-branch-conflicts-" });
+}
+
+function main() {
+  const fixture = createBranchFixture();
+  let primaryFailure, receipt;
+  try {
+    commands = createSmokeCommands(fixture);
+    const { binPath, tarballPath } = packAndInstall(fixture.root);
+    const before = crypto.createHash("sha256").update(fs.readFileSync(tarballPath)).digest("hex");
+    receipt = exerciseBranchConflicts(binPath, fixture.root);
+    assert(crypto.createHash("sha256").update(fs.readFileSync(tarballPath)).digest("hex") === before, "smoke tarball changed during qualification");
+    receipt.tarball_sha256 = before;
+  } catch (error) { primaryFailure = error; }
+  const cleanup = finalizeFixture(fixture, { error: primaryFailure });
+  console.log(JSON.stringify({ ...receipt, cleanup }, null, 2));
+}
+
+if (require.main === module) {
+  try { main(); } catch (error) { console.error(error); process.exitCode = 1; }
+}
+module.exports = { createBranchFixture };

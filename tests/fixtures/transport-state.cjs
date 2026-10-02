@@ -7,9 +7,8 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
-const { spawnSync } = require("node:child_process");
 
-function runTransportStateFixtures({ packageRoot, root, env = process.env, executable = process.execPath }) {
+function runTransportStateFixtures({ packageRoot, root, commands }) {
   assert(!fs.existsSync(root), "transport fixture root must be new and exclusively owned");
   fs.mkdirSync(root, { recursive: true });
   const cli = path.join(packageRoot, "dist/cli.js");
@@ -20,7 +19,7 @@ function runTransportStateFixtures({ packageRoot, root, env = process.env, execu
     const target = path.join(base, file); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, bytes); return target;
   };
   const invoke = (cwd, args, expected = 0) => {
-    const r = spawnSync(executable, [cli, ...args], { cwd, env, encoding: "utf8", timeout: 30000, maxBuffer: 8 * 1024 * 1024 });
+    const r = commands.node(cli, args, cwd, { allowFailure: expected !== 0, timeout: 30000 });
     assert.equal(r.error, undefined); assert.equal(r.signal, null);
     if (expected === 0) assert.equal(r.status, 0, `${args.join(" ")}\n${r.stdout}\n${r.stderr}`);
     else assert.notEqual(r.status, 0, `${args.join(" ")} unexpectedly succeeded`);
@@ -203,7 +202,7 @@ function runTransportStateFixtures({ packageRoot, root, env = process.env, execu
     assert(!accepted.entries.has(live)); assert.equal(accepted.entries.has(checkpoint), profile === "private");
     cases.push(`${profile}: explicitly registered nested ownership preserves portable checkpoint policy`);
   }
-  return { node: invoke(consumer.base, ["--version"]).stdout.trim(), runtime: spawnSync(executable, ["--version"], { encoding: "utf8" }).stdout.trim(),
+  return { node: invoke(consumer.base, ["--version"]).stdout.trim(), runtime: process.version,
     platform: `${process.platform}-${process.arch}`, cases: cases.length, case_names: cases,
     cli_sha256: hash(fs.readFileSync(cli)), final_qualification: false };
 }

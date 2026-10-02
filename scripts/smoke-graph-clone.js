@@ -1,38 +1,14 @@
 #!/usr/bin/env node
 "use strict";
 
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
 
 const packageRoot = path.resolve(__dirname, "..");
-const NPM_CMD = process.env.NPM_CMD || "npm";
-const GIT_CMD = process.env.GIT_CMD || "git";
-const TEMP_BASE = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
 
-function npmEnv(npmCache) {
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-  };
-}
-
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || packageRoot,
-    encoding: "utf8",
-    env: { ...process.env, ...(options.env || {}) },
-  });
-  if (!options.allowFailure && result.status !== 0) {
-    throw new Error(`${command} ${args.join(" ")} failed\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
-  }
-  return result;
-}
+let commands;
 
 function parseJson(output, label) {
   try {
@@ -49,31 +25,35 @@ function assert(condition, message) {
 }
 
 function mdkg(binPath, args, cwd, options = {}) {
-  return run(binPath, args, { cwd, allowFailure: options.allowFailure });
+  return commands.node(binPath, args, cwd, { allowFailure: options.allowFailure });
 }
 
-function installPackedCli(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "prefix");
-  const npmCache = path.join(tempRoot, "npm-cache");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
   fs.mkdirSync(path.join(prefix, "bin"), { recursive: true });
   fs.mkdirSync(path.join(prefix, "lib", "node_modules"), { recursive: true });
-  const pack = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-    env: npmEnv(npmCache),
+  const pack = commands.npm(["pack", packageRoot, "--silent", "--dry-run=false", "--pack-destination", packDir], {
+    cwd: tempRoot,
   });
   const tarball = pack.stdout.trim().split(/\r?\n/).filter(Boolean).pop();
   assert(tarball, "npm pack did not return a tarball name");
-  const tarballPath = path.join(packDir, tarball);
-  run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    env: npmEnv(npmCache),
-  });
-  return path.join(prefix, "bin", "mdkg");
+  const tarballPath = path.join(packDir, path.basename(tarball));
+  return { tarballPath, install() {
+    commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
+    const binPath = path.join(prefix, "bin", "mdkg");
+    assert(fs.existsSync(binPath), "expected installed mdkg bin");
+    return { binPath, tarballPath };
+  } };
 }
 
 function initGit(root) {
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 }
 
 function listFiles(dir) {
@@ -138,9 +118,8 @@ function createTemplateGraph(binPath, root) {
   };
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(TEMP_BASE, "mdkg-graph-clone-smoke-"));
-  const binPath = installPackedCli(tempRoot);
+function exerciseSmoke(tempRoot, installed) {
+  const { binPath, tarballPath } = installed;
   const root = path.join(tempRoot, "repo");
   const template = path.join(root, "templates", "website-template-mdkg");
   fs.mkdirSync(root, { recursive: true });
@@ -253,7 +232,18 @@ function main() {
   mdkg(binPath, ["validate", "--json"], root);
   mdkg(binPath, ["search", "template", "--json"], root);
   mdkg(binPath, ["pack", "goal-2", "--dry-run", "--stats"], root);
-  console.log("graph clone smoke passed");
+  return { smoke: "graph-clone", ok: true, temp_root: tempRoot, tarball: tarballPath };
 }
 
-main();
+function main() {
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-graph-clone-smoke-",
+    prepare: (root, ownedCommands) => { commands = ownedCommands; return prepareInstall(root); },
+    exercise: exerciseSmoke,
+  });
+  console.log(JSON.stringify(receipt, null, 2));
+}
+
+if (require.main === module) {
+  try { main(); } catch (error) { console.error(error); process.exitCode = 1; }
+}
