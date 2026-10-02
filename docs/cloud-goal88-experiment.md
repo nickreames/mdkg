@@ -104,3 +104,39 @@ reports missing native defaults for explicit config review.
 Candidate source/asset/docs and version changes will be frozen before broad
 checks. Full coverage floors, timeouts and required platform gates are retained.
 No task/goal is marked done from focused passes.
+
+## Requested safe stopping boundary
+
+The parent requested a return after about an hour, even if Goal88 is unfinished.
+This partial implementation checkpoint is NOT_READY. No tests remain active.
+Source implementation commit006f487 is retained; later contract and fresh-init
+harness corrections are saved normally, without history rewriting.
+
+The first full package ladder was frozen on006f487 and guarded by an external
+20-minute resource budget. It was explicitly cancelled before completion after
+remaining fresh-CLAUDE assertions were found in compact-bootstrap/harness tests
+and consumer/matrix smokes. Owned timeout process group24275 was checked before
+TERM; real runner exit143 is retained. No coverage/test counts are invented.
+The corrected compact-bootstrap/harness tests subsequently passed9/9. Build,
+CLI contract/matrix, docs499/0, workflow and static readiness pass on the corrected
+inputs. The contract no longer lists CLAUDE as a generated write destination.
+
+The old548028-byte candidate is retained outside the checkout and explicitly
+superseded; its input manifest and digest are saved. Replacement qualification
+is required. The installed Goal88 CLI harness is written and syntax-checked but
+NOT_RUN. npm view retrieved public0.6.0 metadata; a bounded direct download failed
+with getaddrinfo EAI_AGAIN for registry.npmjs.org. No package bytes/integrity pass
+is claimed. An initial npm config attempt incorrectly used /dev/null twice and
+was refused; separate private config files succeeded.
+
+One read of the running sandbox's /proc/.../root/dev/shm receipt location was
+denied; no namespace access or denial bypass was attempted. The original run
+had process-local temporary receipts which were not copied before cancellation.
+Future runners must copy receipts to the owned workspace cache from inside the
+same command before it exits. This limitation does not change source behavior
+or imply that unclassified baseline failures are environmental.
+
+Continue from [.mdkg/artifacts/goal-88/CONTINUATION.md](../.mdkg/artifacts/goal-88/CONTINUATION.md)
+and [candidate-checks.json](../.mdkg/artifacts/goal-88/candidate-checks.json).
+No full pre-merge/prepublication, local adoption, goal completion or migration
+retirement approval is claimed. Goal89/90 remain untouched.

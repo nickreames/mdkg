@@ -34,9 +34,9 @@ test("mode conflicts and malformed wrapper markers fail before writes", () => {
   const root = makeTempDir("mdkg-compact-invalid-");
   assert.throws(() => runInitCommand({ root, agent: true, graphOnly: true }), /cannot be combined/);
   assert.deepEqual(fs.readdirSync(root), []);
-  writeFile(path.join(root, "CLAUDE.md"), "<!-- mdkg:instructions:start -->");
+  writeFile(path.join(root, "AGENTS.md"), "<!-- mdkg:instructions:start -->");
   assert.throws(() => runInitCommand({ root }), /malformed/);
-  assert.deepEqual(fs.readdirSync(root), ["CLAUDE.md"]);
+  assert.deepEqual(fs.readdirSync(root), ["AGENTS.md"]);
 });
 
 test("managed sections preserve surrounding bytes and newline style", () => {
@@ -53,7 +53,8 @@ test("managed sections preserve surrounding bytes and newline style", () => {
 test("compact generated discovery links and canonical/native skills resolve without project docs", () => {
   const root = makeTempDir("mdkg-bootstrap-links-");
   runInitCommand({ root });
-  const files = ["AGENTS.md", "CLAUDE.md", ".mdkg/AGENT_START.md", ".mdkg/llms.txt", ".mdkg/README.md"];
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
+  const files = ["AGENTS.md", ".mdkg/AGENT_START.md", ".mdkg/llms.txt", ".mdkg/README.md"];
   for (const slug of fs.readdirSync(path.join(root, ".mdkg/skills"))) {
     const canonical = path.join(root, ".mdkg/skills", slug, "SKILL.md");
     if (!fs.existsSync(canonical)) continue;

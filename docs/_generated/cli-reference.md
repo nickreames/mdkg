@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 6266e7917a01dcb6bd187285401e85034c82b179292f3ff4b283c64eb46a2b0f -->
+<!-- contract-hash: c99d532a800fc3d409c8678e2a2d5671928a2246f90c32f9c4981032a2e54519 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -3298,7 +3298,7 @@ mdkg init [options]
 - Dry run: {"supported":false}
 - Side effects: initialize-mdkg-scaffold
 - Read paths: .mdkg/**
-- Write paths: .agents/skills/**, .claude/skills/**, .dockerignore, .gitignore, .mdkg/**, .npmignore, AGENTS.md, AGENT_START.md, CLAUDE.md, CLI_COMMAND_MATRIX.md, llms.txt
+- Write paths: .agents/skills/**, .claude/skills/**, .dockerignore, .gitignore, .mdkg/**, .npmignore, AGENTS.md, AGENT_START.md, CLI_COMMAND_MATRIX.md, llms.txt
 - Lock policy: not-required-before-mdkg-config-exists
 - Atomic write policy: exclusive-create-and-atomic-file-writes
 - Receipts: init-summary
@@ -5832,7 +5832,7 @@ mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>]
 - Dry run: {"supported":true,"default":true,"flag":"--apply"}
 - Side effects: preview-or-apply-managed-scaffold-upgrade
 - Read paths: .mdkg/**
-- Write paths: .agents/skills/**, .claude/skills/**, .dockerignore, .gitignore, .mdkg/**, .mdkg/index/write.lock/**, .npmignore, AGENTS.md, AGENT_START.md, CLAUDE.md, CLI_COMMAND_MATRIX.md, llms.txt
+- Write paths: .agents/skills/**, .claude/skills/**, .dockerignore, .gitignore, .mdkg/**, .mdkg/index/write.lock/**, .npmignore, AGENTS.md, AGENT_START.md, CLI_COMMAND_MATRIX.md, llms.txt
 - Lock policy: mutation-lock-required-for-apply
 - Atomic write policy: atomic-file-writes
 - Receipts: upgrade-apply-receipt, upgrade-plan

@@ -55,3 +55,11 @@ NOT_RUN; attach actual milestone commands, input identities, results and retaine
 # Links / Artifacts
 
 edd-83; docs/cloud-planning-experiment.md. Future artifact references must be added after they exist.
+
+# Partial Cloud Attempt — NOT_READY
+
+A preservation-first0.6.1 implementation and bounded checks now exist. This
+checkpoint stays backlog: its complete installed/platform/readiness milestone
+is not satisfied. See .mdkg/artifacts/goal-88/candidate-checks.json and
+CONTINUATION.md for real passed/failed/rechecked/cancelled/not-run evidence.
+The first retained tarball is superseded and unqualified; no approval inferred.

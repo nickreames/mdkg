@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "status": "NOT_READY",
+  "checkpoint": "partial implementation / saved continuation",
+  "environment": {
+    "cwd": "/workspace/mdkg-cloud-goal88",
+    "os": "Linux",
+    "arch": "x86_64",
+    "node": "24.19.0",
+    "npm": "11.9.0",
+    "engine": ">=24.18.0 <25"
+  },
+  "base": "ddafe0836fdc790cd36ba203afbcfc1878bbddd8",
+  "branch": "cloud/goal88-minimal-init",
+  "runtime_source_commit": "006f48790a174d4d3c2a10e84f9857af3173ec0e",
+  "candidate_attempt_1": {
+    "artifact": "/workspace/mdkg-cloud-goal88-cache/candidate/mdkg-0.6.1.tgz",
+    "sha256": "2a871bfacd57dba3128a4025722736daff563144c4cd80f266ed76176387228c",
+    "bytes": 548028,
+    "package_inputs_sha256": "4c925d7a2b4f48a22c5a6cac69f24233924ead6fc1ee1f275c21665931e36644",
+    "qualification_inputs_sha256": "75fbb0c39fee5bcbaa246b3e24dcf75d0b5c3932d689022159686f714508d1db",
+    "status": "SUPERSEDED_UNQUALIFIED",
+    "reason": "Broad check cancelled after discovering further fresh-CLAUDE expectations; later contract/harness changes require new candidate identity."
+  },
+  "checks": [
+    {
+      "name": "baseline focused",
+      "status": "passed",
+      "cases": 219,
+      "failed": 0,
+      "skipped": 0,
+      "receipt": "checks.json"
+    },
+    {
+      "name": "first candidate focused",
+      "status": "failed_then_affected_recheck_passed",
+      "cases": 234,
+      "passed": 232,
+      "failed": 2,
+      "skipped": 0,
+      "reason": "old diagnostic expectations; all15 new Goal88 cases passed",
+      "log": "candidate-focused.tap.gz"
+    },
+    {
+      "name": "shared callers",
+      "status": "failed_then_guidance_recheck_passed",
+      "cases": 172,
+      "passed": 170,
+      "failed": 2,
+      "skipped": 0,
+      "reason": "old static version markers and unpublished version expectation",
+      "log": "candidate-shared.tap.gz"
+    },
+    {
+      "name": "guidance recheck",
+      "status": "passed",
+      "cases": 20,
+      "failed": 0,
+      "skipped": 0,
+      "log": "candidate-guidance-recheck.tap.gz"
+    },
+    {
+      "name": "additional discovery recheck",
+      "status": "passed",
+      "cases": 9,
+      "failed": 0,
+      "skipped": 0,
+      "log": "candidate-discovery-recheck.tap.gz"
+    },
+    {
+      "name": "build and build:test",
+      "status": "passed"
+    },
+    {
+      "name": "cli:check:built / cli:contract:built / docs:check:built / ci:workflow:check / static assert-publish-ready / diff check",
+      "status": "passed",
+      "docs_examples": 499,
+      "docs_failures": 0
+    },
+    {
+      "name": "existing source security matrix",
+      "status": "passed",
+      "log": "candidate-security.log",
+      "limit": "not independent security acceptance"
+    },
+    {
+      "name": "first full package ladder",
+      "status": "cancelled",
+      "exit": 143,
+      "coverage_result": "UNVERIFIED",
+      "reason": "Stopped owned timeout process group after known missing fresh-init expectations were identified; no whole-suite pass or failure count inferred. Process-local /dev/shm logs were not durably collected before cancellation.",
+      "log": "candidate-attempt-1-cancelled.log"
+    },
+    {
+      "name": "installed0.6.1 Goal88 harness",
+      "status": "NOT_RUN",
+      "reason": "new qualify-installed.cjs is syntax-checked only; public0.6.0 download failed DNS EAI_AGAIN, verified baseline bytes/receipt still needed"
+    },
+    {
+      "name": "all37 package smokes / full coverage / required platform matrix / local owner review",
+      "status": "NOT_RUN_OR_UNVERIFIED"
+    }
+  ],
+  "publication": {
+    "state": "unpublished",
+    "authorized": false
+  },
+  "goal89_started": false,
+  "goal90_started": false,
+  "active_test_processes": false
+}
