@@ -53,12 +53,17 @@ function verifyInstalledMigration({ root, plan, applied, items, eventBefore }) {
 
 // Consumer qualification only: invoke the installed CLI, never graph internals.
 // Fixture generation/edits below represent authored Markdown and local Git input.
-function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, commandTimeoutMs = 180000, onCase = () => {} }) {
+function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, commandTimeoutMs = 180000, scaleBackends = ["json", "sqlite"], onCase = () => {} }) {
   assert.ok(path.isAbsolute(bin) && fs.statSync(bin).isFile(), "installed CLI required");
   assert.ok(Number.isSafeInteger(nodeCount) && nodeCount >= 100 && nodeCount <= 10000);
   // Qualification allowance, not a product timeout, compatibility limit or SLA.
-  assert.ok(Number.isSafeInteger(commandTimeoutMs) && commandTimeoutMs > 0 && commandTimeoutMs <= 600000,
-    "commandTimeoutMs must be an integer from 1 through 600000");
+  // A bounded local emulation allowance may exceed the native fixture budget.
+  // This never changes the installed CLI, graph size or integrity assertions.
+  assert.ok(Number.isSafeInteger(commandTimeoutMs) && commandTimeoutMs > 0 && commandTimeoutMs <= 900000,
+    "commandTimeoutMs must be an integer from 1 through 900000");
+  assert.ok(Array.isArray(scaleBackends) && scaleBackends.length > 0 && scaleBackends.length <= 2 &&
+    new Set(scaleBackends).size === scaleBackends.length && scaleBackends.every(value => ["json", "sqlite"].includes(value)),
+    "scaleBackends must select json and/or sqlite without duplicates");
   const roots = [], cases = [], commands = [];
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("GIT_")));
   Object.assign(env, { GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: os.devNull, GIT_TERMINAL_PROMPT: "0" });
@@ -125,7 +130,7 @@ function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, 
   }
   try {
     // No new policy or reduced production limits: this uses untouched defaults.
-    for (const backend of ["json", "sqlite"]) {
+    for (const backend of scaleBackends) {
       const root = fixture("scale", backend), work = path.join(root, ".mdkg/work");
       let authoredBytes = 0;
       for (let n = 1; n <= nodeCount; n++) {
@@ -240,7 +245,7 @@ function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, 
         ...(migration ? { migration } : {}) });
     }
     for (const root of roots) fs.rmSync(root,{recursive:true,force:false});
-    return {schema_version:1,runtime:process.version,command_timeout_ms:commandTimeoutMs,installed_cli_sha256:hash(fs.readFileSync(bin)),cases,commands,fixtures_removed:roots.length,
+    return {schema_version:1,runtime:process.version,command_timeout_ms:commandTimeoutMs,scale_backends:[...scaleBackends],installed_cli_sha256:hash(fs.readFileSync(bin)),cases,commands,fixtures_removed:roots.length,
       limitations:[`${nodeCount}-node graph is representative coverage, not a universal performance SLA`, "2049-commit refusal exercises the existing limit; exhaustive 2048-commit acceptance is not claimed", "goal routing stores guidance, not artifact verification or publication enforcement"]};
   } catch (error) { error.fixture_roots=roots; error.completed_cases=cases; error.command_receipts=commands; throw error; }
 }

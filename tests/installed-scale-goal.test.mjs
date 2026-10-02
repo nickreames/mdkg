@@ -14,14 +14,14 @@ test("installed scale harness rejects invalid allowances before creating fixture
   const base = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-scale-invalid-"));
   t.after(() => fs.rmSync(base, { recursive: true, force: false }));
   const { runInstalledScaleGoal } = require(harnessPath);
-  for (const commandTimeoutMs of [0, -1, 1.5, NaN, Infinity, "600000", null, 600001]) {
+  for (const commandTimeoutMs of [0, -1, 1.5, NaN, Infinity, "600000", null, 900001]) {
     assert.throws(() => runInstalledScaleGoal({ bin: process.execPath,
       tempBase: path.join(base, "absent"), commandTimeoutMs }), /commandTimeoutMs/);
     assert.deepEqual(fs.readdirSync(base), []);
   }
 });
 
-for (const allowance of [undefined, 1, 600000]) {
+for (const allowance of [undefined, 1, 600000, 600001, 900000]) {
   test(`installed scale harness forwards and receipts allowance ${allowance ?? "default"}`, t => {
     const base = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-scale-allowance-"));
     t.after(() => fs.rmSync(base, { recursive: true, force: false }));
@@ -47,6 +47,17 @@ for (const allowance of [undefined, 1, 600000]) {
     });
   });
 }
+
+test("installed scale selection rejects invalid or duplicate backends before creating fixtures", t => {
+  const base = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-scale-selection-"));
+  t.after(() => fs.rmSync(base, { recursive: true, force: false }));
+  const { runInstalledScaleGoal } = require(harnessPath);
+  for (const scaleBackends of [[], "sqlite", null, ["json", "json"], ["unknown"], ["json", "sqlite", "json"]]) {
+    assert.throws(() => runInstalledScaleGoal({ bin: process.execPath,
+      tempBase: path.join(base, "absent"), scaleBackends }), /scaleBackends/);
+    assert.deepEqual(fs.readdirSync(base), []);
+  }
+});
 
 function migrationFixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-migration-proof-"));
