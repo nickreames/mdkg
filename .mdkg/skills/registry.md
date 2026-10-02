@@ -5,7 +5,7 @@ This directory stores Agent Skills packages used by mdkg tooling and orchestrato
 Use `mdkg skill new <slug> "<name>" --description "..."` to scaffold a new skill from the built-in Anthropic-aligned template.
 Use `mdkg skill sync` to refresh configured `.mdkg/config.json` skill mirror targets from canonical `.mdkg/skills/`; defaults are `.agents/skills/` and `.claude/skills/`.
 Use `CLI_COMMAND_MATRIX.md` as the canonical command and flag reference when updating skill procedures.
-Use `AGENT_START.md` as the canonical first-read startup doc for agents.
+Read `.mdkg/AGENT_START.md` first for focused discovery; retained root `AGENT_START.md` supplies repository-specific detail only when needed.
 Use `mdkg task ...` for structured task-like node fields and `mdkg event ...` when a workflow needs explicit or restored JSONL provenance.
 Keep narrative body edits, nuanced summaries, and manual parent closeout updates in markdown.
 

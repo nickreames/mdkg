@@ -1,6 +1,7 @@
 # AGENTS
 
-Read `AGENT_START.md` first.
+Read `.mdkg/AGENT_START.md` first for focused discovery. The retained root
+`AGENT_START.md` is repository-specific legacy detail, not a mandatory handbook.
 
 ## Goal execution authority
 
@@ -42,3 +43,9 @@ Normal mdkg loop:
 3. mutate structured work state with `mdkg task ...`
 4. use `mdkg event enable` only if the JSONL file was deleted or is missing
 5. validate before closing work
+
+<!-- mdkg:instructions:start -->
+Read [.mdkg/AGENT_START.md](.mdkg/AGENT_START.md) for focused mdkg discovery.
+Use `.agents/skills/` when native skill mirrors are present; `.mdkg/skills/`
+is canonical. Preserve this file's user-authored instructions outside this block.
+<!-- mdkg:instructions:end -->

@@ -4,12 +4,13 @@ This repository uses mdkg as durable project memory for humans and AI agents.
 
 ## Read order
 
-Start here, then read in this order:
-1. `.mdkg/core/SOUL.md`
-2. `.mdkg/core/COLLABORATION.md`
-3. `.mdkg/core/HUMAN.md` if it exists as a legacy alias
-4. `.mdkg/README.md`
-5. `CLI_COMMAND_MATRIX.md`
+Start with `.mdkg/AGENT_START.md` for focused discovery. This retained root
+document supplies repository-specific detail; it is not a mandatory handbook.
+Read `.mdkg/core/SOUL.md`, `.mdkg/core/COLLABORATION.md`, `.mdkg/README.md`,
+and relevant rules only as the assigned work needs them. Read legacy
+`.mdkg/core/HUMAN.md` only for unmigrated compatibility notes. Use
+`mdkg help <command>` or the relevant section of `CLI_COMMAND_MATRIX.md` for
+exact command flags.
 
 If those files disagree, trust the source code and current CLI behavior first, then update the docs.
 
@@ -27,13 +28,13 @@ Use this order of trust:
 You are working in a repository that uses mdkg for deterministic project memory.
 
 Operating rules:
-- Read `AGENT_START.md` first; it points to the pinned core docs, command matrix, and first-step planning skill.
+- Read `.mdkg/AGENT_START.md` first, then load focused repository detail and relevant native skills.
 - Prefer `mdkg pack <id>` over ad-hoc file lists when a work item is known.
 - Treat mdkg rules, EDDs, DECs, PRDs, and work nodes as more authoritative than chat memory.
 - Use `mdkg show <id>` for direct inspection and `mdkg show <id> --meta` for card-only inspection.
 - Use `mdkg search "..."` and `mdkg next` to discover current work.
 - Use `mdkg new goal "..."` for long-running recursive objectives that need an explicit end condition, active node, required skills, required checks, and completion evidence.
-- Use `mdkg goal activate <goal-id>` to make one local root goal active, then `mdkg goal next` to surface one scoped feature, task, bug, test, or spike at a time; normal `mdkg next` remains for non-goal concrete work.
+- Inspect an explicitly supplied goal with `mdkg goal show <goal-id>` and `mdkg goal next <goal-id>` without changing selected-goal state. Use `mdkg goal activate <goal-id>` only when changing local selection is explicitly authorized; normal `mdkg next` remains for non-goal concrete work.
 - Use `mdkg goal claim [goal-id] <work-id>` only after accepting the surfaced work item; `mdkg goal next` is read-only.
 - Treat goal `required_checks` as report-only guidance from mdkg. Run commands yourself, then record evidence in the goal or active work item.
 - Use `mdkg loop show <loop>`, `mdkg loop plan <loop>`, and
@@ -41,7 +42,7 @@ Operating rules:
   `mdkg skill show pursue-mdkg-loop` before executing a loop so the agent works
   every authorized linked lane, records blocker recovery, and closes only when
   the loop definition of done is satisfied or explicitly waived.
-- Record skill improvement candidates during normal goal execution; edit `SKILL.md` only when the active node is explicit skill-maintenance work.
+- Record skill improvement candidates during normal goal execution; edit `SKILL.md` only under explicit skill-maintenance authority from the current user instruction or accepted work contract.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
 - Use `mdkg capability list/search/show` for deterministic skills, `MANIFEST.md` / legacy `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
 - Use `mdkg manifest list/show/validate` for focused optional `MANIFEST.md` capability records; `mdkg spec ...` remains a legacy alias for one compatibility release.
@@ -57,7 +58,7 @@ Operating rules:
 - Use `mdkg pack <id> --visibility public|internal` only when you need a public-safe or internal-safe pack; no flag remains private-capable local behavior.
 - Mark archive sidecars public only with explicit `mdkg archive add --visibility public` intent.
 - Treat sidecar `.md` plus deterministic `.zip` caches as the commit-eligible archive record; validation and `mdkg archive verify` both check ZIP payload integrity.
-- Before committing repos that track archive caches or `.mdkg/bundles/`, run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip`.
+- For an explicitly authorized archive or bundle maintenance unit, use `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip` as required by its contract. A proposed commit does not authorize cache or bundle refresh. If a required gate needs an excluded mutation, report that blocker instead of running it or waiving it.
 - Use `mdkg task start/update/done` for structured feature, task, bug, and test lifecycle fields.
 - Use `mdkg upgrade` to preview scaffold updates; only run `mdkg upgrade --apply` after reviewing the receipt.
 - Keep nuanced summaries, body text, and manual parent closeout edits in markdown.
@@ -74,10 +75,9 @@ If the active task is known:
 - `mdkg validate` before closeout
 
 If an active goal is known:
-- `mdkg goal activate <goal-id>`
-- `mdkg goal current`
-- `mdkg goal next`
-- `mdkg goal claim <work-id>`
+- `mdkg goal show <goal-id>`
+- `mdkg goal next <goal-id>`
+- `mdkg goal claim <goal-id> <work-id>` only under the accepted run scope and single-writer custody
 - work the selected concrete node to completion
 - run required checks and record evidence
 - `mdkg goal evaluate <goal-id>`
@@ -147,6 +147,32 @@ Capability discovery:
   sealed artifact policy explicitly says otherwise.
 
 ## Product-specific conventions
+
+Repository checkout and publication policy:
+- Preserve the one-time reviewed existing-branch bootstrap/cleanup exception on
+  `main`. This exception does not authorize new feature branches, PRs, or Git
+  publication.
+- New feature branches and PRs wait for the portfolio root's accepted Task549
+  full-history git-gud completion. After that gate and under a scoped work
+  contract, use one isolated native Git worktree and feature branch per owner
+  and useful outcome from the accepted integration tip. mdkg library/docs PRs
+  target `main`; stacks require actual dependencies. Nick manually reviews and
+  merges.
+- Deployed-app consumers intend canonical `staging` integration, while Web's
+  reviewed `stage` source and `staging` deployment mirror remain until a
+  separately verified and approved migration. No branch rename or provider
+  routing change follows from this mdkg guidance.
+- Review CI/hosting triggers for normal, backup, and rewritten refs before any
+  proposed push. PR checks receive no production secrets. Dev/staging/prod
+  require separate data, credential refs, configuration, runtime resources,
+  and synthetic fixtures, enforced by technical controls.
+- A production-triggering push needs explicit Nick authorization for that
+  consequence or an approved isolated route. Production actions require
+  approval naming the environment, exact candidate, action, and rollback.
+- Keep Goal85/Task832 published 0.6.0 evidence and achieved Goals78/82 intact.
+  Paused Goal87 owns its separate deferred filesystem work. Cleanup does not
+  authorize source implementation, repeat publication, tag changes, runtime
+  operational repair, root updates, or a tracked-cache refresh.
 
 Codex / OpenAI:
 - `AGENTS.md` is the product-facing wrapper doc

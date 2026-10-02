@@ -2,6 +2,41 @@
 
 This repository is initialized for mdkg.
 
+## 0.6.0 compatibility and discovery
+
+The CLI requires Node `>=24.18.0 <25`. Compact initialization is now the default;
+`--agent` is a compatibility alias and `--graph-only` omits agent setup. Root
+`AGENTS.md` and `CLAUDE.md` route to [AGENT_START.md](AGENT_START.md). Load focused
+skills and command help when relevant, not every core document at startup.
+Repository-specific root startup/reference files and protected local core
+preferences remain preserved; they are not replaced by the public seed.
+
+Use native Git for clone/fetch/push/branches/worktrees/commits/integration.
+The former `mdkg git clone`, `fetch`, `push`, `materialize`, `closeout` and
+`push-ready` conveniences are removed without fallback aliases; read-only
+`mdkg git inspect` remains. Graph clone/fork are separate authored-graph
+operations, not replacements for Git workflow commands.
+
+Consumer-specific profile interpretation, `ochatr_` behavior and pricing-model
+flags are removed. Generic manifests, work mirrors and opaque policy references
+remain. `runtime_mode` uses `orchestrated`, not the old product-oriented token.
+Receipt verification establishes structural/local-evidence consistency, not
+external execution, payment or attestation authenticity. Historical nodes and
+receipts are evidence, not an automatic conversion target.
+
+Format-v2 identity adoption and project runtime DB migration are separate,
+explicitly reviewed gates. Scaffold upgrade does not adopt v2 or migrate the
+live DB. This repository keeps its inherited SQLite index cache bytes during
+bootstrap review; regeneration and staging are separate actions. Runtime DB,
+selection and events must not be silently changed by scaffold alignment.
+
+Preview `mdkg upgrade --json`; review exact units, `safe_to_apply`, operation
+hashes and derived paths before applying the same `--only` selection and
+`--plan-hash`. Customized files require a narrow owner-reviewed merge, not
+forced replacement. Preserve private original bytes before migration. The
+ignored upgrade journal records managed apply only; later owner edits can block
+automatic recovery, so keep the independent private backup too.
+
 ## Layout
 
 - `core/`: rules, operating guide, and pinned docs
@@ -30,7 +65,8 @@ mdkg validate
 
 This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/manifest/spec/work/core/design capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register and refresh read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
 
-Read `../AGENT_START.md` first when the repo includes it. Treat it as the instant-start guide before scanning the wider graph.
+Read `AGENT_START.md` in this directory first for focused discovery. The retained
+`../AGENT_START.md` is optional repository-specific legacy detail.
 
 Use `mdkg task ...` for structured state changes and evidence updates. Keep narrative node bodies, detailed summaries, and manual parent closeout edits in markdown.
 

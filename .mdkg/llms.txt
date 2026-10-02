@@ -1,0 +1,5 @@
+# mdkg repository discovery
+
+Start with [focused mdkg guidance](AGENT_START.md).
+Use [workspace layout](README.md) and [command reference](CLI_COMMAND_MATRIX.md)
+only when relevant. This internal file is not a public website discovery asset.
