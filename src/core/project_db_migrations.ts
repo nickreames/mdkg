@@ -14,6 +14,7 @@ import {
 } from "./project_db";
 import { readPackageVersion } from "./version";
 import { ValidationError } from "../util/errors";
+import { admitSqliteDatabase, withObservedSqlitePath } from "./sqlite_observation";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -763,7 +764,16 @@ export function runProjectDbMigrations(root: string, config: Config): ProjectDbM
   };
 }
 
-export function verifyProjectDb(root: string, config: Config, options?: { readOnly?: boolean }): ProjectDbVerifyReceipt {
+export function verifyProjectDb(root: string, config: Config, _options?: { readOnly?: boolean }): ProjectDbVerifyReceipt {
+  return inspectProjectDb(root, config, true);
+}
+
+// Only supported mutation entrypoints may permit SQLite recovery/sidecar writes.
+export function verifyProjectDbForMutation(root: string, config: Config): ProjectDbVerifyReceipt {
+  return inspectProjectDb(root, config, false);
+}
+
+function inspectProjectDb(root: string, config: Config, observation: boolean): ProjectDbVerifyReceipt {
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
   const checks: ProjectDbCheck[] = [];
   checks.push({
@@ -804,7 +814,7 @@ export function verifyProjectDb(root: string, config: Config, options?: { readOn
           errors: [`${databasePath} missing; run mdkg db migrate`],
           warnings: [],
         });
-      } else if (fs.lstatSync(absolutePath).isDirectory()) {
+      } else if (!fs.lstatSync(absolutePath).isFile()) {
         checks.push({
           name: "runtime-database",
           ok: false,
@@ -844,17 +854,19 @@ export function verifyProjectDb(root: string, config: Config, options?: { readOn
     checks.push(checkMigrationFiles(root, config));
     const DatabaseSync = loadDatabaseCtor();
     try {
-      withContainedPathSink(
-        { root, relativePath: config.db.runtime_path, operation: "read" },
-        ({ absolutePath }) => {
-          const db = new DatabaseSync(absolutePath, options ?? {});
+      const inspect = (selectedPath: string): void => {
+          const db = new DatabaseSync(selectedPath, { readOnly: observation });
           try {
             checks.push(integrityCheck(db));
             checks.push(migrationTableCheck(db, config));
           } finally {
             db.close();
           }
-        }
+        };
+      if (observation) withObservedSqlitePath(root, config.db.runtime_path, inspect);
+      else withContainedPathSink(
+        { root, relativePath: config.db.runtime_path, operation: "read" },
+        ({ absolutePath }) => { admitSqliteDatabase(root, config.db.runtime_path, false); inspect(absolutePath); }
       );
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -890,14 +902,13 @@ export function verifyProjectDb(root: string, config: Config, options?: { readOn
 export function projectDbStats(root: string, config: Config): ProjectDbStatsReceipt {
   const verification = verifyProjectDb(root, config);
   if (!verification.ok) {
-    throw new ValidationError(`db stats requires a valid project DB; run mdkg db verify`);
+    throw new ValidationError(`db stats requires a valid project DB; run mdkg db verify: ${verification.errors.join("; ")}`);
   }
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
   const DatabaseSync = loadDatabaseCtor();
-  return withContainedPathSink(
-    { root, relativePath: config.db.runtime_path, operation: "read" },
-    ({ absolutePath }) => {
-      const db = new DatabaseSync(absolutePath);
+  return withObservedSqlitePath(root, config.db.runtime_path, (descriptorPath) => {
+      const absolutePath = layout.runtimeFile;
+      const db = new DatabaseSync(descriptorPath, { readOnly: true });
       try {
         const applied = readAppliedMigrations(db, config.db.migration_table);
         const migrationStatuses: ProjectDbMigrationStatus[] = BUILTIN_MIGRATIONS
@@ -941,6 +952,5 @@ export function projectDbStats(root: string, config: Config): ProjectDbStatsRece
       } finally {
         db.close();
       }
-    }
-  );
+    });
 }

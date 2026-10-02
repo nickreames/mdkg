@@ -1276,7 +1276,7 @@ test("db migrate fails on disabled config missing dirs corrupt db and checksum d
   assert.match(dbDrift.stderr, /migration checksum drift/);
 });
 
-test("db verify and stats report valid project db state and transient warnings", () => {
+test("db verify and stats accept closed state but refuse transient WAL without writes", () => {
   const root = makeRoot("mdkg-db-verify-stats-");
   assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
   assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
@@ -1305,15 +1305,23 @@ test("db verify and stats report valid project db state and transient warnings",
   assert.equal(statsPayload.tables.some((table: any) => table.name === "project_writer_lease"), true);
   assert.equal(statsPayload.receipt_files.count, 0);
 
-  fs.writeFileSync(path.join(root, ".mdkg", "db", "runtime", "project.sqlite-wal"), "", "utf8");
+  const runtimeDir = path.join(root, ".mdkg", "db", "runtime");
+  fs.writeFileSync(path.join(runtimeDir, "project.sqlite-wal"), "", "utf8");
+  const runtimeInventory = () => Object.fromEntries(fs.readdirSync(runtimeDir).sort().map(name =>
+    [name, sha256File(path.join(runtimeDir, name))]));
+  const before = runtimeInventory();
   const walVerify = runCli(root, ["db", "verify", "--json"]);
-  assert.equal(walVerify.status, 0, walVerify.stderr);
+  assert.notEqual(walVerify.status, 0);
   const walPayload = parseJson(walVerify.stdout);
-  assert.equal(walPayload.ok, true);
+  assert.equal(walPayload.ok, false);
   assert.match(walPayload.warnings.join("\n"), /project\.sqlite-wal/);
+  assert.match(walPayload.errors.join("\n"), /SQLite observation refuses WAL or transient\/recovery state/);
+  assert.deepEqual(runtimeInventory(), before, "db verify must not alter the transient WAL or create sidecars");
 
-  const walStats = parseJson(runCli(root, ["db", "stats", "--json"]).stdout);
-  assert.equal(walStats.transient_files.some((item: any) => item.path.endsWith("project.sqlite-wal")), true);
+  const walStats = runCli(root, ["db", "stats", "--json"]);
+  assert.notEqual(walStats.status, 0);
+  assert.match(walStats.stderr, /db stats requires a valid project DB/);
+  assert.deepEqual(runtimeInventory(), before, "db stats must not alter the transient WAL or create sidecars");
 });
 
 test("db verify and stats fail for disabled missing corrupt and migration drift states", () => {

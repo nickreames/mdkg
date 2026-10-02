@@ -17,6 +17,7 @@ import { readSubgraphBundleBytes } from "./subgraph_bundle";
 import { assertCompatibleWriter } from "../util/writer_admission";
 import { numericAlias, numericSuccessor } from "../util/id";
 import { UsageError } from "../util/errors";
+import { withObservedSqlitePath } from "../core/sqlite_observation";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -218,10 +219,8 @@ export function sqliteSourceFingerprint(options: {
 
 export function readSqliteIndexMeta(root: string, config: Config): Record<string, string> {
   const DatabaseSync = loadDatabaseCtor();
-  return withContainedPathSink(
-    { root, relativePath: config.index.sqlite_path, operation: "read" },
-    ({ absolutePath }) => {
-      const db = new DatabaseSync(absolutePath);
+  return withObservedSqlitePath(root, config.index.sqlite_path, (descriptorPath) => {
+      const db = new DatabaseSync(descriptorPath, { readOnly: true });
       try {
         const rows = db.prepare("SELECT key, value FROM meta").all();
         const meta: Record<string, string> = {};
@@ -232,8 +231,7 @@ export function readSqliteIndexMeta(root: string, config: Config): Record<string
       } finally {
         db.close();
       }
-    }
-  );
+    });
 }
 
 export function writeSqliteIndex(options: {
@@ -412,8 +410,8 @@ export function planNumericId(options: {
   const fallback = allocationCandidate(undefined, options);
   if (!isSqliteBackend(options.config) || !containedPathExists({ root: options.root, relativePath: options.config.index.sqlite_path })) return fallback;
   const DatabaseSync = loadDatabaseCtor();
-  return withContainedPathSink({ root: options.root, relativePath: options.config.index.sqlite_path, operation: "read" }, ({ absolutePath }) => {
-    const db = new DatabaseSync(absolutePath, { readOnly: true });
+  return withObservedSqlitePath(options.root, options.config.index.sqlite_path, (descriptorPath) => {
+    const db = new DatabaseSync(descriptorPath, { readOnly: true });
     try { return allocationCandidate(db, options); } finally { db.close(); }
   });
 }
@@ -494,10 +492,8 @@ export function sqliteHealth(root: string, config: Config): {
   }
   try {
     const DatabaseSync = loadDatabaseCtor();
-    withContainedPathSink(
-      { root, relativePath: config.index.sqlite_path, operation: "read" },
-      ({ absolutePath }) => {
-        const db = new DatabaseSync(absolutePath);
+    withObservedSqlitePath(root, config.index.sqlite_path, (descriptorPath) => {
+        const db = new DatabaseSync(descriptorPath, { readOnly: true });
         try {
           const row = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get();
           if (String(row?.value ?? "") !== String(SQLITE_SCHEMA_VERSION)) {
@@ -506,8 +502,7 @@ export function sqliteHealth(root: string, config: Config): {
         } finally {
           db.close();
         }
-      }
-    );
+      });
   } catch (err) {
     errors.push(`failed to read SQLite cache: ${err instanceof Error ? err.message : String(err)}`);
   }

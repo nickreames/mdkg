@@ -14,10 +14,12 @@ import { readPackageVersion } from "./version";
 import { atomicWriteFile } from "../util/atomic";
 import { UsageError, ValidationError } from "../util/errors";
 import { assertCompatibleWriter } from "../util/writer_admission";
-import { verifyProjectDb } from "./project_db_migrations";
+import { verifyProjectDbForMutation } from "./project_db_migrations";
+import { admitSqliteDatabase, withObservedSqlitePath } from "./sqlite_observation";
 import {
   ProjectQueueSnapshotSummary,
   readProjectQueueSnapshotSummary,
+  readProjectQueueSnapshotSummaryForMutation,
 } from "./project_db_queue";
 
 type DatabaseSyncType = {
@@ -198,9 +200,18 @@ function hashFile(root: string, filePath: string): { hash: string; size: number 
   return { hash: `sha256:${hash.digest("hex")}`, size };
 }
 
-function openSnapshotDatabase(root: string, filePath: string, readOnly = true): DatabaseSyncType {
+function openSnapshotDatabaseForMutation(root: string, filePath: string): DatabaseSyncType {
   admitDatabase(root, filePath);
-  return new (loadDatabaseCtor())(filePath, { readOnly });
+  admitSqliteDatabase(root, path.relative(root, filePath), false);
+  return new (loadDatabaseCtor())(filePath, { readOnly: false });
+}
+
+function withSnapshotRead<T>(root: string, filePath: string, read: (db: DatabaseSyncType) => T): T {
+  admitDatabase(root, filePath);
+  return withObservedSqlitePath(root, path.relative(root, filePath), (descriptorPath) => {
+    const db = new (loadDatabaseCtor())(descriptorPath, { readOnly: true });
+    try { return read(db); } finally { db.close(); }
+  });
 }
 
 function queueSummary(root: string, filePath: string): ProjectQueueSnapshotSummary {
@@ -258,8 +269,7 @@ function assertSqliteIntegrity(db: DatabaseSyncType, label: string): void {
 
 function sqliteIntegrityCheck(root: string, filePath: string): ProjectDbSnapshotCheck {
   try {
-    const db = openSnapshotDatabase(root, filePath);
-    try {
+    return withSnapshotRead(root, filePath, (db) => {
       assertSqliteIntegrity(db, "snapshot");
       return {
         name: "sqlite-integrity",
@@ -270,9 +280,7 @@ function sqliteIntegrityCheck(root: string, filePath: string): ProjectDbSnapshot
         errors: [],
         warnings: [],
       };
-    } finally {
-      db.close();
-    }
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return {
@@ -291,16 +299,13 @@ function collectSnapshotMetadata(root: string, filePath: string, migrationTable:
   table_counts: Array<{ name: string; row_count: number }>;
   migrations: ProjectDbSnapshotMigration[];
 } {
-  const db = openSnapshotDatabase(root, filePath);
-  try {
+  return withSnapshotRead(root, filePath, (db) => {
     assertSqliteIntegrity(db, "snapshot");
     return {
       table_counts: tableCounts(db),
       migrations: readMigrations(db, migrationTable),
     };
-  } finally {
-    db.close();
-  }
+  });
 }
 
 function readManifest(root: string, filePath: string, maxBytes: number): ProjectDbSnapshotManifest {
@@ -400,12 +405,12 @@ export function sealProjectDbSnapshot(
   const oldPresent = admitDatabase(root, layout.stateFile, true);
   admitInput(root, layout.stateManifest, true);
   if (!runtimePresent) throw new ValidationError("db snapshot seal requires a valid project DB; run mdkg db verify");
-  const verification = verifyProjectDb(root, config, { readOnly: true });
+  const verification = verifyProjectDbForMutation(root, config);
   if (!verification.ok) {
     throw new ValidationError(`db snapshot seal requires a valid project DB; run mdkg db verify`);
   }
 
-  const runtimeQueues = queueSummary(root, layout.runtimeFile);
+  const runtimeQueues = readProjectQueueSnapshotSummaryForMutation(layout.runtimeFile);
   assertQueueSnapshotPolicy(queuePolicy, runtimeQueues);
   const oldHash = oldPresent ? hashFile(root, layout.stateFile).hash : null;
   ensureContainedDirectory(inputPath(root, layout.stateDir));
@@ -413,7 +418,7 @@ export function sealProjectDbSnapshot(
   const tempSnapshot = path.join(layout.stateDir, `.project.sqlite.${suffix}.tmp`);
   const tempManifest = path.join(layout.stateDir, `.project.manifest.${suffix}.tmp`);
 
-  const db = openSnapshotDatabase(root, layout.runtimeFile, false);
+  const db = openSnapshotDatabaseForMutation(root, layout.runtimeFile);
   try {
     db.exec("PRAGMA foreign_keys = ON;");
     assertSqliteIntegrity(db, "runtime project DB");
@@ -699,8 +704,7 @@ function canonicalValue(value: unknown): unknown {
 }
 
 function canonicalDumpForSnapshot(root: string, snapshotPath: string): string {
-  const db = openSnapshotDatabase(root, snapshotPath);
-  try {
+  return withSnapshotRead(root, snapshotPath, (db) => {
     assertSqliteIntegrity(db, "snapshot");
     const lines: string[] = [
       "# mdkg project db canonical dump v1",
@@ -731,9 +735,7 @@ function canonicalDumpForSnapshot(root: string, snapshotPath: string): string {
       lines.push("");
     }
     return `${lines.join("\n").trimEnd()}\n`;
-  } finally {
-    db.close();
-  }
+  });
 }
 
 function canonicalDumpForContainedSnapshot(

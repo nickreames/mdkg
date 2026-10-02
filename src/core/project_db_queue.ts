@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { withSelectedSqliteObservation } from "./sqlite_observation";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -261,13 +262,16 @@ function requireQueueActive(queue: ProjectQueue, action: string): void {
 
 function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T, options?: { readOnly?: boolean }): T {
   const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(databasePath, options ?? {});
-  try {
-    db.exec("PRAGMA foreign_keys = ON;");
-    return fn(db);
-  } finally {
-    db.close();
-  }
+  const run = (selectedPath: string): T => {
+    const db = new DatabaseSync(selectedPath, options ?? {});
+    try {
+      db.exec("PRAGMA foreign_keys = ON;");
+      return fn(db);
+    } finally {
+      db.close();
+    }
+  };
+  return options?.readOnly ? withSelectedSqliteObservation(databasePath, run) : run(databasePath);
 }
 
 function withImmediateTransaction<T>(db: DatabaseSyncType, fn: () => T): T {
@@ -545,7 +549,7 @@ export function readProjectQueueStats(
       ready_available: Number(readyAvailable?.count ?? 0),
       leased_expired: Number(leasedExpired?.count ?? 0),
     };
-  });
+  }, { readOnly: true });
 }
 
 export function createProjectQueue(
@@ -619,12 +623,17 @@ export function resumeProjectQueue(databasePath: string, input: ProjectQueueUpda
 
 export function readProjectQueue(databasePath: string, queueName: string): ProjectQueue | null {
   assertNonEmpty(queueName, "queue_name");
+  return withDb(databasePath, (db) => getQueue(db, queueName), { readOnly: true });
+}
+
+export function readProjectQueueForMutation(databasePath: string, queueName: string): ProjectQueue | null {
+  assertNonEmpty(queueName, "queue_name");
   return withDb(databasePath, (db) => getQueue(db, queueName));
 }
 
 export function listProjectQueues(databasePath: string): ProjectQueue[] {
   return withDb(databasePath, (db) =>
-    db.prepare("SELECT * FROM project_queue ORDER BY queue_name ASC").all().map(toQueue)
+    db.prepare("SELECT * FROM project_queue ORDER BY queue_name ASC").all().map(toQueue), { readOnly: true }
   );
 }
 
@@ -635,7 +644,7 @@ export function readProjectQueueMessage(
 ): ProjectQueueMessage | null {
   assertNonEmpty(queueName, "queue_name");
   assertNonEmpty(messageId, "message_id");
-  return withDb(databasePath, (db) => getMessage(db, queueName, messageId));
+  return withDb(databasePath, (db) => getMessage(db, queueName, messageId), { readOnly: true });
 }
 
 export function listProjectQueueMessages(
@@ -665,10 +674,18 @@ export function listProjectQueueMessages(
           ].join(" ");
     const params = input.status && input.status !== "all" ? [input.queue_name, input.status, limit] : [input.queue_name, limit];
     return db.prepare(sql).all(...params).map(toMessage);
-  });
+  }, { readOnly: true });
 }
 
-export function readProjectQueueSnapshotSummary(databasePath: string, options?: { readOnly?: boolean }): ProjectQueueSnapshotSummary {
+export function readProjectQueueSnapshotSummary(databasePath: string, _options?: { readOnly?: boolean }): ProjectQueueSnapshotSummary {
+  return queueSnapshotSummary(databasePath, true);
+}
+
+export function readProjectQueueSnapshotSummaryForMutation(databasePath: string): ProjectQueueSnapshotSummary {
+  return queueSnapshotSummary(databasePath, false);
+}
+
+function queueSnapshotSummary(databasePath: string, observation: boolean): ProjectQueueSnapshotSummary {
   return withDb(databasePath, (db) => {
     const rows = db
       .prepare(
@@ -719,5 +736,5 @@ export function readProjectQueueSnapshotSummary(databasePath: string, options?: 
       }
     }
     return summary;
-  }, options);
+  }, { readOnly: observation });
 }
