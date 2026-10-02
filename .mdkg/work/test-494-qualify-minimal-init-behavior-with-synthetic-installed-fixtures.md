@@ -8,7 +8,7 @@ parent: goal-88
 tags: [cloud-planning, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-88/qualification-2/checks.json, .mdkg/artifacts/goal-88/CONTINUATION.md]
 relates: []
 blocked_by: [task-846]
 blocks: []
@@ -80,3 +80,14 @@ Later accepted implementation, exact installed tarball, supported Node engine an
 # Notes / Follow-ups
 
 Do not claim these future cases passed from documentation or fast CI results.
+
+# Continued Cloud Qualification
+
+Actual installed acceptance:18synthetic cases/51CLIinvocations passed on the
+retained0.6.1 artifact, including real official0.6.0 upgrades and mirror/path
+controls. Package definitions:37executed,36passed/1failed. The demo failure
+reproduces with identical103semantic rows on pristine planning base and candidate;
+its required gate remains failed. Full coverage/ladder, site/platform matrix
+and independent local owner review remain unmet. No task/checkpoint is completed
+or approved from these results. Goal88 staysNOT_READY; Goal89/90 not started.
+See .mdkg/artifacts/goal-88/qualification-2/checks.json and CONTINUATION.md.

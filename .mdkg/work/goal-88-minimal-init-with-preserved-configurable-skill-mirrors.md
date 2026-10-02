@@ -123,3 +123,14 @@ Run the required_checks commands plus the goal-specific installed acceptance and
 # Stop Conditions
 
 Stop for writer/identity collisions, unowned paths, failed or stale evidence, unmet predecessor, missing local/platform/security qualification or authority outside the accepted scope.
+
+# Continued Cloud Qualification
+
+Actual installed acceptance:18synthetic cases/51CLIinvocations passed on the
+retained0.6.1 artifact, including real official0.6.0 upgrades and mirror/path
+controls. Package definitions:37executed,36passed/1failed. The demo failure
+reproduces with identical103semantic rows on pristine planning base and candidate;
+its required gate remains failed. Full coverage/ladder, site/platform matrix
+and independent local owner review remain unmet. No task/checkpoint is completed
+or approved from these results. Goal88 staysNOT_READY; Goal89/90 not started.
+See .mdkg/artifacts/goal-88/qualification-2/checks.json and CONTINUATION.md.

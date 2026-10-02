@@ -140,3 +140,55 @@ Continue from [.mdkg/artifacts/goal-88/CONTINUATION.md](../.mdkg/artifacts/goal-
 and [candidate-checks.json](../.mdkg/artifacts/goal-88/candidate-checks.json).
 No full pre-merge/prepublication, local adoption, goal completion or migration
 retirement approval is claimed. Goal89/90 remain untouched.
+
+## Continued installed and package qualification
+
+The parent authorized continuation from pinned PR11 headc13c7ad while the local
+owner reviews it independently. Goal89 remains on hold. DNS lookup still did
+not resolve directly, but the configured cloud HTTPS proxy returned200. One
+bounded curl retry retrieved official0.6.0 bytes; SHA256 matched Nick's sealed
+b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc and
+SHA512 matched official metadata. No substitute bytes/executor or credentials.
+The existing pinned0.5.2 baseline was also retrieved and verified for the
+unchanged recovery smoke. Both artifacts remain read-only in the cloud cache.
+
+Read-through found a copyVerifiedArtifact argument-order bug in the previously
+unrun qualifier; it was corrected. One incomplete launch hash was refused before
+effects; the corrected real launch passed18cases/51CLIinvocations. Current
+548015-byte0.6.1 tarball SHA256 is479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a.
+Its237payload files include no root private graph, tests, node_modules or dotenv
+paths and no dist/init/CLAUDE.md. This remains an unpublished candidate.
+
+All37package smoke definitions executed in three bounded groups:36pass/1fail,
+no skips. First six include consumer/Git-boundary/loop/matrix/upgrade/init; all
+passed. Upgrade qualified stale-plan refusals and first/middle/last resume and
+rollback with original/custom/Git bytes preserved. Every batch sealed the same
+artifact and confirmed unchanged tracked source/head/status/lockfiles, package
+inputs and qualification inputs. Logs/receipts were saved to the workspace
+from inside each sandbox command before its process-local /dev/shm expired.
+
+The single failure is demo-graph: source_release_input_drift. Its103semantic
+inventory rows and unchanged verifier were compared with a pristine git archive
+of ddafe083; both yieldf2b49d2d5d061f15f4145cbdf91d28537a0cf0a844a1e5e908b4b2ac905c2924
+and fail the sealdfa6461bf076cf003aa0afbcc06928e9214f7e3f8230cf95fafffb306b817fe8.
+The read-only diagnostic exports only existing pure functions rather than
+materializing demo targets. It changes no verifier or seal. This establishes a
+planning-base failure in this cloud checkout; do not infer its deeper cause or
+claim the required smoke passed. Owner resolution is pending.
+
+Hosted pinned-head run36972314303 floating Node24.21.0 failed coverage exit1
+after876713ms, not timed out. The minimum job was cancelled and full jobs skipped.
+Job logs identify the failed gate but do not expose raw coverage failures; those
+are inside the482625436-byte uploaded evidence. Their cause stays UNCLASSIFIED.
+No full suite rerun, coverage floor change or timeout change occurred here.
+
+This bounded checkpoint remainsNOT_READY. Current receipts are in
+.mdkg/artifacts/goal-88/qualification-2/checks.json; the earlier cancelled
+candidate receipt stays historical. Runtime source remains the reviewedc13
+payload; this follow-up corrects the qualifier and records evidence/partial
+state. Full coverage/ladder, site/platform checks and owner review remain open.
+
+The parent reported a cloud disconnect notification at the save boundary.
+Fresh commands in the same executor succeeded: pwd matched the owned worktree,
+git HEAD remainedc13c7ad and Node24.19.0 responded; graph/skill validators then
+completed. No replacement executor, writer or Mac access was used.

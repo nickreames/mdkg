@@ -28,8 +28,8 @@ const receipt = runInstalledSmoke({
   prefix: 'mdkg-goal88-installed-',
   prepare(root, commands) {
     const local = path.join(root, 'candidate.tgz'), previous = path.join(root, 'previous.tgz');
-    copyVerifiedArtifact(tarball, expected, local);
-    copyVerifiedArtifact(oldTarball, old.sha256, previous);
+    copyVerifiedArtifact(tarball, local, expected);
+    copyVerifiedArtifact(oldTarball, previous, old.sha256);
     return { tarballPath: local, install() {
       const prefix = path.join(root, 'candidate'), previousPrefix = path.join(root, 'previous');
       for (const [dest, file] of [[prefix, local], [previousPrefix, previous]]) {
