@@ -62,3 +62,15 @@ adoption is claimed. The package stays0.6.0 pending feature work.
 Next: resolve task844's concrete choice at chk672, implement task845 then task846,
 run test494, freeze/qualify task847, and return the same first draft PR for the
 parent's review. Goal88 remains open and NOT_READY; do not start Goal89 here.
+
+## Draft checkpoint receipt
+
+The authorized implementation-stack branch was pushed normally at
+0a7ad4d87841adfe2c2decf8cec5e77fb096e87e. Connected GitHub creation returned
+[PR11](https://github.com/nickreames/mdkg/pull/11) on 2026-10-02T05:27:19Z:
+open, draft, unmerged; base docs/cloud-three-release-plan at ddafe083;
+head cloud/goal88-minimal-init. Search confirmed no prior PR for this head.
+Nine changed files are the three scoped Goal88/task844/chk672 nodes, five
+audit/design/evidence files, and this log. Runtime/package inputs are unchanged.
+This normal evidence-only follow-up records the actual PR receipt; no shared
+history is amended or rewritten. The compatibility choice remains pending.
