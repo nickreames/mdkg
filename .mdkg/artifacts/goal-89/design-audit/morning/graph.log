@@ -1,0 +1,22 @@
+{
+  "action": "validated",
+  "ok": true,
+  "warning_count": 0,
+  "error_count": 0,
+  "warnings": [],
+  "warning_diagnostics": [],
+  "warning_summary": {
+    "total": 0,
+    "emitted": 0,
+    "truncated": false,
+    "omitted_count": 0,
+    "limit": null,
+    "affected_file_count": 0,
+    "by_id": [],
+    "by_category": [],
+    "by_node_type": [],
+    "top_qids": [],
+    "top_paths": []
+  },
+  "errors": []
+}

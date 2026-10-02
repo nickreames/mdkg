@@ -1,0 +1,89 @@
+{
+  "input_freeze": {
+    "base": "1a3cf4f45621cd67b51aba482966927aeea17419",
+    "files": {
+      "docs/cloud-goal89-design.md": "0ea75cde424e0c9694d02467dfb2af8af9410d4b654190943916fec34df28853",
+      "docs/cloud-goal89-validation-plan.md": "a95fbcdcdc538390808a405a38e1434bcd78d670f1ee565fd83333b75f37ff14",
+      "docs/cloud-goal89-interventions.md": "7c57f3b510761b825cccf7e8d7f5fe2fdfebaae1a39c16432098ae37f38f69ed",
+      "docs/cloud-goal89-morning-decision.md": "57401ded69da49fd47eed18a785e2b2cc462d32af0ed59a4ab8a768bae248729",
+      ".mdkg/work/task-848-lock-persistent-working-storage-contracts-and-migration-decisions.md": "ca3ed776139d3c9c8b1fa38c7b83eda147b28c33912fe9d38a072d0d81d7a5cf",
+      ".mdkg/work/chk-675-reviewed-persistent-working-storage-design-boundary.md": "fa86c1e68d18cfd74082f611c4676fae000c63f030c480d9409ec8ce97fc4a6a"
+    },
+    "source_diff": "",
+    "status": " M .mdkg/work/chk-675-reviewed-persistent-working-storage-design-boundary.md\n M .mdkg/work/task-848-lock-persistent-working-storage-contracts-and-migration-decisions.md\n?? .mdkg/artifacts/goal-89/design-audit/checks.json\n?? .mdkg/artifacts/goal-89/design-audit/goal88-hosted-terminal.json\n?? docs/cloud-goal89-design.md\n?? docs/cloud-goal89-interventions.md\n?? docs/cloud-goal89-morning-decision.md\n?? docs/cloud-goal89-validation-plan.md\n"
+  },
+  "checks": [
+    {
+      "name": "cli",
+      "command": [
+        "npm",
+        "run",
+        "cli:check:built"
+      ],
+      "exit_code": 0,
+      "duration_ms": 11303,
+      "log_sha256": "b7d52802e583c37fb06c2b636cb924d9a2ad34871743c36d0e392fcd2ea1367b"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "npm",
+        "run",
+        "docs:check:built"
+      ],
+      "exit_code": 0,
+      "duration_ms": 368,
+      "log_sha256": "2e1f26fabbafc4760520726bb7dd57ee60d09e42fddd5e7f06360ccb1122e5a0"
+    },
+    {
+      "name": "skills",
+      "command": [
+        "node",
+        "dist/cli.js",
+        "skill",
+        "validate",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 165,
+      "log_sha256": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f"
+    },
+    {
+      "name": "graph",
+      "command": [
+        "node",
+        "dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 1625,
+      "log_sha256": "646f7f3725c7e9ba236e80d8551a3f7784b02ba77ca91ac4c6ff72f197e0c2bd"
+    },
+    {
+      "name": "workflow",
+      "command": [
+        "npm",
+        "run",
+        "ci:workflow:check"
+      ],
+      "exit_code": 0,
+      "duration_ms": 265,
+      "log_sha256": "c6557b6a8f71b153703ef69b03008ac896e689ab7f7110371cc8dd345c16bd72"
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "duration_ms": 8,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "proposal_links_and_new_file_whitespace": "PASS",
+  "full_feature_candidate_checks": "NOT_RUN; no feature source/version changes",
+  "design_approval": "PENDING_NICK_REVIEW"
+}

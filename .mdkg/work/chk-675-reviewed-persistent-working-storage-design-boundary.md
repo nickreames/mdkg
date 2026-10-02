@@ -28,6 +28,20 @@ FUTURE CHECKPOINT — NOT_RUN. Expected milestone: Approved exact contracts, mig
 This placeholder must remain backlog until its actual milestone has evidence;
 authoring the planning node does not satisfy it.
 
+Current cloud audit boundary: a concrete proposal is available in
+docs/cloud-goal89-design.md and docs/cloud-goal89-validation-plan.md on
+cloud/goal89-persistent-working, based on exact independently reviewed
+1a3cf4f45621cd67b51aba482966927aeea17419. Nick's design review is PENDING.
+This checkpoint stays backlog because the required approved contract is absent.
+Implementation authority is granted; the original plan-merge prerequisite is
+superseded, and the independent Goal88 prerequisite safety GO is recorded in
+Task848. No new release readiness or design approval is claimed.
+
+The parent explicitly requires this human decision gate to remain in force while
+Nick is asleep. docs/cloud-goal89-morning-decision.md presents the exact pending
+choice and distinguishes already supplied instructions. A checked design-only
+draft PR is authorized; publishing it does not satisfy this checkpoint.
+
 # Scope Covered
 
 task-848 under goal-89 and edd-83.
@@ -51,6 +65,11 @@ No feature implementation or future acceptance was performed by this planning PR
 # Verification / Testing
 
 NOT_RUN; attach actual milestone commands, input identities, results and retained gaps before completion.
+
+Audit-only baseline checks passed: supported build and test compilation,
+sequential built-only CLI parity/docs499 examples, graph zero errors and
+eight-skill validation. These are not Test495 feature acceptance or Chk676/677
+readiness evidence. No feature source or version metadata has changed yet.
 
 # Links / Artifacts
 

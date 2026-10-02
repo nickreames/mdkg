@@ -1,0 +1,282 @@
+{
+  "kind": "goal89-task848-design-audit-not-feature-qualification",
+  "observed_at": "2026-10-02T08:12:48.419212+00:00",
+  "cwd": "/workspace/mdkg-cloud-goal89",
+  "branch": "cloud/goal89-persistent-working",
+  "base": "1a3cf4f45621cd67b51aba482966927aeea17419",
+  "toolchain": {
+    "node": "v24.19.0",
+    "npm": "11.9.0",
+    "host": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "arch": "x86_64",
+    "native": true
+  },
+  "origin": "https://github.com/nickreames/mdkg.git",
+  "verified_remote_refs": [
+    "1a3cf4f45621cd67b51aba482966927aeea17419\trefs/heads/cloud/goal88-minimal-init",
+    "ddafe0836fdc790cd36ba203afbcfc1878bbddd8\trefs/heads/docs/cloud-three-release-plan",
+    "d9b74c3fa172688a99406fd908571c7e3f666395\trefs/heads/main"
+  ],
+  "local_package_version": "0.6.1",
+  "proposed_target": "0.6.2-unreleased-not-implemented",
+  "feature_source_package_test_diff": "",
+  "approved_design": "PENDING_NICK_REVIEW; required by Task848 and Chk675, not implementation reauthorization",
+  "goal89_feature_acceptance": "NOT_RUN",
+  "goal89_candidate_release_platform_qualification": "NOT_RUN",
+  "goal90": "NOT_STARTED",
+  "baseline_checks": {
+    "dependency_bootstrap": "PASS",
+    "build": "PASS",
+    "build_test_compile_only": "PASS",
+    "cli_built_sequential": "PASS",
+    "docs_built_sequential": "PASS 499 examples / 0 failures",
+    "skills": {
+      "action": "validated",
+      "ok": true,
+      "checked_count": 8,
+      "warning_count": 0,
+      "error_count": 0,
+      "warnings": [],
+      "errors": []
+    },
+    "graph_before_index_restore": {
+      "action": "validated",
+      "ok": true,
+      "warning_count": 1,
+      "error_count": 0,
+      "warnings": [
+        "SQLite cache may be stale because source graph files or config changed; run mdkg index"
+      ],
+      "warning_diagnostics": [
+        {
+          "id": "cache.index",
+          "category": "cache",
+          "severity": "warning",
+          "message": "SQLite cache may be stale because source graph files or config changed; run mdkg index",
+          "remediation": "Run mdkg index or mdkg db index rebuild when generated cache state should be refreshed."
+        }
+      ],
+      "warning_summary": {
+        "total": 1,
+        "emitted": 1,
+        "truncated": false,
+        "omitted_count": 0,
+        "limit": null,
+        "affected_file_count": 0,
+        "by_id": [
+          {
+            "key": "cache.index",
+            "count": 1
+          }
+        ],
+        "by_category": [
+          {
+            "key": "cache",
+            "count": 1
+          }
+        ],
+        "by_node_type": [],
+        "top_qids": [],
+        "top_paths": []
+      },
+      "errors": []
+    },
+    "graph_after_index_restore": {
+      "action": "validated",
+      "ok": true,
+      "warning_count": 1,
+      "error_count": 0,
+      "warnings": [
+        "SQLite cache may be stale because source graph files or config changed; run mdkg index"
+      ],
+      "warning_diagnostics": [
+        {
+          "id": "cache.index",
+          "category": "cache",
+          "severity": "warning",
+          "message": "SQLite cache may be stale because source graph files or config changed; run mdkg index",
+          "remediation": "Run mdkg index or mdkg db index rebuild when generated cache state should be refreshed."
+        }
+      ],
+      "warning_summary": {
+        "total": 1,
+        "emitted": 1,
+        "truncated": false,
+        "omitted_count": 0,
+        "limit": null,
+        "affected_file_count": 0,
+        "by_id": [
+          {
+            "key": "cache.index",
+            "count": 1
+          }
+        ],
+        "by_category": [
+          {
+            "key": "cache",
+            "count": 1
+          }
+        ],
+        "by_node_type": [],
+        "top_qids": [],
+        "top_paths": []
+      },
+      "errors": []
+    },
+    "whitespace": "PASS"
+  },
+  "receipt_hashes": {
+    "build-baseline.log": "885a87b0005a87f4ae49162de72dc3f647d7fd6cbd87f4ff6819aaf53e81f8c5",
+    "build-test-baseline.log": "275ff167212cec4efb724d98548e1ce49b436d702be73c03e703bec18616ebf2",
+    "build-audit.log": "885a87b0005a87f4ae49162de72dc3f647d7fd6cbd87f4ff6819aaf53e81f8c5",
+    "cli-audit.log": "b7d52802e583c37fb06c2b636cb924d9a2ad34871743c36d0e392fcd2ea1367b",
+    "docs-audit.log": "2e1f26fabbafc4760520726bb7dd57ee60d09e42fddd5e7f06360ccb1122e5a0",
+    "skills-baseline.json": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f",
+    "graph-baseline.json": "646f7f3725c7e9ba236e80d8551a3f7784b02ba77ca91ac4c6ff72f197e0c2bd",
+    "graph-final-design.json": "249affc9d5b98227807dbcc0a508328d57993017ff025f61bfd4491b2fcf385c",
+    "graph-restored-index.json": "249affc9d5b98227807dbcc0a508328d57993017ff025f61bfd4491b2fcf385c",
+    "goal89-pack.log": "b35f38943ebfd48ddfc99fb1a7396fd622c45eb04c1fd3e277f3abbfbb4b457f",
+    "task848-start.json": "954e540c9f557c806f8b262a6fdf46d781e38a279a085a3922f40f0b8d92300b",
+    "task848-review.json": "38e205354396cd6ee51858511264521052c3dac18a2d67ed9f4318a506c983e7"
+  },
+  "graph_ids": "No new graph/node IDs allocated; existing Task848/Chk675 only; absent event history not recreated; selected state unchanged",
+  "generated_sqlite": "Restored to exact reviewed1a base bytes, excluded from changes",
+  "durability": "Small executed morning logs and receipts are retained with the design-only documentation under version control when committed/pushed. Live PR and remote-ref evidence establish the published head. Earlier full logs/raw caches remain executor-local without backup/replication guarantees.",
+  "interventions": "docs/cloud-goal89-interventions.md",
+  "remaining_blocker": {
+    "action": "Task849 feature source writes",
+    "target": "nickreames/mdkg cloud/goal89-persistent-working",
+    "needed_step": "Nick review the concrete Task848/Chk675 working names/schema/legacy namespace, release/retention/promotion/persistence contract; review question pending. No merge/publication approval sought."
+  },
+  "release_decision": "NOT_READY; inherited cloud demo/site and historical hosted/platform gaps remain; no floors/timeouts/definitions waived",
+  "initial_proposal_file_hashes": {
+    "docs/cloud-goal89-design.md": "cb00690df7b2d81d92ddd81a82b44f1157431d890bc9f5c8bb8c7dbdf01c2dd4",
+    "docs/cloud-goal89-validation-plan.md": "fe179d8a5c854d239fe56e3eb11824b963afd6e8a4a38a9936422450b6910c0d",
+    "docs/cloud-goal89-interventions.md": "128902cd05ef641460d87c17cbba2f6b8bec85fa6c1ddf1a9ad16f3f0362469a",
+    ".mdkg/work/task-848-lock-persistent-working-storage-contracts-and-migration-decisions.md": "43b1e1d92cb56b602cb3231d5e9051f65530a713e4ab4b7ca0a6be7b2ef2665d",
+    ".mdkg/work/chk-675-reviewed-persistent-working-storage-design-boundary.md": "1d8bf841a1c23b14bdecfa7c3d8ba25d3a372d9098558026cad7cb77270111a2"
+  },
+  "proposal_file_hashes": {
+    "docs/cloud-goal89-design.md": "0ea75cde424e0c9694d02467dfb2af8af9410d4b654190943916fec34df28853",
+    "docs/cloud-goal89-validation-plan.md": "a95fbcdcdc538390808a405a38e1434bcd78d670f1ee565fd83333b75f37ff14",
+    "docs/cloud-goal89-interventions.md": "7c57f3b510761b825cccf7e8d7f5fe2fdfebaae1a39c16432098ae37f38f69ed",
+    "docs/cloud-goal89-morning-decision.md": "57401ded69da49fd47eed18a785e2b2cc462d32af0ed59a4ab8a768bae248729",
+    ".mdkg/work/task-848-lock-persistent-working-storage-contracts-and-migration-decisions.md": "ca3ed776139d3c9c8b1fa38c7b83eda147b28c33912fe9d38a072d0d81d7a5cf",
+    ".mdkg/work/chk-675-reviewed-persistent-working-storage-design-boundary.md": "fa86c1e68d18cfd74082f611c4676fae000c63f030c480d9409ec8ce97fc4a6a"
+  },
+  "morning_documentation_gate": {
+    "observed_at": "2026-10-02T08:22:59.953910+00:00",
+    "scope": "Checked design-only stacked draft; feature implementation and approval remain absent",
+    "evidence": ".mdkg/artifacts/goal-89/design-audit/morning/checks.json",
+    "results": [
+      {
+        "name": "cli",
+        "command": [
+          "npm",
+          "run",
+          "cli:check:built"
+        ],
+        "exit_code": 0,
+        "duration_ms": 11303,
+        "log_sha256": "b7d52802e583c37fb06c2b636cb924d9a2ad34871743c36d0e392fcd2ea1367b"
+      },
+      {
+        "name": "docs",
+        "command": [
+          "npm",
+          "run",
+          "docs:check:built"
+        ],
+        "exit_code": 0,
+        "duration_ms": 368,
+        "log_sha256": "2e1f26fabbafc4760520726bb7dd57ee60d09e42fddd5e7f06360ccb1122e5a0"
+      },
+      {
+        "name": "skills",
+        "command": [
+          "node",
+          "dist/cli.js",
+          "skill",
+          "validate",
+          "--json"
+        ],
+        "exit_code": 0,
+        "duration_ms": 165,
+        "log_sha256": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f"
+      },
+      {
+        "name": "graph",
+        "command": [
+          "node",
+          "dist/cli.js",
+          "validate",
+          "--json"
+        ],
+        "exit_code": 0,
+        "duration_ms": 1625,
+        "log_sha256": "646f7f3725c7e9ba236e80d8551a3f7784b02ba77ca91ac4c6ff72f197e0c2bd"
+      },
+      {
+        "name": "workflow",
+        "command": [
+          "npm",
+          "run",
+          "ci:workflow:check"
+        ],
+        "exit_code": 0,
+        "duration_ms": 265,
+        "log_sha256": "c6557b6a8f71b153703ef69b03008ac896e689ab7f7110371cc8dd345c16bd72"
+      },
+      {
+        "name": "whitespace",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit_code": 0,
+        "duration_ms": 8,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "graph": {
+      "action": "validated",
+      "ok": true,
+      "warning_count": 0,
+      "error_count": 0,
+      "warnings": [],
+      "warning_diagnostics": [],
+      "warning_summary": {
+        "total": 0,
+        "emitted": 0,
+        "truncated": false,
+        "omitted_count": 0,
+        "limit": null,
+        "affected_file_count": 0,
+        "by_id": [],
+        "by_category": [],
+        "by_node_type": [],
+        "top_qids": [],
+        "top_paths": []
+      },
+      "errors": []
+    },
+    "skills": {
+      "action": "validated",
+      "ok": true,
+      "checked_count": 8,
+      "warning_count": 0,
+      "error_count": 0,
+      "warnings": [],
+      "errors": []
+    },
+    "custody": "All six checked proposal files, head/status and source/package/test/workflow inputs unchanged before/after every command; receipts finalized afterwards."
+  },
+  "documentation_push_pr_authority": "Explicit parent instruction permits normal commit/push and clearly labelled design-only draft against cloud/goal88-minimal-init after normal docs/graph checks. It also explicitly requires honoring Task848/Chk675 while Nick sleeps.",
+  "decision_request": "docs/cloud-goal89-morning-decision.md",
+  "pending_design_options": {
+    "recommended_A": "Indefinite quarantine by default; explicitly chosen positive whole hours start at completed quarantine or policy application; a separate fresh preview and explicit purge after expiry",
+    "alternative_B": "Finite default168hours/7days proposed; same explicit purge/recovery contract; no duration selected by Nick",
+    "recovery": "Explicit resume or recover only; verified retained bytes before deletion; partial/final purge loss cannot be restored without another retained copy; exact stopped-owner/custody checks, no PID/age inference"
+  }
+}
