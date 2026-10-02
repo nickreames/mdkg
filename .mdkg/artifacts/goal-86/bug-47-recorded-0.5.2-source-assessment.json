@@ -1,0 +1,34 @@
+{
+  "kind": "goal86-bug47-recorded-source-version-assessment",
+  "version": 1,
+  "recorded_at": "2026-09-25",
+  "qid": "root:bug-47",
+  "outcome": "SOURCE_PATTERN_PRESENT_PACKAGE_AND_EXPLOIT_UNVERIFIED",
+  "assessment_head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "recorded_0_5_2_source_revision": "867ac7099faaa0b8eeed1e167609e0e1e482d519",
+  "provenance": {
+    "publication_checkpoint": "root:chk-535",
+    "baseline_classification": "root:task-823",
+    "qualification": "The publication checkpoint identifies this source revision, but the registry tarball has no gitHead. This assessment reads the recorded Git source, not installed package bytes."
+  },
+  "source_files": [
+    {
+      "path": "src/core/filesystem_authority.ts",
+      "blob": "61fe6d405fd56018fccfd14108e8557cfb8da448",
+      "sha256": "bf8eb1d5959e4bf9905c3e905eaf8a710248e3d6daf063b946570bcd47b0912f",
+      "observation": "inspectPath checks pathname ancestors and returns absolutePath; later contained read, create, append, replacement and removal sinks resolve that pathname again. A final-component no-follow open does not anchor checked ancestors."
+    },
+    {
+      "path": "src/commands/skill_mirror.ts",
+      "blob": "d6cc9ed0c4cc11e25de88ec600958c730bbd68aa",
+      "sha256": "f2455302bc8cfba92b335736737b51d27e63039589f40c40ccacc9186e207c74",
+      "observation": "Skill source traversal and copy use pathname-based directory and file reads. The recorded source therefore does not establish an ancestor-bound read-to-mirror guarantee."
+    }
+  ],
+  "classification": "The same architectural check/use gap exists in the recorded 0.5.2 source; exact installed 0.5.2 behavior, exploitability, cross-principal access and earlier-version bounds are not established by this static comparison.",
+  "not_performed": [
+    "No blocked security-scan context was accessed or recovered.",
+    "No race reproduction, installed-package test, registry access, source fix, provider action or release action was performed."
+  ],
+  "release_effect": "Bug 47 remains an unresolved 0.6.0 publication blocker. This version assessment is not a waiver or remediation."
+}

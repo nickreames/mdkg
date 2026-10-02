@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "kind": "test487-local-docker-custody-and-isolation",
+  "recorded_at": "2026-09-29 03:56:45 UTC",
+  "owner": "mdkg-project-agent",
+  "goal": "root:goal-86",
+  "work": "root:test-487",
+  "source_head": "36e075b8d64babff04154704a721db4a82926ebe",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "capsule_manifest_sha256": "8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+  "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+  "endpoint": "unix:///Users/nick/.docker/run/docker.sock",
+  "engine": "29.6.2",
+  "docker_desktop": "4.85.0 (235549)",
+  "host_architecture": "arm64",
+  "kernel": "6.12.76-linuxkit",
+  "base_image": "ubuntu@sha256:224a1869083a311ef3f13648a154ba79832fbef6364d31493642ca03082da254",
+  "userspace": "Ubuntu 24.04.4 LTS",
+  "containers": [
+    {
+      "name": "/mdkg-g86-arm64-qualification-20260929",
+      "id": "a87c8ec896477792cdc408c71b13d163045a84c24e90f51742ac66d839ad7091",
+      "image": "sha256:48e626b8675d37a218d9c03c012851e0164df71ebd6c130bd61723de92a45b84",
+      "user": "10001:10001",
+      "network": "none",
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "Destination": "/private/tmp",
+          "Driver": "local",
+          "Mode": "z",
+          "Name": "fddc8ac99a5bd3ce2418d170344d0d0de1e0c17a2cbaa3d13dc4e015a5ee22b9",
+          "Propagation": "",
+          "RW": true,
+          "Source": "/var/lib/docker/volumes/fddc8ac99a5bd3ce2418d170344d0d0de1e0c17a2cbaa3d13dc4e015a5ee22b9/_data",
+          "Type": "volume"
+        }
+      ],
+      "pids_limit": 256,
+      "memory": 2147483648,
+      "nano_cpus": 3000000000
+    },
+    {
+      "name": "/mdkg-g86-amd64-qualification-20260929",
+      "id": "619f4feab76a939ccc9021c219eb36c6c45b3c5628be5a91c60864293da170fc",
+      "image": "sha256:94d452815c5a84a95efbbd173680c19676a276894f58693b1d47cce9deae56ec",
+      "user": "10001:10001",
+      "network": "none",
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "Destination": "/private/tmp",
+          "Driver": "local",
+          "Mode": "z",
+          "Name": "05186b36f3a04515753b71c3482e126971b962f90bfd8044393f5bd9ae40443e",
+          "Propagation": "",
+          "RW": true,
+          "Source": "/var/lib/docker/volumes/05186b36f3a04515753b71c3482e126971b962f90bfd8044393f5bd9ae40443e/_data",
+          "Type": "volume"
+        }
+      ],
+      "pids_limit": 256,
+      "memory": 2147483648,
+      "nano_cpus": 3000000000
+    },
+    {
+      "name": "/mdkg-g86-arm64-scale-20260929",
+      "id": "a244c737956a756a407496e5defaa6919e382b68beb24cae7a5c1f5c9c079872",
+      "image": "sha256:48e626b8675d37a218d9c03c012851e0164df71ebd6c130bd61723de92a45b84",
+      "user": "10001:10001",
+      "network": "none",
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "Destination": "/private/tmp",
+          "Driver": "local",
+          "Mode": "z",
+          "Name": "6fea2d4f7e735ebea33e747fc45be7b57a41450991a0b42bc0d7e0bc5507f368",
+          "Propagation": "",
+          "RW": true,
+          "Source": "/var/lib/docker/volumes/6fea2d4f7e735ebea33e747fc45be7b57a41450991a0b42bc0d7e0bc5507f368/_data",
+          "Type": "volume"
+        }
+      ],
+      "pids_limit": 128,
+      "memory": 1073741824,
+      "nano_cpus": 2000000000
+    },
+    {
+      "name": "/mdkg-g86-amd64-scale-20260929",
+      "id": "dc5d5bdc4424ebfd3f2182d22574b716359896628e26b4a1005bd474961ae1cb",
+      "image": "sha256:94d452815c5a84a95efbbd173680c19676a276894f58693b1d47cce9deae56ec",
+      "user": "10001:10001",
+      "network": "none",
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges"
+      ],
+      "mounts": [
+        {
+          "Destination": "/private/tmp",
+          "Driver": "local",
+          "Mode": "z",
+          "Name": "49e817739b3499d9dc24ff5fe92487d3ea10255380be9007eaf1f6bf03d67299",
+          "Propagation": "",
+          "RW": true,
+          "Source": "/var/lib/docker/volumes/49e817739b3499d9dc24ff5fe92487d3ea10255380be9007eaf1f6bf03d67299/_data",
+          "Type": "volume"
+        }
+      ],
+      "pids_limit": 128,
+      "memory": 1073741824,
+      "nano_cpus": 2000000000
+    }
+  ],
+  "protected_before": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "setup_failures": [
+    {
+      "phase": "preflight",
+      "reason": "OCI child manifest treated as image ID; no such image",
+      "test_cases_executed": 0,
+      "resolution": "Use pinned repository digest; actual AMD64 Ubuntu execution succeeded."
+    },
+    {
+      "phase": "legacy-builder",
+      "reason": "Credential-free CLI config lacked discovery of installed buildx; missing TARGETARCH and platform mismatch refused build",
+      "test_cases_executed": 0,
+      "resolution": "Temporary CLI config points to Docker Desktop bundled plugin directory; BuildKit builds selected exact architectures. Failed setup container4395403fa12d removed after exited-state/command verification."
+    }
+  ],
+  "authority": {
+    "local_executor": true,
+    "publication": false,
+    "remote_git": false,
+    "canonical_graph_migration": false,
+    "host_configuration_changes": false
+  },
+  "limitations": [
+    "Actual qualification results are separate; successful image construction is not platform acceptance.",
+    "ARM64 runs natively on ARM64; AMD64 is emulated, not native performance evidence.",
+    "Unrelated containers and Lima VM untouched; no host mounts or forwarded credentials."
+  ]
+}

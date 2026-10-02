@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-amd64-verified-completed-family-reuse",
+  "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+  "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+  "container": "mdkg-g86-successor-amd64-general-wrihmu",
+  "container_id": "99224475833cb04f63ee35dcc2182f5d846ddce249df83798569aea5c9068bb6",
+  "image": "sha256:8498db596161f6849a01b1b60cda250de64c5861ece62f26d9c716e1eb7e0a4b",
+  "isolation": {
+    "network": "none",
+    "rootfs": "read-only",
+    "user": "10001:10001",
+    "caps": "ALL dropped",
+    "no_new_privileges": true,
+    "host_mounts": [],
+    "owned_volume": "mdkg-g86-successor-amd64-general-wrihmu"
+  },
+  "partial_runner_state": "Paused during next unfinished submodule family for bounded scheduling; not an overall successful runner receipt.",
+  "families": [
+    {
+      "name": "bootstrap",
+      "stdout_sha256": "016762f16cb654cf06ba35ed97e906df1ea7fa5a54f6ef4aa9dc18f3e5b0fa45",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_sha256": "0bb9555adb3f2dea31e48009b6884faf5f83b325980e20d6ae9354ea3c2732de",
+      "receipt_keys": [
+        "kind",
+        "started_at",
+        "runtime",
+        "platform",
+        "architecture",
+        "candidate",
+        "runner_sha256",
+        "source_inputs",
+        "pack",
+        "baseline",
+        "completed",
+        "deliveries",
+        "consumptions",
+        "baselines",
+        "source_inputs_unchanged",
+        "cleanup",
+        "final_artifact_qualification"
+      ],
+      "node": "v24.18.0",
+      "platform": "linux",
+      "architecture": "x64",
+      "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+      "completed_count": 2,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-bootstrap-qualification-1JdrCO"
+      },
+      "pass": true,
+      "observed_supervisor_marker": {
+        "event": "family-finished",
+        "name": "bootstrap",
+        "arch": "x64",
+        "pass": true,
+        "duration_ms": 149677
+      },
+      "basis": "Actual outer runner emitted family-finished pass=true only after exit0/no signal, parsed receipt, persisted stdout/stderr, and complete capsule-after hash/mode verification."
+    },
+    {
+      "name": "collaboration",
+      "stdout_sha256": "1e1134c72187507deb7903c0d82b6b5ba2b9402f4e0ee559e1c9e19af4a4b19b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_sha256": "cb76e3cc2756e6d7841c3a7b2afafa6f2f9198c116862bc59e23d2804cffada7",
+      "receipt_keys": [
+        "kind",
+        "started_at",
+        "runtime",
+        "platform",
+        "arch",
+        "candidate_sha256",
+        "input_capture_sha256",
+        "source_inputs_sha256",
+        "selected_family",
+        "drivers",
+        "completed",
+        "cleanup",
+        "final_artifact_pass"
+      ],
+      "node": "v24.18.0",
+      "platform": "linux",
+      "architecture": "x64",
+      "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+      "completed_count": 3,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-collaboration-gTwbZo"
+      },
+      "pass": true,
+      "observed_supervisor_marker": {
+        "event": "family-finished",
+        "name": "collaboration",
+        "arch": "x64",
+        "pass": true,
+        "duration_ms": 1146784
+      },
+      "basis": "Actual outer runner emitted family-finished pass=true only after exit0/no signal, parsed receipt, persisted stdout/stderr, and complete capsule-after hash/mode verification."
+    },
+    {
+      "name": "gitdir",
+      "stdout_sha256": "d7d3c14c0cbea30420d8cd20628d7d61f1a5ac4a00c0fe0c4a612b9d6b55dcfd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_sha256": "9e1335dce7865180b9e072a20ea75e0e2aff1467df513f690fa7ff5d432e0769",
+      "receipt_keys": [
+        "kind",
+        "started_at",
+        "runtime",
+        "platform",
+        "arch",
+        "candidate_sha256",
+        "input_capture_sha256",
+        "source_inputs_sha256",
+        "selected_family",
+        "drivers",
+        "completed",
+        "cleanup",
+        "final_artifact_pass"
+      ],
+      "node": "v24.18.0",
+      "platform": "linux",
+      "architecture": "x64",
+      "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+      "completed_count": 1,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-collaboration-bqOB0e"
+      },
+      "pass": true,
+      "observed_supervisor_marker": {
+        "event": "family-finished",
+        "name": "gitdir",
+        "arch": "x64",
+        "pass": true,
+        "duration_ms": 171512
+      },
+      "basis": "Actual outer runner emitted family-finished pass=true only after exit0/no signal, parsed receipt, persisted stdout/stderr, and complete capsule-after hash/mode verification."
+    }
+  ],
+  "submodule_partial_not_counted": true,
+  "remaining_execution": "All17 remaining families scheduled across3 independent isolated containers; gitdir raced to completion before pause and was harmlessly rechecked in topology subset. Large-graph execution separately passed.",
+  "limitations": [
+    "No incomplete or merely started case counts as passed.",
+    "Original partial evidence retained; subsequent composite acceptance uses exact same artifact/capsule/input identities.",
+    "No source changes, waived gates or native x86_64 performance claim."
+  ]
+}

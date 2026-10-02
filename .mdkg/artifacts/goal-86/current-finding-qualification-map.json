@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "kind": "current-retained-finding-regression-accounting",
+  "owner": "root:test-479",
+  "consumers": [
+    "root:test-488",
+    "root:task-828"
+  ],
+  "recorded_at": "2026-09-29T02:33:07.114Z",
+  "source_head": "36e075b8d64babff04154704a721db4a82926ebe",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "historical_inventory": {
+    "path": ".mdkg/artifacts/goal-86/security-findings-checkpoint-20260918.json",
+    "sha256": "8986b7e40a87057a26e58bcea32f2f21d4c9cf66d32d8c4f5e932373e0726c57",
+    "original_findings": 14,
+    "medium": 5,
+    "low": 9,
+    "raw_reports_accessed": false
+  },
+  "original_findings": [
+    {
+      "qid": "root:bug-44",
+      "candidate_id": "g86-baseline-001",
+      "title": "Public bundle export can disclose credentials embedded in the origin URL",
+      "severity": "medium",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "bundle-provenance",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+          "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef",
+          "case_count": 49,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-45",
+      "candidate_id": "g86-baseline-002",
+      "title": "Restoring a historical-format bundle can install active Git metadata",
+      "severity": "medium",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "transport-admission",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 167,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-46",
+      "candidate_id": "g86-baseline-003",
+      "title": "Updating a private graph file can widen its filesystem permissions",
+      "severity": "low",
+      "disposition": "deferred-by-decision",
+      "meaning": "DEFERRED / UNRESOLVED under Goal87 and Dec98; not accepted or fixed",
+      "evidence": []
+    },
+    {
+      "qid": "root:bug-47",
+      "candidate_id": "g86-baseline-004",
+      "title": "A concurrent directory swap can redirect contained graph operations",
+      "severity": "medium",
+      "disposition": "deferred-by-decision",
+      "meaning": "DEFERRED / UNRESOLVED under Goal87 and Dec98; not accepted or fixed",
+      "evidence": []
+    },
+    {
+      "qid": "root:bug-48",
+      "candidate_id": "g86-baseline-005",
+      "title": "Inspecting repository config or bundle sources can block on special files",
+      "severity": "low",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "source-read-admission",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+          "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef",
+          "case_count": 30,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-49",
+      "candidate_id": "g86-bootstrap-003",
+      "title": "Creating a skill can copy an external file through a linked registry",
+      "severity": "medium",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "skill-registry-admission",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+          "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef",
+          "case_count": 19,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-50",
+      "candidate_id": "g86-dbwork-002",
+      "title": "Snapshot verification reports directories as valid checkpoints",
+      "severity": "low",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "snapshot-verification",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+          "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef",
+          "case_count": 26,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-51",
+      "candidate_id": "g86-dbwork-003",
+      "title": "Snapshot inspection can disclose hashes of files outside the repository",
+      "severity": "low",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "snapshot-containment",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+          "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef",
+          "case_count": 79,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-52",
+      "candidate_id": "g86-bootstrap-004",
+      "title": "Recovery journal operations are not bound to the approved upgrade plan hash",
+      "severity": "low",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "commands/upgrade_approval.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 48,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-53",
+      "candidate_id": "g86-bootstrap-002",
+      "title": "Init rewrites hard-linked manifest peers outside the selected repository",
+      "severity": "low",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "commands/init_manifest_ownership.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 12,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-54",
+      "candidate_id": "g86-identity-001",
+      "title": "Large numeric aliases can hang repair or corrupt newly authored graph nodes",
+      "severity": "low",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "commands/numeric_allocation.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 86,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-55",
+      "candidate_id": "g86-graph-001",
+      "title": "Creating a loop can read an external file through a linked seed template",
+      "severity": "low",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "commands/loop_seed_safety.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 63,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-56",
+      "candidate_id": "g86-graph-003",
+      "title": "Loop inspection can exhaust memory by reading seeds without template limits",
+      "severity": "low",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "commands/loop_seed_budget.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 41,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-57",
+      "candidate_id": "g86-export-001",
+      "title": "Compressing an archive can copy or overwrite another workspace's files",
+      "severity": "medium",
+      "disposition": "passed-current",
+      "meaning": "Current native macOS regression family passes; Linux and independent acceptance remain missing",
+      "evidence": [
+        {
+          "family": "commands/archive_payload_ownership.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 38,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    }
+  ],
+  "adjacent_corrections": [
+    {
+      "qid": "root:bug-58",
+      "not_original_security_finding": true,
+      "disposition": "passed-current",
+      "evidence": [
+        {
+          "family": "commands/mcp_request_admission.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 35,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-59",
+      "not_original_security_finding": true,
+      "disposition": "passed-current",
+      "evidence": [
+        {
+          "family": "commands/skill_git_metadata.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 47,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    },
+    {
+      "qid": "root:bug-60",
+      "not_original_security_finding": true,
+      "disposition": "passed-current",
+      "evidence": [
+        {
+          "family": "core/sqlite_observation.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 61,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        },
+        {
+          "family": "core/sqlite_memory_observation.test.js",
+          "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+          "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+          "case_count": 25,
+          "exit_code": 0,
+          "scope": "Native macOS arm64 Node24.18.0; mixed installed CLI and internal-module proof where recorded"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "original_remedied_families_with_current_macos_proof": 12,
+    "original_deferred_unresolved": 2,
+    "all_recorded_cases": 826,
+    "independent_security_acceptance": false,
+    "linux_family_completion": false
+  },
+  "limitations": [
+    "No blocked context, unavailable report or historic scan was accessed, recovered or rerun.",
+    "Recorded regressions are current source-grounded tests, not independent acceptance or blanket security clearance.",
+    "Original failing-before receipts and affected-version assessments remain in their owning bug records; this supplement does not invent baseline failures.",
+    "Missing platforms/current-source/diff review remain required; deferred work is not counted as passing."
+  ]
+}

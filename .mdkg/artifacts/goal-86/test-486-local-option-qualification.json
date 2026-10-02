@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-installed-cli-option-local-qualification",
+  "recorded_at": "2026-09-28",
+  "goal_qid": "root:goal-86",
+  "work_qid": "root:test-486",
+  "checkpoint_qid": "root:chk-657",
+  "owner": "mdkg-project-agent",
+  "outcome": "LOCAL_INTERMEDIATE_PASS_NOT_FINAL_ARTIFACT_QUALIFICATION",
+  "authority": {
+    "contract": "Goal86 Run and Dec98; owned test harness, local disposable fixtures, mdkg evidence/projections only",
+    "remote_actions": false,
+    "canonical_git_mutation": false,
+    "blocked_scan_context_access": false,
+    "persistent_lease_acquired": false
+  },
+  "baseline": {
+    "at": "2026-09-28T17:19:57.196Z",
+    "branch": "main",
+    "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "cached_origin_divergence": {
+      "ahead": 69,
+      "behind": 0,
+      "remote_verified": false
+    },
+    "dirty_path_count": 150,
+    "staged": "",
+    "protected": [
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+        "expected": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+        "expected": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+      },
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+        "expected": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      }
+    ],
+    "locks": {
+      "mdkg": false,
+      "git": false
+    },
+    "prior_checkpoint": "root:chk-656"
+  },
+  "custody": {
+    "before_evidence_dirty_path_count": 155,
+    "changed_paths": [
+      {
+        "path": ".mdkg/index/mdkg.sqlite",
+        "before": "dc12e7c319efb9ac22cc21dd29475be37389f103cd9036b324b9dd78b6f7d2d1",
+        "after": "23603c56bb3367126d720bd138910b248c29ebbdd190ec5f42145b478d0bdbbd"
+      },
+      {
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        "before": "631ce39ed115e877621fcc813e61e1c99c843227da366093554c91bb0a7c34f7",
+        "after": "66fd57afedd8748d8ea4aeaedb40a341642973dc20d742c5009d55281f4cef69"
+      },
+      {
+        "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+        "before": null,
+        "after": "3c7746c3d161a8f67ca7d3ee629b671231d412ff2ba6c6713a61a5cd79edeabd"
+      },
+      {
+        "path": "scripts/qualification-smoke.js",
+        "before": null,
+        "after": "95264669589387e90c12aae8c021e49755135ee6c097a7bf29c5a7a691c76a75"
+      },
+      {
+        "path": "scripts/smoke-command-matrix.js",
+        "before": null,
+        "after": "320b6849bb6992fff5ba2190c845bacc97b9388a1c7ae25125a6e916e73ae6d7"
+      },
+      {
+        "path": "tests/fixtures/cli-options.cjs",
+        "before": null,
+        "after": "9648a355d5d688d80b690fff18bcfcb3152b2522b351448cba0fd3ebef800206"
+      },
+      {
+        "path": "tests/installed-cli-options.test.mjs",
+        "before": null,
+        "after": "521a41daaa5eb13fc7ee57a6eaf12b2d282a5fbe623f14cbd1b38825783f240a"
+      }
+    ],
+    "removed_paths": [],
+    "unexpected": [],
+    "inherited_dirty_paths_preserved": true
+  },
+  "scope": {
+    "production_source_changed": false,
+    "package_inputs_changed": false,
+    "method": "Existing option vectors are invoked by the manifest-backed smoke:matrix using installed candidate bytes. All fixture subprocesses and native Git use the existing owned controllers.",
+    "owned_harness_paths": [
+      {
+        "path": "scripts/qualification-smoke.js",
+        "before_sha256": "1d680f22b8da873e5af7fec9ecb2dbd939a8abaaf0a481d771e2b0173f84a60c",
+        "after_sha256": "95264669589387e90c12aae8c021e49755135ee6c097a7bf29c5a7a691c76a75"
+      },
+      {
+        "path": "scripts/smoke-command-matrix.js",
+        "before_sha256": "9c9aa704a58c73bccdd91db965b8be392273096bbadd00ace9f608bf6ca590d5",
+        "after_sha256": "320b6849bb6992fff5ba2190c845bacc97b9388a1c7ae25125a6e916e73ae6d7"
+      },
+      {
+        "path": "tests/fixtures/cli-options.cjs",
+        "before_sha256": "47fa61377e81a86aeceb97471c3b75daf946b1b32d6b1cd817cae777c524c78e",
+        "after_sha256": "9648a355d5d688d80b690fff18bcfcb3152b2522b351448cba0fd3ebef800206"
+      },
+      {
+        "path": "tests/installed-cli-options.test.mjs",
+        "before_sha256": null,
+        "after_sha256": "521a41daaa5eb13fc7ee57a6eaf12b2d282a5fbe623f14cbd1b38825783f240a"
+      }
+    ]
+  },
+  "validation": {
+    "failing_before": {
+      "case": "CLI option qualification requires its owned controller before graph writes",
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "duration_ms": 69.413667,
+      "observed": "Legacy helper created the scenario before attempting to read a missing package contract; no owned-controller admission."
+    },
+    "focused": {
+      "exit_code": 0,
+      "tests": 107,
+      "pass": 107,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 7757.713375,
+      "command": "MDKG_SMOKE_TMPDIR=/private/tmp TMPDIR=/private/tmp /opt/homebrew/opt/node@24/bin/node --test tests/installed-cli-options.test.mjs tests/qualification-smoke.test.mjs tests/qualification-artifact.test.mjs tests/qualification-fixture.test.mjs tests/qualification-git.test.mjs"
+    },
+    "first_installed_run": {
+      "started_at": "2026-09-28T17:24:27.519Z",
+      "duration_ms": 52365.853292,
+      "exit_code": 0,
+      "receipt": {
+        "ok": true,
+        "smoke": "command-matrix",
+        "version": "0.6.0",
+        "option_qualification": {
+          "kind": "installed-cli-option-qualification",
+          "runtime": "v24.18.0",
+          "platform": "darwin",
+          "architecture": "arm64",
+          "package_version": "0.6.0",
+          "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+          "command_contract_hash": "3bd2bc75e083ea8d38e10c57f71b9b0084c5f4c9dfa7d2c2731a578a4cc47001",
+          "concrete_commands": 151,
+          "rejected_cases": 194,
+          "rejection_failures": [],
+          "installed_entrypoint_refusals": 388,
+          "unindexed_graph_refusals": 41,
+          "inventory_entry_count": 166,
+          "inventory_sha256": "e116afe44816e233cb0a323bf7589a9cddc92c5fc028e9f78e89179cd329bb88",
+          "subprocess_traps": [
+            "git",
+            "ssh",
+            "gh",
+            "curl"
+          ],
+          "subprocess_calls": 0,
+          "positive_controls": [
+            "db-index-verify-is-observational",
+            "explicit-index-still-rebuilds",
+            "new-task-lifecycle-and-show-alias",
+            "type-specific-manifest-and-test-options",
+            "explicit-positional-terminator",
+            "boolean-agent-before-init",
+            "agent-overload-help-and-legacy-separate-booleans"
+          ],
+          "git_index_preserved": true,
+          "unknown_file_preserved": true,
+          "final_artifact_qualification": false
+        },
+        "tarball_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "cleanup": {
+          "removed": true,
+          "root": "/private/tmp/mdkg-command-matrix-dN9jm4"
+        }
+      }
+    },
+    "final_installed_run": {
+      "command": "PATH=/opt/homebrew/opt/node@24/bin:$PATH MDKG_SMOKE_TMPDIR=/private/tmp TMPDIR=/private/tmp NPM_CONFIG_OFFLINE=true node scripts/smoke-command-matrix.js",
+      "exit_code": 0,
+      "receipt": {
+        "ok": true,
+        "smoke": "command-matrix",
+        "version": "0.6.0",
+        "option_qualification": {
+          "kind": "installed-cli-option-qualification",
+          "runtime": "v24.18.0",
+          "platform": "darwin",
+          "architecture": "arm64",
+          "package_version": "0.6.0",
+          "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+          "command_contract_hash": "3bd2bc75e083ea8d38e10c57f71b9b0084c5f4c9dfa7d2c2731a578a4cc47001",
+          "concrete_commands": 151,
+          "rejected_cases": 194,
+          "rejection_failures": [],
+          "installed_entrypoint_refusals": 388,
+          "unindexed_graph_refusals": 41,
+          "inventory_entry_count": 166,
+          "inventory_sha256": "dec7ecc33790d674e7eff37f32d604b69dd164b2a4eb242870d7b437702d5cc3",
+          "subprocess_traps": [
+            "git",
+            "ssh",
+            "gh",
+            "curl"
+          ],
+          "subprocess_calls": 0,
+          "subprocess_evidence_scope": "zero hits on the four PATH executable traps; not universal process instrumentation",
+          "inventory_scope": "complete option-qualification subtree including its graph and native Git metadata",
+          "positive_controls": [
+            "db-index-verify-is-observational",
+            "explicit-index-still-rebuilds",
+            "new-task-lifecycle-and-show-alias",
+            "type-specific-manifest-and-test-options",
+            "explicit-positional-terminator",
+            "boolean-agent-before-init",
+            "agent-overload-help-and-legacy-separate-booleans"
+          ],
+          "git_index_preserved": true,
+          "unknown_file_preserved": true,
+          "final_artifact_qualification": false
+        },
+        "tarball_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "cleanup": {
+          "removed": true,
+          "root": "/private/tmp/mdkg-command-matrix-BQOetA"
+        }
+      },
+      "duration_ms": null,
+      "duration_note": "Elapsed duration not instrumented for final readback rerun; preceding same-lane smoke measured 52365.853292 ms."
+    },
+    "graph_sqlite_diff": {
+      "full": {
+        "exit_code": 0,
+        "ok": true,
+        "errors": 0,
+        "warnings": [
+          "subgraph ai_native_sdlc_demo: bundle age 4119183s exceeds max_stale_seconds 86400",
+          "subgraph demo_agentic_coding: bundle age 5501843s exceeds max_stale_seconds 2592000",
+          "subgraph template_mdkg_dev: bundle age 5501842s exceeds max_stale_seconds 2592000"
+        ]
+      },
+      "changed": {
+        "exit_code": 0,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "sqlite": {
+        "exit_code": 0,
+        "ok": true,
+        "passed": 5,
+        "total": 5
+      },
+      "ci_workflow": {
+        "exit_code": 0,
+        "result": "matches deterministic source"
+      },
+      "command_contract": {
+        "exit_code": 0,
+        "hash": "3bd2bc75e083ea8d38e10c57f71b9b0084c5f4c9dfa7d2c2731a578a4cc47001"
+      },
+      "diff_check": {
+        "exit_code": 0
+      },
+      "goal_evaluation": "report-only; no scripts run or completion claimed"
+    }
+  },
+  "independent_review": {
+    "mode": "bounded read-only static source/diff; no independent execution",
+    "finding": "A real controller from fixture A could be combined with paths under fixture B and create B directories before the first process refusal.",
+    "correction": "Bind controller.assertOwned() and its immutable fixtureRoot to the supplied root before any fixture directories are created; regress mismatched and released real controllers.",
+    "final_readback": "No remaining concrete defect evidenced in reviewed scope.",
+    "reviewed_fixture_sha256": "9648a355d5d688d80b690fff18bcfcb3152b2522b351448cba0fd3ebef800206"
+  },
+  "evidence_limits": [
+    "Four PATH executable traps are not universal subprocess instrumentation.",
+    "Filesystem inventory covers the option-qualification subtree, including its graph and native Git metadata, not every host path.",
+    "This normally packed/installed candidate is intermediate and was removed with its owned fixture; identical bytes match Task839 but no final retained artifact is sealed.",
+    "macOS arm64 Node24.18.0 only; final macOS/Linux platform and exact-candidate gates remain open.",
+    "No full repository/coverage/ladder or security clearance is inferred from focused harness tests or this static review."
+  ],
+  "disposition": {
+    "test486": "progress; final acceptance remains open",
+    "goal86": "active; NOT_READY",
+    "goal85": "paused; publication authority withheld",
+    "goal87": "paused/unclaimed",
+    "bugs46_47": "DEFERRED / UNRESOLVED; not accepted or fixed",
+    "skills": [
+      "pursue-mdkg-goal",
+      "build-pack-and-execute-task",
+      "verify-close-and-checkpoint"
+    ],
+    "skill_candidates": []
+  },
+  "protected_bookend": [
+    {
+      "path": ".mdkg/state/selected-goal.json",
+      "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      "expected": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      "current": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      "matches": true
+    },
+    {
+      "path": ".mdkg/db/runtime/project.sqlite",
+      "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      "expected": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      "current": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      "matches": true
+    },
+    {
+      "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+      "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "expected": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "current": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "matches": true
+    }
+  ],
+  "release_state": {
+    "path": "release/public-release.json",
+    "sha256": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "final_bookend": {
+    "at": "2026-09-28T17:39:44.081Z",
+    "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "branch": "main",
+    "staged": "",
+    "dirty_count": 157,
+    "changes_from_entry": [
+      ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      ".mdkg/artifacts/goal-86/test-486-local-option-qualification.json",
+      ".mdkg/index/mdkg.sqlite",
+      ".mdkg/work/chk-657-bind-installed-cli-option-qualification-to-owned-fixtures-and-the-release-matrix.md",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+      "scripts/qualification-smoke.js",
+      "scripts/smoke-command-matrix.js",
+      "tests/fixtures/cli-options.cjs",
+      "tests/installed-cli-options.test.mjs"
+    ],
+    "removed": [],
+    "unexpected": [],
+    "protected": [
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+        "unchanged": true
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+        "unchanged": true
+      },
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+        "unchanged": true
+      }
+    ],
+    "release_state_sha256": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91",
+    "locks": {
+      "mdkg": false,
+      "git": false
+    },
+    "goal_scope": {
+      "done": 32,
+      "total": 48,
+      "open": [
+        {
+          "id": "test-488",
+          "status": "backlog"
+        },
+        {
+          "id": "test-477",
+          "status": "backlog"
+        },
+        {
+          "id": "test-478",
+          "status": "backlog"
+        },
+        {
+          "id": "test-479",
+          "status": "backlog"
+        },
+        {
+          "id": "test-480",
+          "status": "backlog"
+        },
+        {
+          "id": "test-481",
+          "status": "backlog"
+        },
+        {
+          "id": "test-482",
+          "status": "backlog"
+        },
+        {
+          "id": "test-483",
+          "status": "backlog"
+        },
+        {
+          "id": "test-484",
+          "status": "backlog"
+        },
+        {
+          "id": "test-486",
+          "status": "progress"
+        },
+        {
+          "id": "test-487",
+          "status": "backlog"
+        },
+        {
+          "id": "task-826",
+          "status": "backlog"
+        },
+        {
+          "id": "bug-7",
+          "status": "progress"
+        },
+        {
+          "id": "task-828",
+          "status": "backlog"
+        },
+        {
+          "id": "task-829",
+          "status": "backlog"
+        },
+        {
+          "id": "task-830",
+          "status": "backlog"
+        }
+      ]
+    },
+    "receipt_finalization_note": "This evidence-only JSON update follows the measured bookend; the receipt does not bind its own recursive hash. No node/package input changes follow."
+  }
+}

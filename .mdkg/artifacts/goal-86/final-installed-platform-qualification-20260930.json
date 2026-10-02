@@ -1,0 +1,519 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-exact-candidate-final-local-platform-composition",
+  "owner": "mdkg-project-agent",
+  "recorded_at": "2026-09-30T03:52:00Z",
+  "source_revision": "c313d80407b43797ef0a530a91b645951fdafb81",
+  "candidate_sha256": "f7cbdc1dad6d4ab0faa1e8f1ef74ef6d38e706491aa278926ba1d7717a0db1e9",
+  "package_inputs_sha256": "7614e6190031f0f7575a9479bcd951217d1feaf357daec1a162da05ab725b73d",
+  "current_harness_inputs_sha256": "992a23fb579931d02abc04eee322565ff73587dc9134c10fc925de1919952627",
+  "state": "passed-current",
+  "release_readiness": "NOT_READY",
+  "matrix": [
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "execution": "native",
+      "os": "macOS kernel 25.4.0",
+      "node": "v24.18.0",
+      "git": "2.50.1 Apple Git-155",
+      "state": "passed-current",
+      "families": 18,
+      "current_audit_unique_cases": 229,
+      "evidence": {
+        "path": "/private/tmp/mdkg-macos-final-results-xzL4zP/receipt.json",
+        "sha256": "9f376764386b5053d701685658909a0ebde85aceeb267ce12ced93249ac373f3",
+        "pass": true,
+        "environment": {
+          "platform": "darwin",
+          "arch": "arm64",
+          "node": "v24.18.0",
+          "os": "25.4.0",
+          "git": "git version 2.50.1 (Apple Git-155)"
+        },
+        "candidate": "f7cbdc1dad6d4ab0faa1e8f1ef74ef6d38e706491aa278926ba1d7717a0db1e9",
+        "families": [
+          {
+            "name": "bootstrap",
+            "pass": true,
+            "duration_ms": 47867,
+            "stdout_sha256": "d58d83f7c1f126efa74567613cfb8d0d05bc6e56272a8b0f25bbe0688cdba4c4",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "collaboration",
+            "pass": true,
+            "duration_ms": 301502,
+            "stdout_sha256": "a6f23d59d0a66c148f74164f1880b5dc28814e115f88b6a8ba92cc3a9138e1e1",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "gitdir",
+            "pass": true,
+            "duration_ms": 48363,
+            "stdout_sha256": "de56d5e4c4b1b3453dae719c7daa5424705bf6e324d2c3c092b4a40d8f62dfaf",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "submodule",
+            "pass": true,
+            "duration_ms": 51170,
+            "stdout_sha256": "fd5c5a60467907295765df1d58f3ebce3e0ffeecadee2b29e0b27ad66cdd7abf",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ownership",
+            "pass": true,
+            "duration_ms": 149762,
+            "stdout_sha256": "493c963e931c97e2e736c9a148469d0a56e7c12703c25f19a420d08258812db2",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "state-admission",
+            "pass": true,
+            "duration_ms": 9109,
+            "stdout_sha256": "737b9c8422195b41f2453b1e9cf54f3dcddb31c5b2f3cf25e3230679ce44a5ab",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "containment",
+            "pass": true,
+            "duration_ms": 63434,
+            "stdout_sha256": "b390497e52345541fdcd2eafe42ac1b0773b2f58584005972bc225b35a591d63",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "remedies",
+            "pass": true,
+            "duration_ms": 232742,
+            "stdout_sha256": "b39c52c36835ce78f48d80c03fab8688d7a476ab7caa3e5d0bb9ce97d096f0a2",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "compatibility",
+            "pass": true,
+            "duration_ms": 110308,
+            "stdout_sha256": "35fcdda0b20ed6d08d989635f3a967aaecdfee1a6203b591dd3babd31a2c537c",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "work",
+            "pass": true,
+            "duration_ms": 82280,
+            "stdout_sha256": "4bf84dff2253e55c0743817fa4f6bf0028820ae18a9c2491d7511eba7c7f7850",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "runtime",
+            "pass": true,
+            "duration_ms": 24163,
+            "stdout_sha256": "1409289dd42075d193a80ddaa4b62625aad33181201dd1aa401d90a4fabc9427",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "behavior",
+            "pass": true,
+            "duration_ms": 167596,
+            "stdout_sha256": "33c15d127d4fed890515c41ee01747d69ee3b4a50268b2544964121bad8090b3",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "pack-controls",
+            "pass": true,
+            "duration_ms": 1588,
+            "stdout_sha256": "36301c9721e0d9f68b05daadbafb10baa7a295d4ab5a749d22ff4cca8fd72ae2",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "generic",
+            "pass": true,
+            "duration_ms": 5560,
+            "stdout_sha256": "2b2f4c9e51d624349f8963ecf9ccc879a6b257cd8d6323bacc32cec793077441",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "readonly",
+            "pass": true,
+            "duration_ms": 32342,
+            "stdout_sha256": "ccf7ba0f85d56005f351ca76fa6cd0d8e4d18433afd1cee13b50fdd5d49d707c",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "scale",
+            "pass": true,
+            "duration_ms": 725566,
+            "stdout_sha256": "8301b6f6c17500442926e40a53c8e03dfda6c49e31fd4892ba2cc370984f7967",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "capability-umask",
+            "pass": true,
+            "duration_ms": 1278,
+            "stdout_sha256": "cdf5b09c8ca6d110fb604ffd27af06da84b41996548a0464cb0e885d717adfa6",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "current-audit",
+            "pass": true,
+            "duration_ms": 138296,
+            "stdout_sha256": "6f62846699356773df7fc2764139f77035a7a7bd7c1752c8e8540e5df0c66e99",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "unverified": []
+      }
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "execution": "native Linux ARM64 on ARM64 host",
+      "os": "Ubuntu24.04.4",
+      "node": "v24.18.0",
+      "git": "2.43.0",
+      "state": "passed-current-composite",
+      "families": 19,
+      "current_audit_unique_cases": 229,
+      "evidence_paths": [
+        {
+          "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-arm64-results/receipt.json",
+          "sha256": "1b223e9023f2f7adc408fe6b0c01d47497aa83343a76fbf174cc834972adde13",
+          "pass": false,
+          "environment": {
+            "platform": "linux",
+            "arch": "arm64",
+            "node": "v24.18.0",
+            "git": "git version 2.43.0",
+            "native_or_emulated": "native ARM64 Linux on ARM64 host"
+          },
+          "passed_families": [
+            "bootstrap",
+            "collaboration",
+            "gitdir",
+            "submodule",
+            "ownership",
+            "state-admission",
+            "containment",
+            "remedies",
+            "compatibility",
+            "work",
+            "runtime",
+            "behavior",
+            "pack-controls",
+            "generic",
+            "options",
+            "readonly",
+            "capability-umask"
+          ],
+          "failed_families": [
+            "current-audit"
+          ],
+          "stream_hashes": []
+        },
+        {
+          "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-arm64-audit-supplement/receipt.json",
+          "sha256": "01c0d8b5eedfdb181f92e44e09e6d6a5244a87d45666760b6cdd4100d05f2980",
+          "pass": true,
+          "environment": null,
+          "stream_hashes": [
+            {
+              "stream": "stdout",
+              "sha256": "69130c0331f187fe4bc373aeb33b5078cc6df3b8e50d9a23a8bb6dc40e9bd59f"
+            },
+            {
+              "stream": "stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "stdout_sha256": "69130c0331f187fe4bc373aeb33b5078cc6df3b8e50d9a23a8bb6dc40e9bd59f",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "supplement_case_counts": [
+            {
+              "family": "commands/fix.test.js",
+              "counts": {
+                "tests": 30,
+                "pass": 30,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              }
+            },
+            {
+              "family": "graph/capabilities_indexer.test.js",
+              "counts": {
+                "tests": 10,
+                "pass": 10,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              }
+            },
+            {
+              "family": "commands/subgraph.test.js",
+              "counts": {
+                "tests": 21,
+                "pass": 21,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              }
+            },
+            {
+              "family": "commands/command_contract.test.js",
+              "counts": {
+                "tests": 3,
+                "pass": 3,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              }
+            }
+          ],
+          "duration_ms": 48241
+        },
+        {
+          "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-arm64-scale/receipt.json",
+          "sha256": "413f14198bf901edf86e5c0758397fd9d0129cdbf31fe97a76577c3b70055700",
+          "pass": true,
+          "environment": {
+            "platform": "linux",
+            "arch": "arm64",
+            "node": "v24.18.0",
+            "git": "git version 2.43.0",
+            "native_or_emulated": "native ARM64 Linux on ARM64 host"
+          },
+          "passed_families": [
+            "scale"
+          ],
+          "failed_families": [],
+          "stream_hashes": []
+        }
+      ]
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "execution": "emulated x86_64 on ARM64 host",
+      "os": "Ubuntu24.04.4",
+      "node": "v24.18.0",
+      "git": "2.43.0",
+      "state": "passed-current-composite",
+      "families": 19,
+      "current_audit_unique_cases": 229,
+      "evidence_paths": [
+        {
+          "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-results/receipt.json",
+          "sha256": "8946ceb3966bf60c0db5a5543e6abf1212eb95df4b46f7b8fa4ea57f21dce261",
+          "pass": false,
+          "environment": {
+            "platform": "linux",
+            "arch": "x64",
+            "node": "v24.18.0",
+            "git": "git version 2.43.0",
+            "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+          },
+          "passed_families": [
+            "bootstrap",
+            "collaboration",
+            "gitdir",
+            "submodule",
+            "ownership",
+            "state-admission",
+            "containment",
+            "remedies",
+            "compatibility",
+            "work",
+            "runtime",
+            "behavior",
+            "pack-controls",
+            "generic",
+            "options",
+            "readonly",
+            "capability-umask"
+          ],
+          "failed_families": [
+            "current-audit"
+          ],
+          "stream_hashes": []
+        },
+        {
+          "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-audit-supplement/receipt.json",
+          "sha256": "217a802275c5b570a2229ec114ad9ab588b358568479cea887ecd2f2c7cfb42d",
+          "pass": true,
+          "environment": null,
+          "stream_hashes": [
+            {
+              "stream": "stdout",
+              "sha256": "c8bb6fac9cc951a3ce499210056f6558898e38991aa57911f7e62272c99be606"
+            },
+            {
+              "stream": "stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "stdout_sha256": "c8bb6fac9cc951a3ce499210056f6558898e38991aa57911f7e62272c99be606",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "supplement_case_counts": [
+            {
+              "family": "commands/fix.test.js",
+              "counts": {
+                "tests": 30,
+                "pass": 30,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              }
+            },
+            {
+              "family": "graph/capabilities_indexer.test.js",
+              "counts": {
+                "tests": 10,
+                "pass": 10,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              }
+            },
+            {
+              "family": "commands/subgraph.test.js",
+              "counts": {
+                "tests": 21,
+                "pass": 21,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              }
+            },
+            {
+              "family": "commands/command_contract.test.js",
+              "counts": {
+                "tests": 3,
+                "pass": 3,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              }
+            }
+          ],
+          "duration_ms": 314534
+        },
+        {
+          "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-scale/receipt.json",
+          "sha256": "a4f3fd8670948956d74d7ccb2c05301a6c20447a50d262993dcfb92adabad111",
+          "pass": false,
+          "environment": {
+            "platform": "linux",
+            "arch": "x64",
+            "node": "v24.18.0",
+            "git": "git version 2.43.0",
+            "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+          },
+          "passed_families": [],
+          "failed_families": [
+            "scale"
+          ],
+          "stream_hashes": []
+        },
+        {
+          "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-scale-json-retry/receipt.json",
+          "sha256": "83dc30448f9685526d8a8db9469fe6c7b6abc21c3ddc176026bf5e3a3632ab7c",
+          "pass": true,
+          "environment": null,
+          "stream_hashes": [
+            {
+              "stream": "stdout",
+              "sha256": "89ce155d90dcc3ce726589acee8aea13f1249a6b93c937fc013f36b7057c7ae5"
+            },
+            {
+              "stream": "stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "stdout_sha256": "89ce155d90dcc3ce726589acee8aea13f1249a6b93c937fc013f36b7057c7ae5",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "duration_ms": 753982
+        },
+        {
+          "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-scale-sqlite/receipt.json",
+          "sha256": "0cea308ae3a805d4d4b6db914cc1cd74021667872f75c54a344c5f178c823cbe",
+          "pass": true,
+          "environment": null,
+          "stream_hashes": [
+            {
+              "stream": "stdout",
+              "sha256": "c323193c6d81afb9e82c7874f54b5874bd814020ba87d361d25a84dec4b9dfa0"
+            },
+            {
+              "stream": "stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "stdout_sha256": "c323193c6d81afb9e82c7874f54b5874bd814020ba87d361d25a84dec4b9dfa0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "duration_ms": 766993
+        }
+      ]
+    }
+  ],
+  "composition": {
+    "linux_current_audit": "First eleven families:165 distinct passes; fix/capability/subgraph/command-contract supplement:64 distinct passes. Failed fix family fully rerun; prior29 successful cases not counted twice.",
+    "fixture_correction": {
+      "path": "tests/commands/fix.test.ts",
+      "sha256": "2cb0f9a05d69edbbc9dbe980f032a0bf65f0e8f54750ec84b680805981d77a11",
+      "compiled_sha256": "261da8e26c770d9465a099eb24526a348df0d96b8716fd0c1570234049929468",
+      "reason": "Git2.43 ort rename inference ignored merge.renames=false fixture assumption; explicit recursive/no-renames creates intended add/add case without weakening ancestry assertion.",
+      "macos_source_regression": {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/fix-portable-source-macos.tap",
+        "passed": 30,
+        "failed": 0
+      },
+      "linux_supplement_counts_per_architecture": {
+        "fix": 30,
+        "capabilities_indexer": 10,
+        "subgraph": 21,
+        "command_contract": 3
+      }
+    },
+    "scale": {
+      "nodes": 2000,
+      "events": 20000,
+      "backends": [
+        "json",
+        "sqlite"
+      ],
+      "legacy_and_v2": true,
+      "warm_and_cold": true,
+      "history_limits_and_goal_routing": true,
+      "macos": "complete pass",
+      "linux_arm64": "complete pass",
+      "linux_x86_64": "original600000ms JSONv2 migration timeout retained; one explicit900000ms JSON retry and remaining SQLite execution pass",
+      "retry_changes": "temporary harness allowance/backend selection only; no runtime/source/candidate changes",
+      "no_performance_sla": true
+    },
+    "runtime": "Minimum and selected supported runtime both24.18.0, counted once per platform. Actual24.15.0 and26.0.0 refuse ordinary operations early without effects; documented help/version exceptions remain. Actual published0.5.2 legacy/v2 and upgrade controls run.",
+    "proof_kind": "Installed unchanged final payload; some internal-module regressions executed as inert test additions with canonical source imports refused. These are not all black-box CLI-only cases."
+  },
+  "independent_security": {
+    "scan_id": "e5e0584a-bdfc-4da0-8c41-7e5edd4d8bba",
+    "state": "missing",
+    "stage": "preflight ready; threat model/discovery pending",
+    "base_revision": "e42f1d93497119c9a1f8684df926510da91dea42",
+    "head_revision": "c313d80407b43797ef0a530a91b645951fdafb81"
+  },
+  "limitations": [
+    "Bugs46/47 deferred unresolved, not fixed/accepted",
+    "Windows unqualified; hosted CI and nine non-shipping website smokes deferred",
+    "Container root is read-only; owned fixtures use native ext4 volume, no canonical/credential/socket bind mounts",
+    "x86_64 is emulated, not native performance or all-host-filesystem proof",
+    "No blocked historical context access, no remote Git/publication/provider/deployment",
+    "Platform pass alone does not close independent Task828,Task829 acceptance or Task830 seal"
+  ],
+  "skill_candidates": []
+}

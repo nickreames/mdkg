@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "kind": "task843-package-gates-and-retained-admission",
+  "status": "focused-qualified-awaiting-independent-readback",
+  "owners": [
+    "root:task-843",
+    "root:test-490"
+  ],
+  "decision": "root:dec-100",
+  "source_head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "git": {
+    "branch": "main",
+    "cached_divergence": "69\t0",
+    "staged": "",
+    "remote_verified": false,
+    "commits_created": []
+  },
+  "candidate": {
+    "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "bytes": 536766,
+    "original_capture_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+    "new_manifest": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.package-inputs-dec100.json",
+    "new_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+    "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+    "payload_sha256": "9f84bd149a11c673753b8c412dc0f151d8bbd7b15f6f27431273168988134a34",
+    "payload_files": 234,
+    "repacked": false,
+    "note": "Dec100 capture binds current package inputs through exact234-file built-payload equivalence; it does not rewrite or claim completeness of the historical source capture."
+  },
+  "harness_inputs": ".mdkg/artifacts/goal-86/task-843-qualification-inputs.json",
+  "harness_sha256": "f2aa82a20e5f650bdaae9777f7c7394a989fe1b79cc3f221dcf0b606d6c3b8cb",
+  "profile": {
+    "canonical_inventory": 46,
+    "package_required": 37,
+    "website_deferred": 9,
+    "website_profiles_preserved": 9,
+    "hosted_state": "unqualified_stub",
+    "followups": [
+      "root:epic-257",
+      "root:epic-258"
+    ]
+  },
+  "validation": [
+    {
+      "command": "MDKG_RELEASE_SCOPE=repository node --test dist/tests/release-ladder.test.js dist/tests/dependency-boundary.test.js dist/tests/ci-topology.test.js tests/package-release-profile.test.mjs tests/qualification-artifact.test.mjs",
+      "node": "v24.18.0",
+      "platform": "darwin-arm64",
+      "pass": 71,
+      "fail": 0,
+      "skip": 0,
+      "duration_ms": 2116.499125,
+      "tier": "focused subsystem and shared-helper callers"
+    },
+    {
+      "command": "npm run build:test",
+      "exit": 0
+    },
+    {
+      "command": "node scripts/generate-ci-workflow.js --check",
+      "exit": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    {
+      "command": "node dist/cli.js validate --changed-only --summary --json --limit10",
+      "errors": 0,
+      "warnings": 0
+    }
+  ],
+  "real_prepack": ".mdkg/artifacts/goal-86/task-843-isolated-package-gates.json",
+  "mechanical_runner_control": {
+    "actual_runner": true,
+    "external_gates_stubbed": true,
+    "executions": 37,
+    "pack_invocations": 0,
+    "staging_unchanged": true,
+    "replacement_refused": true,
+    "note": "Not a full ladder or installed behavioral pass."
+  },
+  "review_findings": [
+    {
+      "id": "task843-review-1",
+      "severity": "P1",
+      "finding": "retained path under dist could be removed by build",
+      "remedy": "admission rejects artifact and input manifest in mutable build outputs",
+      "regressions": "retained tarball/inputs cannot reside in mutable build output"
+    },
+    {
+      "id": "task843-review-2",
+      "severity": "P2",
+      "finding": "same-byte replacement accepted by independent hash checks",
+      "remedy": "pin path/device/inode/bytes/hash across admissions and consumers",
+      "regressions": "retained tarball/inputs same-byte replacement and consumer replacement"
+    },
+    {
+      "id": "task843-review-3",
+      "severity": "P2",
+      "finding": "default scope test inherited repository environment",
+      "remedy": "isolate unset default and assert inherited repository control",
+      "regressions": "entire71-test suite passes with MDKG_RELEASE_SCOPE=repository"
+    }
+  ],
+  "failed_iterations": [
+    {
+      "kind": "test fixture setup",
+      "count": 2,
+      "detail": "New mechanical runner first used a disallowed Git authority override, then omitted required engine metadata. Corrected fixture without weakening production guards; both cases now pass."
+    }
+  ],
+  "protected": {
+    "before": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+    },
+    "after": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+    }
+  },
+  "remaining": [
+    "Task828 independent current-source and complete remediation-diff acceptance",
+    "Task829 real full package ladder and coverage",
+    "Missing installed family/platform cases",
+    "Task830 seal and shared goal acceptance",
+    "Linux x86_64 local executor not found; no new host installation authorized"
+  ],
+  "infrastructure": {
+    "linux_x86_64": "missing authorized executor",
+    "checked": [
+      "/opt/homebrew/bin/qemu-system-x86_64",
+      "/usr/local/bin/qemu-system-x86_64",
+      "/opt/homebrew/opt/qemu/bin/qemu-system-x86_64",
+      "/Applications/UTM.app/Contents/MacOS/qemu-x86_64-softmmu",
+      "/Applications/UTM.app/Contents/MacOS/qemu-system-x86_64"
+    ],
+    "existing_lima": {
+      "architecture": "aarch64",
+      "status": "Stopped",
+      "custody": "unrelated and untouched"
+    }
+  },
+  "authority_used": "Goal86 bounded local repository-owned qualification infrastructure, mdkg records and disposable fixtures",
+  "publication": "none",
+  "skills": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": [],
+  "release_state": "NOT_READY"
+}

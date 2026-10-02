@@ -1,0 +1,632 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-test477-local-installed-bootstrap-qualification",
+  "goal_qid": "root:goal-86",
+  "work_qid": "root:test-477",
+  "checkpoint_qid": "root:chk-658",
+  "recorded_at": "2026-09-28T18:01:30.504Z",
+  "status": "LOCAL_INTERMEDIATE_PASS_NOT_RELEASE_READY",
+  "authority": {
+    "owner": "mdkg-project-agent",
+    "contract": "Goal86 Run and Dec98; one writer; local-only qualification and mdkg evidence",
+    "persistent_lease_acquired": false,
+    "canonical_git_mutation": false,
+    "remote_actions": false,
+    "blocked_context_access": false,
+    "skill_candidates": []
+  },
+  "baseline": {
+    "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "branch": "main",
+    "cached_upstream": "origin/main",
+    "ahead": 69,
+    "behind": 0,
+    "remote_verified": false,
+    "dirty_paths": 157,
+    "staged_paths": [],
+    "custody": "Preserved attributable Goal86 partial work; path/hash re-inventory found only current Test477 owned movement.",
+    "protected_sha256": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+    }
+  },
+  "runner": {
+    "path": ".mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+    "sha256": "87c2b24907ed8c23a05de719ed3db34c530b22310f4ba8fee35bffbd6776416f",
+    "command": "MDKG_EXPECTED_CANDIDATE_SHA256=<candidate.sha256> MDKG_PUBLISHED_052_TARBALL=<verified local 0.5.2 archive> MDKG_REAL_NPM=<local npm-cli.js> node .mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+    "entrypoints": [
+      "scripts/smoke-init.js",
+      "scripts/smoke-upgrade.js"
+    ],
+    "selection": "Reuse installed manifest-backed init/upgrade smokes. No source or package input changed; final full suite and ladder remain Task829 gates."
+  },
+  "candidate": {
+    "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+    "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "bytes": 536766,
+    "integrity": "sha512-uceQapU39WgfiPoElMBvqsCoclwU+zwOjUq+FD+KeV5psJKaFHZ4FTs/hkv+wlbq+J8IwKATXBAKqWmOdkzU3A==",
+    "retained": true,
+    "sealed": false,
+    "input_capture": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+    "input_capture_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab"
+  },
+  "source_inputs": {
+    "sha256": "d9b9f29233b9727fd7a5b0d5f8bb43fd4afc589eae6e6b6b9c89df32b9e8369a",
+    "file_count": 273,
+    "manifest": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json"
+  },
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "supported_contract": ">=24.18.0 <25 plus required SQLite capabilities"
+  },
+  "published_baseline": {
+    "version": "0.5.2",
+    "url": "https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz",
+    "bytes": 425431,
+    "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+    "source": "verified-local-cache-no-download",
+    "provenance": ".mdkg/artifacts/goal-83/baseline.json",
+    "git_head_in_registry_record": null,
+    "source_revision_inferred": false
+  },
+  "attempts": [
+    {
+      "result": "HARNESS_FAILURE_BEFORE_PRODUCT_TESTS",
+      "message": "Unexpected token 'd', \"dependency\"... is not valid JSON",
+      "completed_smokes": 0,
+      "cause": "npm prepack lifecycle output precedes pack JSON; whole-stdout JSON.parse was invalid.",
+      "remedy": "Use existing final expected pack-filename convention and independently verify exact artifact hash."
+    },
+    {
+      "result": "INTERMEDIATE_PASS_BEFORE_REVIEW_AMENDMENT",
+      "init_ms": 11819.094792,
+      "upgrade_ms": 30615.320166,
+      "disposition": "Superseded by final rerun after adding source-input capture before/after checks."
+    },
+    {
+      "result": "PASS",
+      "started_at": "2026-09-28T17:53:06.842Z",
+      "repacked": false,
+      "source_inputs_unchanged": true,
+      "smokes": [
+        {
+          "entrypoint": "scripts/smoke-init.js",
+          "duration_ms": 11791.407000000001,
+          "exit_code": 0,
+          "signal": null,
+          "artifact_verification": {
+            "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "bytes": 536766
+          },
+          "input_capture_verification": {
+            "before_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+            "after_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+            "bytes": 46932
+          }
+        },
+        {
+          "entrypoint": "scripts/smoke-upgrade.js",
+          "duration_ms": 30820.74925,
+          "exit_code": 0,
+          "signal": null,
+          "artifact_verification": {
+            "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "bytes": 536766
+          },
+          "input_capture_verification": {
+            "before_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+            "after_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+            "bytes": 46932
+          }
+        }
+      ]
+    }
+  ],
+  "case_evidence": {
+    "initialization": {
+      "default_compact": true,
+      "explicit_agent": true,
+      "graph_only": true,
+      "customized_discovery": {
+        "runtime": "v24.18.0",
+        "initial": {
+          "skills": 6,
+          "local_links": 16,
+          "native_targets": 2
+        },
+        "resources": {
+          "skills": 6,
+          "local_links": 16,
+          "native_targets": 2
+        },
+        "synthetic_resource_files": 3,
+        "customized_entrypoints": 2,
+        "project_files_preserved": 4,
+        "git_index_preserved": true,
+        "discovery_observational": true,
+        "resources_executed": false
+      },
+      "fixture_cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-bootstrap-qualification-Gk2COy/mdkg-init-H4prcM"
+      }
+    },
+    "current_upgrade_cases": [
+      "missing-managed-files",
+      "custom-root-guidance",
+      "old-template-fallback",
+      "legacy-spec-migration",
+      "manifest-spec-sibling-conflict",
+      "custom-spike-template",
+      "ignored-event-log"
+    ],
+    "actual_published_upgrades": [
+      {
+        "case": "published-upgrade-qualified",
+        "runtime": "v24.18.0",
+        "task": "task-1",
+        "user_bytes_preserved": true,
+        "customized_both_entrypoints": true,
+        "canonical_skill_mirrors_equal": true,
+        "custom_skill_preservation_decision": "not applicable",
+        "git_index_unchanged": true,
+        "repeated_preview_noop": true,
+        "repeated_apply_noop": true,
+        "applied_path_count": 41,
+        "applied_paths": [
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/core/COLLABORATION.md",
+          ".mdkg/core/guide.md",
+          ".mdkg/core/HUMAN.md",
+          ".mdkg/core/rule-1-mdkg-conventions.md",
+          ".mdkg/core/rule-2-context-pack-rules.md",
+          ".mdkg/core/rule-3-cli-contract.md",
+          ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+          ".mdkg/core/rule-5-release-and-versioning.md",
+          ".mdkg/core/rule-6-templates-and-schemas.md",
+          ".mdkg/core/SOUL.md",
+          ".mdkg/llms.txt",
+          ".mdkg/README.md",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/templates/default/work.md",
+          ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          "AGENTS.md",
+          "CLAUDE.md",
+          "AGENT_START.md",
+          "CLI_COMMAND_MATRIX.md",
+          "llms.txt",
+          ".mdkg/skills/registry.md",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/init-manifest.json"
+        ],
+        "baseline_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540"
+      },
+      {
+        "case": "published-customized-upgrade-qualified",
+        "runtime": "v24.18.0",
+        "task": "task-1",
+        "user_bytes_preserved": true,
+        "customized_both_entrypoints": true,
+        "canonical_skill_mirrors_equal": true,
+        "custom_skill_preservation_decision": "explicit --only excluding custom canonical skill; conflict retained",
+        "git_index_unchanged": true,
+        "repeated_preview_noop": true,
+        "repeated_apply_noop": false,
+        "applied_path_count": 40,
+        "applied_paths": [
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/core/COLLABORATION.md",
+          ".mdkg/core/guide.md",
+          ".mdkg/core/HUMAN.md",
+          ".mdkg/core/rule-1-mdkg-conventions.md",
+          ".mdkg/core/rule-2-context-pack-rules.md",
+          ".mdkg/core/rule-3-cli-contract.md",
+          ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+          ".mdkg/core/rule-5-release-and-versioning.md",
+          ".mdkg/core/rule-6-templates-and-schemas.md",
+          ".mdkg/core/SOUL.md",
+          ".mdkg/llms.txt",
+          ".mdkg/README.md",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/templates/default/work.md",
+          ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          "AGENTS.md",
+          "CLAUDE.md",
+          "AGENT_START.md",
+          "CLI_COMMAND_MATRIX.md",
+          "llms.txt",
+          ".mdkg/skills/registry.md",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/init-manifest.json"
+        ],
+        "baseline_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540"
+      }
+    ],
+    "interrupted_upgrade": {
+      "fault_model": "Caught error injected after a successful rename; not abrupt process termination.",
+      "action": "installed-upgrade-recovery-qualified",
+      "runtime": "v24.18.0",
+      "cases": [
+        {
+          "mode": "resume",
+          "position": "first",
+          "writes": 41,
+          "observed_written": 1,
+          "state": "completed",
+          "unknown_and_git_preserved": true,
+          "changed_user_bytes_refused": false,
+          "stale_preview": {
+            "wrapper": "AGENTS.md",
+            "reviewed_hash": "c7f7dc464031ba720d29b58d125c73fd2855105b121934e4e638008a15c5132a",
+            "fresh_hash": "e305314b0368da283d7fa6a7f0ab18c4e83c6bcd75feaca63b58c3330d8c86fe",
+            "exit": 1,
+            "all_bytes_preserved": true,
+            "journal_absent": true,
+            "edited_wrapper_preserved": true
+          }
+        },
+        {
+          "mode": "resume",
+          "position": "middle",
+          "writes": 41,
+          "observed_written": 21,
+          "state": "completed",
+          "unknown_and_git_preserved": true,
+          "changed_user_bytes_refused": true,
+          "stale_preview": {
+            "wrapper": "CLAUDE.md",
+            "reviewed_hash": "c7f7dc464031ba720d29b58d125c73fd2855105b121934e4e638008a15c5132a",
+            "fresh_hash": "6ff0aba66928f294f9f67d5a7525746a4036957f4dd5eae91c1fccec0aface8d",
+            "exit": 1,
+            "all_bytes_preserved": true,
+            "journal_absent": true,
+            "edited_wrapper_preserved": true
+          }
+        },
+        {
+          "mode": "resume",
+          "position": "last",
+          "writes": 41,
+          "observed_written": 41,
+          "state": "completed",
+          "unknown_and_git_preserved": true,
+          "changed_user_bytes_refused": false,
+          "stale_preview": {
+            "wrapper": "AGENTS.md",
+            "reviewed_hash": "c7f7dc464031ba720d29b58d125c73fd2855105b121934e4e638008a15c5132a",
+            "fresh_hash": "e305314b0368da283d7fa6a7f0ab18c4e83c6bcd75feaca63b58c3330d8c86fe",
+            "exit": 1,
+            "all_bytes_preserved": true,
+            "journal_absent": true,
+            "edited_wrapper_preserved": true
+          }
+        },
+        {
+          "mode": "recover",
+          "position": "first",
+          "writes": 41,
+          "observed_written": 1,
+          "state": "recovered",
+          "unknown_and_git_preserved": true,
+          "changed_user_bytes_refused": false,
+          "stale_preview": {
+            "wrapper": "AGENTS.md",
+            "reviewed_hash": "c7f7dc464031ba720d29b58d125c73fd2855105b121934e4e638008a15c5132a",
+            "fresh_hash": "e305314b0368da283d7fa6a7f0ab18c4e83c6bcd75feaca63b58c3330d8c86fe",
+            "exit": 1,
+            "all_bytes_preserved": true,
+            "journal_absent": true,
+            "edited_wrapper_preserved": true
+          }
+        },
+        {
+          "mode": "recover",
+          "position": "middle",
+          "writes": 41,
+          "observed_written": 21,
+          "state": "recovered",
+          "unknown_and_git_preserved": true,
+          "changed_user_bytes_refused": true,
+          "stale_preview": {
+            "wrapper": "CLAUDE.md",
+            "reviewed_hash": "c7f7dc464031ba720d29b58d125c73fd2855105b121934e4e638008a15c5132a",
+            "fresh_hash": "6ff0aba66928f294f9f67d5a7525746a4036957f4dd5eae91c1fccec0aface8d",
+            "exit": 1,
+            "all_bytes_preserved": true,
+            "journal_absent": true,
+            "edited_wrapper_preserved": true
+          }
+        },
+        {
+          "mode": "recover",
+          "position": "last",
+          "writes": 41,
+          "observed_written": 41,
+          "state": "recovered",
+          "unknown_and_git_preserved": true,
+          "changed_user_bytes_refused": false,
+          "stale_preview": {
+            "wrapper": "AGENTS.md",
+            "reviewed_hash": "c7f7dc464031ba720d29b58d125c73fd2855105b121934e4e638008a15c5132a",
+            "fresh_hash": "e305314b0368da283d7fa6a7f0ab18c4e83c6bcd75feaca63b58c3330d8c86fe",
+            "exit": 1,
+            "all_bytes_preserved": true,
+            "journal_absent": true,
+            "edited_wrapper_preserved": true
+          }
+        }
+      ],
+      "fixture_fault_preload_sha256": "128c42169c77c08255b158ee14dc0438ec88b579cdfd7414dadceffe22e22f6e"
+    }
+  },
+  "artifact_deliveries": [
+    {
+      "schema_version": 1,
+      "smoke": "smoke-init.js",
+      "canonical_artifact": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-bootstrap-qualification-Gk2COy/mdkg-init-H4prcM/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke-upgrade.js",
+      "canonical_artifact": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-bootstrap-qualification-Gk2COy/mdkg-upgrade-smoke-lyk9lL/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "delivery": "independent-verified-copy"
+    }
+  ],
+  "artifact_consumptions": [
+    {
+      "schema_version": 1,
+      "smoke": "smoke-init.js",
+      "canonical_artifact": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-bootstrap-qualification-Gk2COy/mdkg-init-H4prcM/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "consumer_exit_status": 0,
+      "consumer_signal": null
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke-upgrade.js",
+      "canonical_artifact": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "provided_path": "/private/tmp/mdkg-bootstrap-qualification-Gk2COy/mdkg-upgrade-smoke-lyk9lL/pack/candidate-0.6.0-6154e4ea920bfa09.tgz",
+      "before_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "after_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+      "consumer_exit_status": 0,
+      "consumer_signal": null
+    }
+  ],
+  "published_baseline_consumptions": [
+    {
+      "schema_version": 1,
+      "kind": "published-upgrade-baseline",
+      "smoke": "smoke-upgrade.js",
+      "version": "0.5.2",
+      "baseline_path": "/private/tmp/mdkg-bootstrap-qualification-Gk2COy/mdkg-upgrade-smoke-lyk9lL/published-mdkg-0.5.2.tgz",
+      "bytes": 425431,
+      "before_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+      "after_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+      "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+      "consumer_exit_status": 0,
+      "consumer_signal": null
+    },
+    {
+      "schema_version": 1,
+      "kind": "published-upgrade-baseline",
+      "smoke": "smoke-upgrade.js",
+      "version": "0.5.2",
+      "baseline_path": "/private/tmp/mdkg-bootstrap-qualification-Gk2COy/mdkg-upgrade-smoke-lyk9lL/customized-published/published-mdkg-0.5.2.tgz",
+      "bytes": 425431,
+      "before_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+      "after_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+      "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+      "consumer_exit_status": 0,
+      "consumer_signal": null
+    }
+  ],
+  "independent_review": {
+    "reviewer": "test477_runner_review",
+    "mode": "Bounded read-only static review; no independent execution",
+    "corrections": [
+      "pack-output admission",
+      "input-capture before/after integrity binding"
+    ],
+    "final_readback": "No remaining concrete defect evidenced within inspected runner/helper scope.",
+    "not_security_clearance": true
+  },
+  "cleanup": {
+    "final_run": {
+      "removed": true,
+      "root": "/private/tmp/mdkg-bootstrap-qualification-Gk2COy"
+    },
+    "first_success": {
+      "removed": true,
+      "root": "/private/tmp/mdkg-bootstrap-qualification-j4buxK"
+    },
+    "failed_pack_only": {
+      "removed": true,
+      "root": "/private/tmp/mdkg-bootstrap-qualification-vdJZZY",
+      "admission": "Terminal pack-only attempt; exact directory identity, ownership, regular-file inventory, isolated configs and expected duplicate tarball hash reviewed before scoped removal.",
+      "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca"
+    },
+    "retained_candidate": "Preserved canonical private candidate and source-input capture; tarball is ignored by *.tgz and is not a release seal."
+  },
+  "changes": {
+    "owned_paths": [
+      ".mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+      ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+      ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+      ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      ".mdkg/work/chk-658-qualify-retained-candidate-initialization-and-real-published-upgrades-locally.md",
+      ".mdkg/index/mdkg.sqlite"
+    ],
+    "required_generated": "Normal mdkg event/index/cache projections only; no bundle refresh.",
+    "retained_ignored": [
+      ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz"
+    ],
+    "source_or_package_inputs_changed": false,
+    "staged": [],
+    "commits": []
+  },
+  "limitations": [
+    "Test477 remains progress; this receipt is not final-artifact or platform acceptance.",
+    "Current candidate is retained with exact hash/source capture, not sealed or published.",
+    "Linux, final independent acceptance, complete release ladder and Task830 seal remain required; Windows remains unqualified.",
+    "Six caught-error recovery cases do not establish abrupt-death recovery; separate Test479/Test489 evidence applies.",
+    "Bugs46/47 remain deferred and unresolved under paused Goal87, not accepted or fixed.",
+    "Trusted local qualification does not establish protection from adversarial concurrent filesystem replacement."
+  ],
+  "final_artifact_pass": false,
+  "goal85": "paused",
+  "goal87": "paused/unclaimed",
+  "validation": {
+    "status": "PASS_WITH_EXISTING_WARNINGS",
+    "runner_syntax": {
+      "command": "node --check .mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+      "exit_code": 0
+    },
+    "full_graph": {
+      "command": "node dist/cli.js validate --summary --json --limit 20",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 3,
+      "warning_classes": [
+        "three pre-existing stale imported bundles; no refresh authority"
+      ]
+    },
+    "changed_graph": {
+      "command": "node dist/cli.js validate --changed-only --json",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite_index": {
+      "command": "node dist/cli.js db index verify --json",
+      "exit_code": 0,
+      "checks_passed": 5,
+      "checks_total": 5
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    "goal_evaluate": {
+      "report_only": true,
+      "does_not_run_checks": true
+    },
+    "goal_next": {
+      "node": "root:test-477",
+      "classification": "Read-only routing continues the active node; it does not complete installed/platform acceptance.",
+      "warnings": "Non-actionable checkpoint references in traversal remain diagnostics, not actionable work."
+    },
+    "full_suite_and_release_ladder": "Not repeated for evidence-only closeout; required later under Task829 on final inputs."
+  },
+  "bookend": {
+    "at": "2026-09-28T18:04:34.593Z",
+    "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "branch": "main",
+    "upstream_cached": "origin/main",
+    "ahead": 69,
+    "behind": 0,
+    "remote_verified": false,
+    "dirty_paths": 162,
+    "staged_paths": [],
+    "new_commits": [],
+    "unexpected_changes": [],
+    "protected_sha256": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+    },
+    "protected_match": true,
+    "mutation_and_git_locks_present": [],
+    "owned_changes": [
+      {
+        "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+        "sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+        "sha256": "bf0c725ff6c6f0a9d8be2fb3bde52110375fbbe611405def951b6fea7e5f037a"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+        "sha256": "87c2b24907ed8c23a05de719ed3db34c530b22310f4ba8fee35bffbd6776416f"
+      },
+      {
+        "path": ".mdkg/index/mdkg.sqlite",
+        "sha256": "2a9b2a0053ded84464058da2cc8544eaabf07e36e02053a7b7dae960ad526863"
+      },
+      {
+        "path": ".mdkg/work/chk-658-qualify-retained-candidate-initialization-and-real-published-upgrades-locally.md",
+        "sha256": "d8648f0a062a35ed4c366c15f9d795d32d1bdd293cfb5e0cb37de68bdfaca55a"
+      },
+      {
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        "sha256": "032936d0f7c8929febd5587525ae1841bff7bb593aa82ad2aed3f719bb89e310"
+      },
+      {
+        "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+        "sha256": "322139905e13ec6d3d29317f4e91611bdb1b505138705d84ea84cfcc216a6b70"
+      }
+    ],
+    "receipt_self_hash_excluded": true,
+    "source_inputs_unchanged": true,
+    "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "input_capture_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+    "goal86_scope_counts": {
+      "total": 48,
+      "done": 32,
+      "backlog": 13,
+      "progress": 3
+    },
+    "readiness": "NOT_READY",
+    "ownership": "No persistent lease; transient locks absent; Test477 remains the recorded active work node pending final qualification."
+  }
+}

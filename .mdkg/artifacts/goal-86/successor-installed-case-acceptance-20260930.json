@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-successor-installed-family-case-acceptance",
+  "owner": "mdkg-project-agent",
+  "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+  "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+  "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+  "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+  "platforms": [
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "execution": "native",
+      "families": 20,
+      "state": "passed-current"
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "execution": "native ARM64 Linux on ARM64 host",
+      "families": 20,
+      "state": "passed-current"
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "execution": "emulated x86_64 Linux on ARM64 host; no native performance claim",
+      "families": 20,
+      "state": "passed-current"
+    }
+  ],
+  "families": [
+    {
+      "qid": "root:test-477",
+      "families": [
+        "bootstrap"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Actual published0.5.2 upgrade; compact default/graph-only/--agent; customization, repeated/stale/interrupted upgrade, focused skills/native mirrors/links and recovery.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-478",
+      "families": [
+        "collaboration",
+        "gitdir",
+        "submodule"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Offline colliding aliases/cross-links and ordinary uncommitted/staged/unstaged use; same-identity ancestral/lifecycle conflicts, delete/reintroduce, repeated integration/cherry-pick/revert/immutable evidence; concurrent real worktrees/local-state isolation and reviewed native whole source-plus-graph integration.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-479",
+      "families": [
+        "ownership",
+        "state-admission",
+        "containment",
+        "remedies",
+        "readonly"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Bounded security regressions, path/type/link/special/size/receipt admission; stale plans and killed-writer/rollback/resume; unknown sentinels/staging preserved; transport excludes execution authority; real read-only behavior. Bugs46/47 deferred unresolved, not passed.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-480",
+      "families": [
+        "compatibility",
+        "work",
+        "runtime",
+        "readonly"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "242 cache/parity plus16 changed-warning scenarios per platform; legacy/v2, JSON/SQLite, packs/MCP/archive/work/clone/fork. Actual0.5.2 initializer effects remain unsupported; exact private task309 preview blocks without identity invention or canonical migration.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-481",
+      "families": [
+        "scale"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Existing2000-node/20000-event JSON/SQLite legacy/v2 warm/cold/history/routing scenarios pass on all3 required platforms; x64900000ms/backend execution allowance is not a native performance/product SLA claim. Earlier attempts remain preserved.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-482",
+      "families": [
+        "runtime",
+        "capability-umask"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Exact supported/minimum24.18.0 counted once per platform; actual24.15.0/26.0.0 refuse graph/DB/MCP without effects, help/version remain usable; missing capabilities refuse; verified isolated downloads.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-483",
+      "families": [
+        "behavior",
+        "pack-controls",
+        "compatibility"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Legacy/v2/cache observation; all pack formats/profiles/limits; format/init/upgrade identity; checkpoint routing; ancestral recreation; strict migration dependencies and closed seeds; large/slow-pipe output; dependency labels. Non-shipping website case5 deferred by Dec100 to Epic258, not counted passed.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-484",
+      "families": [
+        "generic",
+        "collaboration",
+        "bootstrap",
+        "pack-controls"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Removed Git commands/options refuse; generic/removed profile/token/namespace/work boundaries; strict refs/redaction/visibility/receipts; customization-preserving published0.5.2 upgrade; extraction hashes verified but undispatched/adoption unverified; native integration.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-486",
+      "families": [
+        "options",
+        "runtime",
+        "current-audit"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Invalid/wrong-command/missing/retired options reject pre-effect with full inventories and subprocess traps; supported flags/aliases/values/positionals and writer controls; full suite/generated/help/docs parity. macOS options use exact package ladder, Linux matrices include explicit options family.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-487",
+      "families": [
+        "all-platform-families"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Same artifact/input/payload identities on native macOS ARM64, Ubuntu24 ARM64/native and x86_64/emulated; all retained case/runtime/topology/filesystem/scale rows covered. Original fixture failures and corrected supplements retained; minimum and selected Node binaries identical, counted once.",
+      "platform_evidence": ".mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json"
+    },
+    {
+      "qid": "root:test-488",
+      "families": [
+        "containment",
+        "remedies",
+        "current-audit",
+        "final-remedies"
+      ],
+      "state": "passed-current",
+      "cases": "All14 historical findings accounted:12 in-scope remedies verified;46/47 deferred/unresolved, not fixed/accepted. Actual original bodies remain unavailable and were not recovered.",
+      "evidence": ".mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json"
+    },
+    {
+      "qid": "root:test-491",
+      "families": [
+        "current-audit",
+        "final-remedies"
+      ],
+      "state": "passed-current",
+      "cases": "Seven current Standard groups62-68 and supporting controls pass; exact final package supplies unchanged implementation to229 current-audit checks/platform, with final native-Git growth controls additional."
+    },
+    {
+      "qid": "root:test-492",
+      "families": [
+        "current-audit",
+        "package-cli-contract",
+        "package-guidance"
+      ],
+      "state": "passed-current",
+      "cases": "Generated command mutation/write-path contracts agree with actual retained CLI behavior; full suite plus package CLI/docs/skill checks pass."
+    },
+    {
+      "qid": "root:test-493",
+      "families": [
+        "final-remedies",
+        "source-launcher-custody"
+      ],
+      "state": "passed-current",
+      "cases": "107 installed CLI-only final-remedy controls/platform (29 skill,21 native Git,57 provenance) pass. Actual ordinary/coverage launcher traps and157 focused/2389 complete source checks cover non-shipping Bug73 separately."
+    }
+  ],
+  "private_preview": ".mdkg/artifacts/goal-86/successor-private-preview-20260930.json",
+  "limitations": [
+    "Every retained family passed against identical b549 bytes; no repack/source imports substituted for consumer package behavior.",
+    "Emulated x86_64 results do not establish native performance. Scale allowance900000ms/backend is a measured test-execution allowance, not a product SLA.",
+    "Node24.18.0 is both minimum and selected supported24 runtime, counted once. Actual24.15.0/26.0.0 are no-effect refusal/discovery controls, not supported-operation passes.",
+    "The old0.5.2 init/force-init bypass is observed unsupported behavior, not secured retroactively. Private task309 migration preview remains unsupported/blocked without identity invention.",
+    "Bugs46/47 deferred/unresolved; Windows, hosted CI, website profile and consumer adoption unqualified.",
+    "Partial sequential x64 runner and incomplete submodule attempt were preserved and never relabeled complete; exact completed-family evidence plus three full subset receipts and scale form explicit composite acceptance."
+  ]
+}

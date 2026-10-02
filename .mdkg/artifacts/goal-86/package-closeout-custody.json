@@ -1,0 +1,976 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-package-closeout-custody",
+  "recorded_at": "2026-09-29T01:14:53.583Z",
+  "owner": "mdkg-project-agent",
+  "authority": "Nick-approved bounded enhancement and pre-publish closeout",
+  "source_head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "branch": "main",
+  "cached_divergence": "69\t0",
+  "staged_paths": [],
+  "dirty_paths": [
+    {
+      "path": ".agents/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".agents/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".claude/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".claude/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".github/workflows/release-readiness.yml",
+      "sha256": "0aa57871ea4690141f85c46bc3b56b1d13b4473aa96141a4b4de062d3aa4c106",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-47-macos-fd-path-feasibility.json",
+      "sha256": "dc3e3ce3aeba8c364d7391382318eb6cd60854a0fbb4af0f547db1d349424525",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-47-recorded-0.5.2-source-assessment.json",
+      "sha256": "c1573547690aacf715a5d439a2cd1cd5278ff6529dcf393fc78b02b0892d7728",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json",
+      "sha256": "af8508235be4385599823cd90e6017d84ec51e4259affa09b1ed5c5637ef5429",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/native-primitive-probe.c",
+      "sha256": "ffb8f612f6645ad361ad776d1bc3ffcc30bd3343031a94133fb93ae5ed0089de",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/node-baseline-probe.cjs",
+      "sha256": "87855e17dbc519d89efc73e1515ddf63389dd65875943ec7abf987b6ffa00936",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json",
+      "sha256": "75c55bb5b18199dd968df9acf1a6ba2ab87a948376380719a3199cd8c615ac14",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/combined-installed-probe.cjs",
+      "sha256": "e735cc581886e665df21ceb456a9779fd408fa6b776d937f81a2bb1c2122531d",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/installed-qualification.json",
+      "sha256": "301f1874efa4717be90c7b0950cf06b9ac60424228dd352288a9f75c6ee36494",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/portable-source-progress.json",
+      "sha256": "9f9c91083396fb46bfe160e64bacca1bb8ed9abcd76d27d8deaea6ffbf600bda",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/receipt.json",
+      "sha256": "f7d1b4ebe2940d50063776fad31d55741cfaeeedf0a5d7556ed942c9be6875d4",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-admission-installed-probe.cjs",
+      "sha256": "89b28492cfa5fc2ef7082cdc8c6e62d7890eca29d7b08f434026ea0f3c4285d7",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-admission-worker.cjs",
+      "sha256": "a3c62a111f3d0205fa6893dd0f70b33497841c9875b59d7ba3bb25726a33b776",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-installed-probe.cjs",
+      "sha256": "98363bc0e94ecf88162a29a9e5d1914cffa8c7b267d2381b7f562eb521ea5347",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-qualification.json",
+      "sha256": "9d4ea718eb5df9b72bfdb912f52bf034b0f8c17bbacc4f8ca05b73dea1d3f335",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/runtime-installed-probe.cjs",
+      "sha256": "e087b4a5ebf0e69be03750ba2f9fcb57259c14f62b5624d77530d59ec6679622",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/runtime-qualification.json",
+      "sha256": "418585c5e0738f8c1b7b2d45856fcde4090a811fa171fe959d849eb9b9b92341",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+      "sha256": "c47567bea5d85271f12eada970eb2050cf6455428e693458bbecb6d36571b661",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+      "sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.qualification-inputs-bug61.json",
+      "sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/private/test-487-linux-arm64-capsule-manifest.json",
+      "sha256": "de483e12ee4f6ac6d68fba9d0013ac08e14fccbc300ffca8bff366e7972d59b3",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      "sha256": "a2156061a490a5c48ed8681e758c5e94f795bdbf36667b47d066665ff598e7e6",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json",
+      "sha256": "dc93ee15023f855eae9323d5da2299f33a5580a380c7f521dd9c1a49d92142ba",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-consumer-smoke-progress.json",
+      "sha256": "c8786e387cb2fa02b50727a6ede0fb0d523162526e6343ddb6e38cf3ed6e0ec1",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-db-smoke-caller-progress.json",
+      "sha256": "0d488a683d914ea591b4c65919e8271c09082136fd6405ea88af6222da0b94de",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json",
+      "sha256": "9cba2451fc8c9a53939f5e1b88392d881328ce564f2f4c9515152cf641cde077",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-git-boundary-progress.json",
+      "sha256": "36267d21b945b950c906d559310225004bc654d6519f288090fcf921cbc5c9c9",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json",
+      "sha256": "009d6ad4be6723d3f44c9892c5fcc3e2babddee21a4df54141555932ea6e2e2a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-graph-smoke-caller-progress.json",
+      "sha256": "8d2bc3e54a8679764ba4314d989aa4ecd23659bcb4f3e5f1aee3cfb2e4b34e99",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-local-commit.json",
+      "sha256": "385408ae0090fcbfb4ddaac790752203bdc9b8d6b79db569bd527f1ab9ab7420",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-mcp-smoke-progress.json",
+      "sha256": "afc1aaf3c914a08fd67cdd0625857c6f5bacd290f8c48f2832a2235515f1df80",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json",
+      "sha256": "37d3a68d9ecae6f89cc24e27ed0fc7ecf56e4559ea1522245f122d666febbb1b",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-six-smoke-caller-progress.json",
+      "sha256": "3e8393ab1918f358453f691a0913aa5cbaab6c78e2327b35d37d1edc5b60e015",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json",
+      "sha256": "324ae4fefbbb11481b00afcbb33f31407dbfc9edacd406fafc6d365241b39880",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-sync-smoke-caller-progress.json",
+      "sha256": "5c141a50bd3ad78ddaa92b6eef8fa9b5c48a2b663d1cdc566beed7d078b66a7e",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-838-tail-smoke-progress.json",
+      "sha256": "a43fbf6ba97e023954831809b2759b849cb67067bc2c1ddafdbf2f577340b30a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-839-release-guidance.json",
+      "sha256": "b6d7f9a3b1f78b18e838fdee678b8e4d45f5775d51b0b69b80d906cd20e27146",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+      "sha256": "87c2b24907ed8c23a05de719ed3db34c530b22310f4ba8fee35bffbd6776416f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+      "sha256": "b25de0c915c6ca89220f5f3b3e42c710ee3968f17364ea0a72f4b6b6fe9558ba",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.cjs",
+      "sha256": "b00e336f20bd60e805830a191b30992adefb1f2340c7644b4ba037ce40af5ca6",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+      "sha256": "80dbbdcd0fe961a9e44847dde0c72289f7d653d5f313cc0b81cd542dd58e3e39",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-478-installed-collaboration.cjs",
+      "sha256": "305eb0bdec0ffc6ade3f47d96c03b6223c7e5413211e8fc461e6690ce92492de",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-478-installed-worker.cjs",
+      "sha256": "8688b3a9209e28b6e72e15485ecd334fdb7df2270df1e972d6ec10a1f2c411db",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+      "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-479-installed-ownership.cjs",
+      "sha256": "90d240d870be5c985b620cf5755f28c7ecb6f98e05b1415c166b6e14a73ebb90",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+      "sha256": "757e71d5a12dd89392a88fe10d805af426dafff6f4ad1d4187d30fc623d4bdb7",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-479-state-admission.cjs",
+      "sha256": "33a041efeef820bc07d772e01af26b3f661b82f1a5356fb00fea13ce29d29389",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-486-local-option-qualification.json",
+      "sha256": "a43d6f51a8fb5956e52dab4fbe3c4184c4ab6f1afcfa54386decb38f48846122",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+      "sha256": "ae604a4d5cf75455d206c1d6883a2ef57d08f4b69d42142f5992977f775763f3",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-487-linux-capsule.cjs",
+      "sha256": "5e928e5ec4cb709d0587e087a6de98ae533b48d1b72c926e70e55d40acdf13f3",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-487-linux-runner.cjs",
+      "sha256": "55c6289e6992b18b5bd4db04272789aafa4e212a279a6e4a16eed074115e3519",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/test-487-local-linux-scope.md",
+      "sha256": "693e22975e7cbc6595b26ba7f350eac51c08c05f40ed1c6772a7b0f256526488",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+      "sha256": "9809bc4aec6177005dbfabdb04663bdab71689e85fdb25a1e3b8a60e34b903c0",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/design/dec-98-keep-0-6-0-portable-in-node-and-defer-unresolved-filesystem-hardening.md",
+      "sha256": "7e40ff65ad0db289e742dd2214d01b50c1ab04a1393b37b9f7b7218dc24bd796",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/design/dec-99-retain-local-linux-qualification-and-require-fresh-current-source-security-accep.md",
+      "sha256": "4b813999fd898437d1e69ddf8bfdb2ea53925e7e5d770bf13282c6aedba3da59",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/index/mdkg.sqlite",
+      "sha256": "b595b12c39a42176da15302f715cfac286152799e1f039a95023db6725ecdab7",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/skills/registry.md",
+      "sha256": "1b83dfea49d4f563a8edc3b94c387a886508a89e47b5378ff2af7b1381c6dc2e",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+      "sha256": "012a82514bab911ab48f41f659ac056b818cb3c4bdf169db9dd6eeb1dfff3c0d",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+      "sha256": "5f773a92395a398ad305b8f0be60ab98602be50a1bcf0b6839f23ecc171fbec3",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+      "sha256": "a95a5f579ac16627e5d964df7b03141c2ba79c58eab39c69cd41862e363f4636",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/bug-61-qualification-git-admission-rejects-valid-submodule-linked-worktrees.md",
+      "sha256": "4996bd4b73af87a382114dbd2b66846b025b993636d6cbd530ec90af00fc740d",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md",
+      "sha256": "c82a923d6265dafe99a9d0aae11572b2888d162f36b0eb38aae43f976a04d97a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md",
+      "sha256": "c813fc0b2c1a62c96c7a2e452fcb0a55288aabffed967e9e23c043861caccbca",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md",
+      "sha256": "e19c84b4a940a6105c4b49637f2f192281c7b6cedd542e2deed515ecd8a6e5c1",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md",
+      "sha256": "d6cbef7ef9835db38e35688be254f98d594c1a4d0714f6e573bb19ee0b10fb1c",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md",
+      "sha256": "8d96e8d33889caaa2d0f784c55924d853adcec7be3a9a3d3a3c29267c60c9d0f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md",
+      "sha256": "5bd5a51e750a6553c3be2dd5f06bae5c66d010b83aa673c7f263be6cc615878f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md",
+      "sha256": "82d6b5966727cf745c56b1673c10930cc7fe7669a719af6ae175fb507498e44f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-644-isolate-six-installed-smoke-callers-and-verify-artifacts-before-installation.md",
+      "sha256": "494bd94c9fd402758339b4295633fa9ca26d160fc78230c072d973dab72882f7",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-645-isolate-installed-db-and-sqlite-fixtures-from-ambient-git-state.md",
+      "sha256": "9439d3b75b9ff44b1e10ba45470381f474c01b186ffe6151e899d0f8d7fc5355",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-646-isolate-installed-graph-workflow-fixtures-and-verify-supported-routing-refusals.md",
+      "sha256": "d1cd054555e251f743bc001aae2d87261193c6194f056d959f708318ead774a6",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-647-isolate-synchronous-installed-smoke-callers-and-preserve-diagnostic-evidence.md",
+      "sha256": "cbf8e53d4848de75abfdf82a75371c7c01107596e2c5b7b1ebaddd91702f9653",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-648-qualify-git-boundary-smoke-across-three-local-node-runtimes.md",
+      "sha256": "68a420b965e6c4ad7ae47aa1faa8c986f772b5b0b96f7a8c8e4c402ce9b46205",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-649-qualify-remaining-release-smoke-callers-and-retain-intermediate-candidate-custod.md",
+      "sha256": "5c665481a19526e24b996993e5d61dc59521c8c24d9638ad385b4eb88a52d918",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-650-verify-descriptor-backed-sqlite-observation-under-local-node-runtimes.md",
+      "sha256": "2e9486cd6515e8110217469fff0e0ee13304a1a0054f66a6168298a68c08a514",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-651-bound-local-filesystem-feasibility-and-fail-closed-linux-ci-stub.md",
+      "sha256": "202108df9d3e7c8ca0f806893c2ba4014a0c5842e8a79db3419f79293e90242f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-652-defer-unresolved-filesystem-hardening-and-ground-node-only-portability-continuat.md",
+      "sha256": "df750c4984e6c2ee82c86eaccffc2791bc570064915aa7ad268cbbdacd4c9698",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-653-implement-portable-sqlite-observation-and-align-the-node-runtime-contract.md",
+      "sha256": "3b5a6449a8b2edc88b895cd51e80937abf7a35913099dd9099e13e4e5d116c77",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-654-implement-portable-operator-confirmed-graph-recovery-with-exact-evidence.md",
+      "sha256": "81c7739039e6fc6a7488e25cdda3d941eb54a704bf73cc04f6002aab40fa04df",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-655-qualify-portable-node-sqlite-recovery-and-native-linked-worktrees-locally.md",
+      "sha256": "500603b216c9dbea555bd1f2bbdcb4160525524a3288bcbed7f5057ddb724ebb",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-656-correct-release-critical-guidance-and-verify-installed-command-discovery.md",
+      "sha256": "b888b5de681bf4d7273004a37bea8683cdc003edf713d5a25a45e432e63d51d4",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-657-bind-installed-cli-option-qualification-to-owned-fixtures-and-the-release-matrix.md",
+      "sha256": "043b6313d551f0cac7e78afdfbf88dc4b7ee1343b9dd885ccffb6802f7ada543",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-658-qualify-retained-candidate-initialization-and-real-published-upgrades-locally.md",
+      "sha256": "d8648f0a062a35ed4c366c15f9d795d32d1bdd293cfb5e0cb37de68bdfaca55a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-659-qualify-installed-concurrent-worktrees-and-reviewed-native-integration-locally.md",
+      "sha256": "f9b5d3db22fe84d3e923539e96944c1783785f0c896c449854d557c05e1bf688",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-660-qualify-submodule-linked-worktrees-and-sampled-incomplete-journal-refusals.md",
+      "sha256": "c70dcfeca6e9e695ab6e0b2b62ca0d6fb7902a085472c6f6f4bff016cc977797",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-661-qualify-installed-transport-authority-and-sampled-recovery-admission.md",
+      "sha256": "f14904b1542c56bf2a9288957610bba18b78c92887a21c34e624fab237cc0bc2",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/chk-662-record-local-linux-installed-candidate-transport-and-recovery-proof.md",
+      "sha256": "91e71fa93628fae07cd71e30e13ecedc7e0c4f64801f7ceaf29d1913be6f6294",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md",
+      "sha256": "853e2b91e8acaf8318b719c3870ab1339ae385fcb209f861c4aa7c521f701dc8",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md",
+      "sha256": "bdf3c4edbc97384fd6b6095508aa3130bdaf1fc49e5ae970e7640c0284df14ee",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+      "sha256": "26d42896de0430ad44ee344110532dccc6de54348c55d537b1cf07de5d0ef551",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+      "sha256": "173eac233e3f605bfaea2921b7e2564f183909236069388052f13f4bd7d6fbbe",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      "sha256": "64e1bb0b5af4c9ffd5236dcd559824d2f8cf298f1e0ea64501b4511b643995be",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/goal-87-resolve-deferred-filesystem-bugs-and-harden-portable-mdkg-operations.md",
+      "sha256": "a7a5bb22353a30794ae449dd5a420e084b9a3e29b554e69f52720ab8cf9f8e98",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+      "sha256": "502f11610e547b34732cfdba2005789464db4e7b1e6e57b84ba0d26e3679103f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      "sha256": "f71f82f866131abe4e0935ebefea624b55e16e54c1b36e65b9d35b02aefe3125",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+      "sha256": "7549734dd0cd5c0864b7d42510ccf62895bb372828d7046fcb04df64282de937",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md",
+      "sha256": "88df5c061c5da55913c8e8cf91a831c16c4d3a7906752c35f0e04ccec49e5d08",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+      "sha256": "e0a4cee9cac051e0f9678a9432e25da918bf9810c1969cb959b3583aa753a955",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md",
+      "sha256": "7889f6a29e7b1893ca2107255d4f3416855e3d2e2c07b99a9ff1bec515f49d03",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+      "sha256": "2da80e84bf2c84a388eddd414e41eb3af9e5b4db62d76ab404fb40dcddbfff68",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+      "sha256": "4650019a85c24cc513745ade9ac02472962dca675ecdeacc0f37b75401a3b8e5",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "322139905e13ec6d3d29317f4e91611bdb1b505138705d84ea84cfcc216a6b70",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+      "sha256": "6b4deac3ca6bd0650cd8e41ad6a947371e4634cbe63377b4b949a5e9969ccfc8",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "b49ae273dd59ebe7cb12a873430828cf9b6d21040b73deaacd34b4f468c250c3",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "1cbaa882b59b242db31db1314ad7ecf46be085ba1591e1bd009fa160a6b2308c",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+      "sha256": "cf47ee6ca8a9734fce8fad413a4a796c190921494e36b6a5a9603bc075d75fca",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      "sha256": "88a18cafe77fb307d1935997d17cb7735cbcbe4be54f345dd62a6fb744c466a3",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+      "sha256": "a5d42dce0a89a6fe6680777168d05665bf6bcd0e341a8b48c0a6aecb5c792320",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+      "sha256": "218f11f0d059e9ce9c3db078f49c90cab8cc4f9e013eb9eb123956e55929c75c",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "07e265bcd4b6ba748801d60fe2e9fc708e5708000e1413b33163170fa91c885d",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "CLI_COMMAND_MATRIX.md",
+      "sha256": "824acb61a013096abfffa74076b5e095f69c7a1f01ad03f7d6ff5f7df56428cd",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d5794a88aeb8bc67c6647a5e3c5903c69f669d8a7a939b307fdf095d28f449e6",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "assets/init/CLI_COMMAND_MATRIX.md",
+      "sha256": "a273d0b02f9b00775b7a6fbafc3ba09497a7bcdb927168da3a9e0b8739f83e0f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "assets/init/skills/default/build-pack-and-execute-task/SKILL.md",
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "assets/init/skills/default/pursue-mdkg-goal/SKILL.md",
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "docs/_generated/cli-reference.md",
+      "sha256": "2d186dae1f5b8eab94ff190b4dcb54c109fc5fa91cfe62ae8b1022b89b18bca7",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/_generated/command-contract-summary.json",
+      "sha256": "b36fbca0d6935699f1bdea38fcbb9c0de09dd535a4b6bec530e9a788f0562ce8",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/_generated/release-notes.json",
+      "sha256": "17c805a21a3a55c3f383da52758ce84c83a8460b47714eadd5e339813ea87f99",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/advanced-alpha/graph-movement.md",
+      "sha256": "cb275ee1b7b8adcd69869a9966d9a9abd4ac334297db20c11869e7e1e5863c49",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/guides/agent-workflow.md",
+      "sha256": "448216dad33f7de29fbaec7b9470ada79927e0ade4805254ca1d7f354fd81bcd",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/src/content/docs/advanced-alpha/graph-movement.md",
+      "sha256": "cb275ee1b7b8adcd69869a9966d9a9abd4ac334297db20c11869e7e1e5863c49",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/src/content/docs/project/changelog.md",
+      "sha256": "5548d7bc86de525c7d2ae50d51d627b4cdd96b3aca5d0b58a8f97b0f2d0d682d",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/src/content/docs/start-here/install.md",
+      "sha256": "d456fd819f7ec152a13c841124d96c6dac243e3129c0dd9378840418325e9b76",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/src/content/docs/start-here/safety-boundaries.md",
+      "sha256": "93538dae18b4912c7c0b7356b45ea41a035fa363f0837fb2a2c95179decad7b5",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/start-here/install.md",
+      "sha256": "973090cd27a32347b36e7dbaf17261db5d236cae6f3d560d7b11460371043a1c",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "docs/start-here/safety-boundaries.md",
+      "sha256": "86dd737965cc2b41f59ab1d2536277ed7c290faa4facb94d2a702468e4ced52e",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "mdkg-dev/src/pages/index.astro",
+      "sha256": "778565bf635fd4c858ba2b81cebc19605783efd173e5ebe2c19c710005350e1a",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "mdkg-dev/src/pages/quickstart.astro",
+      "sha256": "c05e292980e6a1c6ca91f80044134afbad5676dc02d58f62517a6b219fe82340",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "mdkg-dev/src/pages/trust.astro",
+      "sha256": "6ce298a0983880989b765fa3f396284ecc2e5909f62dfdb35d85b9dc885a83d6",
+      "custody": "preserved prior Goal86 release guidance; no new website qualification"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "da6367ac0f9bc63d4471076a45dfa58492be76e468dc720b8eb8b560aaa5aca4",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "package.json",
+      "sha256": "3bde1e4761660a74bd50d7b467f5fae247964ad9811d421c2d05e91cd72d3672",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/assert-publish-ready.js",
+      "sha256": "40c2a9a1c9977bd39d6f041757a190f17b5dafe8f486acfaaadf4971b2624dfc",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/check-doc-command-examples.js",
+      "sha256": "a6132e97efb2f99628fa1a6100c7cfbda131e1ac6513c700583ed99963650c06",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/generate-ci-workflow.js",
+      "sha256": "4fab4e318cd52de8a36345185dffa685dde5e42e3249ca06b7416630bba1544e",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/generate-command-contract.js",
+      "sha256": "99f20b6dfc4e944085f9a3bc46b5693345b69a942d7c736d6674fb41323aa2ea",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/installed-graph-recovery.js",
+      "sha256": "a45b9a147b73f959a75bff86e2b453c9e65fea7d48e42fbc9b5ef284d4458b2c",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/qualification-git.js",
+      "sha256": "068a5de8d69d578424777f13f74e4ee47b10c1833f30e49dbf3fd0b9cc75920e",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/qualification-smoke.js",
+      "sha256": "95264669589387e90c12aae8c021e49755135ee6c097a7bf29c5a7a691c76a75",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/release-ladder.js",
+      "sha256": "5b64f43044199e818717f52ace7071a92c8355b14aaaf547a4da50db33e9a11c",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/smoke-command-matrix.js",
+      "sha256": "320b6849bb6992fff5ba2190c845bacc97b9388a1c7ae25125a6e916e73ae6d7",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/smoke-manifest.json",
+      "sha256": "f41a5c7f5f92e41cc97c17e3787795a49db8bea328ee449b8e1b2ed87c630a82",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "scripts/smoke-mdkg-dev.js",
+      "sha256": "dfeefa4d6f2511f67b7b137a404b158e4a356dee461f1d810b74eabb82d36e2f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/cli.ts",
+      "sha256": "542924f0b193db6496d3a58912e5c4eb41b7cacd2de864f311c1c897184e09b8",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/commands/doctor.ts",
+      "sha256": "fd9c8c77e50082700aca2090c16a71c61b4266cb8c4ab8f2bc753ac8b0c0ab46",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/commands/graph_identity.ts",
+      "sha256": "2ba6fdf164fb442153af0af1884110a7ad1b3eca8ffa21c54392eb6abe20f77a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/commands/option_contract.ts",
+      "sha256": "ee891fb4a1f611ff86377822f21e2ba0c5314f68749d80a058beea4d49120e41",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/core/node_runtime.ts",
+      "sha256": "2b3c81bac7443a8629d6f06de95c7e6ce0e5c4588f595bf62763c4f3dd3fafee",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/core/project_db_events.ts",
+      "sha256": "f513efea1ba226191bbbc758d9d0132fcb35ca5d71326f84c00c9dce364c6d57",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/core/project_db_migrations.ts",
+      "sha256": "f708327a012e4a3c30c238b4a1eebe1e2b0959bbd18a5b504a388b456518e165",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/core/project_db_queue.ts",
+      "sha256": "60908d81cda539729d1e4eb8f8825a7c97d5a0047ddc7628d4369c7c915ea2e1",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/core/project_db_snapshot.ts",
+      "sha256": "40086394f2b87dd16f0ba3f7c04bb9d2ba68b98eb5222c331c9fc0faa3ced24d",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/core/sqlite_observation.ts",
+      "sha256": "78c8705ee0865b31382c45c60ff6426dc563d7417635caf0c18943c657409754",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/graph/identity_transaction.ts",
+      "sha256": "b2fe38b9a3da3e1a7e503168c5900aa8b21fcb0b18a2f6e6b6e35ac74e3994de",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/graph/sqlite_index.ts",
+      "sha256": "870dd974d92a4dfd98d042df2aa903974541e96b8756a2565a495818415517df",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/util/argparse.ts",
+      "sha256": "369edeac1eaabdf56b424e4ba290defa3dc345a9316ff22707550b6099ef8a6a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/util/lock.ts",
+      "sha256": "dda74f39604276d422fc3ce6dfb5d46b2138cb53c069b08d8a5aac2c1c31015f",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "src/util/lock_evidence.ts",
+      "sha256": "f147ca96b09396cc2b4ca7ef166ead2b693062d59a2cbe63ef122e5de60c938b",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/ci-topology.test.ts",
+      "sha256": "753715a0a10943fbbda6776df6ef86e08eca05ce61c9bc80f461f41c44d36102",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/commands/cli_option_admission.test.ts",
+      "sha256": "50edb71d3cb184fd45d0ae9fa02a68d660144f1c75aeda3f8741ac419f69afbf",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/commands/node_runtime_admission.test.ts",
+      "sha256": "76705409aa84ae92ca7203f077b702d98eca62e2bb86f3442e8c9c231b930185",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/core/snapshot_containment.test.ts",
+      "sha256": "f402655d8e68652ad99fad73bb1de13f766b7af0f8cc88cddefa221c4e814ef0",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/core/sqlite_memory_observation.test.ts",
+      "sha256": "02bfc91735fef6bddfcc4e3d2d90a8b3495a14b5534420c92201d82e2b7e9112",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/core/sqlite_observation.test.ts",
+      "sha256": "d6b2e7dd9c21966e36defa021c0bae14aa263cd9ee5b4f19754afe0bcb67223a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/fixtures/cli-options.cjs",
+      "sha256": "9648a355d5d688d80b690fff18bcfcb3152b2522b351448cba0fd3ebef800206",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/fixtures/interrupted-writer.cjs",
+      "sha256": "24631ec727644511207b403d6bd698d667a018e2967c43fcace7a65acaa1edf0",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/graph/identity_interrupted_writer.test.ts",
+      "sha256": "1f6f3f13e9d445ac7b88c04856437ebccc12e1b98f2f4c52166f3804a2b66551",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/graph/identity_migration.test.ts",
+      "sha256": "fd5f866ccffc59c1ab81991b48f7f3776ed10dbf9fa41b84bec53298e2e3a4d0",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/graph/identity_migration_lineage.test.ts",
+      "sha256": "d98d7d0b5580d657e58eb7adcdd820f6c8e13543c36b150075cde478dbbb96db",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/graph/identity_migration_validation.test.ts",
+      "sha256": "b27c24d271df6c493e32f8b876eef76ae0e9f0aac2fd7b86762efcad15bbbd66",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/graph/identity_portable_recovery.test.ts",
+      "sha256": "2138a09674dd9bf27072b3fa807999ebd61cc7ab527f15006ba7f272ed6ee935",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/graph/identity_reconciliation_plan.test.ts",
+      "sha256": "1165bafa18fe2ee9ae375caa0cfb0b1befd9ba48ea4835205721d1d8ec23c7de",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/graph/identity_writer_fence.test.ts",
+      "sha256": "0538b32f4c1b90c09c9f187c711f3167e7a3d9f399b8bc7de1f9a036a0780978",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/helpers/identity_recovery.ts",
+      "sha256": "fe16bc9b79f74dc2f3c0b33a152c28f4baed0ae207df66c9abbb9660de83cb91",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/installed-cli-options.test.mjs",
+      "sha256": "521a41daaa5eb13fc7ee57a6eaf12b2d282a5fbe623f14cbd1b38825783f240a",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/qualification-git.test.mjs",
+      "sha256": "3fda554cd23ccc3847cc43b70970de025c3ec9113fbae2e715910a486f7a5804",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    },
+    {
+      "path": "tests/release-guidance.test.mjs",
+      "sha256": "68127ab370e37907da3b08a46e1c2da1b20b3fad04c4cf93881dd9f11ca42cd3",
+      "custody": "accepted attributable Goal86 prior work; explicit review required before staging"
+    }
+  ],
+  "protected": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "original_capture_sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+  "original_capture_known_amendment": "scripts/qualification-git.js is bound by the preserved Bug61 qualification-only amendment",
+  "runtime": {
+    "writer_leases": "five historical rows all released",
+    "queues": 0,
+    "messages": 0
+  },
+  "stop_conditions": [
+    "unexpected baseline movement",
+    "unknown custody",
+    "writer collision",
+    "material new decision",
+    "excluded external action"
+  ],
+  "exclusions": [
+    "remote Git",
+    "push",
+    "tag",
+    "publish",
+    "provider",
+    "deploy",
+    "canonical branch/worktree change",
+    "graph migration",
+    "bundle refresh"
+  ],
+  "skill_candidates": []
+}

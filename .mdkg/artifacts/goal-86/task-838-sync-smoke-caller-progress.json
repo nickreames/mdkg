@@ -1,0 +1,1433 @@
+{
+  "schema_version": 1,
+  "kind": "task-progress",
+  "qid": "root:task-838",
+  "goal_qid": "root:goal-86",
+  "date": "2026-09-22",
+  "status": "PARTIAL_NOT_READY",
+  "owner": "mdkg-project-agent",
+  "objective": "Qualify seven synchronous installed smoke callers and their transitive helpers without ambient Git effects or lost failure diagnostics.",
+  "baseline": {
+    "head": "c10113489381badf2845fc378c49b317376f953e",
+    "branch": "main",
+    "upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "dirty_paths": 96,
+    "staged": [],
+    "protected": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    }
+  },
+  "changed_unit": [
+    "scripts/smoke-bundle.js",
+    "scripts/smoke-archive-work.js",
+    "scripts/smoke-command-matrix.js",
+    "scripts/smoke-init.js",
+    "scripts/smoke-spike.js",
+    "scripts/smoke-work-invocation.js",
+    "scripts/smoke-subgraph.js",
+    "scripts/installed-work-identity.js",
+    "scripts/installed-generic-boundary.js",
+    "tests/fixtures/transport-state.cjs",
+    "scripts/qualification-smoke.js",
+    "tests/qualification-smoke.test.mjs",
+    "scripts/qualification-fixture.js",
+    "tests/qualification-fixture.test.mjs"
+  ],
+  "implementation": [
+    "Seven callers now use runInstalledSmoke, owned Node/npm/Git dispatch, private npm configuration, deferred installation after artifact admission, and verified cleanup before success.",
+    "Three transitive helpers require explicit caller controllers; Node preloads reach deliberate refusal traps through nodeArgs.",
+    "Shared finalization preserves nested aggregate/cause diagnostics while retaining error identities and independent cleanup.",
+    "Imported init exercises accept an explicit controller through a factory or named export; missing controllers refuse before writes.",
+    "Command-matrix synthetic contract nodes are fully wired before the next allocation; no-reindex does not waive authored-source validity.",
+    "Synthetic modified bundle policy hash is rebound after payload rehash; all bundle verification and projection-neutrality assertions remain."
+  ],
+  "reproductions": {
+    "synthetic": true,
+    "canonical_mutations": false,
+    "results": [
+      {
+        "caller": "scripts/smoke-bundle.js",
+        "source_sha256": "f7d00d4c43891e44baae6ffd2a25275f7405eb395dd50173ce77646531c53bb9",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "c0ba06cca3a330eb200dcabf089df73006ca52c8e5dc53097f320a6c6c88a06e",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-archive-work.js",
+        "source_sha256": "4e13f3f333706a36ac859e2bd4bac03b2b71144a35023705c51f435022d223f3",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "63865e4bc2b7bcccad8f314d113dc2579aff30c41c94ce19ce7a06be601d009b",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-command-matrix.js",
+        "source_sha256": "6adf0d55552dabd117c7042d5da6538243ddc50359cbbcc5dc89bf6b1abf9b93",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "95b172cb0b1f0314d06b843f81d3cb16f89585d99a5b7c65144d6b17cbec6da1",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-init.js",
+        "source_sha256": "bb3c34018fc65698632f26faa4508af02a544417355610263d5e9a92e53490bb",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "dfad5ffaf3d25d506f1ca0634118c010424bb4ac98c82d27c6f89fda2653e24b",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-spike.js",
+        "source_sha256": "8d6f8c6e448e7176d39278b67330b1dd0c049176714399a1f574fb736dbb1910",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "3cc227983da32223a6881029a2fbcdce13675cfb33cb0a3408ea289d19e704e0",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-work-invocation.js",
+        "source_sha256": "bcad11c3329af0c1c8c5a6cf33b98b5a9a8172840a96296712cb7ec84bef3fd1",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "46a99ff336d83b27a68c189d4e582abf8986b45c50836f67ac360aaf684cb63e",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/smoke-subgraph.js",
+        "source_sha256": "12c6d39ddff34bff40800721c83909fa797130b85b5b59169a5c06f172a46ff3",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "e2aa6be8d553ac19d3eb904fa7b8929d0cf7cbfa186690353ba3c07be418bb46",
+        "redirected": true
+      },
+      {
+        "caller": "scripts/installed-work-identity.js",
+        "source_sha256": "f27311fa6dec26f4dacfa5cbfe11d33f4b98af54cd48bc1c59c9d6f6223ddab8",
+        "sentinel_index_before": null,
+        "sentinel_index_after": "e8351110746b91872be7e0ca8eb2513b4f5e54089edcaf9d78dd405cb1ec95f5",
+        "redirected": true
+      }
+    ]
+  },
+  "review": {
+    "reviewer": "task838_output_review",
+    "scope": "bounded independent read-only fixture/correction review, not Task828 or Standard acceptance",
+    "findings": [
+      {
+        "issue": "AggregateError top-level message hid the primary failure in standalone stderr",
+        "disposition": "reproduced; fixed common finalizer; nested-cause/cycle and actual-entrypoint regression passes"
+      },
+      {
+        "issue": "Imported init exercise API relied on uninitialized module-local commands",
+        "disposition": "reproduced; explicit controller factory and named API; successful imported execution and pre-write refusal tests pass"
+      }
+    ],
+    "followups": [
+      "Command-matrix reordering preserves fields, allocation flags and scenario assertions; no remaining concrete correction defect found.",
+      "Synthetic transport policy hash rebinding matches current manifest contract and existing transport fixtures; no weakened assertion found."
+    ]
+  },
+  "candidate": {
+    "classification": "UNSEALED_INTERMEDIATE_NOT_FINAL_RELEASE",
+    "path": "/private/tmp/mdkg-task838-git-qual.PPoK5C/mdkg-0.6.0.tgz",
+    "version": "0.6.0",
+    "sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+    "integrity": "sha512-j8ofLtbSxsEI1csOynAdpBaTGdQRvULaSAVmmJ/r2ezkb07yxF0ka3otPsHJ7DDAAGsxpQ6Vgqun1ejaUQVJzg==",
+    "package_input_changes_this_unit": false,
+    "repacked": false
+  },
+  "source_sha256": {
+    "scripts/smoke-bundle.js": "e7ae1cff9957342c9eed5d745a130c5c919aa6ff8a49d6c0f46a75c5f8bfe0c6",
+    "scripts/smoke-archive-work.js": "5d7ffc685e35ec291133038ffa22352e4d81979df3cc26450cd3936aadfc9654",
+    "scripts/smoke-command-matrix.js": "9c9aa704a58c73bccdd91db965b8be392273096bbadd00ace9f608bf6ca590d5",
+    "scripts/smoke-init.js": "eab58eb278ed00f8e72928d8ac9d7c16e8e24ef7decbeec2b6352f481ed31944",
+    "scripts/smoke-spike.js": "31a5e42f8db8b59ef7470ce46b2fbcacd0f38d7b95c0996911f84583474287ca",
+    "scripts/smoke-work-invocation.js": "45676c31b80b91f52f8a7642690085cbb6ce3e4ed6e8f2204df7f150d1367c7f",
+    "scripts/smoke-subgraph.js": "1c4d087e440e83e56b5d9b1a0b660b6f87718251e182822e47ea94f3b020d062",
+    "scripts/installed-work-identity.js": "9551d3455311a5cb38e060352ebf3810a23a49d43f9d29e03874ce0fb5c674b8",
+    "scripts/installed-generic-boundary.js": "e1c202b3d0b66941d555088146261d24898b639b429702b2fd915cd9dbd0e4ae",
+    "tests/fixtures/transport-state.cjs": "b0a913393b08b64dcd7642914e8296013e33fd867b06f09af3440dbf20c8f236",
+    "scripts/qualification-smoke.js": "1d680f22b8da873e5af7fec9ecb2dbd939a8abaaf0a481d771e2b0173f84a60c",
+    "scripts/smoke-db.js": "e043e38f718e4512c458f13c81aae3cf01ed37316176d405ebec6ddd96a77134",
+    "scripts/smoke-db-events.js": "3e3fbed6a30d1898c6f8e1ba8335ef52a9098bd8be18da63e7283e5a1c1730a5",
+    "scripts/smoke-db-materializer.js": "0542ba049a7bc82a34cf3be7094d3e5c741180691615c7dd37543dbfe68c4688",
+    "scripts/smoke-db-queue.js": "ce28b2357e4e4a332c1fdf91defac891c2878d8e38d05cde82026f8dd2069c1d",
+    "scripts/smoke-db-queue-cli.js": "81b9171cddc45e18272c2dfbf0955851597e76d88cf7d5603308a4741cd74602",
+    "scripts/smoke-db-snapshot.js": "11707fcd61a3de014dbe89aabe077b98774c6d181dda441abbf84dee651fdfa9",
+    "scripts/smoke-sqlite.js": "24422b10a6d00f60f27f58bb58910ab8c7a47ed530a895d9f14dcc2467895757",
+    "tests/qualification-git.test.mjs": "269007df66a7c5e5dd77edddfe65d8f53110bccf24f5817d044c2c861d0807ce",
+    "scripts/smoke-fix-plan.js": "8a9f8129d5bf971eb291af42ffea1fe0d92bf2eb96dab06bf4bba25dc7a71c46",
+    "scripts/smoke-loop.js": "8838b7a1f7ec2d604476fbb5bae885d1f0f15a0d954f198676d5e4a3c27197f9",
+    "scripts/smoke-handoff.js": "6d29323a41516b32ad60d3231c1eca3ed8a577a88fcd815af3830b557e803593",
+    "scripts/smoke-command-docs.js": "2d203f67e623e53755fd1de0e7f2f0c5d54eb4f6de25f2b1c17b896f1c50907d",
+    "scripts/smoke-integration-ux.js": "daa217e2cd66a3b32287534b5f27ccb96c88f6dda7ac78b6bce187e19af499f9",
+    "scripts/smoke-operator-health.js": "a67aed6136208fbfbcbe34041f66be4df95ee9a8eabefc681d235664d239b351",
+    "scripts/qualification-fixture.js": "dfe24d8692b37279d1b36b2b5fbc717a3f69911f239ccbfc30c2837a6717ef5e",
+    "scripts/qualification-git.js": "cb36a334a2c180556250247bc0a85e63392eb7bb9eeed2e98d3b8ca155200fc6",
+    "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+    "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+    "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+    "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+    "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+    "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+    "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+    "scripts/npm-smoke-proxy.js": "e24e5e383b9078364a2db8ec3697b6b94142f6449a138fa78d81c1c4fcf74e68",
+    "tests/qualification-smoke.test.mjs": "d569b7b3d0dada726e6f65e9ad2b6f1d11c96bd15e83f1f47669a7f9c1f4ad56",
+    "tests/qualification-fixture.test.mjs": "824c053cd6af9dce8deb58cb883f4f41895276039474d0b5936047be6d9965b6",
+    "tests/smoke-init-discovery.test.mjs": "c982e2b10f8bfd6e36f7da4b5bc25efd29eb8fb0e1eaa765619cbb3221c81cd6"
+  },
+  "qualification": {
+    "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+    "composition": "21 selected installed passes across three runtimes. Earlier passes are reused only when every recorded source hash matches except the generic-boundary helper, which only work-invocation imports. Work-invocation is requalified after that helper correction. Failure receipts remain failed, not reclassified wholesale.",
+    "runs": [
+      {
+        "runtime": "v24.15.0",
+        "focused": {
+          "files": [
+            "tests/smoke-init-discovery.test.mjs",
+            "tests/qualification-smoke.test.mjs",
+            "tests/qualification-git.test.mjs",
+            "tests/qualification-fixture.test.mjs",
+            "tests/qualification-artifact.test.mjs",
+            "tests/qualification-output.test.mjs",
+            "dist/tests/coverage-contract.test.js",
+            "dist/tests/ci-topology.test.js",
+            "dist/tests/release-ladder.test.js"
+          ],
+          "status": 0,
+          "duration_ms": 9327,
+          "log": "<owned-sync-qualification-root>/results-v24.15.0-zWCpSn/focused.log",
+          "sha256": "2e5c9aa16ab29ce4c73eb83bac8bdfed4ca80a13cf34892e61f8dfd26aa674d1",
+          "summary": [
+            "# tests 147",
+            "# pass 147",
+            "# fail 0",
+            "# skipped 0",
+            "# duration_ms 9292.960292"
+          ]
+        },
+        "runs": [
+          {
+            "label": "smoke-bundle",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 12213,
+            "stdout": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-bundle.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-bundle.stderr",
+            "stdout_sha256": "0bc1aebcc4c9fba2dbc2dac8e683d13e253335d8f65a7c43effd3d0b33588189",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "bundle",
+              "version": "0.6.0",
+              "transport_state": {
+                "node": "0.6.0",
+                "runtime": "v24.15.0",
+                "platform": "darwin-arm64",
+                "cases": 22,
+                "case_names": [
+                  "public: state exclusions and portable contract",
+                  "private: state exclusions and portable contract",
+                  "fresh public: bounded inspection/materialization without restored authority",
+                  "fresh public: template application",
+                  "fresh public: incomplete checkout clone refuses unchanged",
+                  "historical public: inspection retained, both mutation consumers refuse unchanged",
+                  "malformed version: all three entrypoints refuse unchanged",
+                  "malformed profile: all three entrypoints refuse unchanged",
+                  "malformed hash: all three entrypoints refuse unchanged",
+                  "malformed role: all three entrypoints refuse unchanged",
+                  "malformed missing-row: all three entrypoints refuse unchanged",
+                  "malformed workspace: all three entrypoints refuse unchanged",
+                  "private clone: checkpoint exact, live state absent",
+                  "private fork: checkpoint exact, live state absent",
+                  "config-less private: conventional checkpoints remain portable without checkout authority",
+                  "config-less private: conventional runtime forgery refuses across five consumers without writes",
+                  "private: owning config preserves an explicit checkpoint within the conventional runtime directory",
+                  "public: unregistered child-declared payload refuses before export writes",
+                  "private: unregistered child-declared payload refuses before export writes",
+                  "self-consistent nested live-payload forgery: four consumers refuse unchanged",
+                  "public: explicitly registered nested ownership preserves portable checkpoint policy",
+                  "private: explicitly registered nested ownership preserves portable checkpoint policy"
+                ],
+                "cli_sha256": "3a4c5f28d7723b90b8ad89008deac20b21c504811c021269a651c8da5dfd5b48",
+                "final_qualification": false
+              },
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-bundle-nMA06i"
+              }
+            },
+            "receipt_file": "results-v24.15.0-S4CJJz/receipt.json",
+            "receipt_sha256": "3f23021d42c3b577238797368623d6a507ecaf0fbaed69e34039ba593970f341",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-archive-work",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 18243,
+            "stdout": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-archive-work.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-archive-work.stderr",
+            "stdout_sha256": "c8011f9f4257b819c03e2a9ac9ec4931e8602d7b47c8a6f7f622d2e6b1cb0b00",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "archive-work",
+              "version": "0.6.0",
+              "identityWorkflows": [
+                {
+                  "backend": "json",
+                  "state": "warm",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "json",
+                  "state": "cold",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "warm",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "cold",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                }
+              ],
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-archive-work-txEC2b"
+              }
+            },
+            "receipt_file": "results-v24.15.0-S4CJJz/receipt.json",
+            "receipt_sha256": "3f23021d42c3b577238797368623d6a507ecaf0fbaed69e34039ba593970f341",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-command-matrix",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 16811,
+            "stdout": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-command-matrix.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-command-matrix.stderr",
+            "stdout_sha256": "a8feacd205ccbe4294fa644570a8d334f026f25398eb7550b784f95db8e4d9fc",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "command-matrix",
+              "version": "0.6.0",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-command-matrix-1xIaYm"
+              }
+            },
+            "receipt_file": "results-v24.15.0-S4CJJz/receipt.json",
+            "receipt_sha256": "3f23021d42c3b577238797368623d6a507ecaf0fbaed69e34039ba593970f341",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-init",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 11778,
+            "stdout": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-init.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-init.stderr",
+            "stdout_sha256": "13e0c6145225957d7cc2f704f27df1610f524561dfba6df516ec82ee6987d188",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "init",
+              "version": "0.6.0",
+              "customizedDiscovery": {
+                "runtime": "v24.15.0",
+                "initial": {
+                  "skills": 6,
+                  "local_links": 16,
+                  "native_targets": 2
+                },
+                "resources": {
+                  "skills": 6,
+                  "local_links": 16,
+                  "native_targets": 2
+                },
+                "synthetic_resource_files": 3,
+                "customized_entrypoints": 2,
+                "project_files_preserved": 4,
+                "git_index_preserved": true,
+                "discovery_observational": true,
+                "resources_executed": false
+              },
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-init-PrpmJL"
+              }
+            },
+            "receipt_file": "results-v24.15.0-S4CJJz/receipt.json",
+            "receipt_sha256": "3f23021d42c3b577238797368623d6a507ecaf0fbaed69e34039ba593970f341",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-spike",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 5262,
+            "stdout": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-spike.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.15.0-S4CJJz/smoke-spike.stderr",
+            "stdout_sha256": "4cac96f3f73cc62461227c827b05ddfafaccc31988c5afc0264ec130fb1da6e9",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "spike",
+              "temp_root": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-spike-BmplKW",
+              "repo": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-spike-BmplKW/repo",
+              "tarball": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-spike-BmplKW/pack/mdkg-0.6.0.tgz",
+              "spike": "root:spike-1",
+              "malformed_repo": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-spike-BmplKW/malformed-repo",
+              "follow_up_task": "root:task-1",
+              "follow_up_test": "root:test-1",
+              "skill_count": 6,
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-3geeYI/mdkg-spike-BmplKW"
+              }
+            },
+            "receipt_file": "results-v24.15.0-S4CJJz/receipt.json",
+            "receipt_sha256": "3f23021d42c3b577238797368623d6a507ecaf0fbaed69e34039ba593970f341",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-work-invocation",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 23436,
+            "stdout": "<owned-sync-qualification-root>/results-v24.15.0-zWCpSn/smoke-work-invocation.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.15.0-zWCpSn/smoke-work-invocation.stderr",
+            "stdout_sha256": "0b52186cf0d65b75dcb1e128037f97c3985d011044155358ddcf1e6c12400217",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "work-invocation",
+              "genericBoundary": {
+                "node": "v24.15.0",
+                "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "rejected_invocations": 9,
+                "subprocesses_on_refusal": 0,
+                "generic_work": true,
+                "old_runtime_token_rejected": true,
+                "custom_fields_preserved": true,
+                "cached_projection_neutral": true,
+                "synthetic_import_projection_neutral": true,
+                "imported_bytes_preserved": true
+              },
+              "identityWorkflows": [
+                {
+                  "backend": "json",
+                  "state": "warm",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "json",
+                  "state": "cold",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "warm",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "cold",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                }
+              ],
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-xybqbi/mdkg-work-invocation-z0GWPC"
+              }
+            },
+            "receipt_file": "results-v24.15.0-zWCpSn/receipt.json",
+            "receipt_sha256": "d323881ba504af806e0502dead78901af6127dbbbfc561e938a0a297e4bd9b0e",
+            "source_differences": [],
+            "reuse_reason": "All recorded source hashes match current files."
+          },
+          {
+            "label": "smoke-subgraph",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 10193,
+            "stdout": "<owned-sync-qualification-root>/results-v24.15.0-zWCpSn/smoke-subgraph.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.15.0-zWCpSn/smoke-subgraph.stderr",
+            "stdout_sha256": "dce8177e33e160d10751e94ec4f11be92819c2e909a8dc676df100ce2f7e6a21",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "subgraph",
+              "version": "0.6.0",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-xybqbi/mdkg-subgraph-4ixS1z"
+              }
+            },
+            "receipt_file": "results-v24.15.0-zWCpSn/receipt.json",
+            "receipt_sha256": "d323881ba504af806e0502dead78901af6127dbbbfc561e938a0a297e4bd9b0e",
+            "source_differences": [],
+            "reuse_reason": "All recorded source hashes match current files."
+          }
+        ],
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node"
+      },
+      {
+        "runtime": "v24.18.0",
+        "focused": {
+          "files": [
+            "tests/smoke-init-discovery.test.mjs",
+            "tests/qualification-smoke.test.mjs",
+            "tests/qualification-git.test.mjs",
+            "tests/qualification-fixture.test.mjs",
+            "tests/qualification-artifact.test.mjs",
+            "tests/qualification-output.test.mjs",
+            "dist/tests/coverage-contract.test.js",
+            "dist/tests/ci-topology.test.js",
+            "dist/tests/release-ladder.test.js"
+          ],
+          "status": 0,
+          "duration_ms": 8629,
+          "log": "<owned-sync-qualification-root>/results-v24.18.0-I4CPXV/focused.log",
+          "sha256": "964632fa51caca683d4b531287af0dbbf7004bebfd74b300b7b2813db9e1a84e",
+          "summary": [
+            "# tests 147",
+            "# pass 147",
+            "# fail 0",
+            "# skipped 0",
+            "# duration_ms 8559.735583"
+          ]
+        },
+        "runs": [
+          {
+            "label": "smoke-bundle",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 15894,
+            "stdout": "<owned-sync-qualification-root>/results-v24.18.0-I4CPXV/smoke-bundle.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.18.0-I4CPXV/smoke-bundle.stderr",
+            "stdout_sha256": "9e9dfa2183aa46e640e902af0bfac519588db9b5d1fcd7b1a683771f1c75b544",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "bundle",
+              "version": "0.6.0",
+              "transport_state": {
+                "node": "0.6.0",
+                "runtime": "v24.18.0",
+                "platform": "darwin-arm64",
+                "cases": 22,
+                "case_names": [
+                  "public: state exclusions and portable contract",
+                  "private: state exclusions and portable contract",
+                  "fresh public: bounded inspection/materialization without restored authority",
+                  "fresh public: template application",
+                  "fresh public: incomplete checkout clone refuses unchanged",
+                  "historical public: inspection retained, both mutation consumers refuse unchanged",
+                  "malformed version: all three entrypoints refuse unchanged",
+                  "malformed profile: all three entrypoints refuse unchanged",
+                  "malformed hash: all three entrypoints refuse unchanged",
+                  "malformed role: all three entrypoints refuse unchanged",
+                  "malformed missing-row: all three entrypoints refuse unchanged",
+                  "malformed workspace: all three entrypoints refuse unchanged",
+                  "private clone: checkpoint exact, live state absent",
+                  "private fork: checkpoint exact, live state absent",
+                  "config-less private: conventional checkpoints remain portable without checkout authority",
+                  "config-less private: conventional runtime forgery refuses across five consumers without writes",
+                  "private: owning config preserves an explicit checkpoint within the conventional runtime directory",
+                  "public: unregistered child-declared payload refuses before export writes",
+                  "private: unregistered child-declared payload refuses before export writes",
+                  "self-consistent nested live-payload forgery: four consumers refuse unchanged",
+                  "public: explicitly registered nested ownership preserves portable checkpoint policy",
+                  "private: explicitly registered nested ownership preserves portable checkpoint policy"
+                ],
+                "cli_sha256": "3a4c5f28d7723b90b8ad89008deac20b21c504811c021269a651c8da5dfd5b48",
+                "final_qualification": false
+              },
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-7xCb18/mdkg-bundle-8i3sCz"
+              }
+            },
+            "receipt_file": "results-v24.18.0-I4CPXV/receipt.json",
+            "receipt_sha256": "effcc583c176e3c802e1706597c7885cb907aadd88b0a203fe3f7aed617b3cfc",
+            "source_differences": [],
+            "reuse_reason": "All recorded source hashes match current files."
+          },
+          {
+            "label": "smoke-archive-work",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 24819,
+            "stdout": "<owned-sync-qualification-root>/results-v24.18.0-I4CPXV/smoke-archive-work.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.18.0-I4CPXV/smoke-archive-work.stderr",
+            "stdout_sha256": "c421f0cbbba5eab69933248b8139cd3adc4e721985024362b18cd532e242fb23",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "archive-work",
+              "version": "0.6.0",
+              "identityWorkflows": [
+                {
+                  "backend": "json",
+                  "state": "warm",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "json",
+                  "state": "cold",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "warm",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "cold",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                }
+              ],
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-7xCb18/mdkg-archive-work-SrwUBN"
+              }
+            },
+            "receipt_file": "results-v24.18.0-I4CPXV/receipt.json",
+            "receipt_sha256": "effcc583c176e3c802e1706597c7885cb907aadd88b0a203fe3f7aed617b3cfc",
+            "source_differences": [],
+            "reuse_reason": "All recorded source hashes match current files."
+          },
+          {
+            "label": "smoke-command-matrix",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 22674,
+            "stdout": "<owned-sync-qualification-root>/results-v24.18.0-MEz9yt/smoke-command-matrix.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.18.0-MEz9yt/smoke-command-matrix.stderr",
+            "stdout_sha256": "0ce45a6ce583e022424380d752a57fede66655359d5660f56ae02eba6bcdeaa8",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "command-matrix",
+              "version": "0.6.0",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-WB2jPU/mdkg-command-matrix-hboz0W"
+              }
+            },
+            "receipt_file": "results-v24.18.0-MEz9yt/receipt.json",
+            "receipt_sha256": "aea48b1d75907930bdeba9b3e5387872e36c7fb4e57d7b93ad4942f50dfd6871",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-init",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 13161,
+            "stdout": "<owned-sync-qualification-root>/results-v24.18.0-MEz9yt/smoke-init.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.18.0-MEz9yt/smoke-init.stderr",
+            "stdout_sha256": "abe188a427b538928317bf66727907f058c1bab4f3c9c72fc1b5857d65f280b8",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "init",
+              "version": "0.6.0",
+              "customizedDiscovery": {
+                "runtime": "v24.18.0",
+                "initial": {
+                  "skills": 6,
+                  "local_links": 16,
+                  "native_targets": 2
+                },
+                "resources": {
+                  "skills": 6,
+                  "local_links": 16,
+                  "native_targets": 2
+                },
+                "synthetic_resource_files": 3,
+                "customized_entrypoints": 2,
+                "project_files_preserved": 4,
+                "git_index_preserved": true,
+                "discovery_observational": true,
+                "resources_executed": false
+              },
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-WB2jPU/mdkg-init-8RSks6"
+              }
+            },
+            "receipt_file": "results-v24.18.0-MEz9yt/receipt.json",
+            "receipt_sha256": "aea48b1d75907930bdeba9b3e5387872e36c7fb4e57d7b93ad4942f50dfd6871",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-spike",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 6111,
+            "stdout": "<owned-sync-qualification-root>/results-v24.18.0-MEz9yt/smoke-spike.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.18.0-MEz9yt/smoke-spike.stderr",
+            "stdout_sha256": "a795a16cea5621a0d30c5d2da7e285fefedc1e6864094d0109f0cde9e7651568",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "spike",
+              "temp_root": "<owned-sync-qualification-root>/execution-WB2jPU/mdkg-spike-E6Nuwj",
+              "repo": "<owned-sync-qualification-root>/execution-WB2jPU/mdkg-spike-E6Nuwj/repo",
+              "tarball": "<owned-sync-qualification-root>/execution-WB2jPU/mdkg-spike-E6Nuwj/pack/mdkg-0.6.0.tgz",
+              "spike": "root:spike-1",
+              "malformed_repo": "<owned-sync-qualification-root>/execution-WB2jPU/mdkg-spike-E6Nuwj/malformed-repo",
+              "follow_up_task": "root:task-1",
+              "follow_up_test": "root:test-1",
+              "skill_count": 6,
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-WB2jPU/mdkg-spike-E6Nuwj"
+              }
+            },
+            "receipt_file": "results-v24.18.0-MEz9yt/receipt.json",
+            "receipt_sha256": "aea48b1d75907930bdeba9b3e5387872e36c7fb4e57d7b93ad4942f50dfd6871",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-work-invocation",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 26541,
+            "stdout": "<owned-sync-qualification-root>/results-v24.18.0-wGjE5C/smoke-work-invocation.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.18.0-wGjE5C/smoke-work-invocation.stderr",
+            "stdout_sha256": "ba89a92937f7d892ffafe6a02fd8abb92f8fea9422e0ec9f0e49fd0328eb1259",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "work-invocation",
+              "genericBoundary": {
+                "node": "v24.18.0",
+                "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "rejected_invocations": 9,
+                "subprocesses_on_refusal": 0,
+                "generic_work": true,
+                "old_runtime_token_rejected": true,
+                "custom_fields_preserved": true,
+                "cached_projection_neutral": true,
+                "synthetic_import_projection_neutral": true,
+                "imported_bytes_preserved": true
+              },
+              "identityWorkflows": [
+                {
+                  "backend": "json",
+                  "state": "warm",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "json",
+                  "state": "cold",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "warm",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "cold",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                }
+              ],
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-xdd7yV/mdkg-work-invocation-KV2qtS"
+              }
+            },
+            "receipt_file": "results-v24.18.0-wGjE5C/receipt.json",
+            "receipt_sha256": "262394d15eac355b1e2f61e4deaab9a92fdf87d1c5c1bf72ea4d663cb1d76608",
+            "source_differences": [],
+            "reuse_reason": "All recorded source hashes match current files."
+          },
+          {
+            "label": "smoke-subgraph",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 9776,
+            "stdout": "<owned-sync-qualification-root>/results-v24.18.0-wGjE5C/smoke-subgraph.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v24.18.0-wGjE5C/smoke-subgraph.stderr",
+            "stdout_sha256": "e19e1af3e78476660942d688f68cc8dfb6f687f04764bcc3bd18c7ed7e92d158",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "subgraph",
+              "version": "0.6.0",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-xdd7yV/mdkg-subgraph-PLUfKG"
+              }
+            },
+            "receipt_file": "results-v24.18.0-wGjE5C/receipt.json",
+            "receipt_sha256": "262394d15eac355b1e2f61e4deaab9a92fdf87d1c5c1bf72ea4d663cb1d76608",
+            "source_differences": [],
+            "reuse_reason": "All recorded source hashes match current files."
+          }
+        ],
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node"
+      },
+      {
+        "runtime": "v26.0.0",
+        "focused": {
+          "files": [
+            "tests/smoke-init-discovery.test.mjs",
+            "tests/qualification-smoke.test.mjs",
+            "tests/qualification-git.test.mjs",
+            "tests/qualification-fixture.test.mjs",
+            "tests/qualification-artifact.test.mjs",
+            "tests/qualification-output.test.mjs",
+            "dist/tests/coverage-contract.test.js",
+            "dist/tests/ci-topology.test.js",
+            "dist/tests/release-ladder.test.js"
+          ],
+          "status": 0,
+          "duration_ms": 9341,
+          "log": "<owned-sync-qualification-root>/results-v26.0.0-8vVSuK/focused.log",
+          "sha256": "cf2475e47c6937675cc6cae82ea92589ae2d212ff5f4ca2d01a787bb5b3900ae",
+          "summary": [
+            "# tests 147",
+            "# pass 147",
+            "# fail 0",
+            "# skipped 0",
+            "# duration_ms 9277.333708"
+          ]
+        },
+        "runs": [
+          {
+            "label": "smoke-bundle",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 14822,
+            "stdout": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-bundle.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-bundle.stderr",
+            "stdout_sha256": "c43c27430945b650c33172971121b820fab54432dce22a74b254684c3f5b716d",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "bundle",
+              "version": "0.6.0",
+              "transport_state": {
+                "node": "0.6.0",
+                "runtime": "v26.0.0",
+                "platform": "darwin-arm64",
+                "cases": 22,
+                "case_names": [
+                  "public: state exclusions and portable contract",
+                  "private: state exclusions and portable contract",
+                  "fresh public: bounded inspection/materialization without restored authority",
+                  "fresh public: template application",
+                  "fresh public: incomplete checkout clone refuses unchanged",
+                  "historical public: inspection retained, both mutation consumers refuse unchanged",
+                  "malformed version: all three entrypoints refuse unchanged",
+                  "malformed profile: all three entrypoints refuse unchanged",
+                  "malformed hash: all three entrypoints refuse unchanged",
+                  "malformed role: all three entrypoints refuse unchanged",
+                  "malformed missing-row: all three entrypoints refuse unchanged",
+                  "malformed workspace: all three entrypoints refuse unchanged",
+                  "private clone: checkpoint exact, live state absent",
+                  "private fork: checkpoint exact, live state absent",
+                  "config-less private: conventional checkpoints remain portable without checkout authority",
+                  "config-less private: conventional runtime forgery refuses across five consumers without writes",
+                  "private: owning config preserves an explicit checkpoint within the conventional runtime directory",
+                  "public: unregistered child-declared payload refuses before export writes",
+                  "private: unregistered child-declared payload refuses before export writes",
+                  "self-consistent nested live-payload forgery: four consumers refuse unchanged",
+                  "public: explicitly registered nested ownership preserves portable checkpoint policy",
+                  "private: explicitly registered nested ownership preserves portable checkpoint policy"
+                ],
+                "cli_sha256": "3a4c5f28d7723b90b8ad89008deac20b21c504811c021269a651c8da5dfd5b48",
+                "final_qualification": false
+              },
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-bundle-VS0c99"
+              }
+            },
+            "receipt_file": "results-v26.0.0-cdo7wY/receipt.json",
+            "receipt_sha256": "bc6f3ab8c454aa179eab87b1997a5b5d50f6a72b684672d14232a8d1c79e41a8",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-archive-work",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 21742,
+            "stdout": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-archive-work.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-archive-work.stderr",
+            "stdout_sha256": "6dc37699d1aa76f67125e87e0c19613326a1a2d9444be253b8502d7c1d228574",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "archive-work",
+              "version": "0.6.0",
+              "identityWorkflows": [
+                {
+                  "backend": "json",
+                  "state": "warm",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "json",
+                  "state": "cold",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "warm",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "cold",
+                  "node_count": 7,
+                  "order_count": 1,
+                  "receipt_count": 1,
+                  "stable_links": 7,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                }
+              ],
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-archive-work-P2bF6B"
+              }
+            },
+            "receipt_file": "results-v26.0.0-cdo7wY/receipt.json",
+            "receipt_sha256": "bc6f3ab8c454aa179eab87b1997a5b5d50f6a72b684672d14232a8d1c79e41a8",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-command-matrix",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 23127,
+            "stdout": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-command-matrix.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-command-matrix.stderr",
+            "stdout_sha256": "6b3a96dad1272ee1702f445d6af4798e37395f23b2102f41b6fefa388b7db927",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "command-matrix",
+              "version": "0.6.0",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-command-matrix-RgUbGb"
+              }
+            },
+            "receipt_file": "results-v26.0.0-cdo7wY/receipt.json",
+            "receipt_sha256": "bc6f3ab8c454aa179eab87b1997a5b5d50f6a72b684672d14232a8d1c79e41a8",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-init",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 13116,
+            "stdout": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-init.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-init.stderr",
+            "stdout_sha256": "feae9cdefb138f3c46f676100fc89d0d5cde7615592e49fcdb1d7e4805b4e146",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "init",
+              "version": "0.6.0",
+              "customizedDiscovery": {
+                "runtime": "v26.0.0",
+                "initial": {
+                  "skills": 6,
+                  "local_links": 16,
+                  "native_targets": 2
+                },
+                "resources": {
+                  "skills": 6,
+                  "local_links": 16,
+                  "native_targets": 2
+                },
+                "synthetic_resource_files": 3,
+                "customized_entrypoints": 2,
+                "project_files_preserved": 4,
+                "git_index_preserved": true,
+                "discovery_observational": true,
+                "resources_executed": false
+              },
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-init-ybcwKr"
+              }
+            },
+            "receipt_file": "results-v26.0.0-cdo7wY/receipt.json",
+            "receipt_sha256": "bc6f3ab8c454aa179eab87b1997a5b5d50f6a72b684672d14232a8d1c79e41a8",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-spike",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 5792,
+            "stdout": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-spike.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v26.0.0-cdo7wY/smoke-spike.stderr",
+            "stdout_sha256": "2ba6fa3f4bd733563f5ddb7b55bf8d115f450d54bf405b5d61e403eef5ec4e86",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "spike",
+              "temp_root": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-spike-4F7iB2",
+              "repo": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-spike-4F7iB2/repo",
+              "tarball": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-spike-4F7iB2/pack/mdkg-0.6.0.tgz",
+              "spike": "root:spike-1",
+              "malformed_repo": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-spike-4F7iB2/malformed-repo",
+              "follow_up_task": "root:task-1",
+              "follow_up_test": "root:test-1",
+              "skill_count": 6,
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-obzcyW/mdkg-spike-4F7iB2"
+              }
+            },
+            "receipt_file": "results-v26.0.0-cdo7wY/receipt.json",
+            "receipt_sha256": "bc6f3ab8c454aa179eab87b1997a5b5d50f6a72b684672d14232a8d1c79e41a8",
+            "source_differences": [
+              "scripts/installed-generic-boundary.js"
+            ],
+            "reuse_reason": "Only generic-boundary helper changed; this caller does not import it. All other frozen source hashes match."
+          },
+          {
+            "label": "smoke-work-invocation",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 28677,
+            "stdout": "<owned-sync-qualification-root>/results-v26.0.0-8vVSuK/smoke-work-invocation.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v26.0.0-8vVSuK/smoke-work-invocation.stderr",
+            "stdout_sha256": "a53bb2c6a36f6a618c7d9962069421877f7bdcb3cc99d71dc550c1d48f32c986",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "work-invocation",
+              "genericBoundary": {
+                "node": "v26.0.0",
+                "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "rejected_invocations": 9,
+                "subprocesses_on_refusal": 0,
+                "generic_work": true,
+                "old_runtime_token_rejected": true,
+                "custom_fields_preserved": true,
+                "cached_projection_neutral": true,
+                "synthetic_import_projection_neutral": true,
+                "imported_bytes_preserved": true
+              },
+              "identityWorkflows": [
+                {
+                  "backend": "json",
+                  "state": "warm",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "json",
+                  "state": "cold",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "warm",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                },
+                {
+                  "backend": "sqlite",
+                  "state": "cold",
+                  "node_count": 6,
+                  "order_count": 2,
+                  "receipt_count": 2,
+                  "stable_links": 6,
+                  "git_index_preserved": true,
+                  "evidence_bytes_preserved": true
+                }
+              ],
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-Igg6PD/mdkg-work-invocation-FR6JZg"
+              }
+            },
+            "receipt_file": "results-v26.0.0-8vVSuK/receipt.json",
+            "receipt_sha256": "ea416284b0c7fd3c6fe82ef97a85aa109a81ca002a011700c8ee4df1aaaf66a2",
+            "source_differences": [],
+            "reuse_reason": "All recorded source hashes match current files."
+          },
+          {
+            "label": "smoke-subgraph",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 10844,
+            "stdout": "<owned-sync-qualification-root>/results-v26.0.0-8vVSuK/smoke-subgraph.stdout",
+            "stderr": "<owned-sync-qualification-root>/results-v26.0.0-8vVSuK/smoke-subgraph.stderr",
+            "stdout_sha256": "b04f4ef5d53953c22f1b46efa200236fce14662f5d78e1123e2685f965b0cbab",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "ok": true,
+              "smoke": "subgraph",
+              "version": "0.6.0",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "<owned-sync-qualification-root>/execution-Igg6PD/mdkg-subgraph-4KrlAS"
+              }
+            },
+            "receipt_file": "results-v26.0.0-8vVSuK/receipt.json",
+            "receipt_sha256": "ea416284b0c7fd3c6fe82ef97a85aa109a81ca002a011700c8ee4df1aaaf66a2",
+            "source_differences": [],
+            "reuse_reason": "All recorded source hashes match current files."
+          }
+        ],
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node"
+      }
+    ],
+    "runner_sha256": "06b36d37b5089afe253a4d0cae18a75c1a0d66372f948ff59e3e9b5aa8f50cb8",
+    "runner_path": "/private/tmp/mdkg-task838-sync-smokes.8VJzG9/qualify.cjs",
+    "recipe": "Invoke the owned runner with each exact Node binary and optional smoke labels. It delivers the same candidate through an offline npm proxy, poisons ambient Git/npm paths toward an owned sentinel, hashes sources/candidate/logs, verifies child cleanup, then runs the listed nine affected files.",
+    "focused_total_per_runtime": 147,
+    "full_release_ladder": false,
+    "full_repository_suite": false
+  },
+  "prior_failures": [
+    {
+      "receipt": "results-v24.15.0-S4CJJz/receipt.json",
+      "receipt_sha256": "3f23021d42c3b577238797368623d6a507ecaf0fbaed69e34039ba593970f341",
+      "runtime": "v24.15.0",
+      "cleanup": {
+        "removed": true,
+        "root": "<owned-sync-qualification-root>/execution-3geeYI"
+      },
+      "failed": [
+        {
+          "label": "smoke-work-invocation",
+          "exit": 1,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "d8a564442da75ccd4ba4e156ff954e1231b285335530d56ffd59a1ff6ed6eb39",
+          "diagnostics": [
+            "fixture qualification failed; cleanup={\"removed\":true,\"root\":\"<owned-sync-qualification-root>/execution-3geeYI/mdkg-work-invocation-z09WgP\"}",
+            "    \"bundle manifest is invalid JSON: portable transport policy invalid: version, profile or payload hash mismatch\""
+          ]
+        }
+      ]
+    },
+    {
+      "receipt": "results-v24.18.0-9a0uPl/receipt.json",
+      "receipt_sha256": "c746c6ba1deb911fd73f383548c4cec115ff978366187a99507d18c0a598e03b",
+      "runtime": "v24.18.0",
+      "cleanup": {
+        "removed": true,
+        "root": "<owned-sync-qualification-root>/execution-yHeFy5"
+      },
+      "failed": [
+        {
+          "label": "smoke-command-matrix",
+          "exit": 1,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "4c5b88c72dcd86d75157a3d0c8576db357f44ed916b075af7b83ba1621de2cfd",
+          "diagnostics": [
+            "fixture qualification failed; cleanup={\"removed\":true,\"root\":\"<owned-sync-qualification-root>/execution-yHeFy5/mdkg-command-matrix-BLBlUg\"}",
+            "root:order.generate-image-1: work_id references missing WORK.md work.example"
+          ]
+        }
+      ]
+    },
+    {
+      "receipt": "results-v24.18.0-MEz9yt/receipt.json",
+      "receipt_sha256": "aea48b1d75907930bdeba9b3e5387872e36c7fb4e57d7b93ad4942f50dfd6871",
+      "runtime": "v24.18.0",
+      "cleanup": {
+        "removed": true,
+        "root": "<owned-sync-qualification-root>/execution-WB2jPU"
+      },
+      "failed": [
+        {
+          "label": "smoke-work-invocation",
+          "exit": 1,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "4bf6545eee9b2de9986b50ff1f7a7ed1ba1f193c1017b26aa43ca6f0bc8c9971",
+          "diagnostics": [
+            "fixture qualification failed; cleanup={\"removed\":true,\"root\":\"<owned-sync-qualification-root>/execution-WB2jPU/mdkg-work-invocation-SlhiTV\"}",
+            "    \"bundle manifest is invalid JSON: portable transport policy invalid: version, profile or payload hash mismatch\""
+          ]
+        }
+      ]
+    },
+    {
+      "receipt": "results-v24.18.0-sV7fl5/receipt.json",
+      "receipt_sha256": "20f1475fb1514cad9058b36ae49503995543fc3f8d58efcb8683004b4beeaa0f",
+      "runtime": "v24.18.0",
+      "cleanup": {
+        "removed": true,
+        "root": "<owned-sync-qualification-root>/execution-jJs4FO"
+      },
+      "failed": [
+        {
+          "label": "smoke-command-matrix",
+          "exit": 1,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "5f86dd564303f90bf848a8a54c2a747501af0f2b6ceb76f24f12eeb1b3ebc208",
+          "diagnostics": [
+            "fixture qualification failed; cleanup={\"removed\":true,\"root\":\"<owned-sync-qualification-root>/execution-jJs4FO/mdkg-command-matrix-dYJ9VI\"}"
+          ]
+        }
+      ]
+    },
+    {
+      "receipt": "results-v26.0.0-cdo7wY/receipt.json",
+      "receipt_sha256": "bc6f3ab8c454aa179eab87b1997a5b5d50f6a72b684672d14232a8d1c79e41a8",
+      "runtime": "v26.0.0",
+      "cleanup": {
+        "removed": true,
+        "root": "<owned-sync-qualification-root>/execution-obzcyW"
+      },
+      "failed": [
+        {
+          "label": "smoke-work-invocation",
+          "exit": 1,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "ee46e60c19de78cf3bccf9a2bfafc9b0a892b1e241173b897d92e56eafd20745",
+          "diagnostics": [
+            "fixture qualification failed; cleanup={\"removed\":true,\"root\":\"<owned-sync-qualification-root>/execution-obzcyW/mdkg-work-invocation-fMjEAD\"}",
+            "    \"bundle manifest is invalid JSON: portable transport policy invalid: version, profile or payload hash mismatch\""
+          ]
+        }
+      ]
+    }
+  ],
+  "failure_dispositions": [
+    "Initial command-matrix failure had obscured diagnostics; after shared diagnostic correction it exposed missing WORK reference work.example. The synthetic creation order was corrected, not runtime allocation/validation.",
+    "Work-invocation then failed on all three runtimes because its synthetic capability-cache modification did not rebind transport_policy.bundle_hash. The narrow fixture correction passes all three runtimes.",
+    "Initial static caller audit matched the deliberate trap string spawnSync; narrowed to invocation syntax without removing the trap.",
+    "An initial regression harness nested the standalone smoke beneath another supervisor, correctly refusing nested cleanup. The test now uses a bounded raw outer driver; production supervision remains unchanged."
+  ],
+  "limitations": [
+    "Observed sentinel/file equality is not proof against all transient effects.",
+    "Trusted child process supervision and environment isolation are not an OS or credential sandbox.",
+    "No blocked-context access, raw historical report recovery, historical scan rerun, remote call, Linux execution or final security acceptance.",
+    "Published 0.5.2 original bytes are not locally available; this does not qualify that upgrade baseline.",
+    "Canonical runtime, selected goal and Demo3 preserved; no bundle refresh, staging or commit."
+  ],
+  "remaining": [
+    "Task838: npm-exec consumer, deliberate hostile-Git boundary and asynchronous MCP callers, including transitive helpers and their distinctive scenarios.",
+    "Bug60 observational SQLite decision and Bugs46/47 remain unresolved; deferred Rust/Linux epics are not waivers.",
+    "Task839 release-critical truth, installed/platform completion, Task828 independent review, Task829 full ladder, Task830 exact seal.",
+    "Goal85 remains paused; publication needs separate authority."
+  ],
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "verify-close-and-checkpoint",
+    "source-grounded-diagnose-and-fix",
+    "interrupted-session-handoff"
+  ],
+  "skill_candidates": [],
+  "verification": {
+    "source_and_candidate_hashes_match": true,
+    "sentinels_preserved": true,
+    "owned_execution_roots_cleaned": true,
+    "syntax_and_diff_check": "passed before checkpoint",
+    "graph": "Full graph validation passed (0 errors,3 existing stale-import warnings); changed-only passed (0 errors,0 warnings); all5 SQLite projections fresh at the seven-caller milestone. Final combined milestone revalidation is recorded in chk647."
+  }
+}

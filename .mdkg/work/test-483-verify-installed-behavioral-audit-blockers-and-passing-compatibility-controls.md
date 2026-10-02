@@ -2,12 +2,12 @@
 id: test-483
 type: test
 title: Verify installed behavioral audit blockers and passing compatibility controls
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-83/task-824-contract-audit.json, .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json]
+artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-83/task-824-contract-audit.json, .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json, .mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json, .mdkg/artifacts/goal-86/test-483-local-pack-controls-qualification.json, .mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/final-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/candidate-seal-20260930.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json]
 relates: [task-824, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27]
 blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-32, bug-33, bug-34, task-827, task-839, task-838]
 blocks: []
@@ -18,8 +18,86 @@ aliases: []
 skills: []
 cases: [test-483-case-1, test-483-case-2, test-483-case-3, test-483-case-4, test-483-case-5, test-483-case-6, test-483-case-7, test-483-case-8, test-483-case-9, test-483-case-10, test-483-case-11, test-483-case-12]
 created: 2026-09-08
-updated: 2026-09-17
+updated: 2026-09-30
 ---
+
+# Current sealed successor acceptance - 2026-09-30
+
+This record's final acceptance now consumes b5497c5f5e5f022e candidate bytes
+at source b10870355b264355af2be4fc53bb4640851f747b, not the earlier f7/6154
+candidate. The successor-installed-case-acceptance and successor-installed-platform-
+qualification receipts bind this QID's actual bounded cases, three exact platforms,
+source/package/harness hashes and limitations. The exact artifact is sealed in
+candidate-seal-20260930.json; Chk570 records complete local acceptance.
+
+All20 retained installed families are accounted on native macOS ARM64 and Ubuntu24
+ARM64-native/x86_64-emulated; minimum/supported Node24.18.0 operation is counted
+once, with actual24.15/26 early refusal/discovery controls. No Windows, native x64
+performance, hosted/website or consumer-adoption proof is claimed. Earlier failures
+and intermediate passes below remain historical and are not relabeled. Bugs46/47
+remain deferred/unresolved. Goal85 remains paused; no publication authority follows.
+
+# Historical family contracts and intermediate candidate evidence
+
+
+# Final installed family acceptance - 2026-09-30
+
+Legacy/v2/cache observation; all pack formats/profiles/limits; format/init/upgrade identity; checkpoint routing; ancestral recreation; strict migration dependencies and closed seeds; large/slow-pipe output; dependency labels. Non-shipping website case5 deferred by Dec100 to Epic258, not counted passed.
+
+The retained f7cbdc1d tarball passes all amended package cases on native macOS
+ARM64 and Ubuntu24 ARM64/native and x86_64/emulated. Exact SHA256/SHA512,
+package inputs, case ownership and platform/failed-run/supplement provenance are
+recorded in `.mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json`
+and `final-installed-platform-qualification-20260930.json` in that directory.
+Earlier candidates remain historical. Bugs46/47 are deferred/unresolved, not
+fixed or accepted. Windows/hosted CI and native-x64 performance are unqualified.
+Family completion is not Task828 independent security acceptance, Task830 seal
+or publication authority. No package input or protected canonical state changed.
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Linked behavioral remedies are locally implemented. Verify current-candidate regressions/positive controls and reuse overlapping Test479/480/484/486/488 evidence. Do not create another remedy because an old narrative says fixes were unexecuted.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+Historical case5 (non-shipping website cache/output qualification) is
+deferred-by-decision to Epic258, not passed. Task843/Test490 retain package
+artifact and qualification-input custody coverage. Other historical runtime
+success expectations are superseded: supported Node24.18.0 performs graph work;
+24.15.0 and26 exercise early no-effect refusal, with help/version still usable.
+
+Current selective execution: reuse case1 from Tests479/480, case6 from Test481,
+and untouched packaged-seed case10 from Test477. Run existing installed-runtime
+pack/format/init, migration lineage/validation, upgrade, dependency and CLI-output
+regressions for cases2/3/4/7/8/9/11/12. Test-only drivers and inert helpers may be
+added to an owned installed fixture; every original package byte remains pinned,
+and canonical production imports are refused. Mixed CLI/internal-module tests
+are labeled as such. Linux/platform aggregation, independent acceptance and the
+complete final package ladder remain separate required gates.
+
+## Current native macOS evidence - 2026-09-28
+
+Exact retained6154e4ea package, Node24.18.0, native arm64:176 existing behavioral
+regressions pass in144553ms, followed by22 pack/profile/budget controls in1415ms.
+All234 original installed files stayed byte-identical. Canonical production
+imports were refused; compiled test drivers/inert helpers were separately
+hashed in an owned install and removed with their fixtures. This is mixed
+installed CLI/internal-module proof, not a claim that every case used only the
+public CLI. No skipped or failing tests were recorded.
+
+Cases1/6/10 reuse exact-candidate Test479/480, Test481 and Test477 evidence.
+The single requirement ledger now includes all12 behavioral case dispositions:
+11 have current native macOS proof with Linux rows missing; case5 is explicitly
+deferred-by-decision, not passed. Init/upgrade identity regression fixtures are
+synthetic closed graphs; untouched packaged-seed closure is separate Test477
+proof. Test483 remains progress until retained platform/aggregate gates pass.
+
+# Historical contract and evidence retained below
 
 # Current Successor Contract - 2026-09-13
 

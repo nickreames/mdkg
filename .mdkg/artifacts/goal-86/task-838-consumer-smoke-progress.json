@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "kind": "task-progress",
+  "qid": "root:task-838",
+  "goal_qid": "root:goal-86",
+  "date": "2026-09-22",
+  "status": "PARTIAL_NOT_READY",
+  "owner": "mdkg-project-agent",
+  "head": "c10113489381badf2845fc378c49b317376f953e",
+  "changed_paths": [
+    "scripts/smoke-consumer.js",
+    "tests/qualification-smoke.test.mjs"
+  ],
+  "reproduction": {
+    "original_sha256": "bdd1b898aff9ba7d8144fde9de04cf8970f14eeacd4107439385eb1f461c0e71",
+    "synthetic": true,
+    "sentinel_index_created": true,
+    "intended_target_index_absent": true,
+    "owned_root_cleaned": true,
+    "canonical_mutations": false
+  },
+  "implementation": [
+    "Native npm exec preserves npx-style lazy package execution; no global install substitute.",
+    "Owned npm/Git execution, private cache/configuration and admitted independent tarball; cleanup before success.",
+    "Each of five lazy executions verifies candidate bytes before and after; receipts bind command, hashes, exit and actual installed mdkg process runtime.",
+    "Original version, pack profiles, compact agent init, canonical/native skills, archive ignore, index and doctor assertions remain."
+  ],
+  "review": {
+    "reviewer": "task838_output_review",
+    "scope": "bounded independent source-only review, not security clearance",
+    "finding": "Initial migration checked bytes around the whole exercise, not after each lazy execution. Npm proxy additional checks cover install only.",
+    "reproduced": "Injected first execution changed candidate bytes; the next execution was reached before final verification (2 calls instead of1).",
+    "fix": "withVerifiedArtifact wraps every npm exec; changed bytes now reject before a later call. Both failure and positive installed evidence retained.",
+    "followup": "No remaining concrete correction defect found. Runtime records identify the observed process runtime, not an independently verified extracted package tree."
+  },
+  "verification": {
+    "focused_initial": 22,
+    "final_affected_per_runtime": 149,
+    "installed_per_runtime": 1,
+    "lazy_executions_per_runtime": 5,
+    "failures": 0,
+    "skipped": 0,
+    "source_frozen": true,
+    "sentinel_preserved": true,
+    "owned_execution_roots_cleaned": true
+  },
+  "source_sha256": {
+    "scripts/smoke-consumer.js": "daa722b4a97d864ff0a8596270716680a4ac7c195ce182f9e6c842e227ee29d1",
+    "scripts/smoke-bundle.js": "e7ae1cff9957342c9eed5d745a130c5c919aa6ff8a49d6c0f46a75c5f8bfe0c6",
+    "scripts/smoke-archive-work.js": "5d7ffc685e35ec291133038ffa22352e4d81979df3cc26450cd3936aadfc9654",
+    "scripts/smoke-command-matrix.js": "9c9aa704a58c73bccdd91db965b8be392273096bbadd00ace9f608bf6ca590d5",
+    "scripts/smoke-init.js": "eab58eb278ed00f8e72928d8ac9d7c16e8e24ef7decbeec2b6352f481ed31944",
+    "scripts/smoke-spike.js": "31a5e42f8db8b59ef7470ce46b2fbcacd0f38d7b95c0996911f84583474287ca",
+    "scripts/smoke-work-invocation.js": "45676c31b80b91f52f8a7642690085cbb6ce3e4ed6e8f2204df7f150d1367c7f",
+    "scripts/smoke-subgraph.js": "1c4d087e440e83e56b5d9b1a0b660b6f87718251e182822e47ea94f3b020d062",
+    "scripts/installed-work-identity.js": "9551d3455311a5cb38e060352ebf3810a23a49d43f9d29e03874ce0fb5c674b8",
+    "scripts/installed-generic-boundary.js": "e1c202b3d0b66941d555088146261d24898b639b429702b2fd915cd9dbd0e4ae",
+    "tests/fixtures/transport-state.cjs": "b0a913393b08b64dcd7642914e8296013e33fd867b06f09af3440dbf20c8f236",
+    "scripts/qualification-smoke.js": "1d680f22b8da873e5af7fec9ecb2dbd939a8abaaf0a481d771e2b0173f84a60c",
+    "scripts/smoke-db.js": "e043e38f718e4512c458f13c81aae3cf01ed37316176d405ebec6ddd96a77134",
+    "scripts/smoke-db-events.js": "3e3fbed6a30d1898c6f8e1ba8335ef52a9098bd8be18da63e7283e5a1c1730a5",
+    "scripts/smoke-db-materializer.js": "0542ba049a7bc82a34cf3be7094d3e5c741180691615c7dd37543dbfe68c4688",
+    "scripts/smoke-db-queue.js": "ce28b2357e4e4a332c1fdf91defac891c2878d8e38d05cde82026f8dd2069c1d",
+    "scripts/smoke-db-queue-cli.js": "81b9171cddc45e18272c2dfbf0955851597e76d88cf7d5603308a4741cd74602",
+    "scripts/smoke-db-snapshot.js": "11707fcd61a3de014dbe89aabe077b98774c6d181dda441abbf84dee651fdfa9",
+    "scripts/smoke-sqlite.js": "24422b10a6d00f60f27f58bb58910ab8c7a47ed530a895d9f14dcc2467895757",
+    "tests/qualification-git.test.mjs": "269007df66a7c5e5dd77edddfe65d8f53110bccf24f5817d044c2c861d0807ce",
+    "scripts/smoke-fix-plan.js": "8a9f8129d5bf971eb291af42ffea1fe0d92bf2eb96dab06bf4bba25dc7a71c46",
+    "scripts/smoke-loop.js": "8838b7a1f7ec2d604476fbb5bae885d1f0f15a0d954f198676d5e4a3c27197f9",
+    "scripts/smoke-handoff.js": "6d29323a41516b32ad60d3231c1eca3ed8a577a88fcd815af3830b557e803593",
+    "scripts/smoke-command-docs.js": "2d203f67e623e53755fd1de0e7f2f0c5d54eb4f6de25f2b1c17b896f1c50907d",
+    "scripts/smoke-integration-ux.js": "daa217e2cd66a3b32287534b5f27ccb96c88f6dda7ac78b6bce187e19af499f9",
+    "scripts/smoke-operator-health.js": "a67aed6136208fbfbcbe34041f66be4df95ee9a8eabefc681d235664d239b351",
+    "scripts/qualification-fixture.js": "dfe24d8692b37279d1b36b2b5fbc717a3f69911f239ccbfc30c2837a6717ef5e",
+    "scripts/qualification-git.js": "cb36a334a2c180556250247bc0a85e63392eb7bb9eeed2e98d3b8ca155200fc6",
+    "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+    "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+    "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+    "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+    "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+    "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+    "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+    "scripts/npm-smoke-proxy.js": "e24e5e383b9078364a2db8ec3697b6b94142f6449a138fa78d81c1c4fcf74e68",
+    "tests/qualification-smoke.test.mjs": "7fede64a744160340ad908991985adad53e0fd59b7abf84ff32bef4b39b37550",
+    "tests/qualification-fixture.test.mjs": "824c053cd6af9dce8deb58cb883f4f41895276039474d0b5936047be6d9965b6",
+    "tests/smoke-init-discovery.test.mjs": "c982e2b10f8bfd6e36f7da4b5bc25efd29eb8fb0e1eaa765619cbb3221c81cd6"
+  },
+  "runs": [
+    {
+      "runtime": "v24.15.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "runner_sha256": "5eff1b7aa8fbeac4bbe6149dc7c85d9d2e75f6b23d17a6e3a5c9259f720d7a4e",
+      "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+      "runs": [
+        {
+          "label": "smoke-consumer",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 3690,
+          "stdout": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v24.15.0-lJr3rl/smoke-consumer.stdout",
+          "stderr": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v24.15.0-lJr3rl/smoke-consumer.stderr",
+          "stdout_sha256": "512eb4225d13203a4f53c96bf463ed7b5f5304bba3cd488a61c0a72c3e147fc9",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "ok": true,
+            "smoke": "consumer",
+            "version": "0.6.0",
+            "execution": "native-npm-exec",
+            "offline": true,
+            "profiles": [
+              "standard",
+              "concise",
+              "headers"
+            ],
+            "compact_agent_init": true,
+            "native_skill_projection": true,
+            "doctor": true,
+            "consumptions": [
+              {
+                "command": [
+                  "--version"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+                  "version": "v24.15.0"
+                }
+              },
+              {
+                "command": [
+                  "pack",
+                  "--list-profiles"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+                  "version": "v24.15.0"
+                }
+              },
+              {
+                "command": [
+                  "init",
+                  "--agent",
+                  "--update-gitignore",
+                  "--update-npmignore"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+                  "version": "v24.15.0"
+                }
+              },
+              {
+                "command": [
+                  "index"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+                  "version": "v24.15.0"
+                }
+              },
+              {
+                "command": [
+                  "doctor",
+                  "--json"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+                  "version": "v24.15.0"
+                }
+              }
+            ],
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-consumer.jX1guf/execution-xcX73y/mdkg-consumer-FQaAL1"
+            }
+          }
+        }
+      ],
+      "focused": {
+        "files": [
+          "tests/smoke-init-discovery.test.mjs",
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "duration_ms": 8866,
+        "log": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v24.15.0-lJr3rl/focused.log",
+        "sha256": "545937f8e1acae62951bbd6edaa1f7dd32f4e7bbfa0d5f37d1661671f0623501",
+        "summary": [
+          "# tests 149",
+          "# pass 149",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 8827.839625"
+        ]
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-consumer.jX1guf/execution-xcX73y"
+      },
+      "receipt_file": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v24.15.0-lJr3rl/receipt.json",
+      "receipt_sha256": "ce1a2d5629d903e9a90e53565715d9bdacf9fb28b31ddedfa7a1d8f07bc6124b"
+    },
+    {
+      "runtime": "v24.18.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "runner_sha256": "5eff1b7aa8fbeac4bbe6149dc7c85d9d2e75f6b23d17a6e3a5c9259f720d7a4e",
+      "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+      "runs": [
+        {
+          "label": "smoke-consumer",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 3998,
+          "stdout": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v24.18.0-h1MUMF/smoke-consumer.stdout",
+          "stderr": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v24.18.0-h1MUMF/smoke-consumer.stderr",
+          "stdout_sha256": "2efe7823a1ce0dd68751bf61680c20e0607f561f82bb9f7dd3f838e86cbd8f9e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "ok": true,
+            "smoke": "consumer",
+            "version": "0.6.0",
+            "execution": "native-npm-exec",
+            "offline": true,
+            "profiles": [
+              "standard",
+              "concise",
+              "headers"
+            ],
+            "compact_agent_init": true,
+            "native_skill_projection": true,
+            "doctor": true,
+            "consumptions": [
+              {
+                "command": [
+                  "--version"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+                  "version": "v24.18.0"
+                }
+              },
+              {
+                "command": [
+                  "pack",
+                  "--list-profiles"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+                  "version": "v24.18.0"
+                }
+              },
+              {
+                "command": [
+                  "init",
+                  "--agent",
+                  "--update-gitignore",
+                  "--update-npmignore"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+                  "version": "v24.18.0"
+                }
+              },
+              {
+                "command": [
+                  "index"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+                  "version": "v24.18.0"
+                }
+              },
+              {
+                "command": [
+                  "doctor",
+                  "--json"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+                  "version": "v24.18.0"
+                }
+              }
+            ],
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-consumer.jX1guf/execution-Qe9IEH/mdkg-consumer-WjIVUB"
+            }
+          }
+        }
+      ],
+      "focused": {
+        "files": [
+          "tests/smoke-init-discovery.test.mjs",
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "duration_ms": 8324,
+        "log": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v24.18.0-h1MUMF/focused.log",
+        "sha256": "9e56d41093c803cd8d0078b9f73106dd8ec90335398d27d9b760f619dfa4018c",
+        "summary": [
+          "# tests 149",
+          "# pass 149",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 8264.449458"
+        ]
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-consumer.jX1guf/execution-Qe9IEH"
+      },
+      "receipt_file": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v24.18.0-h1MUMF/receipt.json",
+      "receipt_sha256": "e28562b392248cf94124c1cdf3934c19c85c67c7a00fefc86a3391231c89e755"
+    },
+    {
+      "runtime": "v26.0.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "runner_sha256": "5eff1b7aa8fbeac4bbe6149dc7c85d9d2e75f6b23d17a6e3a5c9259f720d7a4e",
+      "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+      "runs": [
+        {
+          "label": "smoke-consumer",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 4344,
+          "stdout": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v26.0.0-8P6j13/smoke-consumer.stdout",
+          "stderr": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v26.0.0-8P6j13/smoke-consumer.stderr",
+          "stdout_sha256": "d84ce7bb18eb1caec91c81d116f7c33d205b83916a7fe65fa58a7e4869178e0e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "ok": true,
+            "smoke": "consumer",
+            "version": "0.6.0",
+            "execution": "native-npm-exec",
+            "offline": true,
+            "profiles": [
+              "standard",
+              "concise",
+              "headers"
+            ],
+            "compact_agent_init": true,
+            "native_skill_projection": true,
+            "doctor": true,
+            "consumptions": [
+              {
+                "command": [
+                  "--version"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+                  "version": "v26.0.0"
+                }
+              },
+              {
+                "command": [
+                  "pack",
+                  "--list-profiles"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+                  "version": "v26.0.0"
+                }
+              },
+              {
+                "command": [
+                  "init",
+                  "--agent",
+                  "--update-gitignore",
+                  "--update-npmignore"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+                  "version": "v26.0.0"
+                }
+              },
+              {
+                "command": [
+                  "index"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+                  "version": "v26.0.0"
+                }
+              },
+              {
+                "command": [
+                  "doctor",
+                  "--json"
+                ],
+                "before_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "after_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+                "bytes": 532044,
+                "exit": 0,
+                "runtime": {
+                  "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+                  "version": "v26.0.0"
+                }
+              }
+            ],
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-consumer.jX1guf/execution-J5Dbac/mdkg-consumer-23vMJ2"
+            }
+          }
+        }
+      ],
+      "focused": {
+        "files": [
+          "tests/smoke-init-discovery.test.mjs",
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "duration_ms": 8431,
+        "log": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v26.0.0-8P6j13/focused.log",
+        "sha256": "e540f5c02074322df720eccb0f2eedc334adaf2a7542aa4cbcc22b4d0f3bce7d",
+        "summary": [
+          "# tests 149",
+          "# pass 149",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 8370.061209"
+        ]
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-consumer.jX1guf/execution-J5Dbac"
+      },
+      "receipt_file": "/private/tmp/mdkg-task838-consumer.jX1guf/results-v26.0.0-8P6j13/receipt.json",
+      "receipt_sha256": "f16a13d9551e7a8a2c3914fa1429d77a8b01cf2be08ed0ed355d3e5530971643"
+    }
+  ],
+  "earlier_intermediate_passes": {
+    "classification": "SUPERSEDED_BY_PER_EXEC_CUSTODY_CORRECTION",
+    "directories": [
+      "results-v24.15.0-xGyrLw",
+      "results-v24.18.0-rdQlh3",
+      "results-v26.0.0-Yhdz1l"
+    ],
+    "focused_per_runtime": 148,
+    "reason": "No per-execution artifact or actual child runtime receipts at that snapshot."
+  },
+  "candidate": {
+    "version": "0.6.0",
+    "sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+    "classification": "UNSEALED_INTERMEDIATE_NOT_FINAL_RELEASE",
+    "repacked": false,
+    "package_input_changes": false
+  },
+  "limits": [
+    "Local macOS arm64 only; no Linux/Windows or fresh published0.5.2 upgrade acceptance.",
+    "Trusted fixture tooling; per-call hashes and runtime instrumentation are not an OS sandbox or a proof against all transient mutation.",
+    "Full suite, release ladder, independent final review and exact artifact seal remain pending.",
+    "No blocked context, historical report recovery or scan rerun; no remotes, staging, commits or publication."
+  ],
+  "next": [
+    "Task838 hostile-Git boundary and asynchronous MCP callers, preserving deliberate injections and server shutdown semantics.",
+    "Existing Bugs46/47/60, platform and final release gates remain unchanged."
+  ],
+  "skill_candidates": []
+}

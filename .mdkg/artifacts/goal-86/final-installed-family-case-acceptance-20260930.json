@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "kind": "final-installed-family-case-acceptance",
+  "goal_qid": "root:goal-86",
+  "recorded_at": "2026-09-30T04:18:00Z",
+  "source_revision": "c313d80407b43797ef0a530a91b645951fdafb81",
+  "candidate": {
+    "sha256": "f7cbdc1dad6d4ab0faa1e8f1ef74ef6d38e706491aa278926ba1d7717a0db1e9",
+    "sha512": "eb72fabbde7d311ff8e75d5d1dcd5642f822cf2fbc3cb806e0b2a3c26a1e0730e4fed0071766032a9a167bde4c863dcd888cd68554a059b8565827d3c771a3d8",
+    "integrity": "sha512-63L6u959MR/4511dHc1WQvgizy+8PLgG4LKjwmoeBzDk/tAHF2YDKpoWe95Mhj3NiIzWhVSgWbhWWCfTx3Gj2A==",
+    "bytes": 543453,
+    "payload_files": 237,
+    "package_inputs_sha256": "7614e6190031f0f7575a9479bcd951217d1feaf357daec1a162da05ab725b73d",
+    "input_manifest_sha256": "3824809d82565ef40ef9163a6b9ca900a40f5b347be773e74f58bdbd16d48a28",
+    "repacked": false,
+    "sealed": false
+  },
+  "evidence": {
+    "platform_composition": ".mdkg/artifacts/goal-86/final-installed-platform-qualification-20260930.json",
+    "package_ladder": ".mdkg/artifacts/goal-86/final-package-gates-20260930.json",
+    "private_rehearsal": ".mdkg/artifacts/goal-86/test-480-final-private-preview-20260930.json"
+  },
+  "platforms": [
+    "macOS ARM64 native Node24.18.0",
+    "Ubuntu24.04.4 ARM64 native on ARM64 host Node24.18.0",
+    "Ubuntu24.04.4 x86_64 emulated on ARM64 host Node24.18.0"
+  ],
+  "families": [
+    {
+      "qid": "root:test-477",
+      "families": [
+        "bootstrap"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Actual published0.5.2 upgrade; compact default/graph-only/--agent; customization, repeated/stale/interrupted upgrade, focused skills/native mirrors/links and recovery."
+    },
+    {
+      "qid": "root:test-478",
+      "families": [
+        "collaboration",
+        "gitdir",
+        "submodule"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Offline colliding aliases/cross-links and ordinary uncommitted/staged/unstaged use; same-identity ancestral/lifecycle conflicts, delete/reintroduce, repeated integration/cherry-pick/revert/immutable evidence; concurrent real worktrees/local-state isolation and reviewed native whole source-plus-graph integration."
+    },
+    {
+      "qid": "root:test-479",
+      "families": [
+        "ownership",
+        "state-admission",
+        "containment",
+        "remedies",
+        "readonly"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Bounded security regressions, path/type/link/special/size/receipt admission; stale plans and killed-writer/rollback/resume; unknown sentinels/staging preserved; transport excludes execution authority; real read-only behavior. Bugs46/47 deferred unresolved, not passed."
+    },
+    {
+      "qid": "root:test-480",
+      "families": [
+        "compatibility",
+        "work",
+        "runtime",
+        "readonly"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "242 cache/parity plus16 changed-warning scenarios per platform; legacy/v2, JSON/SQLite, packs/MCP/archive/work/clone/fork. Actual0.5.2 initializer effects remain unsupported; exact private task309 preview blocks without identity invention or canonical migration."
+    },
+    {
+      "qid": "root:test-481",
+      "families": [
+        "scale"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "2000-node/20000-event JSON/SQLite legacy/v2 warm/cold/history/routing. Original x86_64 600000ms JSON timeout preserved; one bounded900000ms JSON retry and remaining SQLite execution pass with unchanged assertions/size, no native performance claim."
+    },
+    {
+      "qid": "root:test-482",
+      "families": [
+        "runtime",
+        "capability-umask"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Exact supported/minimum24.18.0 counted once per platform; actual24.15.0/26.0.0 refuse graph/DB/MCP without effects, help/version remain usable; missing capabilities refuse; verified isolated downloads."
+    },
+    {
+      "qid": "root:test-483",
+      "families": [
+        "behavior",
+        "pack-controls",
+        "compatibility"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Legacy/v2/cache observation; all pack formats/profiles/limits; format/init/upgrade identity; checkpoint routing; ancestral recreation; strict migration dependencies and closed seeds; large/slow-pipe output; dependency labels. Non-shipping website case5 deferred by Dec100 to Epic258, not counted passed."
+    },
+    {
+      "qid": "root:test-484",
+      "families": [
+        "generic",
+        "collaboration",
+        "bootstrap",
+        "pack-controls"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Removed Git commands/options refuse; generic/removed profile/token/namespace/work boundaries; strict refs/redaction/visibility/receipts; customization-preserving published0.5.2 upgrade; extraction hashes verified but undispatched/adoption unverified; native integration."
+    },
+    {
+      "qid": "root:test-486",
+      "families": [
+        "options",
+        "runtime",
+        "current-audit"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Invalid/wrong-command/missing/retired options reject pre-effect with full inventories and subprocess traps; supported flags/aliases/values/positionals and writer controls; full suite/generated/help/docs parity. macOS options use exact package ladder, Linux matrices include explicit options family."
+    },
+    {
+      "qid": "root:test-487",
+      "families": [
+        "all-platform-families"
+      ],
+      "state": "passed-current-with-explicit-limitations",
+      "cases": "Same artifact/input/payload identities on native macOS ARM64, Ubuntu24 ARM64/native and x86_64/emulated; all retained case/runtime/topology/filesystem/scale rows covered. Original fixture failures and corrected supplements retained; minimum and selected Node binaries identical, counted once."
+    }
+  ],
+  "limitations": [
+    "Task828 independent source/diff acceptance remains open. Functional passes do not constitute security clearance.",
+    "Task829 final aggregate release acceptance and Task830 exact seal remain open.",
+    "Bugs46/47 deferred unresolved. Windows, hosted CI, native x86_64 performance and cold-cache/read-only cross-product unqualified.",
+    "No publication/push/tags/provider/deployment/canonical migration/branch/worktree change/bundle refresh or blocked report recovery."
+  ]
+}

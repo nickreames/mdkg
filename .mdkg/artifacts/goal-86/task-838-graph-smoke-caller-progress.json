@@ -1,0 +1,1216 @@
+{
+  "schema_version": 1,
+  "kind": "task-progress",
+  "qid": "root:task-838",
+  "goal_qid": "root:goal-86",
+  "date": "2026-09-22",
+  "status": "PARTIAL_NOT_READY",
+  "owner": "mdkg-project-agent",
+  "objective": "Qualify eight migrated installed graph workflow callers under owned Node/npm/Git dispatch, artifact custody and cleanup without weakening their scenarios.",
+  "baseline": {
+    "head": "c10113489381badf2845fc378c49b317376f953e",
+    "status": " M .agents/skills/build-pack-and-execute-task/SKILL.md\u0000 M .agents/skills/pursue-mdkg-goal/SKILL.md\u0000 M .agents/skills/verify-close-and-checkpoint/SKILL.md\u0000 M .claude/skills/build-pack-and-execute-task/SKILL.md\u0000 M .claude/skills/pursue-mdkg-goal/SKILL.md\u0000 M .claude/skills/verify-close-and-checkpoint/SKILL.md\u0000 M .mdkg/index/mdkg.sqlite\u0000 M .mdkg/skills/build-pack-and-execute-task/SKILL.md\u0000 M .mdkg/skills/pursue-mdkg-goal/SKILL.md\u0000 M .mdkg/skills/registry.md\u0000 M .mdkg/skills/verify-close-and-checkpoint/SKILL.md\u0000 M .mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md\u0000 M .mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md\u0000 M .mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md\u0000 M .mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md\u0000 M .mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md\u0000 M .mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md\u0000 M assets/init/skills/default/build-pack-and-execute-task/SKILL.md\u0000 M assets/init/skills/default/pursue-mdkg-goal/SKILL.md\u0000 M assets/init/skills/default/verify-close-and-checkpoint/SKILL.md\u0000 M scripts/coverage-contract.js\u0000 M scripts/installed-graph-recovery.js\u0000 M scripts/installed-identity-collaboration.js\u0000 M scripts/installed-upgrade-recovery.js\u0000 M scripts/npm-smoke-proxy.js\u0000 M scripts/release-ladder.js\u0000 M scripts/smoke-branch-conflicts.js\u0000 M scripts/smoke-checkpoint-templates.js\u0000 M scripts/smoke-cli-ux-polish.js\u0000 M scripts/smoke-command-docs.js\u0000 M scripts/smoke-db-events.js\u0000 M scripts/smoke-db-materializer.js\u0000 M scripts/smoke-db-queue-cli.js\u0000 M scripts/smoke-db-queue.js\u0000 M scripts/smoke-db-snapshot.js\u0000 M scripts/smoke-db.js\u0000 M scripts/smoke-demo-graph.js\u0000 M scripts/smoke-fix-plan.js\u0000 M scripts/smoke-goal-lifecycle.js\u0000 M scripts/smoke-goal.js\u0000 M scripts/smoke-graph-clone.js\u0000 M scripts/smoke-handoff.js\u0000 M scripts/smoke-id-repair.js\u0000 M scripts/smoke-integration-ux.js\u0000 M scripts/smoke-loop.js\u0000 M scripts/smoke-operator-health.js\u0000 M scripts/smoke-semantic-refs.js\u0000 M scripts/smoke-sqlite.js\u0000 M scripts/smoke-upgrade.js\u0000 M scripts/smoke-warning-ux.js\u0000 M src/commands/db.ts\u0000 M src/commands/work.ts\u0000 M src/core/project_db_events.ts\u0000 M src/core/project_db_migrations.ts\u0000 M src/core/project_db_queue.ts\u0000 M src/core/project_db_snapshot.ts\u0000 M src/graph/sqlite_index.ts\u0000 M tests/ci-topology.test.ts\u0000?? .mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json\u0000?? .mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json\u0000?? .mdkg/artifacts/goal-86/task-838-db-smoke-caller-progress.json\u0000?? .mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json\u0000?? .mdkg/artifacts/goal-86/task-838-git-fixture-progress.json\u0000?? .mdkg/artifacts/goal-86/task-838-output-custody-progress.json\u0000?? .mdkg/artifacts/goal-86/task-838-six-smoke-caller-progress.json\u0000?? .mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json\u0000?? .mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md\u0000?? .mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md\u0000?? .mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md\u0000?? .mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md\u0000?? .mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md\u0000?? .mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md\u0000?? .mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md\u0000?? .mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md\u0000?? .mdkg/work/chk-644-isolate-six-installed-smoke-callers-and-verify-artifacts-before-installation.md\u0000?? .mdkg/work/chk-645-isolate-installed-db-and-sqlite-fixtures-from-ambient-git-state.md\u0000?? .mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md\u0000?? .mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md\u0000?? .mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md\u0000?? scripts/demo-graph-fixture.js\u0000?? scripts/qualification-artifact.js\u0000?? scripts/qualification-fixture.js\u0000?? scripts/qualification-git.js\u0000?? scripts/qualification-output.js\u0000?? scripts/qualification-process-context.js\u0000?? scripts/qualification-process.js\u0000?? scripts/qualification-smoke.js\u0000?? src/core/sqlite_observation.ts\u0000?? tests/core/sqlite_observation.test.ts\u0000?? tests/qualification-artifact.test.mjs\u0000?? tests/qualification-fixture.test.mjs\u0000?? tests/qualification-git.test.mjs\u0000?? tests/qualification-output.test.mjs\u0000?? tests/qualification-smoke.test.mjs\u0000",
+    "staged": "",
+    "files": {
+      ".agents/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".agents/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".agents/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".claude/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".claude/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".claude/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".mdkg/index/mdkg.sqlite": "697dd2fdec3f0ac884259143df8f775baa3947a98bd4e92db5883a78e7170b56",
+      ".mdkg/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".mdkg/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".mdkg/skills/registry.md": "1b83dfea49d4f563a8edc3b94c387a886508a89e47b5378ff2af7b1381c6dc2e",
+      ".mdkg/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md": "636f075b25987c54a8194ca6a17f881046e63df970e4c76cd6d9ac7a88a62ca3",
+      ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md": "89c82c2aaea612fb4d5d969f4f8c032035bd5a069f643fea621a4b50443541db",
+      ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md": "963b680347290d3f25c2f953076e8570cd0a026398f1cd395c703dc129dbd705",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md": "3428b20111762719a5a9b349e3da155fdd1ba43ed38d0b1760cab4f32c681123",
+      ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md": "773726fe4e3fe8e67c5159df9a95f369639dd3f3efc4ea16311a518bc139e7ab",
+      ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md": "47c39ffcefc198356a4dae0c93106a35c1ce5a52ec93653d0e34c7f185de2cdc",
+      "assets/init/skills/default/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      "assets/init/skills/default/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      "scripts/coverage-contract.js": "d353ac54d6528c17a85e73adc465f90e3ff7b45ba9df56c3addb3f3d683e0a70",
+      "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+      "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+      "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+      "scripts/npm-smoke-proxy.js": "e24e5e383b9078364a2db8ec3697b6b94142f6449a138fa78d81c1c4fcf74e68",
+      "scripts/release-ladder.js": "3ba1ed6e19443cdfef0150f6ddd5dc9bc78dcc635882572db68612ab1e73ff6f",
+      "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+      "scripts/smoke-checkpoint-templates.js": "30afd400ec7a5e3000b37a1cbdc39cb01c212e42f13e9408ed5534698b1a920f",
+      "scripts/smoke-cli-ux-polish.js": "fe456ae185f6a6f1ca3b652d498c7282138f53d86fc632996e5c22c1c5698f37",
+      "scripts/smoke-command-docs.js": "2d203f67e623e53755fd1de0e7f2f0c5d54eb4f6de25f2b1c17b896f1c50907d",
+      "scripts/smoke-db-events.js": "3e3fbed6a30d1898c6f8e1ba8335ef52a9098bd8be18da63e7283e5a1c1730a5",
+      "scripts/smoke-db-materializer.js": "0542ba049a7bc82a34cf3be7094d3e5c741180691615c7dd37543dbfe68c4688",
+      "scripts/smoke-db-queue-cli.js": "81b9171cddc45e18272c2dfbf0955851597e76d88cf7d5603308a4741cd74602",
+      "scripts/smoke-db-queue.js": "ce28b2357e4e4a332c1fdf91defac891c2878d8e38d05cde82026f8dd2069c1d",
+      "scripts/smoke-db-snapshot.js": "11707fcd61a3de014dbe89aabe077b98774c6d181dda441abbf84dee651fdfa9",
+      "scripts/smoke-db.js": "e043e38f718e4512c458f13c81aae3cf01ed37316176d405ebec6ddd96a77134",
+      "scripts/smoke-demo-graph.js": "422e7e6bff79cb8c14b8e9d21a21e238a2d32cf4046646377da53e7e84c17a59",
+      "scripts/smoke-fix-plan.js": "8a9f8129d5bf971eb291af42ffea1fe0d92bf2eb96dab06bf4bba25dc7a71c46",
+      "scripts/smoke-goal-lifecycle.js": "02ac192ed6c7dbadc8670ff1417f2565792b1039fc3b6eb0aada5cfecab9aabb",
+      "scripts/smoke-goal.js": "d5a633aabcc8535756d12b74fd892ddddd5f00dbb4bbf0eaeeed636f059c7493",
+      "scripts/smoke-graph-clone.js": "add4dc3e8558bddd70d56c0574b0fe4014c3cb7b83936472da2c84d477df111d",
+      "scripts/smoke-handoff.js": "6d29323a41516b32ad60d3231c1eca3ed8a577a88fcd815af3830b557e803593",
+      "scripts/smoke-id-repair.js": "740991815ca405d791d8927a2959c5bb9f217c2ce78e83e68979132e5e39db00",
+      "scripts/smoke-integration-ux.js": "daa217e2cd66a3b32287534b5f27ccb96c88f6dda7ac78b6bce187e19af499f9",
+      "scripts/smoke-loop.js": "8838b7a1f7ec2d604476fbb5bae885d1f0f15a0d954f198676d5e4a3c27197f9",
+      "scripts/smoke-operator-health.js": "a67aed6136208fbfbcbe34041f66be4df95ee9a8eabefc681d235664d239b351",
+      "scripts/smoke-semantic-refs.js": "38fef788cc7d71dac540addc319ff0ccfacd597a650db405a4594a7230611450",
+      "scripts/smoke-sqlite.js": "24422b10a6d00f60f27f58bb58910ab8c7a47ed530a895d9f14dcc2467895757",
+      "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+      "scripts/smoke-warning-ux.js": "d1a1d671dcdec9b7a7ec4a43dd351f37507e354be750e869fbbc2ed0f5d3c9ff",
+      "src/commands/db.ts": "456c45478e40fa766384912e6a3ddb3466321b61ba7d03f339670595500441f5",
+      "src/commands/work.ts": "b6b1c6650245561753f7e9fb4585c1a1d795231f6069166b57babb27a02424d2",
+      "src/core/project_db_events.ts": "a8aba13a42884aede976ed484504ecf6af0b43594d33dd07dd63a2baf6e5cf55",
+      "src/core/project_db_migrations.ts": "6cfcb8b26eda219c17003bf454bd24cd143dc0709325f7b866377287c5c7823d",
+      "src/core/project_db_queue.ts": "02e66ca5e73dc8ee7f611f252bb51eeb117601d917e153abb27089731582cc41",
+      "src/core/project_db_snapshot.ts": "4fa852931dd7e25e5ed7f2fb47cf2e64f5a1d257665627ec117c7fea032fe09c",
+      "src/graph/sqlite_index.ts": "60906705de7b93cf0b8330f8c354998b45e0ce4174321a51164e16ee5500b364",
+      "tests/ci-topology.test.ts": "4df1c9fab33e6a70d75d60d71c7c15ee5a892e42aa93f85ac8f7d25a05134f73",
+      ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json": "c7a247122de177ff94e57b8b54321edeea2f0b6359245bb35b321ef747cd6bf6",
+      ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json": "dc93ee15023f855eae9323d5da2299f33a5580a380c7f521dd9c1a49d92142ba",
+      ".mdkg/artifacts/goal-86/task-838-db-smoke-caller-progress.json": "0d488a683d914ea591b4c65919e8271c09082136fd6405ea88af6222da0b94de",
+      ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json": "9cba2451fc8c9a53939f5e1b88392d881328ce564f2f4c9515152cf641cde077",
+      ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json": "009d6ad4be6723d3f44c9892c5fcc3e2babddee21a4df54141555932ea6e2e2a",
+      ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json": "37d3a68d9ecae6f89cc24e27ed0fc7ecf56e4559ea1522245f122d666febbb1b",
+      ".mdkg/artifacts/goal-86/task-838-six-smoke-caller-progress.json": "3e8393ab1918f358453f691a0913aa5cbaab6c78e2327b35d37d1edc5b60e015",
+      ".mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json": "324ae4fefbbb11481b00afcbb33f31407dbfc9edacd406fafc6d365241b39880",
+      ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md": "c158e5e9f16c3bda163feb95f5aecaf2495962ab327d179e93cc7f3b3a659ab1",
+      ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md": "c82a923d6265dafe99a9d0aae11572b2888d162f36b0eb38aae43f976a04d97a",
+      ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md": "c813fc0b2c1a62c96c7a2e452fcb0a55288aabffed967e9e23c043861caccbca",
+      ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md": "e19c84b4a940a6105c4b49637f2f192281c7b6cedd542e2deed515ecd8a6e5c1",
+      ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md": "d6cbef7ef9835db38e35688be254f98d594c1a4d0714f6e573bb19ee0b10fb1c",
+      ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md": "8d96e8d33889caaa2d0f784c55924d853adcec7be3a9a3d3a3c29267c60c9d0f",
+      ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md": "5bd5a51e750a6553c3be2dd5f06bae5c66d010b83aa673c7f263be6cc615878f",
+      ".mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md": "82d6b5966727cf745c56b1673c10930cc7fe7669a719af6ae175fb507498e44f",
+      ".mdkg/work/chk-644-isolate-six-installed-smoke-callers-and-verify-artifacts-before-installation.md": "494bd94c9fd402758339b4295633fa9ca26d160fc78230c072d973dab72882f7",
+      ".mdkg/work/chk-645-isolate-installed-db-and-sqlite-fixtures-from-ambient-git-state.md": "9439d3b75b9ff44b1e10ba45470381f474c01b186ffe6151e899d0f8d7fc5355",
+      ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md": "853e2b91e8acaf8318b719c3870ab1339ae385fcb209f861c4aa7c521f701dc8",
+      ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md": "678b057f273a20e73e106a2e45d2aa8057c374e50ee43df36d1364a3bc8d8e4e",
+      ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md": "7889f6a29e7b1893ca2107255d4f3416855e3d2e2c07b99a9ff1bec515f49d03",
+      "scripts/demo-graph-fixture.js": "ca1de56c84109525a9f5be89c717728d63a89cdaf6146bca20ef822d83150261",
+      "scripts/qualification-artifact.js": "00aefd31e3bbbd488ada301311a92cea3bb48ec7d6ed1095c3170b5fafdfd957",
+      "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+      "scripts/qualification-git.js": "cb36a334a2c180556250247bc0a85e63392eb7bb9eeed2e98d3b8ca155200fc6",
+      "scripts/qualification-output.js": "3bfeabab55f6a14e5dcea1890e5d414fcc055cf8316f470db12a98b103c1c1db",
+      "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+      "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+      "scripts/qualification-smoke.js": "343164b3c183412a5d9dfd2d9a678aa5f6bc51e5c5bd850b31b6bc8cbb517a4a",
+      "src/core/sqlite_observation.ts": "4439d7f44e7741d82926e7f0e46ebe66f3f03d1560e11e04f67eca28ae57d436",
+      "tests/core/sqlite_observation.test.ts": "723f104fd0bcc401edf52659d85b9b4fdacd017984c6c0c54cb415dc1afe3175",
+      "tests/qualification-artifact.test.mjs": "e7e2f84c39ce713589d7f057f00e8a73d921ca5cfaf940b7f398af8609706e50",
+      "tests/qualification-fixture.test.mjs": "061d6fa2fae431f1fa5e3964b4c9c44fcb6f42ae09aed244fe27f2db5807e9f1",
+      "tests/qualification-git.test.mjs": "269007df66a7c5e5dd77edddfe65d8f53110bccf24f5817d044c2c861d0807ce",
+      "tests/qualification-output.test.mjs": "b15bd150a8360799068c51c448549cbf8b3d8b9b8d54ccc3e7e25daabe4caed8",
+      "tests/qualification-smoke.test.mjs": "fdef36b1faf35611ed91465a312681a0d481b6a4aa070fdcd84f1cb855364e22"
+    },
+    "protected": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    "locks": {
+      "git": false,
+      "mdkg": false
+    },
+    "runtimeFiles": [
+      "project.sqlite"
+    ]
+  },
+  "changed_unit": [
+    "scripts/smoke-goal.js",
+    "scripts/smoke-goal-lifecycle.js",
+    "scripts/smoke-checkpoint-templates.js",
+    "scripts/smoke-cli-ux-polish.js",
+    "scripts/smoke-id-repair.js",
+    "scripts/smoke-graph-clone.js",
+    "scripts/smoke-warning-ux.js",
+    "scripts/smoke-semantic-refs.js",
+    "tests/qualification-smoke.test.mjs"
+  ],
+  "source_sha256": {
+    "scripts/smoke-goal.js": "dcaa3ba6c1d2dde6a22d612916cf7b64c2d74e7da8a5ccdf06f392e386b52437",
+    "scripts/smoke-goal-lifecycle.js": "02ac192ed6c7dbadc8670ff1417f2565792b1039fc3b6eb0aada5cfecab9aabb",
+    "scripts/smoke-checkpoint-templates.js": "30afd400ec7a5e3000b37a1cbdc39cb01c212e42f13e9408ed5534698b1a920f",
+    "scripts/smoke-cli-ux-polish.js": "fe456ae185f6a6f1ca3b652d498c7282138f53d86fc632996e5c22c1c5698f37",
+    "scripts/smoke-id-repair.js": "740991815ca405d791d8927a2959c5bb9f217c2ce78e83e68979132e5e39db00",
+    "scripts/smoke-graph-clone.js": "add4dc3e8558bddd70d56c0574b0fe4014c3cb7b83936472da2c84d477df111d",
+    "scripts/smoke-warning-ux.js": "d1a1d671dcdec9b7a7ec4a43dd351f37507e354be750e869fbbc2ed0f5d3c9ff",
+    "scripts/smoke-semantic-refs.js": "38fef788cc7d71dac540addc319ff0ccfacd597a650db405a4594a7230611450",
+    "scripts/smoke-db.js": "e043e38f718e4512c458f13c81aae3cf01ed37316176d405ebec6ddd96a77134",
+    "scripts/smoke-db-events.js": "3e3fbed6a30d1898c6f8e1ba8335ef52a9098bd8be18da63e7283e5a1c1730a5",
+    "scripts/smoke-db-materializer.js": "0542ba049a7bc82a34cf3be7094d3e5c741180691615c7dd37543dbfe68c4688",
+    "scripts/smoke-db-queue.js": "ce28b2357e4e4a332c1fdf91defac891c2878d8e38d05cde82026f8dd2069c1d",
+    "scripts/smoke-db-queue-cli.js": "81b9171cddc45e18272c2dfbf0955851597e76d88cf7d5603308a4741cd74602",
+    "scripts/smoke-db-snapshot.js": "11707fcd61a3de014dbe89aabe077b98774c6d181dda441abbf84dee651fdfa9",
+    "scripts/smoke-sqlite.js": "24422b10a6d00f60f27f58bb58910ab8c7a47ed530a895d9f14dcc2467895757",
+    "tests/qualification-git.test.mjs": "269007df66a7c5e5dd77edddfe65d8f53110bccf24f5817d044c2c861d0807ce",
+    "scripts/smoke-fix-plan.js": "8a9f8129d5bf971eb291af42ffea1fe0d92bf2eb96dab06bf4bba25dc7a71c46",
+    "scripts/smoke-loop.js": "8838b7a1f7ec2d604476fbb5bae885d1f0f15a0d954f198676d5e4a3c27197f9",
+    "scripts/smoke-handoff.js": "6d29323a41516b32ad60d3231c1eca3ed8a577a88fcd815af3830b557e803593",
+    "scripts/smoke-command-docs.js": "2d203f67e623e53755fd1de0e7f2f0c5d54eb4f6de25f2b1c17b896f1c50907d",
+    "scripts/smoke-integration-ux.js": "daa217e2cd66a3b32287534b5f27ccb96c88f6dda7ac78b6bce187e19af499f9",
+    "scripts/smoke-operator-health.js": "a67aed6136208fbfbcbe34041f66be4df95ee9a8eabefc681d235664d239b351",
+    "scripts/qualification-smoke.js": "343164b3c183412a5d9dfd2d9a678aa5f6bc51e5c5bd850b31b6bc8cbb517a4a",
+    "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+    "scripts/qualification-git.js": "cb36a334a2c180556250247bc0a85e63392eb7bb9eeed2e98d3b8ca155200fc6",
+    "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+    "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+    "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+    "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+    "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+    "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+    "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+    "scripts/npm-smoke-proxy.js": "e24e5e383b9078364a2db8ec3697b6b94142f6449a138fa78d81c1c4fcf74e68",
+    "tests/qualification-smoke.test.mjs": "fdef36b1faf35611ed91465a312681a0d481b6a4aa070fdcd84f1cb855364e22"
+  },
+  "legacy_reproduction": {
+    "path": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/legacy-reproduction.json",
+    "sha256": "aebf5b0a39e52e088cebe900841bbf4011b8067b7e679c10653ce3a6ec8b561a",
+    "receipt": {
+      "synthetic": true,
+      "canonical_mutations": false,
+      "results": [
+        {
+          "caller": "scripts/smoke-goal.js",
+          "source_sha256": "28bc3dbd7215805242731af603066bf3942ee369151b9cbc6540287759208232",
+          "sentinel_index_before": null,
+          "sentinel_index_after": "023455dad4840435d8dcbee0bf10b7e05538f03e1f3aba33b5a03c662943a51b",
+          "redirected": true
+        },
+        {
+          "caller": "scripts/smoke-goal-lifecycle.js",
+          "source_sha256": "8aaa93ce2a4f34ed4ea044512fcab4eda36b00c766f9744811318bfada3914e9",
+          "sentinel_index_before": null,
+          "sentinel_index_after": "9cafc306118860f6a252730959ea8d687c27d31b00ca0f837dbdc910bdf59e46",
+          "redirected": true
+        },
+        {
+          "caller": "scripts/smoke-checkpoint-templates.js",
+          "source_sha256": "349d332d0c4af0774c275813b8882df0a4e8d94fe0e347a5bf0daade7856df52",
+          "sentinel_index_before": null,
+          "sentinel_index_after": "183d67edc13e310b8b615e958b5f4ce935460e2da8a692dc24d0bf8a32e2ff1b",
+          "redirected": true
+        },
+        {
+          "caller": "scripts/smoke-cli-ux-polish.js",
+          "source_sha256": "997a6ef612e5393a2ef43242100c0ced95f3d7b4d6d77e378f4ea4ea54b4df8b",
+          "sentinel_index_before": null,
+          "sentinel_index_after": "720a45e49885867381ea31722550cbd40d506ed635d872e24c84712fa9480e02",
+          "redirected": true
+        },
+        {
+          "caller": "scripts/smoke-id-repair.js",
+          "source_sha256": "a4b201155d176d7e140f17bab6f884f9112328bcb656bc5b95cce9c4117302f4",
+          "sentinel_index_before": null,
+          "sentinel_index_after": "8f07137bcb27fdcfbc763b209862c355d774602fdbb2ee43b49c57d1852cb8cf",
+          "redirected": true
+        },
+        {
+          "caller": "scripts/smoke-graph-clone.js",
+          "source_sha256": "263dab28b2d310e0116ed25c4f62ea0d8f553fdbd83d7aec0e6dab6f7308d191",
+          "sentinel_index_before": null,
+          "sentinel_index_after": "ea053fc250b7530502770015a866c10e9c08eb3d45b64e7478d0eb533bb2a184",
+          "redirected": true
+        },
+        {
+          "caller": "scripts/smoke-warning-ux.js",
+          "source_sha256": "a3d6897c91c070ef80d3c540ed17f195c2e38f7461007d76511b0c3407004152",
+          "sentinel_index_before": null,
+          "sentinel_index_after": "25d54840fda42fb8dddb77f81caf66003f47b03f0744fe38488a3e56e15139ae",
+          "redirected": true
+        },
+        {
+          "caller": "scripts/smoke-semantic-refs.js",
+          "source_sha256": "403781eefaef4208eae008ff8455c42ef41d0d31062f4ecf9e58a176e41422ef",
+          "sentinel_index_before": null,
+          "sentinel_index_after": "ec18edd3217d92cd0a0982b7f2bb23442681463cef5a33587d9e4f756cabee75",
+          "redirected": true
+        }
+      ]
+    }
+  },
+  "scenarios": {
+    "smoke-goal": [
+      "global versus scoped priority routing",
+      "supported next text output",
+      "unsupported next --json refuses with exit1 and diagnostic",
+      "entire owned fixture content and selected metadata unchanged across refusal",
+      "selection, claims, completion and report-only evaluation"
+    ],
+    "smoke-goal-lifecycle": [
+      "active/paused/achieved/archived goal routing",
+      "selected versus explicit goal semantics",
+      "read-only imported child visibility without changing root selection"
+    ],
+    "smoke-checkpoint-templates": [
+      "checkpoint template kinds and bodies",
+      "goal-related milestone evidence and validation"
+    ],
+    "smoke-cli-ux-polish": [
+      "installed README/seed/help contracts",
+      "work trigger and manual order boundaries",
+      "manifest/work/receipt linkage and validation"
+    ],
+    "smoke-id-repair": [
+      "normal duplicate detection and legacy repair",
+      "actual disposable native Git add/add conflict",
+      "review/apply/reference and Git-index assertions retained"
+    ],
+    "smoke-graph-clone": [
+      "clone, independent fork and template import",
+      "preview/refusal and preserved source graph",
+      "selection and local transport behavior"
+    ],
+    "smoke-warning-ux": [
+      "warning summaries, limits and changed-only paths",
+      "normal and strict diagnostic behavior"
+    ],
+    "smoke-semantic-refs": [
+      "context and evidence reference traversal",
+      "read-only child subgraph references",
+      "semantic pack/search and validation"
+    ]
+  },
+  "qualification": {
+    "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+    "tarball": {
+      "path": "/private/tmp/mdkg-task838-git-qual.PPoK5C/mdkg-0.6.0.tgz",
+      "sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "sealed": false,
+      "repacked": false
+    },
+    "runner": {
+      "path": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/qualify.cjs",
+      "sha256": "9549733f93751b625991f377a0edf3c7cf20ca7c1d7ef3b39173ffc0f1de506c"
+    },
+    "focused_case_names": [
+      "accepted manifest topology has exact fast membership and five complete full shards",
+      "topology validation identifies runtime timeout membership partition and profile drift",
+      "generated workflow byte-matches source-owned topology and exposes the accepted DAG",
+      "workflow projection check fails at the exact first removed topology contract",
+      "exact SHA validation rejects ambiguous input and requires a detached matching checkout",
+      "full shards restore one hash-bound package and dist context and reject drift",
+      "coverage test discovery includes every compiled TypeScript test and root MJS test",
+      "coverage config fixes the Decision 88 denominator and rejects lowered floors",
+      "coverage baseline binds source-owned counts, thresholds, and evidence hashes",
+      "coverage summary rejects paths outside the measured surface and aggregates counts",
+      "coverage threshold ratchet fails each below-floor metric and binds measured counts",
+      "coverage command uses one structured run with thresholds and all discovered tests",
+      "smoke manifest maps package aliases to 46 canonical executions",
+      "full CI shards partition all canonical smokes exactly once",
+      "npm smoke proxy supplies the same immutable artifact and records its hash",
+      "site build proxy caches once per declared profile and invalidates on source change",
+      "site cache binds external direct and transitive sources including additions and deletions",
+      "site cache refuses unsupported linked input without issuing build acceptance",
+      "site cache refuses source movement during the build without sealing stale output",
+      "site cache detects corrupted output instead of accepting a poisoned hit",
+      "site cache binds lockfiles and verifies its persisted input evidence",
+      "site cache refuses implicit dotenv inputs before reading or building them",
+      "release scripts preserve standalone smoke behavior and use bounded runners",
+      "release ladder proves tracked state, lockfiles, and the selected goal are unchanged",
+      "demo graph smoke accepts only warning-only stale subgraph verification",
+      "candidate delivery uses independent bytes instead of a writable hard link",
+      "candidate delivery cannot remove the canonical artifact by selecting its directory",
+      "candidate delivery preserves an existing unrelated destination",
+      "repeated delivery preserves a matching independent copy",
+      "artifact verification refuses symlinks and hard links without changing targets",
+      "consumer checks bind unchanged candidate bytes before and after execution",
+      "a changed candidate fails before the consumer is called",
+      "same-size mutation during a successful consumer invalidates qualification",
+      "consumer failure is retained when unchanged artifact bytes are verified",
+      "both consumer failure and candidate corruption remain visible",
+      "install proxy verifies delivered bytes around the consumer (mutation=false)",
+      "install proxy verifies delivered bytes around the consumer (mutation=true)",
+      "install refuses a changed delivered tarball before invoking the consumer",
+      "install refuses an unrecorded tarball instead of counting a different candidate",
+      "published baseline declaration cannot substitute caller-supplied hashes for the pinned release",
+      "real proxy keeps synthetic pinned-baseline consumption separate from candidate proof (mutation=false)",
+      "real proxy keeps synthetic pinned-baseline consumption separate from candidate proof (mutation=true)",
+      "baseline route requires one exact declared artifact and offline invocation",
+      "cleanup is bound to the created root and preserves prefix-matching siblings",
+      "cleanup refuses an unowned directory substituted at the same root path",
+      "cleanup refuses a substituted root symlink without following its target",
+      "cleanup refuses a substituted ancestor and leaves both trees intact",
+      "cleanup unlinks an owned descendant symlink without deleting its outside target",
+      "fixture path and prefix validation cannot grant arbitrary cleanup targets",
+      "fixture environment removes inherited Git redirects/config and does not alter its input",
+      "demo fixture copies exact runtime/graph inputs but no app dependencies or canonical private graph",
+      "demo smoke no longer discovers cleanup targets by scratch prefix",
+      "upgrade smoke uses owned finalization before reporting success",
+      "upgrade fixture canonicalizes only the default OS temporary base",
+      "source drift does not skip independently owned cleanup or mask a smoke failure",
+      "source and ownership failures are both reported and uncertain fixtures are retained",
+      "successful fixture finalization verifies inputs then removes only its owned root",
+      "demo copies exclude actual unlisted template files, dependencies and private root data",
+      "invalid or privileged operator source paths refuse before creating a copied repository",
+      "operator identities, duplicate paths and nonregular source entries fail closed",
+      "owned Node execution preserves normal results, clears Git redirects and releases before cleanup",
+      "owned Node execution refuses escaped or symlinked cwd and invalid timeout",
+      "timed-out bootstrap descendants cannot keep writing while fixture cleanup runs",
+      "successful immediate-parent exit with surviving descendants is not qualification success",
+      "nested Node supervisors share the outer shutdown boundary and cannot clean it early",
+      "fixture Git clears all inherited redirects and preserves an outside sentinel repository",
+      "fixture check-ignore distinguishes ignored/unignored without writing either worktree index",
+      "fixture check-ignore refuses options and paths outside its checkout without effects",
+      "fixture Git ignores ambient xdg excludes but preserves checkout-owned rules",
+      "fixture Git ignores ambient home excludes but preserves checkout-owned rules",
+      "fixture Git ignores ambient local-config excludes but preserves checkout-owned rules",
+      "configured hooks and fsmonitor do not run during ordinary fixture commits/status",
+      "native local clone, fetch and ancestry-preserving merge keep independent repository bindings",
+      "real linked worktrees bind separate indexes and a common owned Git directory",
+      "native separate-git-dir repositories remain usable within the owned fixture",
+      "bare fixture repositories remain usable as explicit local clone sources",
+      "outside cwd, clone/fetch sources, destinations and separate metadata refuse without changes",
+      "Git does not discover an ancestor repository for an uninitialized fixture child",
+      "root and gitdir pointer substitution fail before a native mutation",
+      "foreign gitdir/commondir and symlinked Git metadata are rejected before effects",
+      "executable filters, merge drivers, includes and URL rewrites refuse before execution",
+      "authority flags, config file writes and remote protocols are rejected without effects",
+      "ownership changes invalidate a previously accepted fixture root",
+      "hard-linked mutable Git metadata refuses without modifying an outside inode",
+      "native local clone may share immutable objects but not mutable metadata",
+      "fixture identity settings are respected by later native commits",
+      "explicit editor signing diff-helper and recursive options refuse before mutation",
+      "inherited and configured editors cannot execute during a message-free commit",
+      "ambient submodule recursion cannot reach an unadmitted nested Git directory",
+      "inner timeouts kill nested Git descendant writers before owned cleanup",
+      "outer timeouts kill nested Git descendant writers before owned cleanup",
+      "inactive worktree config does not override native repository identity",
+      "coverage refuses a populated configured destination before subprocesses or deletion",
+      "full-context preparation preserves an existing populated destination",
+      "full-context restore refuses different existing dist content without deleting it",
+      "standalone coverage creates distinct runs and preserves earlier loose evidence",
+      "explicit coverage output accepts an empty caller-created directory and keeps the exact layout",
+      "output admission rejects protected roots, ancestors, blank values and non-directories",
+      "output admission refuses leaf, ancestor and dangling symlinks without touching their targets",
+      "output creation preserves siblings and does not treat a prefix as cleanup authority",
+      "full-context preparation supports pre-created empty CI destinations and independent artifact bytes",
+      "context inputs are validated before creating a destination",
+      "context outputs cannot overlap package or build inputs",
+      "context input and restored-build symlinks fail without writing through them",
+      "context restoration is idempotent for matching dist and does not replace its inodes",
+      "context preparation refuses hardlinked or symbolic build inputs",
+      "real synthetic coverage executions retain both default runs and the ladder's exact output layout",
+      "full-context package.tgz symlink refuses before following the leaf",
+      "full-context package.tgz FIFO refuses promptly without a writer",
+      "full-context context.json symlink refuses before following the leaf",
+      "full-context context.json FIFO refuses promptly without a writer",
+      "qualification JSON rejects hardlinks and oversized metadata before reading",
+      "ladder keeps earlier receipts and CI startup evidence in a populated collection directory",
+      "ladder rejects a linked receipt collection before any Git or gate subprocess",
+      "smoke Git ignores ambient repository/index/executable redirects and preserves a sentinel",
+      "smoke Node uses the selected runtime, filters Git overrides and preserves expected refusal status",
+      "smoke npm JS entrypoints use private configuration and cannot restore ambient Git redirects",
+      "smoke command setup preserves existing configuration and refuses released custody",
+      "both smoke entrypoints use owned command dispatch without raw Git or subprocess fallbacks",
+      "branch fixture accepts a physical base and rejects an explicit symlink base",
+      "installed Node dispatch preserves fault preloads and ordinary refusals but rejects signals and timeouts",
+      "all installed collaboration and recovery callers retain the supervised Node boundary",
+      "six installed smoke callers preserve owned dispatch and offline installs",
+      "DB/SQLite smoke callers retain installed helpers, guarded Git and exact ignore statuses",
+      "graph workflow smoke callers use owned dispatch and defer installation until artifact admission",
+      "installed smoke returns success only after artifact verification and cleanup",
+      "installed smoke preserves primary and artifact failures and still checks cleanup",
+      "installed smoke cleans failed setup and refuses unsafe base or linked artifact",
+      "standalone installed smoke detects installer mutation with and without install failure"
+    ],
+    "runtimes": [
+      {
+        "receipt_path": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/receipt.json",
+        "receipt_sha256": "8953343dfde108d3b25b8e91df6421ea067b8ce4017c2779923aef8ced139711",
+        "node_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+        "runtime": "v24.15.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+        "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+        "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+        "runs": [
+          {
+            "label": "smoke-goal",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 5500,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-goal.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-goal.stderr",
+            "stdout_sha256": "49979dcc48c8cb8ffb2e2e55d9cf216fcf5b457e27a4860bc3372d27b1bdd153",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "goal",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-goal-smoke-MrT3M4",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-goal-smoke-MrT3M4/pack/mdkg-0.6.0.tgz",
+              "next_json_refusal": {
+                "status": 1,
+                "fixture_unchanged": true
+              },
+              "global_next_id": "task-2",
+              "scoped_next_id": "task-1",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-goal-smoke-MrT3M4"
+              }
+            }
+          },
+          {
+            "label": "smoke-goal-lifecycle",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 7428,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-goal-lifecycle.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-goal-lifecycle.stderr",
+            "stdout_sha256": "bebefdbc0dcaee1968558651779a139046450dd6fc2cc1dade2fe51d180eb880",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "goal-lifecycle",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-goal-lifecycle-smoke-hzXLll",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-goal-lifecycle-smoke-hzXLll/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-goal-lifecycle-smoke-hzXLll"
+              }
+            }
+          },
+          {
+            "label": "smoke-checkpoint-templates",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 2737,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-checkpoint-templates.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-checkpoint-templates.stderr",
+            "stdout_sha256": "d3bcaaf06a840f787d8ee12df01eb56f18c5d6d9dca82ae74d0bcff5a8b5d725",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "checkpoint-templates",
+              "ok": true,
+              "packageVersion": "0.6.0",
+              "tempRoot": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-checkpoint-templates-smoke-sFC4oo",
+              "tarballPath": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-checkpoint-templates-smoke-sFC4oo/pack/mdkg-0.6.0.tgz",
+              "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-checkpoint-templates-smoke-sFC4oo/repo",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-checkpoint-templates-smoke-sFC4oo"
+              }
+            }
+          },
+          {
+            "label": "smoke-cli-ux-polish",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 4293,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-cli-ux-polish.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-cli-ux-polish.stderr",
+            "stdout_sha256": "dcc8ec042cc5395e80ad100444f7b2a864fb35460830202f1e65e1bdf1eda850",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "cli-ux-polish",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-cli-ux-polish-smoke-hVFUEy",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-cli-ux-polish-smoke-hVFUEy/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-cli-ux-polish-smoke-hVFUEy"
+              }
+            }
+          },
+          {
+            "label": "smoke-id-repair",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 4691,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-id-repair.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-id-repair.stderr",
+            "stdout_sha256": "3828902073600de140052c7fd01e13e3710990c8065c50244c3d6c161b130ff0",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "action": "smoke-id-repair",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-id-repair-smoke-IfOIkp",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-id-repair-smoke-IfOIkp/pack/mdkg-0.6.0.tgz",
+              "clean_plan_hash": "sha256:1462893cb2f1e9cb5a40a7b00a9588a2eb8ce850565a5e546b78a4243bdd99ad",
+              "stage_plan_hash": "sha256:68626b2ae148b490799a3fdded20e677d9753c87492e59932975d5da5c611ecd",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-id-repair-smoke-IfOIkp"
+              }
+            }
+          },
+          {
+            "label": "smoke-graph-clone",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 6481,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-graph-clone.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-graph-clone.stderr",
+            "stdout_sha256": "15487143fb1dcffc66f76f81489fec771c462509daea4b0384cc6585b1f9524d",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "graph-clone",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-graph-clone-smoke-RhrNfe",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-graph-clone-smoke-RhrNfe/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-graph-clone-smoke-RhrNfe"
+              }
+            }
+          },
+          {
+            "label": "smoke-warning-ux",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 3724,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-warning-ux.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-warning-ux.stderr",
+            "stdout_sha256": "fde90f6d863de42faf00a2c762e638913158be596ea49cb11346924f53009abc",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "warning-ux",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-warning-ux-smoke-2CCJW8",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-warning-ux-smoke-2CCJW8/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-warning-ux-smoke-2CCJW8"
+              }
+            }
+          },
+          {
+            "label": "smoke-semantic-refs",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 4639,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-semantic-refs.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/smoke-semantic-refs.stderr",
+            "stdout_sha256": "c8f671c95a5e21288dcd95492343abf38c406313ab8ca6446f71d37315928cdc",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "semantic-refs",
+              "ok": true,
+              "packageVersion": "0.6.0",
+              "tempRoot": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-semantic-refs-smoke-MUO9vi",
+              "tarballPath": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-semantic-refs-smoke-MUO9vi/pack/mdkg-0.6.0.tgz",
+              "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-semantic-refs-smoke-MUO9vi/repo",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf/mdkg-semantic-refs-smoke-MUO9vi"
+              }
+            }
+          }
+        ],
+        "focused": {
+          "files": [
+            "tests/qualification-smoke.test.mjs",
+            "tests/qualification-git.test.mjs",
+            "tests/qualification-fixture.test.mjs",
+            "tests/qualification-artifact.test.mjs",
+            "tests/qualification-output.test.mjs",
+            "dist/tests/coverage-contract.test.js",
+            "dist/tests/ci-topology.test.js",
+            "dist/tests/release-ladder.test.js"
+          ],
+          "status": 0,
+          "duration_ms": 9451,
+          "log": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.15.0-oWEzhj/focused.log",
+          "sha256": "d4b022622abdbc4abffff643ff25b29a8ebd85b6a081c707aaedb30532b7fd0a",
+          "summary": [
+            "# tests 129",
+            "# pass 129",
+            "# fail 0",
+            "# skipped 0",
+            "# duration_ms 9417.571541"
+          ]
+        },
+        "source_unchanged": true,
+        "cleanup": {
+          "removed": true,
+          "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-VBWZCf"
+        }
+      },
+      {
+        "receipt_path": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/receipt.json",
+        "receipt_sha256": "b9ca65853897ced120f2ebb425f650e38864bb09dfb9551ec3910a91709798d7",
+        "node_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+        "runtime": "v24.18.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+        "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+        "runs": [
+          {
+            "label": "smoke-goal",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 7111,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-goal.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-goal.stderr",
+            "stdout_sha256": "89d1bd0c71244020d582c869c79b2a94da0482be2765f8803cef130d9004e8a0",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "goal",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-goal-smoke-MSjsc7",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-goal-smoke-MSjsc7/pack/mdkg-0.6.0.tgz",
+              "next_json_refusal": {
+                "status": 1,
+                "fixture_unchanged": true
+              },
+              "global_next_id": "task-2",
+              "scoped_next_id": "task-1",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-goal-smoke-MSjsc7"
+              }
+            }
+          },
+          {
+            "label": "smoke-goal-lifecycle",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 9069,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-goal-lifecycle.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-goal-lifecycle.stderr",
+            "stdout_sha256": "ca2486a910a44ace1d893c823414f8d717b28b5a2bb117c2bd1fc822c672910a",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "goal-lifecycle",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-goal-lifecycle-smoke-W2GEyA",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-goal-lifecycle-smoke-W2GEyA/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-goal-lifecycle-smoke-W2GEyA"
+              }
+            }
+          },
+          {
+            "label": "smoke-checkpoint-templates",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 3739,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-checkpoint-templates.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-checkpoint-templates.stderr",
+            "stdout_sha256": "f7ad670c15bef9b0451ed144e72effe6d417d827d3a9aa06df6ebd8861e09360",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "checkpoint-templates",
+              "ok": true,
+              "packageVersion": "0.6.0",
+              "tempRoot": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-checkpoint-templates-smoke-LTkFMR",
+              "tarballPath": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-checkpoint-templates-smoke-LTkFMR/pack/mdkg-0.6.0.tgz",
+              "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-checkpoint-templates-smoke-LTkFMR/repo",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-checkpoint-templates-smoke-LTkFMR"
+              }
+            }
+          },
+          {
+            "label": "smoke-cli-ux-polish",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 5938,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-cli-ux-polish.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-cli-ux-polish.stderr",
+            "stdout_sha256": "a953dd68190c3910bccaac71db1b796035781548e77fbee0d8192c723f044640",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "cli-ux-polish",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-cli-ux-polish-smoke-Q4pJv0",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-cli-ux-polish-smoke-Q4pJv0/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-cli-ux-polish-smoke-Q4pJv0"
+              }
+            }
+          },
+          {
+            "label": "smoke-id-repair",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 5457,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-id-repair.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-id-repair.stderr",
+            "stdout_sha256": "5df6bd793e2e9e40e3fa801202d75d24f8b8acad9678045724500dafaf00f5aa",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "action": "smoke-id-repair",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-id-repair-smoke-SseIey",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-id-repair-smoke-SseIey/pack/mdkg-0.6.0.tgz",
+              "clean_plan_hash": "sha256:2e16866fdc9303dc8809bb995d828c1e072bedbdcc91d41a035a92574d4cbdb2",
+              "stage_plan_hash": "sha256:331b78ce9aebed42f5bdbba2be9fc8dd8f109efc465a358e4c2f384de78d37de",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-id-repair-smoke-SseIey"
+              }
+            }
+          },
+          {
+            "label": "smoke-graph-clone",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 8999,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-graph-clone.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-graph-clone.stderr",
+            "stdout_sha256": "11469e82b3cfd310d0ef4864e50dae0935beb33f9e1549341fa5967694696cec",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "graph-clone",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-graph-clone-smoke-rCEeLV",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-graph-clone-smoke-rCEeLV/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-graph-clone-smoke-rCEeLV"
+              }
+            }
+          },
+          {
+            "label": "smoke-warning-ux",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 3661,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-warning-ux.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-warning-ux.stderr",
+            "stdout_sha256": "13753bb7ca4cabebdd736ce3eb807e17adb5460cf930e057dda646601d28a2c8",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "warning-ux",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-warning-ux-smoke-cFbQt9",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-warning-ux-smoke-cFbQt9/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-warning-ux-smoke-cFbQt9"
+              }
+            }
+          },
+          {
+            "label": "smoke-semantic-refs",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 4932,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-semantic-refs.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/smoke-semantic-refs.stderr",
+            "stdout_sha256": "b0fd6e1945c001ba5b8ced3794120a685fb62f563e2cf96a8bbc03b8dbf26870",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "semantic-refs",
+              "ok": true,
+              "packageVersion": "0.6.0",
+              "tempRoot": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-semantic-refs-smoke-hkMImc",
+              "tarballPath": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-semantic-refs-smoke-hkMImc/pack/mdkg-0.6.0.tgz",
+              "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-semantic-refs-smoke-hkMImc/repo",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK/mdkg-semantic-refs-smoke-hkMImc"
+              }
+            }
+          }
+        ],
+        "focused": {
+          "files": [
+            "tests/qualification-smoke.test.mjs",
+            "tests/qualification-git.test.mjs",
+            "tests/qualification-fixture.test.mjs",
+            "tests/qualification-artifact.test.mjs",
+            "tests/qualification-output.test.mjs",
+            "dist/tests/coverage-contract.test.js",
+            "dist/tests/ci-topology.test.js",
+            "dist/tests/release-ladder.test.js"
+          ],
+          "status": 0,
+          "duration_ms": 8338,
+          "log": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-aaRSlJ/focused.log",
+          "sha256": "2f5b4e5ab3018857038835197832ff3a1360e7e9cf565fcccb18283b81a22bcb",
+          "summary": [
+            "# tests 129",
+            "# pass 129",
+            "# fail 0",
+            "# skipped 0",
+            "# duration_ms 8277.410167"
+          ]
+        },
+        "source_unchanged": true,
+        "cleanup": {
+          "removed": true,
+          "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-iHzuTK"
+        }
+      },
+      {
+        "receipt_path": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/receipt.json",
+        "receipt_sha256": "fce5f1544409656165ed49488f4734fffcdfb77a4988902d9ff0d2f344c642a2",
+        "node_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+        "runtime": "v26.0.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+        "classification": "INTERMEDIATE_CALLER_QUALIFICATION_NOT_RELEASE",
+        "runs": [
+          {
+            "label": "smoke-goal",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 6968,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-goal.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-goal.stderr",
+            "stdout_sha256": "39e01ce8f897d6df828b3ec25de4fb11f5002d66f53d57373f8f5fd7fade0d0f",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "goal",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-goal-smoke-EhRVOP",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-goal-smoke-EhRVOP/pack/mdkg-0.6.0.tgz",
+              "next_json_refusal": {
+                "status": 1,
+                "fixture_unchanged": true
+              },
+              "global_next_id": "task-2",
+              "scoped_next_id": "task-1",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-goal-smoke-EhRVOP"
+              }
+            }
+          },
+          {
+            "label": "smoke-goal-lifecycle",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 9068,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-goal-lifecycle.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-goal-lifecycle.stderr",
+            "stdout_sha256": "6b5442dc75bb98f2fcd367978e1f0c6fc3d39ae85b0ba8759ed465e2fe7a1884",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "goal-lifecycle",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-goal-lifecycle-smoke-FeDq4e",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-goal-lifecycle-smoke-FeDq4e/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-goal-lifecycle-smoke-FeDq4e"
+              }
+            }
+          },
+          {
+            "label": "smoke-checkpoint-templates",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 3769,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-checkpoint-templates.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-checkpoint-templates.stderr",
+            "stdout_sha256": "ae864d91aa7c9d639c1f87b6c1031b412ee3d393daf98388f7957d4b364e3aa6",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "checkpoint-templates",
+              "ok": true,
+              "packageVersion": "0.6.0",
+              "tempRoot": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-checkpoint-templates-smoke-hKuzo1",
+              "tarballPath": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-checkpoint-templates-smoke-hKuzo1/pack/mdkg-0.6.0.tgz",
+              "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-checkpoint-templates-smoke-hKuzo1/repo",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-checkpoint-templates-smoke-hKuzo1"
+              }
+            }
+          },
+          {
+            "label": "smoke-cli-ux-polish",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 5854,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-cli-ux-polish.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-cli-ux-polish.stderr",
+            "stdout_sha256": "a994fd1975a9d0f6e27cc1ada9f2a7713c139f18f484f192b27ed70ec9924a69",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "cli-ux-polish",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-cli-ux-polish-smoke-IwADd5",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-cli-ux-polish-smoke-IwADd5/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-cli-ux-polish-smoke-IwADd5"
+              }
+            }
+          },
+          {
+            "label": "smoke-id-repair",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 5100,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-id-repair.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-id-repair.stderr",
+            "stdout_sha256": "14a428508625cb2457b554bb10bb0b10c0f9db78fe426b10933b7892afd64be7",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "action": "smoke-id-repair",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-id-repair-smoke-RneRqu",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-id-repair-smoke-RneRqu/pack/mdkg-0.6.0.tgz",
+              "clean_plan_hash": "sha256:863fa73f969bb58cc25d3d47438ac7e4fb2bf87450da57d922b6f2823884ed77",
+              "stage_plan_hash": "sha256:0cc95e36047ceea8e3ea26734ba0786deb961cdec50402fa0742c8b5fba5e301",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-id-repair-smoke-RneRqu"
+              }
+            }
+          },
+          {
+            "label": "smoke-graph-clone",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 8169,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-graph-clone.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-graph-clone.stderr",
+            "stdout_sha256": "ee30b2b8fd8ccb65c08761038703f85ed235f0315d376a92c463ba172b867114",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "graph-clone",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-graph-clone-smoke-xvh12l",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-graph-clone-smoke-xvh12l/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-graph-clone-smoke-xvh12l"
+              }
+            }
+          },
+          {
+            "label": "smoke-warning-ux",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 3420,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-warning-ux.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-warning-ux.stderr",
+            "stdout_sha256": "816a18317a27f372aa3f8894e9efbfc5151159a9c09f22913c8f0740150ad463",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "warning-ux",
+              "ok": true,
+              "temp_root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-warning-ux-smoke-AtrF2m",
+              "tarball": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-warning-ux-smoke-AtrF2m/pack/mdkg-0.6.0.tgz",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-warning-ux-smoke-AtrF2m"
+              }
+            }
+          },
+          {
+            "label": "smoke-semantic-refs",
+            "exit": 0,
+            "signal": null,
+            "duration_ms": 4664,
+            "stdout": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-semantic-refs.stdout",
+            "stderr": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/smoke-semantic-refs.stderr",
+            "stdout_sha256": "36ac8b7f1ed1628b7b172cb2deb96e45736c68608ce577eef5c1e3a9f4ab35e1",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sentinel_unchanged": true,
+            "result": {
+              "smoke": "semantic-refs",
+              "ok": true,
+              "packageVersion": "0.6.0",
+              "tempRoot": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-semantic-refs-smoke-plFXZW",
+              "tarballPath": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-semantic-refs-smoke-plFXZW/pack/mdkg-0.6.0.tgz",
+              "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-semantic-refs-smoke-plFXZW/repo",
+              "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf/mdkg-semantic-refs-smoke-plFXZW"
+              }
+            }
+          }
+        ],
+        "focused": {
+          "files": [
+            "tests/qualification-smoke.test.mjs",
+            "tests/qualification-git.test.mjs",
+            "tests/qualification-fixture.test.mjs",
+            "tests/qualification-artifact.test.mjs",
+            "tests/qualification-output.test.mjs",
+            "dist/tests/coverage-contract.test.js",
+            "dist/tests/ci-topology.test.js",
+            "dist/tests/release-ladder.test.js"
+          ],
+          "status": 0,
+          "duration_ms": 8845,
+          "log": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v26.0.0-C3OK3u/focused.log",
+          "sha256": "d190d450792a4b42961228258d4182e55193b6228b2692b2e9308cc68c657089",
+          "summary": [
+            "# tests 129",
+            "# pass 129",
+            "# fail 0",
+            "# skipped 0",
+            "# duration_ms 8786.301583"
+          ]
+        },
+        "source_unchanged": true,
+        "cleanup": {
+          "removed": true,
+          "root": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/execution-q4Wxlf"
+        }
+      }
+    ],
+    "checks": {
+      "installed": 24,
+      "focused_per_runtime": 129,
+      "failed": 0,
+      "skipped": 0,
+      "artifact_checks_passed": true,
+      "sentinel_inventories_unchanged": true,
+      "owned_execution_roots_removed": true,
+      "source_unchanged": true
+    }
+  },
+  "failed_and_superseded": [
+    {
+      "path": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-Epiu2R/receipt.json",
+      "sha256": "8a9cdfe8b4a2fefd6febacd82d5da1d6cd481ed325a014db0daf83b1aac5347b",
+      "result": "smoke-goal exit1 at unsupported next --json",
+      "cause": "pre-existing fixture invokes unsupported flag; original assertion consumes text, not JSON",
+      "disposition": "Use supported next and add supervised explicit refusal with exit1, diagnostic and whole-owned-fixture inventory.",
+      "cleanup_verified": true
+    },
+    {
+      "path": "/private/tmp/mdkg-task838-graph-smokes.0xdaKz/results-v24.18.0-65y1qB/receipt.json",
+      "sha256": "47db841f84090babd05eec5ff3f1ea3af0791706664b6179e301e3466d9aa1d7",
+      "result": "eight installed and129 focused pass on Node24.18 before inventory scope correction",
+      "disposition": "Superseded for the final whole-fixture refusal proof; all eight rerun against corrected bytes."
+    }
+  ],
+  "review": {
+    "reviewer": "task838_output_review",
+    "mode": "bounded independent source-only",
+    "initial": "Original eight caller migrations retain scenarios and expected refusal supervision; pre-existing next --json use requires correction.",
+    "follow_up": "Refusal inventory initially covered only the repository. Expanded both snapshots to tempRoot so the receipt covers sibling installation/cache/configuration too.",
+    "final": "No remaining concrete gap in the narrow correction after whole-fixture scope change.",
+    "limitations": [
+      "Not Standard or Task828 acceptance",
+      "No independent runtime verification by reviewer",
+      "Inventories show observed content and selected metadata equality, not absence of transient effects",
+      "Trusted subprocess supervision is not an OS or credential sandbox"
+    ]
+  },
+  "selection_policy": {
+    "skill": "verify-close-and-checkpoint",
+    "version": "0.3.0",
+    "focused_first": "15 smoke-helper checks passed before installed qualification",
+    "affected_scope": "Eight migrated installed callers and eight fixture/helper/coverage/CI/ladder test files",
+    "deferred": "Full repository/coverage/release ladder at existing pre-merge/pre-publish boundaries; floors89/77/96 unchanged",
+    "rerun_note": "A separate single-caller helper file was not created after two permission-review timeouts. Existing eight-caller runner reused; seven unchanged cases were repeated on24.18."
+  },
+  "remaining_callers": {
+    "synchronous": [
+      "scripts/smoke-bundle.js",
+      "scripts/smoke-archive-work.js",
+      "scripts/smoke-command-matrix.js",
+      "scripts/smoke-init.js",
+      "scripts/smoke-spike.js",
+      "scripts/smoke-work-invocation.js",
+      "scripts/smoke-subgraph.js"
+    ],
+    "npm_exec": [
+      "scripts/smoke-consumer.js"
+    ],
+    "deliberate_hostile_git": [
+      "scripts/smoke-git-boundary.js"
+    ],
+    "asynchronous_mcp": [
+      "scripts/smoke-mcp.js"
+    ]
+  },
+  "unresolved": [
+    "Task838 remaining ten caller candidates and final retained custody/qualification",
+    "Bug60 Node-only observation design and failing journal-transition regression",
+    "Bugs46/47 filesystem findings",
+    "Actual pinned0.5.2 installed upgrade bytes/results unavailable locally",
+    "Linux/Test487 and final independent review",
+    "Task839 final guidance",
+    "Task829 full ladder and Task830 exact seal",
+    "Goal85 paused; publication requires separate authority"
+  ],
+  "boundaries": {
+    "node_only": true,
+    "local_only": true,
+    "no_blocked_context_access": true,
+    "no_canonical_build": true,
+    "no_package_input_change": true,
+    "no_rust_bun_native_bridge": true,
+    "no_linux_hosted_services": true,
+    "no_canonical_graph_migration": true,
+    "no_bundle_refresh": true,
+    "no_commit_push_publication": true,
+    "no_consumers_providers": true
+  },
+  "skill_candidates": [],
+  "validation": {
+    "graph": "full graph passed: zero errors, three existing stale-import warnings",
+    "changed_only": "passed: zero errors or warnings",
+    "sqlite_index": "passed: all five projections fresh, zero failures",
+    "diff_check": "passed after evidence writing",
+    "protected_bookends": "selected Goal73, runtime DB and Demo3 hashes unchanged",
+    "dirty_custody": "96 dirty paths, zero staged; only smoke-goal, Goal86, Task838 and SQLite index changed from the94-path entry, plus this artifact and Chk646",
+    "ownership": "supported Task838 claim; no persistent runtime lease or outstanding mutation/Git index lock"
+  },
+  "progress": {
+    "done": 26,
+    "total": 47,
+    "metric": "formal scoped-node checklist, not release readiness"
+  }
+}

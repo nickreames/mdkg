@@ -1,0 +1,3725 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-successor-exact-installed-platform-acceptance",
+  "owner": "mdkg-project-agent",
+  "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+  "candidate": {
+    "path": "/private/tmp/mdkg-goal86-successor-IXaLuM/run-eEfGkk/artifact/mdkg-0.6.0.tgz",
+    "sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+    "sha512": "6146f4759b40e7030b5f6f70cd451a19f805cf0f3ec010d3286ea1c37986bd3bf845999932419ffb47d59c15dd1411cc907138bb7fb77022a65f486cc4782be6",
+    "integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+    "bytes": 545431,
+    "payload_files": 237,
+    "payload_sha256": "360bfa1c886232042ede8f0e4e9ff66520e015e6eea89a9cf708e9a0f0f4a023",
+    "sealed": false
+  },
+  "input_manifest_sha256": "b661a5ea1c15c25d09566b17dd4ad77830cd6b6a2492f05f7c6fd5a97fa42603",
+  "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+  "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+  "state": "passed-current",
+  "platforms": [
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "execution": "native",
+      "evidence": [
+        {
+          "receipt_path": "/private/tmp/mdkg-macos-final-results-bR6Xdi/receipt.json",
+          "receipt_sha256": "eb512489cd3045b33d08fb35cb189a127735bc433aba6f642e8f489cddbaea89",
+          "pass": true,
+          "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+          "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+          "capsule_manifest_sha256": "2fd0f7c05f3c8cb852cab9c197ebfa0cda2a85f0dd2fe89371514a14e480e76c",
+          "environment": {
+            "platform": "darwin",
+            "arch": "arm64",
+            "node": "v24.18.0",
+            "os": "25.4.0",
+            "git": "git version 2.50.1 (Apple Git-155)"
+          },
+          "started_at": "2026-09-30T18:47:51.838Z",
+          "completed_at": "2026-09-30T19:29:50.399Z",
+          "families": [
+            {
+              "name": "bootstrap",
+              "pass": true,
+              "duration_ms": 45146,
+              "stdout_sha256": "fd014bcaaab22435faa8e74dd1f30c6f02d28ed2878862b70e4f1c01246283fa",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "685ddeddd05aeea7a63158ec7e4ad75ef3247a9e3b128476eea1da585249355a",
+              "driver": "test-477-installed-bootstrap.cjs",
+              "driver_sha256": "eff44366ed4e7234a2ff282e485371189c325c375f36b27c230c170ea9530578",
+              "subfamilies": [
+                {},
+                {}
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-bootstrap-qualification-fBDr0D"
+              }
+            },
+            {
+              "name": "collaboration",
+              "pass": true,
+              "duration_ms": 261778,
+              "stdout_sha256": "6451dcaaf66bc52cf02b01815e7bb1cbfff778360f4fe946a59daff6705a9770",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "88a8cdac39192266f4b91bee2665e33fb1923957eb837322f5b224b8c42e039b",
+              "driver": "test-478-installed-collaboration.cjs",
+              "driver_sha256": "477dc1fc892df3928ac36ab8e84197a364caac2133531708536b39fb9dfd3498",
+              "subfamilies": [
+                {
+                  "name": "existing-installed-identity-collaboration"
+                },
+                {
+                  "name": "existing-installed-git-observation"
+                },
+                {
+                  "name": "linked-worktree-concurrency-recovery-integration"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-collaboration-9iaFZg"
+              }
+            },
+            {
+              "name": "gitdir",
+              "pass": true,
+              "duration_ms": 41111,
+              "stdout_sha256": "1bd10581506d1b1425d9b766007594896fde10d6f5d80f2c712d89b976f4a0a8",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "be217f016dc4fad15bc623cf7ebcc91366b4eeaf237286740bffed08ed971338",
+              "driver": "test-478-indirection-qualification.cjs",
+              "driver_sha256": "a73100e0e87115c9520bba4257792270ea5b8c8a3ec2f5815b1a972de210db9b",
+              "subfamilies": [
+                {
+                  "name": "linked-gitdir-concurrency-recovery-integration"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-collaboration-0BiD65"
+              }
+            },
+            {
+              "name": "submodule",
+              "pass": true,
+              "duration_ms": 41864,
+              "stdout_sha256": "5f8eaa66ec5d7dcff67ea3d6631951937862d0919dc79919679dfe6a7e2ebf55",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "d80640b96da1086e9aac11beb64cb86ed5f8b9f5f66dc1fefe9f77eae8ca9e35",
+              "driver": "test-478-indirection-qualification.cjs",
+              "driver_sha256": "a73100e0e87115c9520bba4257792270ea5b8c8a3ec2f5815b1a972de210db9b",
+              "subfamilies": [
+                {
+                  "name": "linked-submodule-concurrency-recovery-integration"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-collaboration-EZcT0C"
+              }
+            },
+            {
+              "name": "ownership",
+              "pass": true,
+              "duration_ms": 159705,
+              "stdout_sha256": "1b6b2c29bf03737a13bceaf8eca273ae4f1b0d0ad164bc61c337c9802ef458d6",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "232ee9938afb76ca4fcff3c662391764cd1553ab4cbb4805a7ae56bf0fcf3f16",
+              "driver": "test-479-installed-ownership.cjs",
+              "driver_sha256": "4de5df090289a7a400b1ccbc1a6f7cc8739a8800b8c11d4a00a78b9005f90aa1",
+              "subfamilies": [
+                {
+                  "name": "portable-state-and-malformed-transport"
+                },
+                {
+                  "name": "sampled-migration-and-reconciliation-recovery"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-ownership-Tqknhu"
+              }
+            },
+            {
+              "name": "state-admission",
+              "pass": true,
+              "duration_ms": 10297,
+              "stdout_sha256": "18cb2ac10224c972281c40dafebdcbc2ec1538fe9610108b356e457fffca30a3",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "f6ac59bc5e4fbe725d73cfed656383aa20213cabff48b363a0d01d43875a7423",
+              "driver": "test-479-state-admission.cjs",
+              "driver_sha256": "b60789df61db9e6f373100d0b0156455984b85b615ee3542d9a72b8a7631cffc",
+              "subfamilies": [
+                {
+                  "name": "actual-runtime-and-selector-transport"
+                },
+                {
+                  "name": "live-and-ambiguous-recovery-admission"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-ownership-state-hXEoCh"
+              }
+            },
+            {
+              "name": "containment",
+              "pass": true,
+              "duration_ms": 85378,
+              "stdout_sha256": "dc403a57872bbf4eab044f241a40c8fbfb6bee3f095f201b0c420fd3b834b865",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "57fae9437e76bceae54577db916685a8031c390d9e1e5e4fa27c43a8dc589ce1",
+              "driver": "test-479-installed-containment.cjs",
+              "driver_sha256": "5afe63e67b87ad1cea7d5cec93db4e13ffc44a3f4673d7ce41b41d41139f066e",
+              "subfamilies": [
+                {
+                  "name": "bundle-provenance"
+                },
+                {
+                  "name": "source-read-admission"
+                },
+                {
+                  "name": "skill-registry-admission"
+                },
+                {
+                  "name": "snapshot-verification"
+                },
+                {
+                  "name": "snapshot-containment"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Native macOS only; remaining platforms and real read-only filesystem stay open",
+                "Five existing finding families only; not complete fourteen-finding acceptance or independent review",
+                "CLI and MCP consumers; installed ZIP codec used only for synthetic fixture construction/inspection",
+                "Bugs46/47 remain deferred and unresolved; no blocked historical scan context accessed"
+              ]
+            },
+            {
+              "name": "remedies",
+              "pass": true,
+              "duration_ms": 295149,
+              "stdout_sha256": "0d297097b5686f2547485878530718b5fcb68553cbdef467470213a414476bdd",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "7ae47b03df40f5d726f01c821fc72331e87d8b6e20fb6ac1d0fe3e5effeb283b",
+              "driver": "test-479-installed-remedies.cjs",
+              "driver_sha256": "e4ddd8879243c61eb63065597514273651323c31b1d87058520b25fda0b29677",
+              "subfamilies": [
+                {
+                  "name": "commands/upgrade_approval.test.js",
+                  "counts": {
+                    "tests": 48,
+                    "pass": 48,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 48
+                },
+                {
+                  "name": "commands/init_manifest_ownership.test.js",
+                  "counts": {
+                    "tests": 12,
+                    "pass": 12,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 12
+                },
+                {
+                  "name": "commands/numeric_allocation.test.js",
+                  "counts": {
+                    "tests": 86,
+                    "pass": 86,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 86
+                },
+                {
+                  "name": "commands/loop_seed_safety.test.js",
+                  "counts": {
+                    "tests": 63,
+                    "pass": 63,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 63
+                },
+                {
+                  "name": "commands/loop_seed_budget.test.js",
+                  "counts": {
+                    "tests": 41,
+                    "pass": 41,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 41
+                },
+                {
+                  "name": "commands/archive_payload_ownership.test.js",
+                  "counts": {
+                    "tests": 38,
+                    "pass": 38,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 38
+                },
+                {
+                  "name": "commands/mcp_request_admission.test.js",
+                  "counts": {
+                    "tests": 35,
+                    "pass": 35,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 35
+                },
+                {
+                  "name": "commands/skill_git_metadata.test.js",
+                  "counts": {
+                    "tests": 47,
+                    "pass": 47,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 47
+                },
+                {
+                  "name": "core/sqlite_observation.test.js",
+                  "counts": {
+                    "tests": 61,
+                    "pass": 61,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 61
+                },
+                {
+                  "name": "core/sqlite_memory_observation.test.js",
+                  "counts": {
+                    "tests": 25,
+                    "pass": 25,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 25
+                },
+                {
+                  "name": "transport-admission"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Native macOS only; other platforms and independent acceptance remain open",
+                "Mixed installed CLI and shipped internal-module regressions, not all public CLI tests",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "compatibility",
+              "pass": true,
+              "duration_ms": 135999,
+              "stdout_sha256": "61b9239bf0c90fa59835c19a1e829675c21b9a81eee02b31906d2f74f80ffb4a",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "e8d889f60ba08fad1df741ee76107a3c0e9fa220e3fbb35b48b21cb20ec34098",
+              "driver": "test-480-installed-compatibility.cjs",
+              "driver_sha256": "76d1c070469b03f0f58dcf58e7d3db9d999eb46159d0a6c829d3519386707c1a",
+              "subfamilies": [
+                {
+                  "name": "cache-freshness"
+                },
+                {
+                  "name": "changed-warnings"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "macOS only; remaining platform rows stay open",
+                "No canonical graph migration or bundle refresh",
+                "These cases do not complete all Test480 obligations or final release acceptance"
+              ]
+            },
+            {
+              "name": "work",
+              "pass": true,
+              "duration_ms": 94071,
+              "stdout_sha256": "8c1eaf9e180018f1f3ca6b8395ec6e17cd2cb1e0a8f63985bf316022947a727a",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "755731880d7b855f6771c766db99d27c2bbbcbe24235b15bce0796bf84f92d9b",
+              "driver": "test-480-installed-work-smokes.cjs",
+              "driver_sha256": "5c2060224f9469f09201c8ecac81867ca31a3e46e577d482f365403a531703b0",
+              "subfamilies": [
+                {},
+                {},
+                {}
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Three existing smokes only, not the complete37-smoke release ladder.",
+                "Native macOS only; old-client/runtime/platform and independent acceptance remain separate."
+              ]
+            },
+            {
+              "name": "runtime",
+              "pass": true,
+              "duration_ms": 17372,
+              "stdout_sha256": "161abfab4338d2914aba56420ecd5fecfe269f27173cdf20ff5a93930a8fdeab",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "cbcf8d713004cd7ba73930ab721064bf1fa986f6b01bf3e647c803351f99d071",
+              "driver": "test-480-old-client-runtime.cjs",
+              "driver_sha256": "c8bd8d037fcfc9b624b51729c07223eb65926d30d716020d2756ae1327ca5ec9",
+              "runtime_rows": [
+                {
+                  "case": "published0.5.2 legacy writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 warm fenced writer refusal",
+                  "command": [
+                    "new",
+                    "task",
+                    "Must refuse",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 warm fenced writer refusal",
+                  "command": [
+                    "task",
+                    "start",
+                    "task-1",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "current warm v2 compatible writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 cold fenced writer refusal",
+                  "command": [
+                    "new",
+                    "task",
+                    "Must refuse",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 cold fenced writer refusal",
+                  "command": [
+                    "task",
+                    "start",
+                    "task-1",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "current cold v2 compatible writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 init bypass",
+                  "exit_code": 0,
+                  "disposition": "UNSUPPORTED OLD EXECUTABLE: manifest writes ignore schema2 admission; not a no-effect safety pass",
+                  "schema_after": 2,
+                  "inventory_changed": true,
+                  "changed_paths": [
+                    ".mdkg/init-manifest.json"
+                  ]
+                },
+                {
+                  "case": "published0.5.2 force-init bypass",
+                  "exit_code": 0,
+                  "disposition": "UNSUPPORTED OLD EXECUTABLE: schema2 fence removed; not a safety pass",
+                  "schema_after": 1,
+                  "inventory_changed": true,
+                  "changed_paths": [
+                    ".mdkg/README.md",
+                    ".mdkg/config.json",
+                    ".mdkg/core/COLLABORATION.md",
+                    ".mdkg/core/HUMAN.md",
+                    ".mdkg/core/SOUL.md",
+                    ".mdkg/core/core.md",
+                    ".mdkg/core/guide.md",
+                    ".mdkg/core/rule-1-mdkg-conventions.md",
+                    ".mdkg/core/rule-2-context-pack-rules.md",
+                    ".mdkg/core/rule-3-cli-contract.md",
+                    ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+                    ".mdkg/core/rule-5-release-and-versioning.md",
+                    ".mdkg/core/rule-6-templates-and-schemas.md",
+                    ".mdkg/init-manifest.json",
+                    ".mdkg/templates/default/work.md",
+                    ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md"
+                  ]
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+                  "command": [
+                    "init",
+                    "--graph-only"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+                  "command": [
+                    "index"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+                  "command": [
+                    "db",
+                    "verify",
+                    "--json"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+                  "command": [
+                    "mcp",
+                    "serve",
+                    "--stdio"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v24.15.0",
+                  "command": [
+                    "--help"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v24.15.0",
+                  "command": [
+                    "--version"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+                  "command": [
+                    "init",
+                    "--graph-only"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+                  "command": [
+                    "index"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+                  "command": [
+                    "db",
+                    "verify",
+                    "--json"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+                  "command": [
+                    "mcp",
+                    "serve",
+                    "--stdio"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v26.0.0",
+                  "command": [
+                    "--help"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v26.0.0",
+                  "command": [
+                    "--version"
+                  ],
+                  "pass": true
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Native macOS only; Linux rows remain open.",
+                "Old init bypass is an observed unsupported behavior, not accepted secure authoring.",
+                "No canonical migration, package changes or global runtime installation."
+              ]
+            },
+            {
+              "name": "behavior",
+              "pass": true,
+              "duration_ms": 184939,
+              "stdout_sha256": "85779aec7ea07a4a9c05e2fc14635e19ad52d9cac16f9d594fbc0b54c772848c",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "8e0715239f7f7eb50c8d073e22851b7d0c14b8f89066f6521262cdafe37732fb",
+              "driver": "test-483-installed-behavior.cjs",
+              "driver_sha256": "d99e165e4ffbbc733e938095dce15098df1d93fa9ecf86f5a4c8b95aaef65407",
+              "subfamilies": [
+                {
+                  "name": "commands/pack_identity.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/format_identity.test.js",
+                  "counts": {
+                    "tests": 26,
+                    "pass": 26,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 26
+                },
+                {
+                  "name": "commands/init_identity.test.js",
+                  "counts": {
+                    "tests": 22,
+                    "pass": 22,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 22
+                },
+                {
+                  "name": "graph/identity_migration_lineage.test.js",
+                  "counts": {
+                    "tests": 22,
+                    "pass": 22,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 22
+                },
+                {
+                  "name": "graph/identity_migration_validation.test.js",
+                  "counts": {
+                    "tests": 57,
+                    "pass": 57,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 57
+                },
+                {
+                  "name": "commands/upgrade_identity.test.js",
+                  "counts": {
+                    "tests": 25,
+                    "pass": 25,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 25
+                },
+                {
+                  "name": "commands/cli_output.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                },
+                {
+                  "name": "graph/identity_dependencies.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Native macOS only; Linux/platform and independent acceptance remain open",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "pack-controls",
+              "pass": true,
+              "duration_ms": 1716,
+              "stdout_sha256": "f68da9e6254542c53a18485e71ca97c6b9428620c8b8602363a28c1d2a94ec55",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "63740f64eeade156d3372b7d1b20bc270414c6c11db5c348cc99a400bff920b7",
+              "driver": "test-483-installed-pack-controls.cjs",
+              "driver_sha256": "f0e13c3e9f0cb16a7aab990087eeac1ac2b8363eb05607ee74810db29cc4b939",
+              "subfamilies": [
+                {
+                  "name": "commands/pack.test.js",
+                  "counts": {
+                    "tests": 12,
+                    "pass": 12,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 12
+                },
+                {
+                  "name": "pack/budget.test.js",
+                  "counts": {
+                    "tests": 2,
+                    "pass": 2,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 2
+                },
+                {
+                  "name": "pack/profile.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Native macOS only; Linux/platform and independent acceptance remain open",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "generic",
+              "pass": true,
+              "duration_ms": 5862,
+              "stdout_sha256": "9686f51c271b72da269fdba11d2ac9d3e654d16edf4fd3c8a3c3d78e1e43b6e1",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "c416096642ed64aa122e101ab4ae1fee68864d61c8ae443b7aa54f12a0db6d78",
+              "driver": "test-484-installed-generic.cjs",
+              "driver_sha256": "eefde591981dbfa78e407388ba12fc623ff7446e3d94050076b4a4553d7308b9",
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Native macOS only; remaining platform and full package-parity gates stay open",
+                "Synthetic historical-shaped imported bundle; not recovered public evidence",
+                "Structural local contracts do not prove consumer adoption or external execution",
+                "No blocked historical scan context, remote Git or publication"
+              ]
+            },
+            {
+              "name": "readonly",
+              "pass": true,
+              "duration_ms": 31342,
+              "stdout_sha256": "f542b70c25f2c308a54b16b86dd8e75b33597eaabb289a9a2ee94d9d28518ede",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "8eb464a977a6615b1a544ef7d31185e1cdc44a1c6871b5256871127bed8acd8d",
+              "driver": "test-479-readonly-filesystem.cjs",
+              "driver_sha256": "fbc111e408ae8465b5643e8d0eadc52d4a0ccaf7675fa4f2a94f667ffe7fd78d",
+              "readonly_cases": 46,
+              "all_readonly_controls_pass": true,
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-readonly-volume-7Bw52r"
+              },
+              "limits": [
+                "Native macOS disk-image proof only; not Linux/platform acceptance",
+                "No native product helper, canonical migration or protected state changes"
+              ]
+            },
+            {
+              "name": "scale",
+              "pass": true,
+              "duration_ms": 834022,
+              "stdout_sha256": "4180c408bcaba5e0fe59aed312b6e0a88aa287c4d3da895901553d7d7b1d87ad",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "bceb995f358db5a092781026623fa17b39d33d9df1295a1983dde7cdf74c74fc",
+              "driver": "test-481-installed-scale.cjs",
+              "driver_sha256": "e053872a0688ab41820f07fb05a5ddd55a84fb590f1e433fa63b87ff55d1e88c",
+              "proof_sha256": "1e8a8bafa8a5d6329e7c8ca0ee004144f16e453a21f233389e5b9abaed463add",
+              "proof_keys": [
+                "schema_version",
+                "runtime",
+                "command_timeout_ms",
+                "scale_backends",
+                "installed_cli_sha256",
+                "cases",
+                "commands",
+                "fixtures_removed",
+                "limitations"
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "macOS only; remaining platform rows stay open",
+                "No canonical graph migration or publication",
+                "Qualification allowance is not a new product performance target"
+              ]
+            },
+            {
+              "name": "capability-umask",
+              "pass": true,
+              "duration_ms": 1747,
+              "stdout_sha256": "3826fe5fdba7a292a91c7ea868e912e8bb1c022e7b01868249d0670cfc6ff8c8",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "cbcae962a03ed3557be4851bda2e730a284babff2daabba904a537bb3c324c70",
+              "driver": "test-487-installed-capability-umask.cjs",
+              "driver_sha256": "4368b3a59aefdf753cedd603f3605be8db5b36920d4c9a64555b77db52ebf620",
+              "subfamilies": [
+                {
+                  "name": "commands/node_runtime_admission.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                },
+                {
+                  "name": "commands/pack_output_containment.test.js",
+                  "counts": {
+                    "tests": 20,
+                    "pass": 20,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 20
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This receipt records its actual platform; independent acceptance remains separate",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Existing umask022/private-mode controls only; no general ACL/owner preservation claim",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "current-audit",
+              "pass": true,
+              "duration_ms": 193220,
+              "stdout_sha256": "c0e8d87be48ebd2d472699ec2bc4171f8ab0e11073c48fab1d5649381dfbc1cf",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "4dad7b0e9f5bf1a004a5d80ae03d3aa4677c7cde108993e763202c8c64e04f23",
+              "driver": "test-491-installed-current-audit.cjs",
+              "driver_sha256": "4ab5cb0ebc69c21ba7d9168db4348d4d88b3b129961087c0617bea1fe09ee7cf",
+              "subfamilies": [
+                {
+                  "name": "commands/bundle_archive_visibility.test.js",
+                  "counts": {
+                    "tests": 7,
+                    "pass": 7,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 7
+                },
+                {
+                  "name": "graph/cache_git_metadata.test.js",
+                  "counts": {
+                    "tests": 18,
+                    "pass": 18,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 18
+                },
+                {
+                  "name": "commands/skill_git_metadata.test.js",
+                  "counts": {
+                    "tests": 47,
+                    "pass": 47,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 47
+                },
+                {
+                  "name": "core/filesystem_authority.test.js",
+                  "counts": {
+                    "tests": 14,
+                    "pass": 14,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 14
+                },
+                {
+                  "name": "commands/task_event.test.js",
+                  "counts": {
+                    "tests": 2,
+                    "pass": 2,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 2
+                },
+                {
+                  "name": "graph/frontmatter.test.js",
+                  "counts": {
+                    "tests": 6,
+                    "pass": 6,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 6
+                },
+                {
+                  "name": "commands/format_identity.test.js",
+                  "counts": {
+                    "tests": 26,
+                    "pass": 26,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 26
+                },
+                {
+                  "name": "graph/identity_migration.test.js",
+                  "counts": {
+                    "tests": 18,
+                    "pass": 18,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 18
+                },
+                {
+                  "name": "graph/identity_reconcile.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/diagnostic_containment.test.js",
+                  "counts": {
+                    "tests": 16,
+                    "pass": 16,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 16
+                },
+                {
+                  "name": "util/legacy_id_rewrite.test.js",
+                  "counts": {
+                    "tests": 1,
+                    "pass": 1,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 1
+                },
+                {
+                  "name": "commands/fix.test.js",
+                  "counts": {
+                    "tests": 30,
+                    "pass": 30,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 30
+                },
+                {
+                  "name": "graph/capabilities_indexer.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/subgraph.test.js",
+                  "counts": {
+                    "tests": 21,
+                    "pass": 21,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 21
+                },
+                {
+                  "name": "commands/command_contract.test.js",
+                  "counts": {
+                    "tests": 3,
+                    "pass": 3,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 3
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This recorded runtime/platform only; independent acceptance and other platform rows remain separate",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Selected contract tests exercise shipped metadata and effects; repository-only generator tests remain full-suite evidence",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "final-remedies",
+              "pass": true,
+              "duration_ms": 76922,
+              "stdout_sha256": "c44d2243764690d4f7856927caa1b965fbff8ece200f4ed80d1761b0d32733bd",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "affa1dd6f1ca18c66ab45c4cde8f86c82a1e24b1b7122209e3f8efebe5326b9c",
+              "driver": "test-493-installed-final-remedies.cjs",
+              "driver_sha256": "ff5c1bf09a2fb09b3376d1705e7351544c3f39039944649f1e17cc8beabe9166",
+              "subfamilies": [
+                {
+                  "name": "skill-registry-admission",
+                  "pass": true,
+                  "cases": 29
+                },
+                {
+                  "name": "native-git-custody",
+                  "pass": true,
+                  "cases": 21
+                },
+                {
+                  "name": "bundle-provenance",
+                  "pass": true,
+                  "cases": 57
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Actual recorded platform/runtime only; full release and independent source review are separate",
+                "Fixture adapters are read-only inputs; no canonical graph, DB, Git or providers touched",
+                "Bugs46/47 remain deferred and unresolved"
+              ]
+            }
+          ]
+        }
+      ],
+      "extra_evidence": [
+        {
+          "family": "options",
+          "path": ".mdkg/artifacts/goal-86/successor-package-gates-20260930.json",
+          "gate": "smoke:matrix",
+          "pass": true
+        }
+      ],
+      "required_family_count": 20,
+      "passed_family_count": 20,
+      "missing_families": [],
+      "state": "passed-current"
+    },
+    {
+      "platform": "linux",
+      "arch": "arm64",
+      "execution": "native ARM64 Linux on ARM64 host",
+      "evidence": [
+        {
+          "receipt_path": "/private/tmp/mdkg-docker-g86-wrIHMU/arm64-general-results/receipt.json",
+          "receipt_sha256": "741f060a8199bbc78635fafa7bc4c8cbe968a3e26929b84323dcdf1a15d39789",
+          "pass": true,
+          "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+          "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+          "capsule_manifest_sha256": "449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+          "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+          "environment": {
+            "platform": "linux",
+            "arch": "arm64",
+            "node": "v24.18.0",
+            "uid": 10001,
+            "kernel": "6.12.76-linuxkit",
+            "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+            "git": "git version 2.43.0",
+            "npm": "11.16.0",
+            "root_filesystem": "overlay overlay ro,relatime,lowerdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3174/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3169/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3168/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2899/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2898/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2897/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2896/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2895/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2873/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2872/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2871/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2870/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2713/fs,upperdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3177/fs,workdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3177/work",
+            "fixture_filesystem": "/dev/vda1[/docker/volumes/mdkg-g86-successor-arm64-general-wrihmu/_data] ext4   rw,relatime,discard",
+            "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+            "native_or_emulated": "native ARM64 Linux on ARM64 host"
+          },
+          "started_at": "2026-09-30T18:54:39.505Z",
+          "completed_at": "2026-09-30T19:05:39.703Z",
+          "families": [
+            {
+              "name": "bootstrap",
+              "pass": true,
+              "duration_ms": 19811,
+              "stdout_sha256": "059314634832464b9718ab4ebacc84a52fb33c635b9fd137addf7ba220def85b",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "2a8e2b9922870596988414daea553f3f1421d38235db391e8816f05671a7ba91",
+              "driver": "test-477-installed-bootstrap.cjs",
+              "subfamilies": [
+                {},
+                {}
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-bootstrap-qualification-GinPnG"
+              }
+            },
+            {
+              "name": "collaboration",
+              "pass": true,
+              "duration_ms": 76924,
+              "stdout_sha256": "46c4c4dd5b985a0cd8bd80ca537be117af004ea15122a4938f06ec20245f9ef9",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "6004bb05bf462305e81c4f848fa44144a49b8d4a8a024ec60cc02ceaf6962169",
+              "driver": "test-478-installed-collaboration.cjs",
+              "subfamilies": [
+                {
+                  "name": "existing-installed-identity-collaboration"
+                },
+                {
+                  "name": "existing-installed-git-observation"
+                },
+                {
+                  "name": "linked-worktree-concurrency-recovery-integration"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-collaboration-szJtGa"
+              }
+            },
+            {
+              "name": "gitdir",
+              "pass": true,
+              "duration_ms": 14505,
+              "stdout_sha256": "1b64204b23530215262bfdc97b8fd9216456f2e6ad40642617ead31870cadc3a",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "a6af376568fed8f0a9c7f91810bbdc3f2bc4e379395786f3ef3341a4136e0f45",
+              "driver": "test-478-indirection-qualification.cjs",
+              "subfamilies": [
+                {
+                  "name": "linked-gitdir-concurrency-recovery-integration"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-collaboration-UPq9PP"
+              }
+            },
+            {
+              "name": "submodule",
+              "pass": true,
+              "duration_ms": 15127,
+              "stdout_sha256": "a36018f613d24df37570c47f0684188f4d4ec193c7d7bea5a94681498f8700ef",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "2b150156a37833c2461827b2ceaf7430c3f47a474610233bcc0c10c0711b668a",
+              "driver": "test-478-indirection-qualification.cjs",
+              "subfamilies": [
+                {
+                  "name": "linked-submodule-concurrency-recovery-integration"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-collaboration-bVzKhS"
+              }
+            },
+            {
+              "name": "ownership",
+              "pass": true,
+              "duration_ms": 38246,
+              "stdout_sha256": "736fbe42361e365cfd1ee02143b3c7e86b814788df569c249dbc6f6c516cc7f7",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "35fc1d49e3b855a39be718d7bed5c85cfee23e5239348b6141c8af11c4f2ba6c",
+              "driver": "test-479-installed-ownership.cjs",
+              "subfamilies": [
+                {
+                  "name": "portable-state-and-malformed-transport"
+                },
+                {
+                  "name": "sampled-migration-and-reconciliation-recovery"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-ownership-kd2cEi"
+              }
+            },
+            {
+              "name": "state-admission",
+              "pass": true,
+              "duration_ms": 4908,
+              "stdout_sha256": "2a4d3f1a5336c36ac2128d5fdefe81b02d1d2425f50f2f8b690fa1dc7e51ab1f",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "863c70ed7fcbdbe72301cb7f48e7b864df6c87f2fc48fbf9eb11cd2aa65f6fa6",
+              "driver": "test-479-state-admission.cjs",
+              "subfamilies": [
+                {
+                  "name": "actual-runtime-and-selector-transport"
+                },
+                {
+                  "name": "live-and-ambiguous-recovery-admission"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-ownership-state-yqs7k9"
+              }
+            },
+            {
+              "name": "containment",
+              "pass": true,
+              "duration_ms": 35953,
+              "stdout_sha256": "ec8370681987b26b000c936fa5f2842c1ae0a239380a0e171260bfba494a7ad0",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "fb70fa45d40d011b8079954c89885a224613089b0170a593527cd8cb18c40ec3",
+              "driver": "test-479-installed-containment.cjs",
+              "subfamilies": [
+                {
+                  "name": "bundle-provenance"
+                },
+                {
+                  "name": "source-read-admission"
+                },
+                {
+                  "name": "skill-registry-admission"
+                },
+                {
+                  "name": "snapshot-verification"
+                },
+                {
+                  "name": "snapshot-containment"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; remaining platforms and real read-only filesystem stay open",
+                "Five existing finding families only; not complete fourteen-finding acceptance or independent review",
+                "CLI and MCP consumers; installed ZIP codec used only for synthetic fixture construction/inspection",
+                "Bugs46/47 remain deferred and unresolved; no blocked historical scan context accessed"
+              ]
+            },
+            {
+              "name": "remedies",
+              "pass": true,
+              "duration_ms": 107874,
+              "stdout_sha256": "e645b0d6a8db05a90bbfa2b921ad0f7cc77371f93d931805daec848b6185ebeb",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "ddec6a5aabf7d797d52eb2aa752dcd47e409e3115b13f9a8f8b14116e15691fe",
+              "driver": "test-479-installed-remedies.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/upgrade_approval.test.js",
+                  "counts": {
+                    "tests": 48,
+                    "pass": 48,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 48
+                },
+                {
+                  "name": "commands/init_manifest_ownership.test.js",
+                  "counts": {
+                    "tests": 12,
+                    "pass": 12,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 12
+                },
+                {
+                  "name": "commands/numeric_allocation.test.js",
+                  "counts": {
+                    "tests": 86,
+                    "pass": 86,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 86
+                },
+                {
+                  "name": "commands/loop_seed_safety.test.js",
+                  "counts": {
+                    "tests": 63,
+                    "pass": 63,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 63
+                },
+                {
+                  "name": "commands/loop_seed_budget.test.js",
+                  "counts": {
+                    "tests": 41,
+                    "pass": 41,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 41
+                },
+                {
+                  "name": "commands/archive_payload_ownership.test.js",
+                  "counts": {
+                    "tests": 38,
+                    "pass": 38,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 38
+                },
+                {
+                  "name": "commands/mcp_request_admission.test.js",
+                  "counts": {
+                    "tests": 35,
+                    "pass": 35,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 35
+                },
+                {
+                  "name": "commands/skill_git_metadata.test.js",
+                  "counts": {
+                    "tests": 47,
+                    "pass": 47,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 47
+                },
+                {
+                  "name": "core/sqlite_observation.test.js",
+                  "counts": {
+                    "tests": 61,
+                    "pass": 61,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 61
+                },
+                {
+                  "name": "core/sqlite_memory_observation.test.js",
+                  "counts": {
+                    "tests": 25,
+                    "pass": 25,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 25
+                },
+                {
+                  "name": "transport-admission"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; other platforms and independent acceptance remain open",
+                "Mixed installed CLI and shipped internal-module regressions, not all public CLI tests",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "compatibility",
+              "pass": true,
+              "duration_ms": 49337,
+              "stdout_sha256": "8be8ac0ef24be71da0b6f13a4b429e992d122485b09b8b14f6f9d48366fdb332",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "e7239f51fd2b55dbf4aec90e8e21d711ce949df268d8abd0e0e9b59d7cea72d2",
+              "driver": "test-480-installed-compatibility.cjs",
+              "subfamilies": [
+                {
+                  "name": "cache-freshness"
+                },
+                {
+                  "name": "changed-warnings"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; remaining platform rows stay open",
+                "No canonical graph migration or bundle refresh",
+                "These cases do not complete all Test480 obligations or final release acceptance"
+              ]
+            },
+            {
+              "name": "work",
+              "pass": true,
+              "duration_ms": 45120,
+              "stdout_sha256": "572d5b274ec95df3955122f5569b85ee1fa5bbd8a39f7ba8eda6f3b1635ce775",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "eef175423197a823134a99976c656ab210c3bc13c09b64e2c64ea2a86642f8d9",
+              "driver": "test-480-installed-work-smokes.cjs",
+              "subfamilies": [
+                {},
+                {},
+                {}
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Three existing smokes only, not the complete37-smoke release ladder.",
+                "This Linux execution only; old-client/runtime/platform and independent acceptance remain separate."
+              ]
+            },
+            {
+              "name": "runtime",
+              "pass": true,
+              "duration_ms": 3621,
+              "stdout_sha256": "8350d975ddfae25a912c514c611536cbdef35fb2d26f86ef0248d94a067f977a",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "b33dd9691c8dac176a35a31dc709b1b33003f2b24ae509682e81cae6244001f6",
+              "driver": "test-480-old-client-runtime.cjs",
+              "runtime_rows": [
+                {
+                  "case": "published0.5.2 legacy writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 warm fenced writer refusal",
+                  "command": [
+                    "new",
+                    "task",
+                    "Must refuse",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 warm fenced writer refusal",
+                  "command": [
+                    "task",
+                    "start",
+                    "task-1",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "current warm v2 compatible writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 cold fenced writer refusal",
+                  "command": [
+                    "new",
+                    "task",
+                    "Must refuse",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 cold fenced writer refusal",
+                  "command": [
+                    "task",
+                    "start",
+                    "task-1",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "current cold v2 compatible writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 init bypass",
+                  "exit_code": 0,
+                  "disposition": "UNSUPPORTED OLD EXECUTABLE: manifest writes ignore schema2 admission; not a no-effect safety pass",
+                  "schema_after": 2,
+                  "inventory_changed": true,
+                  "changed_paths": [
+                    ".mdkg/init-manifest.json"
+                  ]
+                },
+                {
+                  "case": "published0.5.2 force-init bypass",
+                  "exit_code": 0,
+                  "disposition": "UNSUPPORTED OLD EXECUTABLE: schema2 fence removed; not a safety pass",
+                  "schema_after": 1,
+                  "inventory_changed": true,
+                  "changed_paths": [
+                    ".mdkg/README.md",
+                    ".mdkg/config.json",
+                    ".mdkg/core/COLLABORATION.md",
+                    ".mdkg/core/HUMAN.md",
+                    ".mdkg/core/SOUL.md",
+                    ".mdkg/core/core.md",
+                    ".mdkg/core/guide.md",
+                    ".mdkg/core/rule-1-mdkg-conventions.md",
+                    ".mdkg/core/rule-2-context-pack-rules.md",
+                    ".mdkg/core/rule-3-cli-contract.md",
+                    ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+                    ".mdkg/core/rule-5-release-and-versioning.md",
+                    ".mdkg/core/rule-6-templates-and-schemas.md",
+                    ".mdkg/init-manifest.json",
+                    ".mdkg/templates/default/work.md",
+                    ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md"
+                  ]
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "d0b9f94a9771bba3c30a54f0aee622fa0bee37be684cc1df6da2d3448606d98d",
+                  "command": [
+                    "init",
+                    "--graph-only"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "d0b9f94a9771bba3c30a54f0aee622fa0bee37be684cc1df6da2d3448606d98d",
+                  "command": [
+                    "index"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "d0b9f94a9771bba3c30a54f0aee622fa0bee37be684cc1df6da2d3448606d98d",
+                  "command": [
+                    "db",
+                    "verify",
+                    "--json"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "d0b9f94a9771bba3c30a54f0aee622fa0bee37be684cc1df6da2d3448606d98d",
+                  "command": [
+                    "mcp",
+                    "serve",
+                    "--stdio"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v24.15.0",
+                  "command": [
+                    "--help"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v24.15.0",
+                  "command": [
+                    "--version"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "08610d90c05cdc75cca04ce4ac58ab865674856e1bda422ffd95c4bd6921cae6",
+                  "command": [
+                    "init",
+                    "--graph-only"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "08610d90c05cdc75cca04ce4ac58ab865674856e1bda422ffd95c4bd6921cae6",
+                  "command": [
+                    "index"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "08610d90c05cdc75cca04ce4ac58ab865674856e1bda422ffd95c4bd6921cae6",
+                  "command": [
+                    "db",
+                    "verify",
+                    "--json"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "08610d90c05cdc75cca04ce4ac58ab865674856e1bda422ffd95c4bd6921cae6",
+                  "command": [
+                    "mcp",
+                    "serve",
+                    "--stdio"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v26.0.0",
+                  "command": [
+                    "--help"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v26.0.0",
+                  "command": [
+                    "--version"
+                  ],
+                  "pass": true
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; Other platform rows remain separately accounted.",
+                "Old init bypass is an observed unsupported behavior, not accepted secure authoring.",
+                "No canonical migration, package changes or global runtime installation."
+              ]
+            },
+            {
+              "name": "behavior",
+              "pass": true,
+              "duration_ms": 87151,
+              "stdout_sha256": "769f20bfbbff6002191183c953bfcdf50f812eda74a7985bd5b9b2badfc0a421",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "5a0ad222947be58d904e781fbe79f1f7ccb4eff3914e64355bb314b8170865a7",
+              "driver": "test-483-installed-behavior.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/pack_identity.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/format_identity.test.js",
+                  "counts": {
+                    "tests": 26,
+                    "pass": 26,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 26
+                },
+                {
+                  "name": "commands/init_identity.test.js",
+                  "counts": {
+                    "tests": 22,
+                    "pass": 22,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 22
+                },
+                {
+                  "name": "graph/identity_migration_lineage.test.js",
+                  "counts": {
+                    "tests": 22,
+                    "pass": 22,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 22
+                },
+                {
+                  "name": "graph/identity_migration_validation.test.js",
+                  "counts": {
+                    "tests": 57,
+                    "pass": 57,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 57
+                },
+                {
+                  "name": "commands/upgrade_identity.test.js",
+                  "counts": {
+                    "tests": 25,
+                    "pass": 25,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 25
+                },
+                {
+                  "name": "commands/cli_output.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                },
+                {
+                  "name": "graph/identity_dependencies.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; Linux/platform and independent acceptance remain open",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "pack-controls",
+              "pass": true,
+              "duration_ms": 1356,
+              "stdout_sha256": "1014500311ecca64a763916efd73780dac81fc4315c97c6cc21853989e8a3772",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "9724f3a32172b26a62087f6cb6ae9dbd766301fe3d71932891c663e7f6f1639b",
+              "driver": "test-483-installed-pack-controls.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/pack.test.js",
+                  "counts": {
+                    "tests": 12,
+                    "pass": 12,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 12
+                },
+                {
+                  "name": "pack/budget.test.js",
+                  "counts": {
+                    "tests": 2,
+                    "pass": 2,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 2
+                },
+                {
+                  "name": "pack/profile.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; Linux/platform and independent acceptance remain open",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "generic",
+              "pass": true,
+              "duration_ms": 4695,
+              "stdout_sha256": "f1af1fd0b172941931bc70aa26c952ba0b6d34181e9c32d3b825fcab8e0c61c3",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "1c14f1ae0a58c1a9ff46f649254a4e6a0a06aeded5f2b5cdc5b76cfd3d8a1463",
+              "driver": "test-484-installed-generic.cjs",
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; remaining platform and full package-parity gates stay open",
+                "Synthetic historical-shaped imported bundle; not recovered public evidence",
+                "Structural local contracts do not prove consumer adoption or external execution",
+                "No blocked historical scan context, remote Git or publication"
+              ]
+            },
+            {
+              "name": "options",
+              "pass": true,
+              "duration_ms": 31980,
+              "stdout_sha256": "32d0cc38cd59660bd58f8f04dcde4e9ac311c7b380b22b57e7a9db4d25709b4c",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "1330c84d535daadfff26e463394c7f1aa2e215015a7158219115ba5dcf4bf12d",
+              "driver": "test-486-linux-options.cjs",
+              "subfamilies": [
+                {}
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Existing command-matrix smoke, not the complete37-smoke release ladder.",
+                "This Linux execution only; old-client/runtime/platform and independent acceptance remain separate."
+              ]
+            },
+            {
+              "name": "readonly",
+              "pass": true,
+              "duration_ms": 3841,
+              "stdout_sha256": "c12d0806ebd5e2c8fa55b4043401ab201fb8382086f182bb8ee0d08647e750e7",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "95929d5e38d9a5c1e9a159aa4da75bccd6c9375f3ee72ab73590e3b34ecac22c",
+              "driver": "test-487-docker-readonly.cjs",
+              "readonly_cases": 46,
+              "all_readonly_controls_pass": true,
+              "limits": [
+                "Warm/fresh JSON and SQLite indexes on a read-only filesystem; this does not establish the cold-cache/read-only cross-product",
+                "Not a fix for deferred Bugs46/47; image/volume and native/emulated identities are in outer receipt"
+              ]
+            },
+            {
+              "name": "capability-umask",
+              "pass": true,
+              "duration_ms": 1348,
+              "stdout_sha256": "3c6181a231d49d0eecd9dc41b3efdcd68f7c5950554e9af50c722ed0754ea535",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "b082732f5f47b644269ad95755f555d4173eb109f3759411fe56d90140b7da7a",
+              "driver": "test-487-installed-capability-umask.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/node_runtime_admission.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                },
+                {
+                  "name": "commands/pack_output_containment.test.js",
+                  "counts": {
+                    "tests": 20,
+                    "pass": 20,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 20
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; Linux/platform and independent acceptance remain open",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Existing umask022/private-mode controls only; no general ACL/owner preservation claim",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "current-audit",
+              "pass": true,
+              "duration_ms": 83930,
+              "stdout_sha256": "1ee72cf33635af5b57be47f99fed14babe275010a3210f001e822dca761d636c",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "7904aa2d3727039f106efb5bc3b613c06bcd92a9e372165041f056a58706bca9",
+              "driver": "test-491-installed-current-audit.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/bundle_archive_visibility.test.js",
+                  "counts": {
+                    "tests": 7,
+                    "pass": 7,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 7
+                },
+                {
+                  "name": "graph/cache_git_metadata.test.js",
+                  "counts": {
+                    "tests": 18,
+                    "pass": 18,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 18
+                },
+                {
+                  "name": "commands/skill_git_metadata.test.js",
+                  "counts": {
+                    "tests": 47,
+                    "pass": 47,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 47
+                },
+                {
+                  "name": "core/filesystem_authority.test.js",
+                  "counts": {
+                    "tests": 14,
+                    "pass": 14,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 14
+                },
+                {
+                  "name": "commands/task_event.test.js",
+                  "counts": {
+                    "tests": 2,
+                    "pass": 2,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 2
+                },
+                {
+                  "name": "graph/frontmatter.test.js",
+                  "counts": {
+                    "tests": 6,
+                    "pass": 6,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 6
+                },
+                {
+                  "name": "commands/format_identity.test.js",
+                  "counts": {
+                    "tests": 26,
+                    "pass": 26,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 26
+                },
+                {
+                  "name": "graph/identity_migration.test.js",
+                  "counts": {
+                    "tests": 18,
+                    "pass": 18,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 18
+                },
+                {
+                  "name": "graph/identity_reconcile.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/diagnostic_containment.test.js",
+                  "counts": {
+                    "tests": 16,
+                    "pass": 16,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 16
+                },
+                {
+                  "name": "util/legacy_id_rewrite.test.js",
+                  "counts": {
+                    "tests": 1,
+                    "pass": 1,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 1
+                },
+                {
+                  "name": "commands/fix.test.js",
+                  "counts": {
+                    "tests": 30,
+                    "pass": 30,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 30
+                },
+                {
+                  "name": "graph/capabilities_indexer.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/subgraph.test.js",
+                  "counts": {
+                    "tests": 21,
+                    "pass": 21,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 21
+                },
+                {
+                  "name": "commands/command_contract.test.js",
+                  "counts": {
+                    "tests": 3,
+                    "pass": 3,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 3
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This recorded runtime/platform only; independent acceptance and other platform rows remain separate",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Selected contract tests exercise shipped metadata and effects; repository-only generator tests remain full-suite evidence",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "final-remedies",
+              "pass": true,
+              "duration_ms": 33696,
+              "stdout_sha256": "9ec9c24025d145d885e5aaf15837de34b4cdfaf4df582699df9d370ea88dfe44",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "e37a256bba8e49c355c983ac6c26e56e2d122deb615b1f08d510303cb0d6be04",
+              "driver": "test-493-installed-final-remedies.cjs",
+              "subfamilies": [
+                {
+                  "name": "skill-registry-admission",
+                  "pass": true,
+                  "cases": 29
+                },
+                {
+                  "name": "native-git-custody",
+                  "pass": true,
+                  "cases": 21
+                },
+                {
+                  "name": "bundle-provenance",
+                  "pass": true,
+                  "cases": 57
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Actual recorded platform/runtime only; full release and independent source review are separate",
+                "Fixture adapters are read-only inputs; no canonical graph, DB, Git or providers touched",
+                "Bugs46/47 remain deferred and unresolved"
+              ]
+            }
+          ]
+        },
+        {
+          "receipt_path": "/private/tmp/mdkg-docker-g86-wrIHMU/arm64-scale-results/receipt.json",
+          "receipt_sha256": "74f8771121fcdb16c15a9e0c428348d16cbe4b68a42920f79739ab61857a15ba",
+          "pass": true,
+          "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+          "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+          "capsule_manifest_sha256": "449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+          "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+          "environment": {
+            "platform": "linux",
+            "arch": "arm64",
+            "node": "v24.18.0",
+            "uid": 10001,
+            "kernel": "6.12.76-linuxkit",
+            "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+            "git": "git version 2.43.0",
+            "npm": "11.16.0",
+            "root_filesystem": "overlay overlay ro,relatime,lowerdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3184/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3169/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3168/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2899/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2898/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2897/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2896/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2895/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2873/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2872/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2871/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2870/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2713/fs,upperdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3185/fs,workdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3185/work",
+            "fixture_filesystem": "/dev/vda1[/docker/volumes/mdkg-g86-successor-arm64-scale-wrihmu/_data] ext4   rw,relatime,discard",
+            "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+            "native_or_emulated": "native ARM64 Linux on ARM64 host"
+          },
+          "started_at": "2026-09-30T19:00:36.754Z",
+          "completed_at": "2026-09-30T19:09:31.435Z",
+          "families": [
+            {
+              "name": "scale",
+              "pass": true,
+              "duration_ms": 534520,
+              "stdout_sha256": "c108f1c72a8955b63b1ed3abe671384245853539ec4a5190af2092b0a90be826",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "12a602b88ce88aec47ff2e99f0533d2b49450c267a69ac21ff7b4d6bedbc5a9c",
+              "driver": "test-481-installed-scale.cjs",
+              "proof_sha256": "0bfb0e735b362a91de8ad80551284aee88a3dd852616b0a58245d5569200da52",
+              "proof_keys": [
+                "schema_version",
+                "runtime",
+                "command_timeout_ms",
+                "scale_backends",
+                "installed_cli_sha256",
+                "cases",
+                "commands",
+                "fixtures_removed",
+                "limitations"
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; remaining platform rows stay open",
+                "No canonical graph migration or publication",
+                "Qualification allowance is not a new product performance target"
+              ]
+            }
+          ]
+        }
+      ],
+      "extra_evidence": [],
+      "required_family_count": 20,
+      "passed_family_count": 20,
+      "missing_families": [],
+      "state": "passed-current"
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "execution": "emulated x86_64 Linux on ARM64 host; no native performance claim",
+      "evidence": [
+        {
+          "receipt_path": "/private/tmp/mdkg-docker-g86-wrIHMU/amd64-scale-results/receipt.json",
+          "receipt_sha256": "cd0c451d8c2da5135575418a81e36ef035daed8362d0aaf64d4ff767ecd41c66",
+          "pass": true,
+          "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+          "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+          "capsule_manifest_sha256": "449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+          "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+          "environment": {
+            "platform": "linux",
+            "arch": "x64",
+            "node": "v24.18.0",
+            "uid": 10001,
+            "kernel": "6.12.76-linuxkit",
+            "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+            "git": "git version 2.43.0",
+            "npm": "11.16.0",
+            "root_filesystem": "overlay overlay ro,relatime,lowerdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3180/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3178/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3175/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2921/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2920/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2919/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2918/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2917/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2916/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2915/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2914/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2913/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/1821/fs,upperdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3183/fs,workdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3183/work",
+            "fixture_filesystem": "/dev/vda1[/docker/volumes/mdkg-g86-successor-amd64-scale-wrihmu/_data] ext4   rw,relatime,discard",
+            "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+            "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+          },
+          "started_at": "2026-09-30T18:54:39.991Z",
+          "completed_at": "2026-09-30T19:19:45.423Z",
+          "families": [
+            {
+              "name": "scale",
+              "pass": true,
+              "duration_ms": 1504550,
+              "stdout_sha256": "f4131d85494991de5ff64928cb40f1d70f9bde0be9e7c2051f59c896b8adcd84",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "a594f30ba1cbfb9ae79a036aa35e917273aadc8bb41ab49d90154761fca939a3",
+              "driver": "test-481-installed-scale.cjs",
+              "proof_sha256": "cf905da6f7a74ce7a578a4ec70b257695a74c45a4ea79009e6489fbd73d5bd98",
+              "proof_keys": [
+                "schema_version",
+                "runtime",
+                "command_timeout_ms",
+                "scale_backends",
+                "installed_cli_sha256",
+                "cases",
+                "commands",
+                "fixtures_removed",
+                "limitations"
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; remaining platform rows stay open",
+                "No canonical graph migration or publication",
+                "Qualification allowance is not a new product performance target"
+              ]
+            }
+          ]
+        },
+        {
+          "receipt_path": "/private/tmp/mdkg-docker-g86-wrIHMU/amd64-topology-results/receipt.json",
+          "receipt_sha256": "4b94c95d6b9a9cb1ae65cc76682ecfbe4a32ae49da6cc8abd3da3541c64a0771",
+          "pass": true,
+          "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+          "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+          "capsule_manifest_sha256": "449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+          "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+          "environment": {
+            "platform": "linux",
+            "arch": "x64",
+            "node": "v24.18.0",
+            "uid": 10001,
+            "kernel": "6.12.76-linuxkit",
+            "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+            "git": "git version 2.43.0",
+            "npm": "11.16.0",
+            "root_filesystem": "overlay overlay ro,relatime,lowerdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3186/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3178/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3175/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2921/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2920/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2919/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2918/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2917/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2916/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2915/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2914/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2913/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/1821/fs,upperdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3187/fs,workdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3187/work",
+            "fixture_filesystem": "/dev/vda1[/docker/volumes/mdkg-g86-successor-amd64-topology-wrihmu/_data] ext4   rw,relatime,discard",
+            "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+            "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+          },
+          "started_at": "2026-09-30T19:20:32.431Z",
+          "completed_at": "2026-09-30T19:42:24.755Z",
+          "families": [
+            {
+              "name": "gitdir",
+              "pass": true,
+              "duration_ms": 204308,
+              "stdout_sha256": "1c5995e59c3691f2236596535bedbb79448bf588bb7e191cdfb3e8b6bdf382de",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "ee97efd08767f9100190b45261af7af03d4a16f03872abb09dba4f052078d09f",
+              "driver": "test-478-indirection-qualification.cjs",
+              "subfamilies": [
+                {
+                  "name": "linked-gitdir-concurrency-recovery-integration"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-collaboration-Ctjanj"
+              }
+            },
+            {
+              "name": "submodule",
+              "pass": true,
+              "duration_ms": 230067,
+              "stdout_sha256": "32113d7b32dc5a122eb743387518569964b6cc1df27b6a154daa88f08aea3f57",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "516e9a2264371b010453e07c34d48a44c662962d0eb7926b206d453da4fadb99",
+              "driver": "test-478-indirection-qualification.cjs",
+              "subfamilies": [
+                {
+                  "name": "linked-submodule-concurrency-recovery-integration"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-collaboration-j55pDe"
+              }
+            },
+            {
+              "name": "ownership",
+              "pass": true,
+              "duration_ms": 564104,
+              "stdout_sha256": "fc22d94ebcae1df3d161c06051cc384e2d3e0461e8bde0aa2a30e19181b30593",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "39ed87ba75df828e4686a0c359af4d6e41dbe7b00a39d390d9d475ff9f0507f6",
+              "driver": "test-479-installed-ownership.cjs",
+              "subfamilies": [
+                {
+                  "name": "portable-state-and-malformed-transport"
+                },
+                {
+                  "name": "sampled-migration-and-reconciliation-recovery"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-ownership-EtJwhA"
+              }
+            },
+            {
+              "name": "state-admission",
+              "pass": true,
+              "duration_ms": 29138,
+              "stdout_sha256": "0c438bf3595d6f7d9027928d46804ad6d18ba795c19dc7d8a856c28e09fe365b",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "dce9e099f4d205ff83bc4307a67817e19a7ac2ba99862aba6752cdba51a32feb",
+              "driver": "test-479-state-admission.cjs",
+              "subfamilies": [
+                {
+                  "name": "actual-runtime-and-selector-transport"
+                },
+                {
+                  "name": "live-and-ambiguous-recovery-admission"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "root": "/private/tmp/mdkg-ownership-state-SuXfPK"
+              }
+            },
+            {
+              "name": "containment",
+              "pass": true,
+              "duration_ms": 258096,
+              "stdout_sha256": "2c7d2481e111dba0b114d77e5b039b74c1b47f5eb7fd9564433dd923dcb2afde",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "21b06dca862fe3ea1d5df6deccd6a5432045225549540d54c304348f5c6b6a0a",
+              "driver": "test-479-installed-containment.cjs",
+              "subfamilies": [
+                {
+                  "name": "bundle-provenance"
+                },
+                {
+                  "name": "source-read-admission"
+                },
+                {
+                  "name": "skill-registry-admission"
+                },
+                {
+                  "name": "snapshot-verification"
+                },
+                {
+                  "name": "snapshot-containment"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; remaining platforms and real read-only filesystem stay open",
+                "Five existing finding families only; not complete fourteen-finding acceptance or independent review",
+                "CLI and MCP consumers; installed ZIP codec used only for synthetic fixture construction/inspection",
+                "Bugs46/47 remain deferred and unresolved; no blocked historical scan context accessed"
+              ]
+            },
+            {
+              "name": "readonly",
+              "pass": true,
+              "duration_ms": 20877,
+              "stdout_sha256": "3b077569d9f8bf9241c2e4f669b879183617e3bb3d8ed7cae612093d3db33023",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "3dab39311cd9c2c7a64e2be1f9a194249daf31028f9174906998f8f733617bda",
+              "driver": "test-487-docker-readonly.cjs",
+              "readonly_cases": 46,
+              "all_readonly_controls_pass": true,
+              "limits": [
+                "Warm/fresh JSON and SQLite indexes on a read-only filesystem; this does not establish the cold-cache/read-only cross-product",
+                "Not a fix for deferred Bugs46/47; image/volume and native/emulated identities are in outer receipt"
+              ]
+            },
+            {
+              "name": "capability-umask",
+              "pass": true,
+              "duration_ms": 4450,
+              "stdout_sha256": "ee4efcc844fd2b72c95f4fcf4610b235748134960473586bed078b7308b5387f",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "bd5c5f209647adb410ea2c56edc7499258fd630340a779ff8d2e71f0ef82d445",
+              "driver": "test-487-installed-capability-umask.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/node_runtime_admission.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                },
+                {
+                  "name": "commands/pack_output_containment.test.js",
+                  "counts": {
+                    "tests": 20,
+                    "pass": 20,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 20
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; Linux/platform and independent acceptance remain open",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Existing umask022/private-mode controls only; no general ACL/owner preservation claim",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            }
+          ]
+        },
+        {
+          "receipt_path": "/private/tmp/mdkg-docker-g86-wrIHMU/amd64-compat-results/receipt.json",
+          "receipt_sha256": "7a8fd8429b3295d1abacfb4248ed2864d0f1bbb1ff4d6f06549a72b43992ae83",
+          "pass": true,
+          "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+          "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+          "capsule_manifest_sha256": "449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+          "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+          "environment": {
+            "platform": "linux",
+            "arch": "x64",
+            "node": "v24.18.0",
+            "uid": 10001,
+            "kernel": "6.12.76-linuxkit",
+            "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+            "git": "git version 2.43.0",
+            "npm": "11.16.0",
+            "root_filesystem": "overlay overlay ro,relatime,lowerdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3190/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3178/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3175/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2921/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2920/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2919/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2918/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2917/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2916/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2915/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2914/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2913/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/1821/fs,upperdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3191/fs,workdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3191/work",
+            "fixture_filesystem": "/dev/vda1[/docker/volumes/mdkg-g86-successor-amd64-compat-wrihmu/_data] ext4   rw,relatime,discard",
+            "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+            "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+          },
+          "started_at": "2026-09-30T19:20:32.727Z",
+          "completed_at": "2026-09-30T19:40:30.119Z",
+          "families": [
+            {
+              "name": "compatibility",
+              "pass": true,
+              "duration_ms": 416502,
+              "stdout_sha256": "29953c9043b20cc5d74b9c6a575ffed308b5c0037e3fbc88c9db39023588f18d",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "097e9ae5c2ffbe5d6650d8923acee358619e16cbf394e3f908d56b110d29cb05",
+              "driver": "test-480-installed-compatibility.cjs",
+              "subfamilies": [
+                {
+                  "name": "cache-freshness"
+                },
+                {
+                  "name": "changed-warnings"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; remaining platform rows stay open",
+                "No canonical graph migration or bundle refresh",
+                "These cases do not complete all Test480 obligations or final release acceptance"
+              ]
+            },
+            {
+              "name": "work",
+              "pass": true,
+              "duration_ms": 330565,
+              "stdout_sha256": "347ea472aa59ad1244b080ffca11680e64b5a542611694cd34208765e7a41d2f",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "a9fe1ff04902602b270c525b73079347ec75c02fa6e1df4ec92c7e26a10eeba3",
+              "driver": "test-480-installed-work-smokes.cjs",
+              "subfamilies": [
+                {},
+                {},
+                {}
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Three existing smokes only, not the complete37-smoke release ladder.",
+                "This Linux execution only; old-client/runtime/platform and independent acceptance remain separate."
+              ]
+            },
+            {
+              "name": "runtime",
+              "pass": true,
+              "duration_ms": 20438,
+              "stdout_sha256": "f429ec3dd79160ade1576ca8fc43b4f90f5bc70d4337938c999774d13105ac98",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "633d5cf48231526efe8e23f0991b9f5c28ab55521a75bceb36d05f253bc58554",
+              "driver": "test-480-old-client-runtime.cjs",
+              "runtime_rows": [
+                {
+                  "case": "published0.5.2 legacy writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 warm fenced writer refusal",
+                  "command": [
+                    "new",
+                    "task",
+                    "Must refuse",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 warm fenced writer refusal",
+                  "command": [
+                    "task",
+                    "start",
+                    "task-1",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "current warm v2 compatible writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 cold fenced writer refusal",
+                  "command": [
+                    "new",
+                    "task",
+                    "Must refuse",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 cold fenced writer refusal",
+                  "command": [
+                    "task",
+                    "start",
+                    "task-1",
+                    "--json"
+                  ],
+                  "exit_code": 4,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "current cold v2 compatible writer positive",
+                  "pass": true
+                },
+                {
+                  "case": "published0.5.2 init bypass",
+                  "exit_code": 0,
+                  "disposition": "UNSUPPORTED OLD EXECUTABLE: manifest writes ignore schema2 admission; not a no-effect safety pass",
+                  "schema_after": 2,
+                  "inventory_changed": true,
+                  "changed_paths": [
+                    ".mdkg/init-manifest.json"
+                  ]
+                },
+                {
+                  "case": "published0.5.2 force-init bypass",
+                  "exit_code": 0,
+                  "disposition": "UNSUPPORTED OLD EXECUTABLE: schema2 fence removed; not a safety pass",
+                  "schema_after": 1,
+                  "inventory_changed": true,
+                  "changed_paths": [
+                    ".mdkg/README.md",
+                    ".mdkg/config.json",
+                    ".mdkg/core/COLLABORATION.md",
+                    ".mdkg/core/HUMAN.md",
+                    ".mdkg/core/SOUL.md",
+                    ".mdkg/core/core.md",
+                    ".mdkg/core/guide.md",
+                    ".mdkg/core/rule-1-mdkg-conventions.md",
+                    ".mdkg/core/rule-2-context-pack-rules.md",
+                    ".mdkg/core/rule-3-cli-contract.md",
+                    ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+                    ".mdkg/core/rule-5-release-and-versioning.md",
+                    ".mdkg/core/rule-6-templates-and-schemas.md",
+                    ".mdkg/init-manifest.json",
+                    ".mdkg/templates/default/work.md",
+                    ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md"
+                  ]
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "d1de76d8edf2fededf6f8b30d244e2c0529ac607923a018283b77e9c74bd932c",
+                  "command": [
+                    "init",
+                    "--graph-only"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "d1de76d8edf2fededf6f8b30d244e2c0529ac607923a018283b77e9c74bd932c",
+                  "command": [
+                    "index"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "d1de76d8edf2fededf6f8b30d244e2c0529ac607923a018283b77e9c74bd932c",
+                  "command": [
+                    "db",
+                    "verify",
+                    "--json"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v24.15.0",
+                  "binary_sha256": "d1de76d8edf2fededf6f8b30d244e2c0529ac607923a018283b77e9c74bd932c",
+                  "command": [
+                    "mcp",
+                    "serve",
+                    "--stdio"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v24.15.0",
+                  "command": [
+                    "--help"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v24.15.0",
+                  "command": [
+                    "--version"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "a3269c1d31b923e5b63d2dd3664ef5332ac848771460c63af441db6a3f053ead",
+                  "command": [
+                    "init",
+                    "--graph-only"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "a3269c1d31b923e5b63d2dd3664ef5332ac848771460c63af441db6a3f053ead",
+                  "command": [
+                    "index"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "a3269c1d31b923e5b63d2dd3664ef5332ac848771460c63af441db6a3f053ead",
+                  "command": [
+                    "db",
+                    "verify",
+                    "--json"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "actual unsupported runtime refuses",
+                  "runtime": "v26.0.0",
+                  "binary_sha256": "a3269c1d31b923e5b63d2dd3664ef5332ac848771460c63af441db6a3f053ead",
+                  "command": [
+                    "mcp",
+                    "serve",
+                    "--stdio"
+                  ],
+                  "exit_code": 2,
+                  "inventory_unchanged": true,
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v26.0.0",
+                  "command": [
+                    "--help"
+                  ],
+                  "pass": true
+                },
+                {
+                  "case": "unsupported runtime discovery positive",
+                  "runtime": "v26.0.0",
+                  "command": [
+                    "--version"
+                  ],
+                  "pass": true
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; Other platform rows remain separately accounted.",
+                "Old init bypass is an observed unsupported behavior, not accepted secure authoring.",
+                "No canonical migration, package changes or global runtime installation."
+              ]
+            },
+            {
+              "name": "behavior",
+              "pass": true,
+              "duration_ms": 403416,
+              "stdout_sha256": "325b4b6e1b7d45263f4542b624db699792c7f39bb8f220684b89652128bde07f",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "8f08f992c6bc9d2b039d051ce4a0f735b4cf65ca00dc3f1f56b23f8723b000f4",
+              "driver": "test-483-installed-behavior.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/pack_identity.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/format_identity.test.js",
+                  "counts": {
+                    "tests": 26,
+                    "pass": 26,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 26
+                },
+                {
+                  "name": "commands/init_identity.test.js",
+                  "counts": {
+                    "tests": 22,
+                    "pass": 22,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 22
+                },
+                {
+                  "name": "graph/identity_migration_lineage.test.js",
+                  "counts": {
+                    "tests": 22,
+                    "pass": 22,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 22
+                },
+                {
+                  "name": "graph/identity_migration_validation.test.js",
+                  "counts": {
+                    "tests": 57,
+                    "pass": 57,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 57
+                },
+                {
+                  "name": "commands/upgrade_identity.test.js",
+                  "counts": {
+                    "tests": 25,
+                    "pass": 25,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 25
+                },
+                {
+                  "name": "commands/cli_output.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                },
+                {
+                  "name": "graph/identity_dependencies.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; Linux/platform and independent acceptance remain open",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "pack-controls",
+              "pass": true,
+              "duration_ms": 4810,
+              "stdout_sha256": "5761e273f371c39c206ffb987b6c6e25b288d88abda9a8e366389e8a1e714830",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "b8cc8cafb1d1244649cb1bc10d8a3514337d1b26768185e73d61170a14930fa8",
+              "driver": "test-483-installed-pack-controls.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/pack.test.js",
+                  "counts": {
+                    "tests": 12,
+                    "pass": 12,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 12
+                },
+                {
+                  "name": "pack/budget.test.js",
+                  "counts": {
+                    "tests": 2,
+                    "pass": 2,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 2
+                },
+                {
+                  "name": "pack/profile.test.js",
+                  "counts": {
+                    "tests": 8,
+                    "pass": 8,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 8
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; Linux/platform and independent acceptance remain open",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "generic",
+              "pass": true,
+              "duration_ms": 20479,
+              "stdout_sha256": "209aca904c722c52761189ac856fb895eadbdd5c10acc58c599dc6086d5fe0aa",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "f8310b13f82ad600fab9048f05fb2fa6a42d4663ebae0abf8cf6c0bf80089224",
+              "driver": "test-484-installed-generic.cjs",
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; remaining platform and full package-parity gates stay open",
+                "Synthetic historical-shaped imported bundle; not recovered public evidence",
+                "Structural local contracts do not prove consumer adoption or external execution",
+                "No blocked historical scan context, remote Git or publication"
+              ]
+            }
+          ]
+        },
+        {
+          "receipt_path": "/private/tmp/mdkg-docker-g86-wrIHMU/amd64-security-results/receipt.json",
+          "receipt_sha256": "6c74b2655aa93a838baeb820e7483e6ff753c1ce525a6c20d5a722ab3d33155d",
+          "pass": true,
+          "source_revision": "b10870355b264355af2be4fc53bb4640851f747b",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+          "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+          "capsule_manifest_sha256": "449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+          "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+          "environment": {
+            "platform": "linux",
+            "arch": "x64",
+            "node": "v24.18.0",
+            "uid": 10001,
+            "kernel": "6.12.76-linuxkit",
+            "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+            "git": "git version 2.43.0",
+            "npm": "11.16.0",
+            "root_filesystem": "overlay overlay ro,relatime,lowerdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3188/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3178/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3175/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2921/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2920/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2919/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2918/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2917/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2916/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2915/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2914/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/2913/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/1821/fs,upperdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3189/fs,workdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/3189/work",
+            "fixture_filesystem": "/dev/vda1[/docker/volumes/mdkg-g86-successor-amd64-security-wrihmu/_data] ext4   rw,relatime,discard",
+            "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+            "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+          },
+          "started_at": "2026-09-30T19:20:32.577Z",
+          "completed_at": "2026-09-30T19:48:33.365Z",
+          "families": [
+            {
+              "name": "remedies",
+              "pass": true,
+              "duration_ms": 919339,
+              "stdout_sha256": "673748c04af8654804bb4197e6c5cfa2c191919213d0eeb944322e84c0d54796",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "98473cd0707a6ed5d8aeffcbc2f61e56a14e5ea0ec8ed0cc25fcdb604c3d626c",
+              "driver": "test-479-installed-remedies.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/upgrade_approval.test.js",
+                  "counts": {
+                    "tests": 48,
+                    "pass": 48,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 48
+                },
+                {
+                  "name": "commands/init_manifest_ownership.test.js",
+                  "counts": {
+                    "tests": 12,
+                    "pass": 12,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 12
+                },
+                {
+                  "name": "commands/numeric_allocation.test.js",
+                  "counts": {
+                    "tests": 86,
+                    "pass": 86,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 86
+                },
+                {
+                  "name": "commands/loop_seed_safety.test.js",
+                  "counts": {
+                    "tests": 63,
+                    "pass": 63,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 63
+                },
+                {
+                  "name": "commands/loop_seed_budget.test.js",
+                  "counts": {
+                    "tests": 41,
+                    "pass": 41,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 41
+                },
+                {
+                  "name": "commands/archive_payload_ownership.test.js",
+                  "counts": {
+                    "tests": 38,
+                    "pass": 38,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 38
+                },
+                {
+                  "name": "commands/mcp_request_admission.test.js",
+                  "counts": {
+                    "tests": 35,
+                    "pass": 35,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 35
+                },
+                {
+                  "name": "commands/skill_git_metadata.test.js",
+                  "counts": {
+                    "tests": 47,
+                    "pass": 47,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 47
+                },
+                {
+                  "name": "core/sqlite_observation.test.js",
+                  "counts": {
+                    "tests": 61,
+                    "pass": 61,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 61
+                },
+                {
+                  "name": "core/sqlite_memory_observation.test.js",
+                  "counts": {
+                    "tests": 25,
+                    "pass": 25,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 25
+                },
+                {
+                  "name": "transport-admission"
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This Linux execution only; other platforms and independent acceptance remain open",
+                "Mixed installed CLI and shipped internal-module regressions, not all public CLI tests",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "options",
+              "pass": true,
+              "duration_ms": 203575,
+              "stdout_sha256": "15ddee728cfe8bd19fd365e8f09b3febd4b38e0c3305d9e82adfa09074927fcd",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "a5861806c615a0f66147895e124979351a4aa57e7b2c11965ccadafd2f47b12c",
+              "driver": "test-486-linux-options.cjs",
+              "subfamilies": [
+                {}
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Existing command-matrix smoke, not the complete37-smoke release ladder.",
+                "This Linux execution only; old-client/runtime/platform and independent acceptance remain separate."
+              ]
+            },
+            {
+              "name": "current-audit",
+              "pass": true,
+              "duration_ms": 392941,
+              "stdout_sha256": "90e872bb6da541450c1e187010bbe45afb85880a529b2a28a84088ea8be3a30a",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "e175ba6dfb5e18d14afbcc65e5ac83a909346f07847c0763df629a44f7f7f8a4",
+              "driver": "test-491-installed-current-audit.cjs",
+              "subfamilies": [
+                {
+                  "name": "commands/bundle_archive_visibility.test.js",
+                  "counts": {
+                    "tests": 7,
+                    "pass": 7,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 7
+                },
+                {
+                  "name": "graph/cache_git_metadata.test.js",
+                  "counts": {
+                    "tests": 18,
+                    "pass": 18,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 18
+                },
+                {
+                  "name": "commands/skill_git_metadata.test.js",
+                  "counts": {
+                    "tests": 47,
+                    "pass": 47,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 47
+                },
+                {
+                  "name": "core/filesystem_authority.test.js",
+                  "counts": {
+                    "tests": 14,
+                    "pass": 14,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 14
+                },
+                {
+                  "name": "commands/task_event.test.js",
+                  "counts": {
+                    "tests": 2,
+                    "pass": 2,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 2
+                },
+                {
+                  "name": "graph/frontmatter.test.js",
+                  "counts": {
+                    "tests": 6,
+                    "pass": 6,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 6
+                },
+                {
+                  "name": "commands/format_identity.test.js",
+                  "counts": {
+                    "tests": 26,
+                    "pass": 26,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 26
+                },
+                {
+                  "name": "graph/identity_migration.test.js",
+                  "counts": {
+                    "tests": 18,
+                    "pass": 18,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 18
+                },
+                {
+                  "name": "graph/identity_reconcile.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/diagnostic_containment.test.js",
+                  "counts": {
+                    "tests": 16,
+                    "pass": 16,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 16
+                },
+                {
+                  "name": "util/legacy_id_rewrite.test.js",
+                  "counts": {
+                    "tests": 1,
+                    "pass": 1,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 1
+                },
+                {
+                  "name": "commands/fix.test.js",
+                  "counts": {
+                    "tests": 30,
+                    "pass": 30,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 30
+                },
+                {
+                  "name": "graph/capabilities_indexer.test.js",
+                  "counts": {
+                    "tests": 10,
+                    "pass": 10,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 10
+                },
+                {
+                  "name": "commands/subgraph.test.js",
+                  "counts": {
+                    "tests": 21,
+                    "pass": 21,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 21
+                },
+                {
+                  "name": "commands/command_contract.test.js",
+                  "counts": {
+                    "tests": 3,
+                    "pass": 3,
+                    "fail": 0,
+                    "cancelled": 0,
+                    "skipped": 0,
+                    "todo": 0
+                  },
+                  "cases": 3
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "This recorded runtime/platform only; independent acceptance and other platform rows remain separate",
+                "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+                "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+                "Selected contract tests exercise shipped metadata and effects; repository-only generator tests remain full-suite evidence",
+                "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+              ]
+            },
+            {
+              "name": "final-remedies",
+              "pass": true,
+              "duration_ms": 163939,
+              "stdout_sha256": "09841495114c3e81307fc30808864e9d7f3e96eb7091dc7daa08934e9c9ece68",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "receipt_sha256": "6dba9b5e95983a954987a41302b9de9d226b3a6fec4da043b6381801e0aad6eb",
+              "driver": "test-493-installed-final-remedies.cjs",
+              "subfamilies": [
+                {
+                  "name": "skill-registry-admission",
+                  "pass": true,
+                  "cases": 29
+                },
+                {
+                  "name": "native-git-custody",
+                  "pass": true,
+                  "cases": 21
+                },
+                {
+                  "name": "bundle-provenance",
+                  "pass": true,
+                  "cases": 57
+                }
+              ],
+              "cleanup": {
+                "removed": true,
+                "owned_fixture_only": true
+              },
+              "limits": [
+                "Actual recorded platform/runtime only; full release and independent source review are separate",
+                "Fixture adapters are read-only inputs; no canonical graph, DB, Git or providers touched",
+                "Bugs46/47 remain deferred and unresolved"
+              ]
+            }
+          ]
+        }
+      ],
+      "extra_evidence": [
+        {
+          "family": "bootstrap",
+          "path": ".mdkg/artifacts/goal-86/successor-amd64-partial-reuse-20260930.json",
+          "name": "bootstrap",
+          "stdout_sha256": "016762f16cb654cf06ba35ed97e906df1ea7fa5a54f6ef4aa9dc18f3e5b0fa45",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "receipt_sha256": "0bb9555adb3f2dea31e48009b6884faf5f83b325980e20d6ae9354ea3c2732de",
+          "receipt_keys": [
+            "kind",
+            "started_at",
+            "runtime",
+            "platform",
+            "architecture",
+            "candidate",
+            "runner_sha256",
+            "source_inputs",
+            "pack",
+            "baseline",
+            "completed",
+            "deliveries",
+            "consumptions",
+            "baselines",
+            "source_inputs_unchanged",
+            "cleanup",
+            "final_artifact_qualification"
+          ],
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "x64",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "completed_count": 2,
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-bootstrap-qualification-1JdrCO"
+          },
+          "pass": true,
+          "observed_supervisor_marker": {
+            "event": "family-finished",
+            "name": "bootstrap",
+            "arch": "x64",
+            "pass": true,
+            "duration_ms": 149677
+          },
+          "basis": "Actual outer runner emitted family-finished pass=true only after exit0/no signal, parsed receipt, persisted stdout/stderr, and complete capsule-after hash/mode verification."
+        },
+        {
+          "family": "collaboration",
+          "path": ".mdkg/artifacts/goal-86/successor-amd64-partial-reuse-20260930.json",
+          "name": "collaboration",
+          "stdout_sha256": "1e1134c72187507deb7903c0d82b6b5ba2b9402f4e0ee559e1c9e19af4a4b19b",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "receipt_sha256": "cb76e3cc2756e6d7841c3a7b2afafa6f2f9198c116862bc59e23d2804cffada7",
+          "receipt_keys": [
+            "kind",
+            "started_at",
+            "runtime",
+            "platform",
+            "arch",
+            "candidate_sha256",
+            "input_capture_sha256",
+            "source_inputs_sha256",
+            "selected_family",
+            "drivers",
+            "completed",
+            "cleanup",
+            "final_artifact_pass"
+          ],
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "x64",
+          "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+          "completed_count": 3,
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-collaboration-gTwbZo"
+          },
+          "pass": true,
+          "observed_supervisor_marker": {
+            "event": "family-finished",
+            "name": "collaboration",
+            "arch": "x64",
+            "pass": true,
+            "duration_ms": 1146784
+          },
+          "basis": "Actual outer runner emitted family-finished pass=true only after exit0/no signal, parsed receipt, persisted stdout/stderr, and complete capsule-after hash/mode verification."
+        }
+      ],
+      "required_family_count": 20,
+      "passed_family_count": 20,
+      "missing_families": [],
+      "state": "passed-current"
+    }
+  ],
+  "images": {
+    "arm64": "sha256:a3eab7d3f549012dd3be11f64657e97e7f3ea083d99f9e171f77f5245a91f562",
+    "x64": "sha256:8498db596161f6849a01b1b60cda250de64c5861ece62f26d9c716e1eb7e0a4b"
+  },
+  "capsules": {
+    "linux": "449a1ee1852e2d083dac7eda280bf33625a6837f988ce4124080f2702cdce84e",
+    "macos": "2fd0f7c05f3c8cb852cab9c197ebfa0cda2a85f0dd2fe89371514a14e480e76c"
+  },
+  "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+  "limitations": [
+    "Every retained family passed against identical b549 bytes; no repack/source imports substituted for consumer package behavior.",
+    "Emulated x86_64 results do not establish native performance. Scale allowance900000ms/backend is a measured test-execution allowance, not a product SLA.",
+    "Node24.18.0 is both minimum and selected supported24 runtime, counted once. Actual24.15.0/26.0.0 are no-effect refusal/discovery controls, not supported-operation passes.",
+    "The old0.5.2 init/force-init bypass is observed unsupported behavior, not secured retroactively. Private task309 migration preview remains unsupported/blocked without identity invention.",
+    "Bugs46/47 deferred/unresolved; Windows, hosted CI, website profile and consumer adoption unqualified.",
+    "Partial sequential x64 runner and incomplete submodule attempt were preserved and never relabeled complete; exact completed-family evidence plus three full subset receipts and scale form explicit composite acceptance."
+  ]
+}

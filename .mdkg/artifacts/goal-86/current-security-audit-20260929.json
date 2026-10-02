@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-29T17:28:20.201Z",
+  "status": "NOT_READY",
+  "scan_id": "78faed0e-5058-4db4-969a-62ccb02d6910",
+  "scan_status": "complete",
+  "source": {
+    "head": "72a3c8780af7d4c2888590b02158ddc60476facc",
+    "branch": "main",
+    "dirty_paths": 280,
+    "staged_paths": 0,
+    "remote_verification": false,
+    "unchanged_during_scan": true
+  },
+  "candidate": {
+    "version": "0.6.0",
+    "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "disposition": "confirmed defects; preserve as intermediate historical candidate, not qualified for publication"
+  },
+  "coverage": {
+    "fully_reviewed_files": 408,
+    "surfaces": 10,
+    "inventory_files": 5089,
+    "inventory_is_not_full_review": true,
+    "explicit_exclusion_groups": 7,
+    "method": "Independent offline source review plus parent source traces and bounded installed-package synthetic reproductions."
+  },
+  "canonical_artifacts": {
+    "coverage": {
+      "sha256": "cd13027fd45b245e3904722ee1b035e541328c6f1e8f387e00a33625163ecf81",
+      "bytes": 273415,
+      "file": "coverage.json"
+    },
+    "findings": {
+      "sha256": "005fa76489dd8bb9087af785260ef26059f3e0f4f62947dcbf0e2b7801bf42ea",
+      "bytes": 475316,
+      "file": "findings.json"
+    },
+    "manifest": {
+      "sha256": "9db05b899eb0163171d01acfcc9004f07d7c48e38f2fd575e8fea9200b87436e",
+      "bytes": 28617,
+      "file": "scan-manifest.json"
+    },
+    "markdownReport": {
+      "sha256": "e6949b2af5a714df5ed87ac60ee3a6a3372fcc223c022684ee849a79c6bb327f",
+      "bytes": 118838,
+      "file": "report.md"
+    },
+    "sarifReport": {
+      "sha256": "c36c8e1139322ed1166010d85965c646923b1d445b0ddea29acdb00531c7ebff",
+      "bytes": 46862,
+      "file": "results.sarif"
+    }
+  },
+  "findings": [
+    {
+      "rule_id": "authorization.archive-payload-visibility",
+      "title": "Public bundles can disclose private archive payloads through directory-level visibility inheritance",
+      "severity": "medium",
+      "disposition": "confirmed_current_release_blocker",
+      "qid": "root:bug-62",
+      "source_paths": [
+        "src/commands/bundle.ts",
+        "src/graph/transport_policy.ts"
+      ],
+      "validation": "The exact candidate CLI exported the synthetic private ZIP with visibility public while excluding its private sidecar and index node; command exited0.",
+      "earlier_published_versions": "unassessed"
+    },
+    {
+      "rule_id": "filesystem.git-metadata-cache-write",
+      "title": "Configured generated outputs can overwrite native Git administration",
+      "severity": "medium",
+      "disposition": "confirmed_current_release_blocker",
+      "qid": "root:bug-63",
+      "source_paths": [
+        "src/core/config.ts",
+        "src/commands/index.ts",
+        "src/graph/reindex.ts",
+        "src/graph/cache_output.ts",
+        "src/core/filesystem_authority.ts",
+        "src/commands/subgraph.ts",
+        "src/graph/identity_validation.ts"
+      ],
+      "validation": "The exact candidate CLI exited0 and replaced a synthetic .git/index with JSON during mdkg index. Separately, exact-candidate subgraph sync successfully replaced a synthetic parent .git/config with ZIP bytes. Identity operations also miss relocated inside-root Git administration in their lexical protected set; that topology route is source-validated only.",
+      "earlier_published_versions": "unassessed"
+    },
+    {
+      "rule_id": "filesystem.hardlinked-event-append",
+      "title": "Event append follows hard-linked files into non-owned peers",
+      "severity": "low",
+      "disposition": "confirmed_current_release_blocker",
+      "qid": "root:bug-64",
+      "source_paths": [
+        "src/commands/event_support.ts",
+        "src/core/filesystem_authority.ts"
+      ],
+      "validation": "The exact candidate CLI exited0 and changed a synthetic outside-root hard-linked event peer; descriptor link count was2.",
+      "earlier_published_versions": "unassessed"
+    },
+    {
+      "rule_id": "filesystem.replacement-permissions",
+      "title": "Atomic graph-file replacement can widen restrictive filesystem permissions",
+      "severity": "low",
+      "disposition": "deferred_unresolved_goal87",
+      "qid": "root:bug-46",
+      "source_paths": [
+        "src/commands/task.ts",
+        "src/core/filesystem_authority.ts"
+      ],
+      "validation": "Source confirms default-mode temporary replacement on task updates; no new runtime permission/ACL experiment was performed.",
+      "earlier_published_versions": "unassessed"
+    },
+    {
+      "rule_id": "filesystem.ancestor-substitution",
+      "title": "Ancestor-directory swaps can escape pathname-based containment",
+      "severity": "medium",
+      "disposition": "deferred_unresolved_goal87",
+      "qid": "root:bug-47",
+      "source_paths": [
+        "src/core/filesystem_authority.ts"
+      ],
+      "validation": "Source confirms separate pathname admission and sink resolution; leaf no-follow does not anchor ancestors. No new race experiment was performed.",
+      "earlier_published_versions": "unassessed"
+    },
+    {
+      "rule_id": "integrity.frontmatter-boundary-disagreement",
+      "title": "Frontmatter boundary disagreement destroys document body or metadata during rewriting",
+      "severity": "medium",
+      "disposition": "confirmed_current_release_blocker",
+      "qid": "root:bug-65",
+      "source_paths": [
+        "src/graph/identity_migration.ts",
+        "src/graph/identity_reconcile.ts",
+        "src/graph/frontmatter.ts",
+        "src/commands/format.ts"
+      ],
+      "validation": "Candidate6154e4ea accepted a task with a whitespace closing fence; preview was safe_to_apply with no blockers, exact-hash apply returned0, and a synthetic evidence paragraph before a later Markdown horizontal rule disappeared while the suffix remained. Preview itself preserved bytes. Installed format --headings --apply returned success but removed status and later fields for title review---notes. Preview was non-mutating but did not expose the destructive generated header.",
+      "earlier_published_versions": "unassessed"
+    },
+    {
+      "rule_id": "filesystem.unadmitted-observational-read",
+      "title": "Diagnostic readers and storage walks bypass contained, bounded input admission",
+      "severity": "medium",
+      "disposition": "confirmed_current_release_blocker",
+      "qid": "root:bug-66",
+      "source_paths": [
+        "src/commands/db.ts",
+        "src/graph/subgraphs.ts",
+        "src/commands/fix.ts",
+        "src/commands/status.ts",
+        "src/commands/doctor.ts"
+      ],
+      "validation": "db index status --json followed a cache symlink to a small synthetic file outside the fixture root and included part of its contents in parse diagnostics. It returned process0 with ok:false. The outside file was unchanged. The unbounded /dev/zero path is source-supported only and was intentionally not executed. Parent traced fix cache/selected-goal, status changelog, and doctor root-walk paths in source; those additional routes were not dynamically executed.",
+      "earlier_published_versions": "unassessed"
+    },
+    {
+      "rule_id": "integrity.identifier-substring-rewrite",
+      "title": "Legacy duplicate-ID repair rewrites unrelated identifier prefixes",
+      "severity": "medium",
+      "disposition": "confirmed_current_release_blocker",
+      "qid": "root:bug-67",
+      "source_paths": [
+        "src/commands/fix.ts"
+      ],
+      "validation": "Installed fix ids --base-ref HEAD --target task-1 --apply returned success and changed unrelated task-10 identity to task-20 and a reference to task-10 into task-20. All work occurred inside a synthetic Git fixture.",
+      "earlier_published_versions": "unassessed"
+    },
+    {
+      "rule_id": "integrity.workspace-evidence-association",
+      "title": "Legacy work and capability linkage attribute evidence across workspace aliases",
+      "severity": "low",
+      "disposition": "confirmed_current_release_blocker",
+      "qid": "root:bug-68",
+      "source_paths": [
+        "src/commands/work.ts",
+        "src/graph/capabilities_indexer.ts"
+      ],
+      "validation": "Installed work order status a:order.same reported b:receipt.only-b with success even though the receipt refers to b:order.same. Source confirms equivalent unqualified matching in capability work-order/receipt linkage.",
+      "earlier_published_versions": "unassessed"
+    }
+  ],
+  "nonsecurity": [
+    {
+      "qid": "root:bug-69",
+      "title": "Correct generated command mutation and write path contracts",
+      "disposition": "confirmed package-contract blocker; static evidence, bounded effect tests required"
+    }
+  ],
+  "qualification_qids": [
+    "root:test-491",
+    "root:test-492"
+  ],
+  "checkpoint_qid": "root:chk-667",
+  "protected_before": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "authority": {
+    "used": "local Goal86 current-source audit, synthetic fixtures, scoped blocker intake; source remediation separately qualified in nodes",
+    "withheld": [
+      "remote Git",
+      "push",
+      "tag",
+      "publication",
+      "provider",
+      "deployment",
+      "consumer/root/sibling edits",
+      "canonical branch/worktree changes",
+      "canonical migration",
+      "bundle refresh",
+      "blocked historical context recovery"
+    ]
+  },
+  "limitations": [
+    "Current audit is not final security or publication clearance.",
+    "Historical 14-finding count remains 12 in-scope remedies plus 2 deferred/unresolved, not 14 fixes.",
+    "Seven new security groups and one non-security defect block current acceptance.",
+    "Independent pre-patch supplement reused a reviewer after fresh worker creation hit the host thread limit.",
+    "Raw reports remain plugin-owned; no raw report or exploit bodies copied into the graph.",
+    "Windows remains unqualified; website/hosted gates retain explicit deferrals."
+  ],
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "verify-close-and-checkpoint",
+    "codex-security:security-scan",
+    "codex-security:fix-finding",
+    "source-grounded-diagnose-and-fix"
+  ],
+  "skill_candidates": []
+}

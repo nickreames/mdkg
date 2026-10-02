@@ -2,25 +2,45 @@
 id: task-830
 type: task
 title: Seal exact locally qualified mdkg 0.6.0 candidate
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/candidate-seal-20260930.json, .mdkg/artifacts/goal-86/private/candidate-0.6.0-b5497c5f5e5f022e.inputs.json, .mdkg/artifacts/goal-86/private/candidate-0.6.0-b5497c5f5e5f022e.qualification-inputs.json]
 relates: []
 blocked_by: [task-829]
 blocks: []
-refs: []
+refs: [dec-99]
 context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-13
+updated: 2026-09-30
 ---
 
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Seal the exact tested tarball after Task829 with separate package/harness input manifests, SHA256/SHA512, file manifest, source revision, platforms and current independent review hashes. Evidence-only commits do not invalidate identical bytes. Do not infer hosted/Windows or deferred-hardening acceptance.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
+
 # Current Successor Contract - 2026-09-13
+
+2026-09-28 Dec99 clarifies the security evidence binding: use accepted fresh
+independent current-source/remediation-diff reports and retained per-finding
+dispositions, with the unavailable original reports explicitly recorded as a
+historical provenance limitation. Do not recover or rerun blocked context or
+claim lost original bodies were verified. Required current review coverage,
+exact report/input hashes and all platform/ladder gates still precede sealing.
 
 Seal the exact tarball already consumed by final installed/platform qualification
 and the full ladder. Bind SHA256/SHA512 integrity, file and package-input manifests,

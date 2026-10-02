@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "kind": "test483-current-installed-pack-controls",
+  "owner": "root:test-483",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "compiledInputs": [
+    {
+      "name": "commands/pack.test.js",
+      "source_sha256": "2f7996926ac83fcbc6843778c3af19b50d37d326cad81b0b87fd0774aec77ae3",
+      "sha256": "169111151405228e7048111b6160a532a5a7c44984fb7069b20a7abf09097425"
+    },
+    {
+      "name": "pack/budget.test.js",
+      "source_sha256": "4c6f0cb55adc54ec8946f343c44c8764662e1603ddc71065f102548ba79acaf4",
+      "sha256": "4b727161de33bb75e2a5dffb147f0defff6c779e04ebb7b526c9e3f11f257b97"
+    },
+    {
+      "name": "pack/profile.test.js",
+      "source_sha256": "96f66d2f2d54925db2494f2413bee6f8313bf41daaaf04cd733d46fac2c047d2",
+      "sha256": "517dab7c4237c590fc5b78a1e48c060fe5d35d9c2d6c25c14be19826422f48cc"
+    },
+    {
+      "name": "helpers/fs.js",
+      "source_sha256": "e3923188acf4c997504d982877260f456be6f32d2f19823ce008818ba1f5b166",
+      "sha256": "5f1088362ae4b1aaa7b9c7e382293043b601dcdf6b665c7a49d6ba95975d7e73"
+    },
+    {
+      "name": "helpers/config.js",
+      "source_sha256": "fc74edcf7227c9cfa71f492efa7afa75388a2378125e26310a85b27b0ab1cf2f",
+      "sha256": "6307f81b0c70c5533f01d6fd2813f31950bb5ef4c0aff3c2c0d09af1235137fa"
+    },
+    {
+      "name": "helpers/templates.js",
+      "source_sha256": "9bf52d6dc5d4774aae9ff511d5fbad600b9e2d87fd961a2acba48a5e5a1b221f",
+      "sha256": "2967c90df8ff2a4ae681d4b497c1348c25a47aaad73a8bf74a97aaf3157d13a9"
+    },
+    {
+      "name": "helpers/identity_recovery.js",
+      "source_sha256": "fe16bc9b79f74dc2f3c0b33a152c28f4baed0ae207df66c9abbb9660de83cb91",
+      "sha256": "653114a325496f7ef0fac0b267ae0a5dcfe886ddf14e74df9599081e877c0475"
+    }
+  ],
+  "driver_sha256": "e2546b7386cec0977acf22faaefa4b0f9a7f9b1b76cae6caad54ff5bada1967b",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 1415,
+  "completed": [
+    {
+      "family": "commands/pack.test.js",
+      "test483_cases": [
+        2
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 464,
+      "stdout_sha256": "8b5060c80696815ca730f6daa2c72351989ecb3fcdfc02b717b65bd4d1d668b6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - runPackCommand concise profile shapes body and writes stats/report sidecars",
+        "ok 2 - runPackCommand headers profile emits empty node bodies",
+        "ok 3 - runPackCommand supports a spike as the pack root across formats",
+        "ok 4 - runPackCommand rejects --verbose with non-standard profile",
+        "ok 5 - runPackCommand standard profile does not require unrelated templates",
+        "ok 6 - runPackCommand dry-run prints summary and does not write files",
+        "ok 7 - runPackCommand auto-includes referenced skills as metadata by default",
+        "ok 8 - runPackCommand supports explicit skills list with full depth",
+        "ok 9 - runPackCommand --visibility public fails closed on private archive refs",
+        "ok 10 - runPackCommand --visibility public fails closed on private spike archive refs",
+        "ok 11 - runPackCommand --visibility public records metadata and includes public archives",
+        "ok 12 - runPackCommand --visibility public records metadata and includes public spike archives"
+      ]
+    },
+    {
+      "family": "pack/budget.test.js",
+      "test483_cases": [
+        2
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 108,
+      "stdout_sha256": "acc94854015b6a4a5ba145b9d6c8fc1ff1621e7db47612ad3f986f9d97462982",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - applyPackBudgets drops tail nodes before truncating root body",
+        "ok 2 - applyPackBudgets truncates root body when a single node still exceeds limits"
+      ]
+    },
+    {
+      "family": "pack/profile.test.js",
+      "test483_cases": [
+        2
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 109,
+      "stdout_sha256": "b9523a3becc2fd05edaf927a96f16f40688f6bc027b402d06dffa6fa145c0159",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - resolvePackProfile supports concise shorthand",
+        "ok 2 - listPackProfiles exposes built-in profiles",
+        "ok 3 - resolvePackProfile rejects conflicting concise flags",
+        "ok 4 - resolvePackProfile normalizes defaults and rejects invalid inputs",
+        "ok 5 - shapePackBodies concise summary follows template heading order",
+        "ok 6 - shapePackBodies summary falls back and preserves empty bodies",
+        "ok 7 - shapePackBodies caps code blocks across closed and open fences",
+        "ok 8 - shapePackBodies headers profile removes body content"
+      ]
+    }
+  ],
+  "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+  "original_payload_files": 234,
+  "original_payload_file_manifest_sha256": "f3a4f75dd9391ada5d11ca72c9287b5506f34cbf829ff76b804079f13afcf0a9",
+  "original_payload_bytes_preserved": true,
+  "inert_test_additions": 7,
+  "instrumented_inventory_sha256": "21986e578114cc8badfb87837053abfa9740f1f033e32ab1f69b7f2e9dcc49ea",
+  "canonical_implementation_imports_refused": true,
+  "limitations": [
+    "Native macOS only; Linux/platform and independent acceptance remain open",
+    "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+    "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+    "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  },
+  "pass": true
+}

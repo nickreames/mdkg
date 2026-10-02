@@ -1,0 +1,1601 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-portable-operator-confirmed-recovery",
+  "work_qid": "root:task-841",
+  "checkpoint_qid": "root:chk-654",
+  "decision_qid": "root:dec-98",
+  "recorded_at": "2026-09-28 16:06:55 UTC",
+  "status": "LOCAL_IMPLEMENTATION_PASS_NOT_RELEASE_READY",
+  "source_head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "authority": {
+    "owner": "mdkg-project-agent",
+    "goal": "root:goal-86",
+    "scope": "Local portable recovery source, affected regression/installed fixtures, current owned guidance and mdkg evidence; one writer on main.",
+    "publication": false,
+    "remote_actions": false,
+    "native_helpers": false,
+    "blocked_context_access": false,
+    "canonical_graph_migration": false,
+    "bundle_refresh": false
+  },
+  "contract": {
+    "approval_schema_version": 2,
+    "contract": "operator-confirmed-quiescence-v1",
+    "assertion": "all-checkout-writers-stopped",
+    "required_flags": [
+      "--resume or --rollback",
+      "--lock-evidence <fresh mode-specific sha256>",
+      "--confirm-quiescent"
+    ],
+    "assertion_is_authentication": false,
+    "assertion_is_os_proof": false,
+    "local_pid_probe": "refusal-only for live/suspended/reused/ambiguous owners; absence is not takeover authority",
+    "terminal_no_lock": "read-only repeat; no assertion or new token",
+    "legacy": "Preserve exact legacy owner/claim bytes; require complete identity/journal/lock custody and a new versioned approval and explicit assertion. Old approvals are not promoted."
+  },
+  "custody": {
+    "entry": {
+      "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "branch": "main",
+      "upstream": "origin/main",
+      "cached_divergence": "69\t0",
+      "staged": "",
+      "dirty_files": [
+        {
+          "path": ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62"
+        },
+        {
+          "path": ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a"
+        },
+        {
+          "path": ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1"
+        },
+        {
+          "path": ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62"
+        },
+        {
+          "path": ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a"
+        },
+        {
+          "path": ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1"
+        },
+        {
+          "path": ".github/workflows/release-readiness.yml",
+          "sha256": "0aa57871ea4690141f85c46bc3b56b1d13b4473aa96141a4b4de062d3aa4c106"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/bug-47-macos-fd-path-feasibility.json",
+          "sha256": "dc3e3ce3aeba8c364d7391382318eb6cd60854a0fbb4af0f547db1d349424525"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/bug-47-recorded-0.5.2-source-assessment.json",
+          "sha256": "c1573547690aacf715a5d439a2cd1cd5278ff6529dcf393fc78b02b0892d7728"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json",
+          "sha256": "af8508235be4385599823cd90e6017d84ec51e4259affa09b1ed5c5637ef5429"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/native-primitive-probe.c",
+          "sha256": "ffb8f612f6645ad361ad776d1bc3ffcc30bd3343031a94133fb93ae5ed0089de"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/node-baseline-probe.cjs",
+          "sha256": "87855e17dbc519d89efc73e1515ddf63389dd65875943ec7abf987b6ffa00936"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json",
+          "sha256": "75c55bb5b18199dd968df9acf1a6ba2ab87a948376380719a3199cd8c615ac14"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/node-portability/portable-source-progress.json",
+          "sha256": "9f9c91083396fb46bfe160e64bacca1bb8ed9abcd76d27d8deaea6ffbf600bda"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/node-portability/receipt.json",
+          "sha256": "f7d1b4ebe2940d50063776fad31d55741cfaeeedf0a5d7556ed942c9be6875d4"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/node-portability/runtime-installed-probe.cjs",
+          "sha256": "e087b4a5ebf0e69be03750ba2f9fcb57259c14f62b5624d77530d59ec6679622"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/node-portability/runtime-qualification.json",
+          "sha256": "418585c5e0738f8c1b7b2d45856fcde4090a811fa171fe959d849eb9b9b92341"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+          "sha256": "c47567bea5d85271f12eada970eb2050cf6455428e693458bbecb6d36571b661"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+          "sha256": "e7a53361bd757436bce871048badb25e4519bd6405a3d2194a698a1ecb27b723"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json",
+          "sha256": "dc93ee15023f855eae9323d5da2299f33a5580a380c7f521dd9c1a49d92142ba"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-consumer-smoke-progress.json",
+          "sha256": "c8786e387cb2fa02b50727a6ede0fb0d523162526e6343ddb6e38cf3ed6e0ec1"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-db-smoke-caller-progress.json",
+          "sha256": "0d488a683d914ea591b4c65919e8271c09082136fd6405ea88af6222da0b94de"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json",
+          "sha256": "9cba2451fc8c9a53939f5e1b88392d881328ce564f2f4c9515152cf641cde077"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-git-boundary-progress.json",
+          "sha256": "36267d21b945b950c906d559310225004bc654d6519f288090fcf921cbc5c9c9"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json",
+          "sha256": "009d6ad4be6723d3f44c9892c5fcc3e2babddee21a4df54141555932ea6e2e2a"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-graph-smoke-caller-progress.json",
+          "sha256": "8d2bc3e54a8679764ba4314d989aa4ecd23659bcb4f3e5f1aee3cfb2e4b34e99"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-local-commit.json",
+          "sha256": "385408ae0090fcbfb4ddaac790752203bdc9b8d6b79db569bd527f1ab9ab7420"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-mcp-smoke-progress.json",
+          "sha256": "afc1aaf3c914a08fd67cdd0625857c6f5bacd290f8c48f2832a2235515f1df80"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json",
+          "sha256": "37d3a68d9ecae6f89cc24e27ed0fc7ecf56e4559ea1522245f122d666febbb1b"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-six-smoke-caller-progress.json",
+          "sha256": "3e8393ab1918f358453f691a0913aa5cbaab6c78e2327b35d37d1edc5b60e015"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json",
+          "sha256": "324ae4fefbbb11481b00afcbb33f31407dbfc9edacd406fafc6d365241b39880"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-sync-smoke-caller-progress.json",
+          "sha256": "5c141a50bd3ad78ddaa92b6eef8fa9b5c48a2b663d1cdc566beed7d078b66a7e"
+        },
+        {
+          "path": ".mdkg/artifacts/goal-86/task-838-tail-smoke-progress.json",
+          "sha256": "a43fbf6ba97e023954831809b2759b849cb67067bc2c1ddafdbf2f577340b30a"
+        },
+        {
+          "path": ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+          "sha256": "9809bc4aec6177005dbfabdb04663bdab71689e85fdb25a1e3b8a60e34b903c0"
+        },
+        {
+          "path": ".mdkg/design/dec-98-keep-0-6-0-portable-in-node-and-defer-unresolved-filesystem-hardening.md",
+          "sha256": "7e40ff65ad0db289e742dd2214d01b50c1ab04a1393b37b9f7b7218dc24bd796"
+        },
+        {
+          "path": ".mdkg/index/mdkg.sqlite",
+          "sha256": "cb93bb77c1e551aae9e19460976a227e6fb3ae6dfe2430c3f032c743bdbe1f8e"
+        },
+        {
+          "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62"
+        },
+        {
+          "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a"
+        },
+        {
+          "path": ".mdkg/skills/registry.md",
+          "sha256": "1b83dfea49d4f563a8edc3b94c387a886508a89e47b5378ff2af7b1381c6dc2e"
+        },
+        {
+          "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1"
+        },
+        {
+          "path": ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+          "sha256": "012a82514bab911ab48f41f659ac056b818cb3c4bdf169db9dd6eeb1dfff3c0d"
+        },
+        {
+          "path": ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+          "sha256": "5f773a92395a398ad305b8f0be60ab98602be50a1bcf0b6839f23ecc171fbec3"
+        },
+        {
+          "path": ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+          "sha256": "a5138393ed333bf13ed1dc97fab440a200cc44a51205d38545364b62acad4943"
+        },
+        {
+          "path": ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md",
+          "sha256": "c82a923d6265dafe99a9d0aae11572b2888d162f36b0eb38aae43f976a04d97a"
+        },
+        {
+          "path": ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md",
+          "sha256": "c813fc0b2c1a62c96c7a2e452fcb0a55288aabffed967e9e23c043861caccbca"
+        },
+        {
+          "path": ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md",
+          "sha256": "e19c84b4a940a6105c4b49637f2f192281c7b6cedd542e2deed515ecd8a6e5c1"
+        },
+        {
+          "path": ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md",
+          "sha256": "d6cbef7ef9835db38e35688be254f98d594c1a4d0714f6e573bb19ee0b10fb1c"
+        },
+        {
+          "path": ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md",
+          "sha256": "8d96e8d33889caaa2d0f784c55924d853adcec7be3a9a3d3a3c29267c60c9d0f"
+        },
+        {
+          "path": ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md",
+          "sha256": "5bd5a51e750a6553c3be2dd5f06bae5c66d010b83aa673c7f263be6cc615878f"
+        },
+        {
+          "path": ".mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md",
+          "sha256": "82d6b5966727cf745c56b1673c10930cc7fe7669a719af6ae175fb507498e44f"
+        },
+        {
+          "path": ".mdkg/work/chk-644-isolate-six-installed-smoke-callers-and-verify-artifacts-before-installation.md",
+          "sha256": "494bd94c9fd402758339b4295633fa9ca26d160fc78230c072d973dab72882f7"
+        },
+        {
+          "path": ".mdkg/work/chk-645-isolate-installed-db-and-sqlite-fixtures-from-ambient-git-state.md",
+          "sha256": "9439d3b75b9ff44b1e10ba45470381f474c01b186ffe6151e899d0f8d7fc5355"
+        },
+        {
+          "path": ".mdkg/work/chk-646-isolate-installed-graph-workflow-fixtures-and-verify-supported-routing-refusals.md",
+          "sha256": "d1cd054555e251f743bc001aae2d87261193c6194f056d959f708318ead774a6"
+        },
+        {
+          "path": ".mdkg/work/chk-647-isolate-synchronous-installed-smoke-callers-and-preserve-diagnostic-evidence.md",
+          "sha256": "cbf8e53d4848de75abfdf82a75371c7c01107596e2c5b7b1ebaddd91702f9653"
+        },
+        {
+          "path": ".mdkg/work/chk-648-qualify-git-boundary-smoke-across-three-local-node-runtimes.md",
+          "sha256": "68a420b965e6c4ad7ae47aa1faa8c986f772b5b0b96f7a8c8e4c402ce9b46205"
+        },
+        {
+          "path": ".mdkg/work/chk-649-qualify-remaining-release-smoke-callers-and-retain-intermediate-candidate-custod.md",
+          "sha256": "5c665481a19526e24b996993e5d61dc59521c8c24d9638ad385b4eb88a52d918"
+        },
+        {
+          "path": ".mdkg/work/chk-650-verify-descriptor-backed-sqlite-observation-under-local-node-runtimes.md",
+          "sha256": "2e9486cd6515e8110217469fff0e0ee13304a1a0054f66a6168298a68c08a514"
+        },
+        {
+          "path": ".mdkg/work/chk-651-bound-local-filesystem-feasibility-and-fail-closed-linux-ci-stub.md",
+          "sha256": "202108df9d3e7c8ca0f806893c2ba4014a0c5842e8a79db3419f79293e90242f"
+        },
+        {
+          "path": ".mdkg/work/chk-652-defer-unresolved-filesystem-hardening-and-ground-node-only-portability-continuat.md",
+          "sha256": "df750c4984e6c2ee82c86eaccffc2791bc570064915aa7ad268cbbdacd4c9698"
+        },
+        {
+          "path": ".mdkg/work/chk-653-implement-portable-sqlite-observation-and-align-the-node-runtime-contract.md",
+          "sha256": "3b5a6449a8b2edc88b895cd51e80937abf7a35913099dd9099e13e4e5d116c77"
+        },
+        {
+          "path": ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md",
+          "sha256": "853e2b91e8acaf8318b719c3870ab1339ae385fcb209f861c4aa7c521f701dc8"
+        },
+        {
+          "path": ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md",
+          "sha256": "bdf3c4edbc97384fd6b6095508aa3130bdaf1fc49e5ae970e7640c0284df14ee"
+        },
+        {
+          "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+          "sha256": "8a91752891cc7a4c0b3a95ec546929f3811acac29c4b371c33076c94412d34eb"
+        },
+        {
+          "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+          "sha256": "173eac233e3f605bfaea2921b7e2564f183909236069388052f13f4bd7d6fbbe"
+        },
+        {
+          "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+          "sha256": "5c6ce06602911911200fc5bef50c6b4e33bb3764767fe9490bde0f15c2012047"
+        },
+        {
+          "path": ".mdkg/work/goal-87-resolve-deferred-filesystem-bugs-and-harden-portable-mdkg-operations.md",
+          "sha256": "a7a5bb22353a30794ae449dd5a420e084b9a3e29b554e69f52720ab8cf9f8e98"
+        },
+        {
+          "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+          "sha256": "502f11610e547b34732cfdba2005789464db4e7b1e6e57b84ba0d26e3679103f"
+        },
+        {
+          "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+          "sha256": "1040f90d4bf3ab26c9503da5c660d5efe9e5f0bb085d66bafe60c73c236fd448"
+        },
+        {
+          "path": ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md",
+          "sha256": "88df5c061c5da55913c8e8cf91a831c16c4d3a7906752c35f0e04ccec49e5d08"
+        },
+        {
+          "path": ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+          "sha256": "bd3ca4abdbbdef394553f30ba3f0939cfaa07b9d510bff996be66dd15475e377"
+        },
+        {
+          "path": ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md",
+          "sha256": "7889f6a29e7b1893ca2107255d4f3416855e3d2e2c07b99a9ff1bec515f49d03"
+        },
+        {
+          "path": ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+          "sha256": "a2125e6c12d2837c26915deb11282306f366f70b02ee4e65d6c04eeed139617e"
+        },
+        {
+          "path": ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+          "sha256": "4650019a85c24cc513745ade9ac02472962dca675ecdeacc0f37b75401a3b8e5"
+        },
+        {
+          "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+          "sha256": "e4eded039c01a914d9b04c5b371c7de1e12bc7e43f2738978c8f0e82fc6b701c"
+        },
+        {
+          "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+          "sha256": "1cbaa882b59b242db31db1314ad7ecf46be085ba1591e1bd009fa160a6b2308c"
+        },
+        {
+          "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+          "sha256": "ea7e459b30a13cf4f7603b62385a79347358780e30af5bc4209fa628845cf90a"
+        },
+        {
+          "path": ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+          "sha256": "3d5913f51a07b93a229972ae0631f525b5a759d365cf51d72154878956afc9a1"
+        },
+        {
+          "path": ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+          "sha256": "43b5f7e7e90d5193be419c97c98a90c67b31dbd0793673887abd716019c30ff8"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "535488d22940d7fee143b132055e5b7f136826c3cafc489922ee821f91e104ea"
+        },
+        {
+          "path": "README.md",
+          "sha256": "adc48187f7f57a41c650febbb916c743fe3608c4308e75846a2a26c3818532ff"
+        },
+        {
+          "path": "assets/init/skills/default/build-pack-and-execute-task/SKILL.md",
+          "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62"
+        },
+        {
+          "path": "assets/init/skills/default/pursue-mdkg-goal/SKILL.md",
+          "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a"
+        },
+        {
+          "path": "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+          "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1"
+        },
+        {
+          "path": "docs/_generated/release-notes.json",
+          "sha256": "d89a7238b77e0ffcf7eae25249b9d6a38dc0cde6defcc9f0a9c927f58175bfa2"
+        },
+        {
+          "path": "docs/src/content/docs/start-here/install.md",
+          "sha256": "d456fd819f7ec152a13c841124d96c6dac243e3129c0dd9378840418325e9b76"
+        },
+        {
+          "path": "docs/start-here/install.md",
+          "sha256": "74136af51ff6b1bf182d237e7e69ee3122beebd3ab7b8fb043c18f673ea95e49"
+        },
+        {
+          "path": "mdkg-dev/src/pages/quickstart.astro",
+          "sha256": "c05e292980e6a1c6ca91f80044134afbad5676dc02d58f62517a6b219fe82340"
+        },
+        {
+          "path": "package-lock.json",
+          "sha256": "da6367ac0f9bc63d4471076a45dfa58492be76e468dc720b8eb8b560aaa5aca4"
+        },
+        {
+          "path": "package.json",
+          "sha256": "3bde1e4761660a74bd50d7b467f5fae247964ad9811d421c2d05e91cd72d3672"
+        },
+        {
+          "path": "scripts/assert-publish-ready.js",
+          "sha256": "40c2a9a1c9977bd39d6f041757a190f17b5dafe8f486acfaaadf4971b2624dfc"
+        },
+        {
+          "path": "scripts/generate-ci-workflow.js",
+          "sha256": "4fab4e318cd52de8a36345185dffa685dde5e42e3249ca06b7416630bba1544e"
+        },
+        {
+          "path": "scripts/release-ladder.js",
+          "sha256": "5b64f43044199e818717f52ace7071a92c8355b14aaaf547a4da50db33e9a11c"
+        },
+        {
+          "path": "scripts/smoke-manifest.json",
+          "sha256": "f41a5c7f5f92e41cc97c17e3787795a49db8bea328ee449b8e1b2ed87c630a82"
+        },
+        {
+          "path": "scripts/smoke-mdkg-dev.js",
+          "sha256": "dfeefa4d6f2511f67b7b137a404b158e4a356dee461f1d810b74eabb82d36e2f"
+        },
+        {
+          "path": "src/cli.ts",
+          "sha256": "b8b9838a6f3de7941e03cfb869bc1ca223ecbebaa88655f05651ccee9da26b3b"
+        },
+        {
+          "path": "src/commands/doctor.ts",
+          "sha256": "fd9c8c77e50082700aca2090c16a71c61b4266cb8c4ab8f2bc753ac8b0c0ab46"
+        },
+        {
+          "path": "src/core/node_runtime.ts",
+          "sha256": "2b3c81bac7443a8629d6f06de95c7e6ce0e5c4588f595bf62763c4f3dd3fafee"
+        },
+        {
+          "path": "src/core/project_db_events.ts",
+          "sha256": "f513efea1ba226191bbbc758d9d0132fcb35ca5d71326f84c00c9dce364c6d57"
+        },
+        {
+          "path": "src/core/project_db_migrations.ts",
+          "sha256": "f708327a012e4a3c30c238b4a1eebe1e2b0959bbd18a5b504a388b456518e165"
+        },
+        {
+          "path": "src/core/project_db_queue.ts",
+          "sha256": "60908d81cda539729d1e4eb8f8825a7c97d5a0047ddc7628d4369c7c915ea2e1"
+        },
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "sha256": "40086394f2b87dd16f0ba3f7c04bb9d2ba68b98eb5222c331c9fc0faa3ced24d"
+        },
+        {
+          "path": "src/core/sqlite_observation.ts",
+          "sha256": "78c8705ee0865b31382c45c60ff6426dc563d7417635caf0c18943c657409754"
+        },
+        {
+          "path": "src/graph/sqlite_index.ts",
+          "sha256": "870dd974d92a4dfd98d042df2aa903974541e96b8756a2565a495818415517df"
+        },
+        {
+          "path": "tests/ci-topology.test.ts",
+          "sha256": "753715a0a10943fbbda6776df6ef86e08eca05ce61c9bc80f461f41c44d36102"
+        },
+        {
+          "path": "tests/commands/node_runtime_admission.test.ts",
+          "sha256": "76705409aa84ae92ca7203f077b702d98eca62e2bb86f3442e8c9c231b930185"
+        },
+        {
+          "path": "tests/core/snapshot_containment.test.ts",
+          "sha256": "f402655d8e68652ad99fad73bb1de13f766b7af0f8cc88cddefa221c4e814ef0"
+        },
+        {
+          "path": "tests/core/sqlite_memory_observation.test.ts",
+          "sha256": "02bfc91735fef6bddfcc4e3d2d90a8b3495a14b5534420c92201d82e2b7e9112"
+        },
+        {
+          "path": "tests/core/sqlite_observation.test.ts",
+          "sha256": "d6b2e7dd9c21966e36defa021c0bae14aa263cd9ee5b4f19754afe0bcb67223a"
+        }
+      ],
+      "protected": [
+        {
+          "path": ".mdkg/state/selected-goal.json",
+          "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+        },
+        {
+          "path": ".mdkg/db/runtime/project.sqlite",
+          "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+        },
+        {
+          "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+          "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+        }
+      ]
+    },
+    "pre_checkpoint": {
+      "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "branch": "main",
+      "upstream": "origin/main",
+      "divergence": "69\t0",
+      "staged": "",
+      "dirty_file_count": 133,
+      "dirty_paths": [
+        ".agents/skills/build-pack-and-execute-task/SKILL.md",
+        ".agents/skills/pursue-mdkg-goal/SKILL.md",
+        ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+        ".claude/skills/build-pack-and-execute-task/SKILL.md",
+        ".claude/skills/pursue-mdkg-goal/SKILL.md",
+        ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+        ".github/workflows/release-readiness.yml",
+        ".mdkg/artifacts/goal-86/bug-47-macos-fd-path-feasibility.json",
+        ".mdkg/artifacts/goal-86/bug-47-recorded-0.5.2-source-assessment.json",
+        ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json",
+        ".mdkg/artifacts/goal-86/filesystem-feasibility/native-primitive-probe.c",
+        ".mdkg/artifacts/goal-86/filesystem-feasibility/node-baseline-probe.cjs",
+        ".mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json",
+        ".mdkg/artifacts/goal-86/node-portability/portable-source-progress.json",
+        ".mdkg/artifacts/goal-86/node-portability/receipt.json",
+        ".mdkg/artifacts/goal-86/node-portability/recovery-installed-probe.cjs",
+        ".mdkg/artifacts/goal-86/node-portability/runtime-installed-probe.cjs",
+        ".mdkg/artifacts/goal-86/node-portability/runtime-qualification.json",
+        ".mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+        ".mdkg/artifacts/goal-86/requirement-coverage.json",
+        ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-consumer-smoke-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-db-smoke-caller-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-git-boundary-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-graph-smoke-caller-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-local-commit.json",
+        ".mdkg/artifacts/goal-86/task-838-mcp-smoke-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-six-smoke-caller-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-sync-smoke-caller-progress.json",
+        ".mdkg/artifacts/goal-86/task-838-tail-smoke-progress.json",
+        ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+        ".mdkg/design/dec-98-keep-0-6-0-portable-in-node-and-defer-unresolved-filesystem-hardening.md",
+        ".mdkg/index/mdkg.sqlite",
+        ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        ".mdkg/skills/registry.md",
+        ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+        ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+        ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+        ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md",
+        ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md",
+        ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md",
+        ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md",
+        ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md",
+        ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md",
+        ".mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md",
+        ".mdkg/work/chk-644-isolate-six-installed-smoke-callers-and-verify-artifacts-before-installation.md",
+        ".mdkg/work/chk-645-isolate-installed-db-and-sqlite-fixtures-from-ambient-git-state.md",
+        ".mdkg/work/chk-646-isolate-installed-graph-workflow-fixtures-and-verify-supported-routing-refusals.md",
+        ".mdkg/work/chk-647-isolate-synchronous-installed-smoke-callers-and-preserve-diagnostic-evidence.md",
+        ".mdkg/work/chk-648-qualify-git-boundary-smoke-across-three-local-node-runtimes.md",
+        ".mdkg/work/chk-649-qualify-remaining-release-smoke-callers-and-retain-intermediate-candidate-custod.md",
+        ".mdkg/work/chk-650-verify-descriptor-backed-sqlite-observation-under-local-node-runtimes.md",
+        ".mdkg/work/chk-651-bound-local-filesystem-feasibility-and-fail-closed-linux-ci-stub.md",
+        ".mdkg/work/chk-652-defer-unresolved-filesystem-hardening-and-ground-node-only-portability-continuat.md",
+        ".mdkg/work/chk-653-implement-portable-sqlite-observation-and-align-the-node-runtime-contract.md",
+        ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md",
+        ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md",
+        ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+        ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+        ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        ".mdkg/work/goal-87-resolve-deferred-filesystem-bugs-and-harden-portable-mdkg-operations.md",
+        ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+        ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+        ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md",
+        ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+        ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md",
+        ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+        ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+        ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+        ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+        ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+        ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+        ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+        "CHANGELOG.md",
+        "CLI_COMMAND_MATRIX.md",
+        "README.md",
+        "assets/init/CLI_COMMAND_MATRIX.md",
+        "assets/init/skills/default/build-pack-and-execute-task/SKILL.md",
+        "assets/init/skills/default/pursue-mdkg-goal/SKILL.md",
+        "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+        "docs/_generated/cli-reference.md",
+        "docs/_generated/command-contract-summary.json",
+        "docs/_generated/release-notes.json",
+        "docs/advanced-alpha/graph-movement.md",
+        "docs/src/content/docs/advanced-alpha/graph-movement.md",
+        "docs/src/content/docs/start-here/install.md",
+        "docs/start-here/install.md",
+        "mdkg-dev/src/pages/quickstart.astro",
+        "package-lock.json",
+        "package.json",
+        "scripts/assert-publish-ready.js",
+        "scripts/generate-ci-workflow.js",
+        "scripts/generate-command-contract.js",
+        "scripts/installed-graph-recovery.js",
+        "scripts/release-ladder.js",
+        "scripts/smoke-manifest.json",
+        "scripts/smoke-mdkg-dev.js",
+        "src/cli.ts",
+        "src/commands/doctor.ts",
+        "src/commands/graph_identity.ts",
+        "src/commands/option_contract.ts",
+        "src/core/node_runtime.ts",
+        "src/core/project_db_events.ts",
+        "src/core/project_db_migrations.ts",
+        "src/core/project_db_queue.ts",
+        "src/core/project_db_snapshot.ts",
+        "src/core/sqlite_observation.ts",
+        "src/graph/identity_transaction.ts",
+        "src/graph/sqlite_index.ts",
+        "src/util/argparse.ts",
+        "src/util/lock.ts",
+        "src/util/lock_evidence.ts",
+        "tests/ci-topology.test.ts",
+        "tests/commands/cli_option_admission.test.ts",
+        "tests/commands/node_runtime_admission.test.ts",
+        "tests/core/snapshot_containment.test.ts",
+        "tests/core/sqlite_memory_observation.test.ts",
+        "tests/core/sqlite_observation.test.ts",
+        "tests/fixtures/interrupted-writer.cjs",
+        "tests/graph/identity_interrupted_writer.test.ts",
+        "tests/graph/identity_migration.test.ts",
+        "tests/graph/identity_migration_lineage.test.ts",
+        "tests/graph/identity_migration_validation.test.ts",
+        "tests/graph/identity_portable_recovery.test.ts",
+        "tests/graph/identity_reconciliation_plan.test.ts",
+        "tests/graph/identity_writer_fence.test.ts",
+        "tests/helpers/identity_recovery.ts"
+      ],
+      "baseline_changed": [
+        ".mdkg/index/mdkg.sqlite",
+        ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+        "CHANGELOG.md",
+        "README.md",
+        "docs/_generated/release-notes.json",
+        "src/cli.ts"
+      ],
+      "protected": [
+        {
+          "path": ".mdkg/state/selected-goal.json",
+          "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+        },
+        {
+          "path": ".mdkg/db/runtime/project.sqlite",
+          "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+        },
+        {
+          "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+          "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+        }
+      ],
+      "mutation_lock": false,
+      "git_index_lock": false
+    },
+    "runtime_leases": "Existing five released rows and empty queue state remain byte-identical to entry; no standing lease acquired.",
+    "other_agents": "Existing read-only investigators completed; no additional agent dispatched."
+  },
+  "before_input_hashes": [
+    {
+      "path": "src/util/lock_evidence.ts",
+      "sha256": "abd040d5e43cdcdcf662cc26ecb16cbc0eed9733608bac317956fc1c818d0fa6",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "src/util/lock.ts",
+      "sha256": "27887a6984f58d5cb916fd632cb95923b2ca96600b9f06358f126abc9473be76",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "src/graph/identity_transaction.ts",
+      "sha256": "b2cc948626f5cc51c1a29eb0ee627301c75432ebe617683ad10240d417506532",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "src/commands/graph_identity.ts",
+      "sha256": "43a4202430a2c26945667212ed35db5f41f53d1b5dc23bdd6ae0aff3f2992349",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "src/commands/option_contract.ts",
+      "sha256": "b9a626acb4b18371f194b28ba0eb8b98af9f5e32bcc57d8047ee143791f468d5",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "src/util/argparse.ts",
+      "sha256": "bb5c8798aa92bbf5acaa996acf5a92e0e21963972a4ac3eb9baf0389a3cb378d",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "src/cli.ts",
+      "sha256": "b8b9838a6f3de7941e03cfb869bc1ca223ecbebaa88655f05651ccee9da26b3b",
+      "source": "entry-working-tree"
+    },
+    {
+      "path": "tests/graph/identity_portable_recovery.test.ts",
+      "sha256": null,
+      "source": "created-in-this-task"
+    },
+    {
+      "path": "tests/graph/identity_interrupted_writer.test.ts",
+      "sha256": "c00bb172687cec9dcde720fd232c5343add08f61383b81deba57e3e1e3d97748",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "tests/helpers/identity_recovery.ts",
+      "sha256": null,
+      "source": "created-in-this-task"
+    },
+    {
+      "path": "tests/graph/identity_migration.test.ts",
+      "sha256": "e1f4035a0a61d8e14ea2e80cb59cd3c4171dcef1f7a1331a37da3dbe1cc21a11",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "tests/graph/identity_migration_lineage.test.ts",
+      "sha256": "1a0f5ecd0d46d8869c03f65cdcbe2c91eec76866364c8c3db02450399c2d8abb",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "tests/graph/identity_migration_validation.test.ts",
+      "sha256": "c83ee2c2515d0b2304d011a58639d29bde051131915571ddf6fdcdcba9a21dc0",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "tests/graph/identity_reconciliation_plan.test.ts",
+      "sha256": "4c0d64f4fa44494954e83926407411c4e4fb542eec9188d8d3a08c73f9cc87e4",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "tests/graph/identity_writer_fence.test.ts",
+      "sha256": "a37fc6911d177817aa4a8fd0dd2c089f813115f153c69e767f5719ca1c3605f9",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "tests/commands/cli_option_admission.test.ts",
+      "sha256": "e7a7e881703aeb062f8a3e2a6d1b7e76a4f4aa49b927499323c4f18dda5a8375",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "tests/fixtures/interrupted-writer.cjs",
+      "sha256": "48b24ad457cdfff7f768220fd0e7e3c5d1a3425d310798a29808ca6d58ba1ff9",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "scripts/installed-graph-recovery.js",
+      "sha256": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "scripts/generate-command-contract.js",
+      "sha256": "311a336a3413bf9e29bdfa058bbada0dab5a1d2fe4528a8016f05e7c863cd760",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "README.md",
+      "sha256": "adc48187f7f57a41c650febbb916c743fe3608c4308e75846a2a26c3818532ff",
+      "source": "entry-working-tree"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "535488d22940d7fee143b132055e5b7f136826c3cafc489922ee821f91e104ea",
+      "source": "entry-working-tree"
+    },
+    {
+      "path": "CLI_COMMAND_MATRIX.md",
+      "sha256": "9a7a89474b6972ab3bdd70c610cb712a5088e4df88cb39ccf0492d083b3a6c25",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "assets/init/CLI_COMMAND_MATRIX.md",
+      "sha256": "447987b1b28e924e7a44f759885ad4e7ef5ff78a21f7aa1d549b09298f89d22a",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "docs/advanced-alpha/graph-movement.md",
+      "sha256": "4a2ecb851da26d37f2ae35e695f3b097897a53606330b52b353cb64e96c3b061",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "docs/src/content/docs/advanced-alpha/graph-movement.md",
+      "sha256": "4a2ecb851da26d37f2ae35e695f3b097897a53606330b52b353cb64e96c3b061",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "docs/_generated/cli-reference.md",
+      "sha256": "ca891b8df751dcb59f2eeb2013ece383f2b1c62c517dd36a3ab4067229dc7ad2",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "docs/_generated/command-contract-summary.json",
+      "sha256": "caaf6abd296893f1b9437e1f18897e35ebec735a10e66e7aceeabad348bd6d87",
+      "source": "entry-clean-HEAD"
+    },
+    {
+      "path": "docs/_generated/release-notes.json",
+      "sha256": "d89a7238b77e0ffcf7eae25249b9d6a38dc0cde6defcc9f0a9c927f58175bfa2",
+      "source": "entry-working-tree"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-installed-probe.cjs",
+      "sha256": null,
+      "source": "created-in-this-task"
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "src/util/lock_evidence.ts",
+      "sha256": "f147ca96b09396cc2b4ca7ef166ead2b693062d59a2cbe63ef122e5de60c938b"
+    },
+    {
+      "path": "src/util/lock.ts",
+      "sha256": "dda74f39604276d422fc3ce6dfb5d46b2138cb53c069b08d8a5aac2c1c31015f"
+    },
+    {
+      "path": "src/graph/identity_transaction.ts",
+      "sha256": "b2fe38b9a3da3e1a7e503168c5900aa8b21fcb0b18a2f6e6b6e35ac74e3994de"
+    },
+    {
+      "path": "src/commands/graph_identity.ts",
+      "sha256": "2ba6fdf164fb442153af0af1884110a7ad1b3eca8ffa21c54392eb6abe20f77a"
+    },
+    {
+      "path": "src/commands/option_contract.ts",
+      "sha256": "ee891fb4a1f611ff86377822f21e2ba0c5314f68749d80a058beea4d49120e41"
+    },
+    {
+      "path": "src/util/argparse.ts",
+      "sha256": "369edeac1eaabdf56b424e4ba290defa3dc345a9316ff22707550b6099ef8a6a"
+    },
+    {
+      "path": "src/cli.ts",
+      "sha256": "542924f0b193db6496d3a58912e5c4eb41b7cacd2de864f311c1c897184e09b8"
+    },
+    {
+      "path": "tests/graph/identity_portable_recovery.test.ts",
+      "sha256": "2138a09674dd9bf27072b3fa807999ebd61cc7ab527f15006ba7f272ed6ee935"
+    },
+    {
+      "path": "tests/graph/identity_interrupted_writer.test.ts",
+      "sha256": "1f6f3f13e9d445ac7b88c04856437ebccc12e1b98f2f4c52166f3804a2b66551"
+    },
+    {
+      "path": "tests/helpers/identity_recovery.ts",
+      "sha256": "fe16bc9b79f74dc2f3c0b33a152c28f4baed0ae207df66c9abbb9660de83cb91"
+    },
+    {
+      "path": "tests/graph/identity_migration.test.ts",
+      "sha256": "fd5f866ccffc59c1ab81991b48f7f3776ed10dbf9fa41b84bec53298e2e3a4d0"
+    },
+    {
+      "path": "tests/graph/identity_migration_lineage.test.ts",
+      "sha256": "d98d7d0b5580d657e58eb7adcdd820f6c8e13543c36b150075cde478dbbb96db"
+    },
+    {
+      "path": "tests/graph/identity_migration_validation.test.ts",
+      "sha256": "b27c24d271df6c493e32f8b876eef76ae0e9f0aac2fd7b86762efcad15bbbd66"
+    },
+    {
+      "path": "tests/graph/identity_reconciliation_plan.test.ts",
+      "sha256": "1165bafa18fe2ee9ae375caa0cfb0b1befd9ba48ea4835205721d1d8ec23c7de"
+    },
+    {
+      "path": "tests/graph/identity_writer_fence.test.ts",
+      "sha256": "0538b32f4c1b90c09c9f187c711f3167e7a3d9f399b8bc7de1f9a036a0780978"
+    },
+    {
+      "path": "tests/commands/cli_option_admission.test.ts",
+      "sha256": "50edb71d3cb184fd45d0ae9fa02a68d660144f1c75aeda3f8741ac419f69afbf"
+    },
+    {
+      "path": "tests/fixtures/interrupted-writer.cjs",
+      "sha256": "24631ec727644511207b403d6bd698d667a018e2967c43fcace7a65acaa1edf0"
+    },
+    {
+      "path": "scripts/installed-graph-recovery.js",
+      "sha256": "a45b9a147b73f959a75bff86e2b453c9e65fea7d48e42fbc9b5ef284d4458b2c"
+    },
+    {
+      "path": "scripts/generate-command-contract.js",
+      "sha256": "99f20b6dfc4e944085f9a3bc46b5693345b69a942d7c736d6674fb41323aa2ea"
+    },
+    {
+      "path": "README.md",
+      "sha256": "debdaa1bc5d5166c548651d05c6a1c347b92a0cea58fe6b2b471c30d600c25ba"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "07e265bcd4b6ba748801d60fe2e9fc708e5708000e1413b33163170fa91c885d"
+    },
+    {
+      "path": "CLI_COMMAND_MATRIX.md",
+      "sha256": "20169f67415d85ceb4a1504948d82f7a8a614fe367746dfe735564fc1efe1055"
+    },
+    {
+      "path": "assets/init/CLI_COMMAND_MATRIX.md",
+      "sha256": "4a192de8d661a130fae624639e168727ff64a3422632d9e2c0c3b27d2e39e778"
+    },
+    {
+      "path": "docs/advanced-alpha/graph-movement.md",
+      "sha256": "cb275ee1b7b8adcd69869a9966d9a9abd4ac334297db20c11869e7e1e5863c49"
+    },
+    {
+      "path": "docs/src/content/docs/advanced-alpha/graph-movement.md",
+      "sha256": "cb275ee1b7b8adcd69869a9966d9a9abd4ac334297db20c11869e7e1e5863c49"
+    },
+    {
+      "path": "docs/_generated/cli-reference.md",
+      "sha256": "2d186dae1f5b8eab94ff190b4dcb54c109fc5fa91cfe62ae8b1022b89b18bca7"
+    },
+    {
+      "path": "docs/_generated/command-contract-summary.json",
+      "sha256": "b36fbca0d6935699f1bdea38fcbb9c0de09dd535a4b6bec530e9a788f0562ce8"
+    },
+    {
+      "path": "docs/_generated/release-notes.json",
+      "sha256": "17c805a21a3a55c3f383da52758ce84c83a8460b47714eadd5e339813ea87f99"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/recovery-installed-probe.cjs",
+      "sha256": "98363bc0e94ecf88162a29a9e5d1914cffa8c7b267d2381b7f562eb521ea5347"
+    }
+  ],
+  "findings": [
+    {
+      "result": "OS utility dependency reproduced before correction",
+      "test": "transaction lock owners require no OS utility or UID eligibility probe",
+      "before": "failed: one forbidden subprocess probe",
+      "after": "passed, no OS utility/UID eligibility call"
+    },
+    {
+      "result": "Implicit unfinished no-lock recovery reproduced before correction",
+      "test": "unfinished no-lock recovery requires explicit quiescence confirmation before writes",
+      "before": "failed: recovery wrote without explicit confirmation",
+      "after": "refuses before writes without explicit assertion and fresh evidence"
+    }
+  ],
+  "validation": {
+    "runtime": "v24.18.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "failing_before": {
+      "tests": 2,
+      "pass": 0,
+      "fail": 2,
+      "duration_ms": 669.16525
+    },
+    "focused": {
+      "tests": 58,
+      "pass": 58,
+      "fail": 0,
+      "skip": 0,
+      "duration_ms": 35354.298542
+    },
+    "affected": {
+      "tests": 345,
+      "pass": 345,
+      "fail": 0,
+      "skipped": 0,
+      "duration_ms": 55142.411166,
+      "command": "TMPDIR=/private/tmp /opt/homebrew/opt/node@24/bin/node --test dist/tests/graph/identity_*.test.js dist/tests/util/mutation_lock.test.js dist/tests/commands/writer_admission.test.js dist/tests/commands/numeric_allocation.test.js dist/tests/commands/cli_option_admission.test.js dist/tests/commands/cli_runtime.test.js"
+    },
+    "installed": {
+      "schema_version": 1,
+      "status": "INTERMEDIATE_INSTALLED_RECOVERY_PASS_NOT_RELEASE_READY",
+      "runtime": "v24.18.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "tarball": {
+        "sha256": "9b312e91815bee8651b5c76bb24d6730ac041ce3153277166563b393888df2df",
+        "integrity": "sha512-s/7aY7aFTzdhiyKBUHjZqdO977q8ZV+j0QVNepJJCOAUw3XqQLg/9rZK+gbZhoSKRPs9lalqXb5E4SC+QFwf/A==",
+        "files": [
+          "CHANGELOG.md",
+          "CLI_COMMAND_MATRIX.md",
+          "CONTRIBUTING.md",
+          "LICENSE",
+          "README.md",
+          "dist/cli.js",
+          "dist/command-contract.json",
+          "dist/commands/archive.js",
+          "dist/commands/bootstrap_instructions.js",
+          "dist/commands/bundle.js",
+          "dist/commands/capability.js",
+          "dist/commands/checkpoint.js",
+          "dist/commands/db.js",
+          "dist/commands/doctor.js",
+          "dist/commands/event.js",
+          "dist/commands/event_support.js",
+          "dist/commands/fix.js",
+          "dist/commands/format.js",
+          "dist/commands/git.js",
+          "dist/commands/goal.js",
+          "dist/commands/graph.js",
+          "dist/commands/graph_identity.js",
+          "dist/commands/guide.js",
+          "dist/commands/handoff.js",
+          "dist/commands/index.js",
+          "dist/commands/init.js",
+          "dist/commands/init_manifest.js",
+          "dist/commands/list.js",
+          "dist/commands/loop.js",
+          "dist/commands/loop_descriptors.js",
+          "dist/commands/mcp.js",
+          "dist/commands/new.js",
+          "dist/commands/next.js",
+          "dist/commands/node_card.js",
+          "dist/commands/option_contract.js",
+          "dist/commands/pack.js",
+          "dist/commands/query_output.js",
+          "dist/commands/search.js",
+          "dist/commands/show.js",
+          "dist/commands/skill.js",
+          "dist/commands/skill_mirror.js",
+          "dist/commands/skill_support.js",
+          "dist/commands/spec.js",
+          "dist/commands/status.js",
+          "dist/commands/subgraph.js",
+          "dist/commands/task.js",
+          "dist/commands/upgrade.js",
+          "dist/commands/upgrade_identity.js",
+          "dist/commands/upgrade_projections.js",
+          "dist/commands/upgrade_transaction.js",
+          "dist/commands/validate.js",
+          "dist/commands/work.js",
+          "dist/commands/workspace.js",
+          "dist/core/config.js",
+          "dist/core/event_limits.js",
+          "dist/core/filesystem_authority.js",
+          "dist/core/migrate.js",
+          "dist/core/node_runtime.js",
+          "dist/core/paths.js",
+          "dist/core/project_db.js",
+          "dist/core/project_db_events.js",
+          "dist/core/project_db_materializer.js",
+          "dist/core/project_db_migrations.js",
+          "dist/core/project_db_queue.js",
+          "dist/core/project_db_queue_contract.js",
+          "dist/core/project_db_snapshot.js",
+          "dist/core/public_skill_projection.js",
+          "dist/core/sqlite_observation.js",
+          "dist/core/template_path.js",
+          "dist/core/version.js",
+          "dist/core/workspace_path.js",
+          "dist/graph/agent_file_types.js",
+          "dist/graph/archive_file.js",
+          "dist/graph/archive_integrity.js",
+          "dist/graph/cache_output.js",
+          "dist/graph/capabilities_index_cache.js",
+          "dist/graph/capabilities_indexer.js",
+          "dist/graph/edges.js",
+          "dist/graph/events_validation.js",
+          "dist/graph/frontmatter.js",
+          "dist/graph/goal_next.js",
+          "dist/graph/goal_scope.js",
+          "dist/graph/identity.js",
+          "dist/graph/identity_acceptance.js",
+          "dist/graph/identity_authoring.js",
+          "dist/graph/identity_history.js",
+          "dist/graph/identity_legacy_lineage.js",
+          "dist/graph/identity_migration.js",
+          "dist/graph/identity_reconcile.js",
+          "dist/graph/identity_reconciliation_plan.js",
+          "dist/graph/identity_refs.js",
+          "dist/graph/identity_snapshot.js",
+          "dist/graph/identity_template.js",
+          "dist/graph/identity_transaction.js",
+          "dist/graph/identity_transport.js",
+          "dist/graph/identity_validation.js",
+          "dist/graph/index_cache.js",
+          "dist/graph/indexer.js",
+          "dist/graph/json_cache_fingerprint.js",
+          "dist/graph/loop_bindings.js",
+          "dist/graph/node.js",
+          "dist/graph/node_body.js",
+          "dist/graph/reindex.js",
+          "dist/graph/selected_goal.js",
+          "dist/graph/skills_index_cache.js",
+          "dist/graph/skills_indexer.js",
+          "dist/graph/sqlite_index.js",
+          "dist/graph/staleness.js",
+          "dist/graph/subgraph_bundle.js",
+          "dist/graph/subgraphs.js",
+          "dist/graph/template_schema.js",
+          "dist/graph/transport_paths.js",
+          "dist/graph/transport_policy.js",
+          "dist/graph/transport_state.js",
+          "dist/graph/validate_graph.js",
+          "dist/graph/visibility.js",
+          "dist/graph/workspace_files.js",
+          "dist/graph/workspace_ownership.js",
+          "dist/init/AGENTS.md",
+          "dist/init/AGENT_START.md",
+          "dist/init/CLAUDE.md",
+          "dist/init/CLI_COMMAND_MATRIX.md",
+          "dist/init/README.md",
+          "dist/init/config.json",
+          "dist/init/core/COLLABORATION.md",
+          "dist/init/core/HUMAN.md",
+          "dist/init/core/SOUL.md",
+          "dist/init/core/core.md",
+          "dist/init/core/guide.md",
+          "dist/init/core/rule-1-mdkg-conventions.md",
+          "dist/init/core/rule-2-context-pack-rules.md",
+          "dist/init/core/rule-3-cli-contract.md",
+          "dist/init/core/rule-4-repo-safety-and-ignores.md",
+          "dist/init/core/rule-5-release-and-versioning.md",
+          "dist/init/core/rule-6-templates-and-schemas.md",
+          "dist/init/init-manifest.json",
+          "dist/init/legacy/0.5.2-before-compact.json",
+          "dist/init/legacy/v0.0.9-init-manifest.json",
+          "dist/init/llms.txt",
+          "dist/init/skills/SKILL.md.example",
+          "dist/init/skills/default/author-mdkg-skill/SKILL.md",
+          "dist/init/skills/default/build-pack-and-execute-task/SKILL.md",
+          "dist/init/skills/default/pursue-mdkg-goal/SKILL.md",
+          "dist/init/skills/default/pursue-mdkg-loop/SKILL.md",
+          "dist/init/skills/default/select-work-and-ground-context/SKILL.md",
+          "dist/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+          "dist/init/skills/public-seed-policy.json",
+          "dist/init/templates/default/archive.md",
+          "dist/init/templates/default/bug.md",
+          "dist/init/templates/default/chk.md",
+          "dist/init/templates/default/dec.md",
+          "dist/init/templates/default/dispute.md",
+          "dist/init/templates/default/edd.md",
+          "dist/init/templates/default/epic.md",
+          "dist/init/templates/default/feat.md",
+          "dist/init/templates/default/feedback.md",
+          "dist/init/templates/default/goal.md",
+          "dist/init/templates/default/loop.md",
+          "dist/init/templates/default/manifest.md",
+          "dist/init/templates/default/prd.md",
+          "dist/init/templates/default/prop.md",
+          "dist/init/templates/default/proposal.md",
+          "dist/init/templates/default/receipt.md",
+          "dist/init/templates/default/rule.md",
+          "dist/init/templates/default/spec.md",
+          "dist/init/templates/default/spike.md",
+          "dist/init/templates/default/task.md",
+          "dist/init/templates/default/test.md",
+          "dist/init/templates/default/work.md",
+          "dist/init/templates/default/work_order.md",
+          "dist/init/templates/loops/backend-api-cli-bloat-audit.loop.md",
+          "dist/init/templates/loops/design-frontend-ux-audit.loop.md",
+          "dist/init/templates/loops/duplicate-code-and-linting-audit.loop.md",
+          "dist/init/templates/loops/security-audit.loop.md",
+          "dist/init/templates/loops/tech-stack-best-practices-audit.loop.md",
+          "dist/init/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          "dist/init/templates/loops/user-story-audit-and-recommendations.loop.md",
+          "dist/init/templates/skills/base.SKILL.md",
+          "dist/init/templates/specs/agent.MANIFEST.md",
+          "dist/init/templates/specs/agent.SPEC.md",
+          "dist/init/templates/specs/api.MANIFEST.md",
+          "dist/init/templates/specs/api.SPEC.md",
+          "dist/init/templates/specs/base.MANIFEST.md",
+          "dist/init/templates/specs/base.SPEC.md",
+          "dist/init/templates/specs/capability.MANIFEST.md",
+          "dist/init/templates/specs/capability.SPEC.md",
+          "dist/init/templates/specs/integration.MANIFEST.md",
+          "dist/init/templates/specs/integration.SPEC.md",
+          "dist/init/templates/specs/model.MANIFEST.md",
+          "dist/init/templates/specs/model.SPEC.md",
+          "dist/init/templates/specs/project.MANIFEST.md",
+          "dist/init/templates/specs/project.SPEC.md",
+          "dist/init/templates/specs/runtime-agent.MANIFEST.md",
+          "dist/init/templates/specs/runtime-agent.SPEC.md",
+          "dist/init/templates/specs/runtime-image.MANIFEST.md",
+          "dist/init/templates/specs/runtime-image.SPEC.md",
+          "dist/init/templates/specs/tool.MANIFEST.md",
+          "dist/init/templates/specs/tool.SPEC.md",
+          "dist/pack/budget.js",
+          "dist/pack/export_json.js",
+          "dist/pack/export_md.js",
+          "dist/pack/export_toon.js",
+          "dist/pack/export_xml.js",
+          "dist/pack/metrics.js",
+          "dist/pack/order.js",
+          "dist/pack/pack.js",
+          "dist/pack/profile.js",
+          "dist/pack/stats.js",
+          "dist/pack/types.js",
+          "dist/pack/verbose_core.js",
+          "dist/templates/builtin.js",
+          "dist/templates/headings.js",
+          "dist/templates/limits.js",
+          "dist/templates/loader.js",
+          "dist/templates/loop_seeds.js",
+          "dist/util/argparse.js",
+          "dist/util/atomic.js",
+          "dist/util/date.js",
+          "dist/util/errors.js",
+          "dist/util/filter.js",
+          "dist/util/git_metadata.js",
+          "dist/util/git_observation.js",
+          "dist/util/git_remote.js",
+          "dist/util/id.js",
+          "dist/util/lock.js",
+          "dist/util/lock_evidence.js",
+          "dist/util/output.js",
+          "dist/util/qid.js",
+          "dist/util/refs.js",
+          "dist/util/sort.js",
+          "dist/util/writer_admission.js",
+          "dist/util/zip.js",
+          "package.json",
+          "scripts/postinstall.js"
+        ]
+      },
+      "installed_caught_error_cases": [
+        {
+          "kind": "migration",
+          "mode": "resume",
+          "position": "first",
+          "writes": 15,
+          "observed_written": 1,
+          "state": "applied",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": false,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "migration",
+          "mode": "resume",
+          "position": "middle",
+          "writes": 15,
+          "observed_written": 8,
+          "state": "applied",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": true,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "migration",
+          "mode": "resume",
+          "position": "last",
+          "writes": 15,
+          "observed_written": 15,
+          "state": "applied",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": false,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "migration",
+          "mode": "rollback",
+          "position": "first",
+          "writes": 15,
+          "observed_written": 1,
+          "state": "rolled-back",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": false,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "migration",
+          "mode": "rollback",
+          "position": "middle",
+          "writes": 15,
+          "observed_written": 8,
+          "state": "rolled-back",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": true,
+          "rollback_interruption_verified": true
+        },
+        {
+          "kind": "migration",
+          "mode": "rollback",
+          "position": "last",
+          "writes": 15,
+          "observed_written": 15,
+          "state": "rolled-back",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": false,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "reconciliation",
+          "mode": "resume",
+          "position": "first",
+          "writes": 6,
+          "observed_written": 1,
+          "state": "applied",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": false,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "reconciliation",
+          "mode": "resume",
+          "position": "middle",
+          "writes": 6,
+          "observed_written": 4,
+          "state": "applied",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": true,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "reconciliation",
+          "mode": "resume",
+          "position": "last",
+          "writes": 6,
+          "observed_written": 6,
+          "state": "applied",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": false,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "reconciliation",
+          "mode": "rollback",
+          "position": "first",
+          "writes": 6,
+          "observed_written": 1,
+          "state": "rolled-back",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": false,
+          "rollback_interruption_verified": false
+        },
+        {
+          "kind": "reconciliation",
+          "mode": "rollback",
+          "position": "middle",
+          "writes": 6,
+          "observed_written": 4,
+          "state": "rolled-back",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": true,
+          "rollback_interruption_verified": true
+        },
+        {
+          "kind": "reconciliation",
+          "mode": "rollback",
+          "position": "last",
+          "writes": 6,
+          "observed_written": 6,
+          "state": "rolled-back",
+          "git_index_preserved": true,
+          "user_bytes_preserved": true,
+          "dependency_and_control_refused": false,
+          "rollback_interruption_verified": false
+        }
+      ],
+      "installed_sigkill_cases": [
+        {
+          "scenario": "installed-cli-real-sigkill",
+          "mode": "resume",
+          "point": "first",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-real-sigkill",
+          "mode": "resume",
+          "point": "middle",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-real-sigkill",
+          "mode": "resume",
+          "point": "last",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-real-sigkill",
+          "mode": "resume",
+          "point": "terminal",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-real-sigkill",
+          "mode": "rollback",
+          "point": "first",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-real-sigkill",
+          "mode": "rollback",
+          "point": "middle",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-real-sigkill",
+          "mode": "rollback",
+          "point": "last",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-real-sigkill",
+          "mode": "rollback",
+          "point": "terminal",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-killed-unmirrored-claim",
+          "mode": "resume",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-killed-unmirrored-claim",
+          "mode": "rollback",
+          "pass": true
+        },
+        {
+          "scenario": "installed-cli-new-normal-lock-epoch",
+          "pass": true
+        }
+      ],
+      "recovery_duration_ms": 131470.614833,
+      "prepack_postinstall": "passed",
+      "os_probe_attempts": 0,
+      "probe_hashes": {
+        "admission_preload": "85deca9dac90dc25d3b0ad259d9cf2a696dd88f3aaa4f3c5ef11ccc01810b3c2",
+        "caught_error_preload": "bb27c2779453091fd55e6302298ba877d9db151186c8fc741f9af9b3f960d87d",
+        "sigkill_preload": "9a77fc5718937237a1ad746cae8783f2a7a3a8f1f2c818e693589c009e84df32"
+      },
+      "limitations": [
+        "Intermediate macOS arm64 artifact only; not final candidate, Linux or Windows qualification",
+        "Operator assertions are fixture-owned intent, not OS proof or authentication",
+        "Deferred Bugs46/47 remain unresolved; no claim of ACL or ancestor-race hardening",
+        "No full-suite coverage, independent security acceptance or final artifact seal"
+      ],
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-portable-recovery-installed-gO1cit"
+      }
+    },
+    "checks": {
+      "build": "pass",
+      "cli_matrix": "pass",
+      "command_contract": "3bd2bc75e083ea8d38e10c57f71b9b0084c5f4c9dfa7d2c2731a578a4cc47001",
+      "generated_reference_and_release_notes": "pass",
+      "documentation_examples": {
+        "checked": 472,
+        "files": 63,
+        "failed": 0
+      },
+      "skill_validation": {
+        "checked": 8,
+        "errors": 0,
+        "warnings": 0
+      },
+      "graph_before_checkpoint": {
+        "errors": 0,
+        "warnings": 3,
+        "warning_class": "pre-existing stale subgraph snapshots; refresh excluded"
+      },
+      "diff_check": "pass"
+    }
+  },
+  "setup_failures": [
+    {
+      "kind": "test-harness-typing-and-build",
+      "result": "Initial optional-process-method TypeScript typing and test-helper enum typing were corrected. A tests-only build initially reused old runtime output; the explicit source build plus test compile precedes all passing source results."
+    },
+    {
+      "kind": "harness-npm-json-parsing",
+      "cause": "Normal npm prepack prepends lifecycle stdout before its JSON array; first bounded probe parsed entire stdout.",
+      "result": "No installed tests ran. Owned fixture /private/tmp/mdkg-portable-recovery-installed-Ge8IhD removed by finalizeFixture.",
+      "remedy": "Parse npm's final root JSON array, retain normal lifecycle execution."
+    }
+  ],
+  "deferred_unresolved": [
+    {
+      "qid": "root:bug-46",
+      "goal": "root:goal-87",
+      "accepted": false,
+      "fixed": false
+    },
+    {
+      "qid": "root:bug-47",
+      "goal": "root:goal-87",
+      "accepted": false,
+      "fixed": false
+    }
+  ],
+  "limitations": [
+    "Intermediate installed macOS arm64 candidate; not the final artifact seal or complete Test489 case family.",
+    "Final macOS/Linux, Linux architecture coverage, independent current-source security acceptance, full repository/coverage/release ladder and seal remain open.",
+    "Windows remains unqualified; absence of OS dispatch is not cross-platform testing.",
+    "Operator-confirmed quiescence assumes cooperative private checkouts; it is not remote scheduling, a distributed lease or a hostile filesystem boundary.",
+    "Goal85 and Goal87 remain paused. No publish, push, tags, remote Git, provider or deployment action."
+  ],
+  "next": "Finish Test489 combined installed observation/resource/writer/recovery coverage, then remaining Goal86 release-critical guidance and final qualification.",
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "source-grounded-diagnose-and-fix",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": [],
+  "local_commits_created": [],
+  "staged_paths": [],
+  "completion": {
+    "recorded_at": "2026-09-28T16:13:47.530Z",
+    "task_state": "done",
+    "goal_state": "active",
+    "next_active_node": "root:test-489",
+    "git": {
+      "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "branch": "main",
+      "upstream": "origin/main",
+      "cached_divergence": "69\t0",
+      "staged_paths": [],
+      "dirty_file_count": 135,
+      "remote_verified": false
+    },
+    "changed_entry_paths": [
+      ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      ".mdkg/index/mdkg.sqlite",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+      ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+      "CHANGELOG.md",
+      "README.md",
+      "docs/_generated/release-notes.json",
+      "src/cli.ts"
+    ],
+    "new_paths": [
+      ".mdkg/artifacts/goal-86/node-portability/recovery-installed-probe.cjs",
+      ".mdkg/artifacts/goal-86/node-portability/recovery-qualification.json",
+      ".mdkg/work/chk-654-implement-portable-operator-confirmed-graph-recovery-with-exact-evidence.md",
+      "CLI_COMMAND_MATRIX.md",
+      "assets/init/CLI_COMMAND_MATRIX.md",
+      "docs/_generated/cli-reference.md",
+      "docs/_generated/command-contract-summary.json",
+      "docs/advanced-alpha/graph-movement.md",
+      "docs/src/content/docs/advanced-alpha/graph-movement.md",
+      "scripts/generate-command-contract.js",
+      "scripts/installed-graph-recovery.js",
+      "src/commands/graph_identity.ts",
+      "src/commands/option_contract.ts",
+      "src/graph/identity_transaction.ts",
+      "src/util/argparse.ts",
+      "src/util/lock.ts",
+      "src/util/lock_evidence.ts",
+      "tests/commands/cli_option_admission.test.ts",
+      "tests/fixtures/interrupted-writer.cjs",
+      "tests/graph/identity_interrupted_writer.test.ts",
+      "tests/graph/identity_migration.test.ts",
+      "tests/graph/identity_migration_lineage.test.ts",
+      "tests/graph/identity_migration_validation.test.ts",
+      "tests/graph/identity_portable_recovery.test.ts",
+      "tests/graph/identity_reconciliation_plan.test.ts",
+      "tests/graph/identity_writer_fence.test.ts",
+      "tests/helpers/identity_recovery.ts"
+    ],
+    "protected": [
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+        "actual_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+        "actual_sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+      },
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+        "actual_sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      }
+    ],
+    "locks": {
+      "mdkg": false,
+      "git": false
+    },
+    "input_mismatches": [],
+    "checks": {
+      "full_graph": {
+        "errors": 0,
+        "warnings": 3,
+        "warning_class": "pre-existing stale imported bundles"
+      },
+      "changed_graph": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "sqlite_index": {
+        "fresh_checks": 5,
+        "failure_count": 0
+      },
+      "diff_check": "pass"
+    },
+    "release_readiness": "NOT_READY"
+  }
+}

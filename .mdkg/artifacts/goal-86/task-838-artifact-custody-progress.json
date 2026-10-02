@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:task-838",
+  "goal_qid": "root:goal-86",
+  "status": "PARTIAL_LOCAL_VERIFICATION",
+  "source_head": "c10113489381badf2845fc378c49b317376f953e",
+  "source_is_dirty": true,
+  "source_hashes": {
+    "scripts/qualification-artifact.js": "00aefd31e3bbbd488ada301311a92cea3bb48ec7d6ed1095c3170b5fafdfd957",
+    "scripts/npm-smoke-proxy.js": "5caf570b15dc95edaf894e91346cbbca3cde4808a9580a7e4561e6b043f4935d",
+    "scripts/release-ladder.js": "648af7ffb9a35b17558fcc1668bb5eaa622cbb1631bb0cb48ed37c3b5f3cc73f",
+    "tests/qualification-artifact.test.mjs": "67400fe1f86b0848744b17cf123c3b9f7c0e75efe71a3070f82aea4d122a5494"
+  },
+  "runtime": { "node": "v24.18.0", "platform": "darwin", "arch": "arm64" },
+  "baseline": {
+    "command": "node --test tests/qualification-artifact.test.mjs",
+    "tests": 3, "pass": 0, "fail": 3, "duration_ms": 242.457667,
+    "failures": [
+      "Delivered tarball shares canonical inode",
+      "Self-delivery removes the canonical candidate before failing",
+      "Existing unrelated delivery path is overwritten"
+    ],
+    "safety": "All destructive reproductions used newly created disposable synthetic fixture files only"
+  },
+  "final_focused_run": {
+    "command": "node --test tests/qualification-artifact.test.mjs dist/tests/release-ladder.test.js",
+    "tests": 27, "pass": 27, "fail": 0, "skipped": 0, "cancelled": 0,
+    "duration_ms": 2363.177541,
+    "new_case_count": 14,
+    "existing_release_harness_case_count": 13,
+    "new_cases_all_pass": [
+      "Independent delivery bytes and unchanged canonical file after delivered-copy mutation",
+      "Canonical self-delivery refusal without deletion",
+      "Unrelated destination preservation",
+      "Repeated matching independent delivery",
+      "Symlink and hard-link refusal",
+      "Before/after unchanged consumer verification",
+      "Changed candidate rejected before consumer invocation",
+      "Same-size corruption after successful consumer invalidates qualification",
+      "Original consumer failure preserved",
+      "Consumer failure and artifact corruption both retained",
+      "Successful synthetic installer produces before/after hash receipt",
+      "Synthetic installer corruption rejects acceptance",
+      "Changed delivery refused before installer invocation",
+      "Unrecorded tarball refused"
+    ]
+  },
+  "checks": {
+    "javascript_syntax": "passed",
+    "git_diff_check": "passed",
+    "test_discovery": "new MJS test included by full coverage/test discovery; 168 total discovered test files"
+  },
+  "scope": "Repository-owned validation infrastructure only; helper is excluded from npm runtime payload by the package files allowlist",
+  "remaining_acceptance": [
+    "Complete fixture Git environment and expected-root admission inventory/remediation",
+    "Safe coverage/context/scratch cleanup ownership and exact-path controls",
+    "Integrate and verify durable evidence retention before fixture disposal",
+    "Real installed-candidate and complete release-ladder qualification",
+    "Independent current-source acceptance and platform gates"
+  ],
+  "limitations": [
+    "Focused installer controls use a local synthetic executable, not actual npm installation qualification",
+    "Hash bookends detect checked-boundary corruption; they are not an OS sandbox or adversarial filesystem-race immunity",
+    "No raw security report recovery, blocked-context access, hosted action or final artifact sealing"
+  ],
+  "skill_candidates": []
+}

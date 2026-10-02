@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-final-package-gates-milestone",
+  "owner": "mdkg-project-agent",
+  "recorded_at": "2026-09-30T03:39:00Z",
+  "status": "NOT_READY",
+  "context_qids": [
+    "root:goal-86",
+    "root:task-828",
+    "root:task-829",
+    "root:task-830",
+    "root:test-487",
+    "root:test-491",
+    "root:test-492"
+  ],
+  "authority": "approved local Goal86 prepublish execution; reviewed explicit-path local commits; no external publication authority",
+  "source_revision": "72a3c8780af7d4c2888590b02158ddc60476facc",
+  "candidate": {
+    "version": "0.6.0",
+    "path": "/private/tmp/mdkg-goal86-final-6cSZ3w/run-10dQeS/artifact/mdkg-0.6.0.tgz",
+    "sha256": "f7cbdc1dad6d4ab0faa1e8f1ef74ef6d38e706491aa278926ba1d7717a0db1e9",
+    "bytes": 543453,
+    "payload_files": 237,
+    "input_manifest_sha256": "3824809d82565ef40ef9163a6b9ca900a40f5b347be773e74f58bdbd16d48a28",
+    "package_inputs_sha256": "7614e6190031f0f7575a9479bcd951217d1feaf357daec1a162da05ab725b73d",
+    "sealed": false,
+    "repacked": false
+  },
+  "full_suite": {
+    "state": "passed-current",
+    "path": "/private/tmp/mdkg-goal86-final-6cSZ3w/run-OVcyye/receipt.json",
+    "sha256": "57e825b87f10f5dcda0c643992887541f96269b243bf6ea0f1995f9ceb9fe23b",
+    "tests": 2382,
+    "passed": 2382,
+    "failed": 0,
+    "skipped": 0,
+    "coverage": {
+      "lines": 92.59,
+      "branches": 84.3,
+      "functions": 97.57
+    },
+    "floors": {
+      "lines": 89,
+      "branches": 77,
+      "functions": 96
+    },
+    "qualification": "complete runtime coverage reused for unchanged package inputs; not a claimed new 2383-test run"
+  },
+  "supplements": [
+    {
+      "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/focused-readiness-supplement.tap",
+      "sha256": "49e3ae451d5a4cd8ee48507c0d3c30a3112cd4fb75ad3a07421c3ee0f7307d63",
+      "passed": 49,
+      "failed": 0,
+      "reason": "two qualification-only prepack/gate fixes; one additional unique regression"
+    },
+    {
+      "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/fix-portable-source-macos.tap",
+      "passed": 30,
+      "failed": 0,
+      "reason": "Git add/add fixture setup corrected to explicit recursive/no-renames; product ancestry assertion unchanged"
+    }
+  ],
+  "package_ladder": {
+    "state": "passed-current",
+    "path": "/private/tmp/mdkg-goal86-final-6cSZ3w/run-RzUyn3/receipt.json",
+    "sha256": "6ca5dda827e682795f16a287adb3a4720db206dd7e5ede1f5b4e666ca5f97586",
+    "smokes_passed": 37,
+    "smokes_failed": 0,
+    "canonical_smoke_inventory": 46,
+    "deferred_website_smokes": 9,
+    "site_builds": 0,
+    "root_builds": 0,
+    "retained_artifact_consumer_count": 34,
+    "evidence_kind": "honest continuation; seven prior gates marked reused-not-rerun; final readiness gate and all 37 package smokes executed",
+    "continuation_driver_sha256": "10857339a4ea67a9837736a3eaaf9bfaf4249ab8e8ebfe8924f38187f2152a8e"
+  },
+  "linux": {
+    "state": "passed-current-composite",
+    "os": "Ubuntu 24.04.4",
+    "arm64": "native ARM64 Linux on ARM64 host",
+    "x86_64": "emulated x86_64 on ARM64 host; no native performance claim",
+    "current_audit_unique_passes_per_architecture": 229,
+    "composition": "165 unchanged passing cases from first eleven current-audit families plus corrected fix/capabilities/subgraph/contract supplement of 64; no duplicate counting",
+    "scale": "same 2000-node scenarios; ARM64 full JSON/SQLite pass; x86_64 original 600000ms migration timeout retained, one explicit bounded 900000ms JSON retry and remaining SQLite row pass",
+    "evidence": [
+      {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-arm64-results/receipt.json",
+        "sha256": "1b223e9023f2f7adc408fe6b0c01d47497aa83343a76fbf174cc834972adde13",
+        "original_receipt_pass": false,
+        "environment": {
+          "platform": "linux",
+          "arch": "arm64",
+          "node": "v24.18.0",
+          "git": "git version 2.43.0",
+          "native_or_emulated": "native ARM64 Linux on ARM64 host"
+        },
+        "passed_families": [
+          "bootstrap",
+          "collaboration",
+          "gitdir",
+          "submodule",
+          "ownership",
+          "state-admission",
+          "containment",
+          "remedies",
+          "compatibility",
+          "work",
+          "runtime",
+          "behavior",
+          "pack-controls",
+          "generic",
+          "options",
+          "readonly",
+          "capability-umask"
+        ],
+        "failed_families": [
+          "current-audit"
+        ]
+      },
+      {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-results/receipt.json",
+        "sha256": "8946ceb3966bf60c0db5a5543e6abf1212eb95df4b46f7b8fa4ea57f21dce261",
+        "original_receipt_pass": false,
+        "environment": {
+          "platform": "linux",
+          "arch": "x64",
+          "node": "v24.18.0",
+          "git": "git version 2.43.0",
+          "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+        },
+        "passed_families": [
+          "bootstrap",
+          "collaboration",
+          "gitdir",
+          "submodule",
+          "ownership",
+          "state-admission",
+          "containment",
+          "remedies",
+          "compatibility",
+          "work",
+          "runtime",
+          "behavior",
+          "pack-controls",
+          "generic",
+          "options",
+          "readonly",
+          "capability-umask"
+        ],
+        "failed_families": [
+          "current-audit"
+        ]
+      },
+      {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-arm64-audit-supplement/receipt.json",
+        "sha256": "01c0d8b5eedfdb181f92e44e09e6d6a5244a87d45666760b6cdd4100d05f2980",
+        "original_receipt_pass": true,
+        "environment": null,
+        "supplement_cases": [
+          {
+            "family": "commands/fix.test.js",
+            "counts": {
+              "tests": 30,
+              "pass": 30,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            }
+          },
+          {
+            "family": "graph/capabilities_indexer.test.js",
+            "counts": {
+              "tests": 10,
+              "pass": 10,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            }
+          },
+          {
+            "family": "commands/subgraph.test.js",
+            "counts": {
+              "tests": 21,
+              "pass": 21,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            }
+          },
+          {
+            "family": "commands/command_contract.test.js",
+            "counts": {
+              "tests": 3,
+              "pass": 3,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            }
+          }
+        ],
+        "duration_ms": 48241
+      },
+      {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-audit-supplement/receipt.json",
+        "sha256": "217a802275c5b570a2229ec114ad9ab588b358568479cea887ecd2f2c7cfb42d",
+        "original_receipt_pass": true,
+        "environment": null,
+        "supplement_cases": [
+          {
+            "family": "commands/fix.test.js",
+            "counts": {
+              "tests": 30,
+              "pass": 30,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            }
+          },
+          {
+            "family": "graph/capabilities_indexer.test.js",
+            "counts": {
+              "tests": 10,
+              "pass": 10,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            }
+          },
+          {
+            "family": "commands/subgraph.test.js",
+            "counts": {
+              "tests": 21,
+              "pass": 21,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            }
+          },
+          {
+            "family": "commands/command_contract.test.js",
+            "counts": {
+              "tests": 3,
+              "pass": 3,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            }
+          }
+        ],
+        "duration_ms": 314534
+      },
+      {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-arm64-scale/receipt.json",
+        "sha256": "413f14198bf901edf86e5c0758397fd9d0129cdbf31fe97a76577c3b70055700",
+        "original_receipt_pass": true,
+        "environment": {
+          "platform": "linux",
+          "arch": "arm64",
+          "node": "v24.18.0",
+          "git": "git version 2.43.0",
+          "native_or_emulated": "native ARM64 Linux on ARM64 host"
+        },
+        "passed_families": [
+          "scale"
+        ],
+        "failed_families": []
+      },
+      {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-scale/receipt.json",
+        "sha256": "a4f3fd8670948956d74d7ccb2c05301a6c20447a50d262993dcfb92adabad111",
+        "original_receipt_pass": false,
+        "environment": {
+          "platform": "linux",
+          "arch": "x64",
+          "node": "v24.18.0",
+          "git": "git version 2.43.0",
+          "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+        },
+        "passed_families": [],
+        "failed_families": [
+          "scale"
+        ]
+      },
+      {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-scale-json-retry/receipt.json",
+        "sha256": "83dc30448f9685526d8a8db9469fe6c7b6abc21c3ddc176026bf5e3a3632ab7c",
+        "original_receipt_pass": true,
+        "environment": null,
+        "duration_ms": 753982
+      },
+      {
+        "path": "/private/tmp/mdkg-final-installed-helpers-JGUXfx/linux-amd64-scale-sqlite/receipt.json",
+        "sha256": "0cea308ae3a805d4d4b6db914cc1cd74021667872f75c54a344c5f178c823cbe",
+        "original_receipt_pass": true,
+        "environment": null,
+        "duration_ms": 766993
+      }
+    ]
+  },
+  "macos": {
+    "state": "missing",
+    "running_output": "/private/tmp/mdkg-macos-final-results-xzL4zP",
+    "note": "final persisted 18-family native ARM64 collector still running at this milestone; prior individual passes are intermediate evidence"
+  },
+  "remaining": [
+    "complete final macOS persisted platform receipt",
+    "fresh complete remediation-diff security acceptance against reviewed immutable source range",
+    "reconcile final requirement/node acceptance records",
+    "exact artifact seal and evidence-only closure"
+  ],
+  "implementation_allowlist": {
+    "path": ".mdkg/artifacts/goal-86/implementation-commit-allowlist-20260930.json",
+    "count": 132,
+    "paths_sha256": "1651421f4aa708d3be325f7cbec5e36afaa5a6630b983d34bbb92e0110297e6a",
+    "review": "bounded independent local_commit_review; conditional fixture requirements now passed on macOS and both Ubuntu architectures; not Task828 security acceptance"
+  },
+  "protected": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "limitations": [
+    "Goal85 paused; no publish/push/tag/provider/deploy/remote Git",
+    "Bugs46/47 deferred and unresolved under Goal87",
+    "Windows, hosted CI and non-shipping website qualification unverified/deferred",
+    "Never accessed or recovered blocked historical security context",
+    "No bundle/subgraph refresh, canonical migration, branch or worktree change"
+  ],
+  "skill_candidates": []
+}

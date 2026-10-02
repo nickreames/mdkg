@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "kind": "mdkg-goal86-independent-remediation-diff-assessment",
+  "date": "2026-09-30",
+  "outcome": "NOT_READY",
+  "source": {
+    "branch": "main",
+    "base": "e42f1d93497119c9a1f8684df926510da91dea42",
+    "head": "c313d80407b43797ef0a530a91b645951fdafb81",
+    "canonical_source_mutations_during_review": false
+  },
+  "scan": {
+    "id": "e5e0584a-bdfc-4da0-8c41-7e5edd4d8bba",
+    "status": "completed",
+    "coverage": "partial",
+    "canonical_artifacts": [
+      {
+        "mediaType": "application/json",
+        "path": "findings.json",
+        "sha256": "3be5e5905f17583c15a8ec992fcc850b3643df52a457fd7717ba6e6608343f9a"
+      },
+      {
+        "mediaType": "application/json",
+        "path": "coverage.json",
+        "sha256": "fe5038fdcd750f62250c60eaa7ecde932bcab797c8a9df9ae220559f0405dc37"
+      }
+    ],
+    "report_path": "/Users/nick/.codex/state/plugins/codex-security/scans/mdkg/c313d80407b43797ef0a530a91b645951fdafb81_20260930T034326Z_gyn6zkdm/report.md",
+    "raw_report_copied": false
+  },
+  "findings": [
+    {
+      "finding_id": "csf_08e010befc7091080172567d",
+      "occurrence_id": "occ_913c35eab348378dc39e9901",
+      "title": "Non-special remote descriptor redaction can retain credential text",
+      "severity": "low",
+      "confidence": "high",
+      "locations": [
+        {
+          "endLine": 33,
+          "path": "src/util/git_remote.ts",
+          "role": "root_control",
+          "startLine": 26
+        },
+        {
+          "endLine": 347,
+          "path": "src/commands/bundle.ts",
+          "role": "sink",
+          "startLine": 347
+        },
+        {
+          "endLine": 1057,
+          "path": "src/commands/bundle.ts",
+          "role": "sink",
+          "startLine": 1057
+        },
+        {
+          "endLine": 80,
+          "path": "src/commands/git.ts",
+          "role": "sink",
+          "startLine": 79
+        },
+        {
+          "endLine": 416,
+          "path": "src/commands/mcp.ts",
+          "role": "sink",
+          "startLine": 416
+        },
+        {
+          "endLine": 539,
+          "path": "src/commands/subgraph.ts",
+          "role": "sink",
+          "startLine": 539
+        },
+        {
+          "endLine": 947,
+          "path": "src/commands/subgraph.ts",
+          "role": "sink",
+          "startLine": 947
+        },
+        {
+          "endLine": 1236,
+          "path": "src/commands/subgraph.ts",
+          "role": "sink",
+          "startLine": 1234
+        },
+        {
+          "endLine": 486,
+          "path": "src/graph/subgraphs.ts",
+          "role": "sink",
+          "startLine": 486
+        },
+        {
+          "endLine": 591,
+          "path": "src/graph/subgraphs.ts",
+          "role": "sink",
+          "startLine": 591
+        }
+      ],
+      "disposition": "confirmed-unresolved",
+      "candidate_id": "candidate-3161061779b40236"
+    },
+    {
+      "finding_id": "csf_80803508154cfa17788ddac6",
+      "occurrence_id": "occ_bcf467c55bbb07ba59e2b783",
+      "title": "Pending skill-registry preparation bypasses existing-source byte limits",
+      "severity": "low",
+      "confidence": "high",
+      "locations": [
+        {
+          "endLine": 275,
+          "path": "src/commands/skill.ts",
+          "role": "entrypoint",
+          "startLine": 275
+        },
+        {
+          "endLine": 155,
+          "path": "src/commands/skill_support.ts",
+          "role": "root_control",
+          "startLine": 152
+        },
+        {
+          "endLine": 287,
+          "path": "src/commands/skill.ts",
+          "role": "sink",
+          "startLine": 285
+        },
+        {
+          "endLine": 398,
+          "path": "src/core/filesystem_authority.ts",
+          "role": "sink",
+          "startLine": 398
+        },
+        {
+          "endLine": 253,
+          "path": "src/graph/skills_indexer.ts",
+          "role": "concrete_implementation",
+          "startLine": 242
+        }
+      ],
+      "disposition": "confirmed-unresolved",
+      "candidate_id": "candidate-b9d998350ba7b9e3"
+    }
+  ],
+  "correctness_defects": [
+    {
+      "candidate_id": "candidate-ae60ace369b53343",
+      "title": "Materialization clean can remove native Git at destination root",
+      "security_policy": "ignore: operator-only; actual integrity defect retained",
+      "evidence": "Installed candidate exits0 and deletes an owned native .git directory at a valid marked output",
+      "owner": "bug-63",
+      "affected_paths": [
+        "src/util/git_metadata.ts",
+        "src/commands/subgraph.ts"
+      ]
+    },
+    {
+      "candidate_id": "candidate-f608d6ab8725db3e",
+      "title": "Configured snapshot seal can replace native Git index",
+      "security_policy": "ignore: protected-config/operator-only; actual integrity defect retained",
+      "evidence": "Installed candidate exits0 and replaces contained separate Git index with SQLite bytes",
+      "affected_paths": [
+        "src/core/project_db_snapshot.ts",
+        "src/commands/db.ts"
+      ]
+    }
+  ],
+  "review_coverage": {
+    "primary_closed": 176,
+    "source_files": 69,
+    "release_script_package_workflow_files": 66,
+    "sanitized_json": 41,
+    "remaining": "Exact supporting regression, fixture, generated guidance and historical graph change accounting is incomplete. Task828 cannot close."
+  },
+  "candidate": {
+    "version": "0.6.0",
+    "sha256": "f7cbdc1dad6d4ab0faa1e8f1ef74ef6d38e706491aa278926ba1d7717a0db1e9",
+    "qualification": "2382 full tests,37 package smokes,macOS ARM64/Ubuntu24 ARM64 native and x86_64 emulated installed evidence retained; not security acceptance or seal",
+    "seal": "not-ready"
+  },
+  "limitations": [
+    "No real secrets or external transport inspected; synthetic owned offline fixtures only.",
+    "Bugs46/47 remain deferred unresolved underGoal87.",
+    "No blocked historical context accessed/recovered/rerun.",
+    "No remote Git,push,publication,provider,deployment or global configuration mutation.",
+    "Current report is partial coverage; absence of other findings is not clearance."
+  ],
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "verify-close-and-checkpoint",
+    "codex-security:security-diff-scan",
+    "codex-security:validation",
+    "codex-security:attack-path-analysis"
+  ],
+  "skill_candidates": []
+}

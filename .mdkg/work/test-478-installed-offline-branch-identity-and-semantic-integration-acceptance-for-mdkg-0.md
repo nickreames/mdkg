@@ -2,26 +2,86 @@
 id: test-478
 type: test
 title: Installed offline branch identity and semantic integration acceptance for mdkg 0.6.0
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json, .mdkg/artifacts/goal-86/test-478-installed-collaboration.cjs, .mdkg/artifacts/goal-86/test-478-installed-worker.cjs, .mdkg/artifacts/goal-86/test-478-indirection-qualification.json, .mdkg/artifacts/goal-86/test-478-indirection-qualification.cjs, .mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/final-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/candidate-seal-20260930.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json]
 relates: []
-blocked_by: [bug-35, task-835, task-836, task-827, task-839, task-838]
+blocked_by: [bug-35, task-835, task-836, task-827, task-839, task-838, bug-61]
 blocks: []
-refs: [dec-94, dec-95, test-484]
+refs: [dec-94, dec-95, test-484, chk-659, chk-660, bug-61]
 context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: [chk-603]
 aliases: []
 skills: []
 cases: [test-478-case-1, test-478-case-2, test-478-case-3, test-478-case-4, test-478-case-5, test-478-case-6, test-478-case-7, test-478-case-8, test-478-case-9, test-478-case-10, test-478-case-11, test-478-case-12]
 created: 2026-09-07
-updated: 2026-09-17
+updated: 2026-09-30
 ---
 
+# Current sealed successor acceptance - 2026-09-30
+
+This record's final acceptance now consumes b5497c5f5e5f022e candidate bytes
+at source b10870355b264355af2be4fc53bb4640851f747b, not the earlier f7/6154
+candidate. The successor-installed-case-acceptance and successor-installed-platform-
+qualification receipts bind this QID's actual bounded cases, three exact platforms,
+source/package/harness hashes and limitations. The exact artifact is sealed in
+candidate-seal-20260930.json; Chk570 records complete local acceptance.
+
+All20 retained installed families are accounted on native macOS ARM64 and Ubuntu24
+ARM64-native/x86_64-emulated; minimum/supported Node24.18.0 operation is counted
+once, with actual24.15/26 early refusal/discovery controls. No Windows, native x64
+performance, hosted/website or consumer-adoption proof is claimed. Earlier failures
+and intermediate passes below remain historical and are not relabeled. Bugs46/47
+remain deferred/unresolved. Goal85 remains paused; no publication authority follows.
+
+# Historical family contracts and intermediate candidate evidence
+
+
+# Final installed family acceptance - 2026-09-30
+
+Offline colliding aliases/cross-links and ordinary uncommitted/staged/unstaged use; same-identity ancestral/lifecycle conflicts, delete/reintroduce, repeated integration/cherry-pick/revert/immutable evidence; concurrent real worktrees/local-state isolation and reviewed native whole source-plus-graph integration.
+
+The retained f7cbdc1d tarball passes all amended package cases on native macOS
+ARM64 and Ubuntu24 ARM64/native and x86_64/emulated. Exact SHA256/SHA512,
+package inputs, case ownership and platform/failed-run/supplement provenance are
+recorded in `.mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json`
+and `final-installed-platform-qualification-20260930.json` in that directory.
+Earlier candidates remain historical. Bugs46/47 are deferred/unresolved, not
+fixed or accepted. Windows/hosted CI and native-x64 performance are unqualified.
+Family completion is not Task828 independent security acceptance, Task830 seal
+or publication authority. No package input or protected canonical state changed.
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Reuse Chk659/660 current6154e4ea real concurrent worktrees, collision/crosslink, reviewed native integration, separate-gitdir/submodule topologies and sampled abrupt/journal controls. Missing: Linux rows and final acceptance. Arbitrary recursive submodules and dirty-worktree deletion policy are not new scope.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
+
 # Current Successor Contract - 2026-09-13
+
+2026-09-28 execution amendment under Dec98: use supported Node24.18.0/24.x,
+not the historical unconditional24.15/26 matrix. Goal: complete current local
+installed collaboration evidence using the retained6154e4ea candidate. Context:
+main6d23981e and162 preserved dirty paths; source/candidate/protected hashes
+match Chk658 and no mutation lock is present. Boundaries: installed CLI, owned
+disposable native Git repositories/worktrees under /private/tmp, qualification
+fixtures and sanitized mdkg evidence; no canonical branch/worktree, remote Git,
+blocked context, bundle refresh or publication. Done when local case evidence
+and explicit gaps are bound to unchanged candidate bytes, tested native
+topologies and protected bookends. Final platform/independent/full-ladder/seal
+acceptance remains separate; do not mark this test done from a partial pass.
+Evidence: native Git topology and ancestry receipts, real overlapping processes,
+whole fixture/index/state hashes, reviewed mappings and explicit refusal controls.
 
 Two actual concurrent linked worktrees, isolated state, exact pinned target/incoming/ancestor, reconciliation before native ancestry-preserving merge, separate source/config resolution, repeated integration and distinct submodule/gitdir-indirection proof.
 
@@ -90,6 +150,54 @@ Exact built tarball and source hashes, disposable /private/tmp roots, synthetic 
     decision before claiming the public support envelope.
 
 # Results / Evidence
+
+2026-09-28 successor current-intermediate milestone: Chk660 and the separate
+test-478-indirection-qualification.json supplement the preserved Chk659 record.
+Actual ordinary, separate-gitdir and one-level submodule-backed repositories
+each run two concurrent linked worktrees,60 observational reads, two SIGKILL
+journals and a reviewed native four-conflict merge. The parent submodule
+checkout and superproject HEAD/index/gitlink metadata remain unchanged.
+
+Four sampled faults per topology (truncated journal, missing mirrored epoch,
+missing journal with lock and changed reviewed authored input) refuse inspection
+or report both modes not ready, and refuse resume/rollback without changing the
+whole fixture inventory. Mode-specific pre-fault approval tokens are used.
+Correct fixture bytes are restored only by the test harness, then real recovery
+positive controls pass. This does not establish every malformed shape or a
+dirty-worktree deletion/pruning policy.
+
+Bug61's non-shipping Git-admission helper was fixed after a failing-before
+regression. The124-test helper selection and independent bounded readback pass.
+The original source capture remains intact, and a separately named qualification
+amendment binds the helper delta to unchanged6154e4ea package bytes. Final
+platform/independent/ladder/seal acceptance remains open. Case12 now has exact
+composed-topology evidence, not arbitrary recursive-submodule support; case11
+retains the explicit newer-sibling and cleanup-policy limits above.
+
+2026-09-28 current-intermediate milestone: Chk659 and
+`.mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json` bind
+the retained6154e4ea candidate,273 source-input hashes and two private drivers.
+Existing identity/collaboration and288-case Git-observation families pass.
+The new actual linked-worktree family passes simultaneous CLI creation and
+same-identity edits, same-checkout exclusion,60 explicit-root warm/cold
+JSON/SQLite observations, two SIGKILL journals, peer recovery isolation,
+pinned/symbolic-ref guards and a real four-conflict native integration.
+Graph/config/source resolutions are separate; both ancestries survive and
+fresh replay is unchanged. Native retention lock is not a writer lease.
+
+Three harness failures (missing db init, config-first refusal expectation,
+obsolete-decision replay) were corrected and the affected linked family rerun.
+The existing families were not redundantly rerun; the initial large output was
+tool-truncated, so only its completed-family summaries are retained. Independent
+bounded static readback is not security or final release acceptance.
+
+Cases1-10 now have current local intermediate evidence, with case11 partial
+and case12 observational-only. Malformed/incomplete-journal refusal,
+submodule-backed v2 collaboration/recovery and the newer sibling's eventual
+native integration remain unclaimed. macOS arm64/Node24.18 only; final artifact,
+Linux, independent acceptance and full-ladder/seal gates remain. Test478 stays
+progress; the historical not-executed statements below are superseded only by
+the exact new evidence, never erased. No package input changed.
 
 Cases6-12 are planned and NOT EXECUTED as of chk603. Static review finds good
 product foundations but existing installed helpers hard-code .git/index; no

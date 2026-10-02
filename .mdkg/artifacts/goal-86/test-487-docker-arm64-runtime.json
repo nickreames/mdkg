@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "kind": "sanitized-linux-qualification-receipt",
+  "original_receipt_sha256": "a755c6519a6c7b74bf2a7157b6cc25b8437f42e99a708eee70ad6412d78ad440",
+  "original_receipt_bytes": 13852,
+  "condensation": "Complete raw synthetic stream hashes verified; large arrays/inventories are represented by hashes/counts. Reproduction uses the pinned capsule and original test assertions. No raw security reports or consumer data.",
+  "evidence": {
+    "kind": "test487-local-docker-installed-families",
+    "started_at": "2026-09-29T04:00:49.134Z",
+    "completed_at": "2026-09-29T04:00:51.837Z",
+    "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "capsule_manifest_sha256": "8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+    "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+    "source_revision": "36e075b8d64babff04154704a721db4a82926ebe",
+    "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+    "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+    "environment": {
+      "platform": "linux",
+      "arch": "arm64",
+      "node": "v24.18.0",
+      "uid": 10001,
+      "kernel": "6.12.76-linuxkit",
+      "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "git": "git version 2.43.0",
+      "npm": "11.16.0",
+      "root_filesystem": {
+        "bytes": 1251,
+        "sha256": "c749a8a7d39f5bdf742f16547105b866675c228c86b681a79e5bd8a926a641b6"
+      },
+      "fixture_filesystem": "/dev/vda1[/docker/volumes/3d6170cb28fd9e58c652dbc2ad194eb7b97d301596e287f9760937f0ffccb868/_data] ext4   rw,relatime,discard",
+      "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+      "native_or_emulated": "native ARM64 Linux on ARM64 host"
+    },
+    "completed": [
+      {
+        "name": "runtime",
+        "driver": "test-480-old-client-runtime.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 2635,
+        "stdout_sha256": "d11ee18ac2d248251a40f0e2d23af368da96c4cbccd8a8ff235e563502d8f9b9",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test480-current-old-client-runtime-boundary",
+          "owner": "root:test-480",
+          "consumer": "root:test-482",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "driver_sha256": "9072bf21acc2df8f70edc287ec18885550720e7a58525739cd33257e7e972a77",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "duration_ms": 2532,
+          "rows": {
+            "entry_count": 21,
+            "sha256": "76fe1ab0b2135093685389f5a4e23dc87fdec9cd621efddde56dc11632d9bc3e",
+            "first": {
+              "case": "published0.5.2 legacy writer positive",
+              "pass": true
+            },
+            "last": {
+              "case": "unsupported runtime discovery positive",
+              "runtime": "v26.0.0",
+              "command": [
+                "--version"
+              ],
+              "pass": true
+            }
+          },
+          "downloads": [
+            {
+              "kind": "published-package",
+              "url": "https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz",
+              "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+              "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+              "bytes": 425431
+            },
+            {
+              "kind": "official-node-runtime",
+              "version": "24.18.0",
+              "arch": "arm64",
+              "url": "https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-arm64.tar.xz",
+              "sha256": "58c9520501f6ae2b52d5b210444e24b9d0c029a58c5011b797bc1fe7105886f6",
+              "bytes": 30473480,
+              "checksum_manifest_sha256": "3927bab574a00ca0560c9583fe19655ba19603a1c5851414e4325d34ac50e469"
+            },
+            {
+              "kind": "official-node-runtime",
+              "version": "24.15.0",
+              "arch": "arm64",
+              "url": "https://nodejs.org/download/release/v24.15.0/node-v24.15.0-linux-arm64.tar.xz",
+              "sha256": "f3d5a797b5d210ce8e2cb265544c8e482eaedcb8aa409a8b46da7e8595d0dda0",
+              "bytes": 30108656,
+              "checksum_manifest_sha256": "1e812945dee26c3e4ca41a8c0b582668ff2401ba0ae727a122300c0e8514edb0"
+            },
+            {
+              "kind": "official-node-runtime",
+              "version": "26.0.0",
+              "arch": "arm64",
+              "url": "https://nodejs.org/download/release/v26.0.0/node-v26.0.0-linux-arm64.tar.xz",
+              "sha256": "f0f94e55142149a4d34634dc3d7e103921d898512dd0cef995ecb62c5ebd3f29",
+              "bytes": 31819656,
+              "checksum_manifest_sha256": "d9ed90999491bdda1a4e0668a18c11554b149bae4ef6be02ecbf456c5dd173ae"
+            }
+          ],
+          "limits": [
+            "This Linux execution only; Other platform rows remain separately accounted.",
+            "Old init bypass is an observed unsupported behavior, not accepted secure authoring.",
+            "No canonical migration, package changes or global runtime installation."
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true
+      }
+    ],
+    "pass": true,
+    "limitations": [
+      "Platform subset evidence only until aggregate acceptance; not publication readiness or security clearance",
+      "Bugs46/47 deferred/unresolved; Windows and hosted CI unqualified",
+      "Copied fixture adapters are separately hash-bound; no shipped package inputs changed"
+    ]
+  },
+  "failures": [],
+  "runtime_safe_controls": 19,
+  "unsupported_old_init_observations": [
+    {
+      "case": "published0.5.2 init bypass",
+      "disposition": "UNSUPPORTED OLD EXECUTABLE: manifest writes ignore schema2 admission; not a no-effect safety pass"
+    },
+    {
+      "case": "published0.5.2 force-init bypass",
+      "disposition": "UNSUPPORTED OLD EXECUTABLE: schema2 fence removed; not a safety pass"
+    }
+  ],
+  "scope": "Platform family evidence only; final security, full ladder and artifact seal remain separate. Deferred Bugs46/47 are not fixed."
+}

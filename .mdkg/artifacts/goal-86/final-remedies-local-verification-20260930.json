@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-final-bounded-remedies-local-verification",
+  "status": "SUBSYSTEM_PASS_NOT_RELEASE_READY",
+  "source_revision": "c313d80407b43797ef0a530a91b645951fdafb81",
+  "owner": "mdkg-project-agent",
+  "qids": [
+    "root:bug-63",
+    "root:bug-70",
+    "root:bug-71",
+    "root:bug-72",
+    "root:bug-73",
+    "root:test-493",
+    "root:task-828"
+  ],
+  "source_and_test_hashes": {
+    "src/commands/skill.ts": "dc461335da432315660cb5632ddf59b28a7ea1e4c0a8d207f2dce5c0e807bf81",
+    "src/commands/skill_mirror.ts": "3b75860eb27a36c8ac791da8dd4315455f0b01651b7e5613beb175b9bec30fbf",
+    "src/commands/skill_support.ts": "0e6640a5a9d5b0bfe1de241cf0bba3b14d951e11387bab692dc2bfaafd1b57e1",
+    "src/commands/subgraph.ts": "fc1ac17885987113da55aab626ec32039341da52901085d1547ba8e63613b882",
+    "src/core/project_db_snapshot.ts": "0d65d9327e32163b5339edb07d372b069a34187b7289ae4de903c7eea604f64b",
+    "src/graph/skills_indexer.ts": "81c169df2b2fba0e1e7c9b4969656526d0495e49c9e6d8cbe4a4c4acfb2ba56d",
+    "src/util/git_metadata.ts": "4e5262b6b61b9fe4e281c78d30c1a3de39aec3b95e917fe957a0dc12282cc2ef",
+    "src/util/git_remote.ts": "3caf007c0333455a5d7d8f2d8f7c0d1a57a56167e1b49e5302020fe2a1b5b16c",
+    "scripts/test-built.js": "59ad4361c0ff84dfa94fa4640f4e095c9f51a00b38903a80d0f959bda7f1f845",
+    "scripts/coverage-contract.js": "3720dfb719285ff16589a00fc1e7916e6400239f3b6fea31ee8c5eb32ac0453b",
+    "tests/commands/skill_registry_admission.test.ts": "330ac740b23929a2b7b3a4849997ba97197551112f3b150f76d86c93a7f77719",
+    "tests/fixtures/bundle-provenance.cjs": "a475c8e4ea91d7b67ad4cfd696cc33aec2bd7cb2faf6a2c659d75b671da83498",
+    "tests/fixtures/skill-registry-admission.cjs": "5751b8576c117d8359bb864d0805b1a07ce4c9ab69164cc7bbd5860686543869",
+    "tests/util/git_remote.test.ts": "bfcaa28c4e6869fd40bcab19d48f601cdd6f44ffced3d1419f048b5925f4bcce",
+    "tests/core/native_git_custody.test.ts": "8faeab627d051b9ce7689568565e43c90f254ad28d7a1612e5d32377d6dd6fb2",
+    "tests/fixtures/native-git-custody.cjs": "bdbbe067005f913d4b1ea199f55e7466045ad4eb07c156f6138371e9ce88f289",
+    "tests/test-execution-environment.test.mjs": "bf8ae534869e44f030685d8eb1005627f085a00ba184fd97a3905eb97b4b01b7"
+  },
+  "reviewed_initial_patch_sha256": "b4a09f47c2a5d64a6422cd389135fcf4d7517a01b1eff06d25aaf70fb40cfd07",
+  "revised_patch_sha256": "a7ca409b28b5765999e82bdaf1036d20a41523b3e019eb8c2037bea34afa8e10",
+  "actual_validation": [
+    {
+      "name": "Source/test compile",
+      "result": "passed",
+      "note": "Build and test build completed; final ladder will rebuild with the exact supported runtime."
+    },
+    {
+      "name": "Affected skills, Git metadata, subgraph, native custody and provenance subsystems",
+      "node": "24.18.0",
+      "passed": 105,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 84267.574291
+    },
+    {
+      "name": "Launcher environment, fixture custody and package profiles",
+      "node": "24.18.0",
+      "passed": 52,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 3146.713
+    }
+  ],
+  "retained_failures": [
+    "Incoming materialization growth: one wrapper failed, old output lost and temp retained; now prospective admission precedes effects.",
+    "Oversized mirror metadata: three synthetic CLI cases accepted invalid budgets; fixed at shared admission and bounded read.",
+    "Launcher inheritance: both trapped worker launches forwarded synthetic Git routing before the fix.",
+    "A mistaken Node26 subsystem invocation correctly refused unsupported runtime; not a supported-runtime product failure.",
+    "Launcher test initially used macOS /var temporary alias; harness corrected to canonical default OS temp root before source modification."
+  ],
+  "independent_review": {
+    "initial": "Commands/storage reviews complete; two concrete issues required revision.",
+    "supporting_diff": {
+      "base": "e42f1d93497119c9a1f8684df926510da91dea42",
+      "head": "c313d80407b43797ef0a530a91b645951fdafb81",
+      "changed_files": 93,
+      "tests": 74,
+      "docs": 11,
+      "assets_init": 4,
+      "canonical_skills": 4,
+      "unread": 0,
+      "candidate": "Ambient Git routing in test launchers; tracked as Bug73, not a runtime advisory."
+    },
+    "revision_supplement": {
+      "status": "assigned source boundaries supported; not execution or full release clearance",
+      "report_sha256": "e88cedfe9dfeb2b9807f2c0bb3adfdf134abfe09a4fabfd9e9ff157a0bd84947",
+      "coverage": ["incoming materialization refusal ordering", "bounded mirror-control admission/read", "both canonical test-worker Git-isolation boundaries"],
+      "raw_report_location": "plugin-owned standalone artifacts collection; sealed partial scan unchanged"
+    }
+  },
+  "protected_hashes": {
+    "selection": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_db": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "public_release_state": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "remaining": [
+    "Fresh full release ladder",
+    "Successor installed candidate/macOS/Ubuntu qualification",
+    "Graph family acceptance and exact seal"
+  ],
+  "git": {
+    "branch": "main",
+    "ahead_cached_origin": 72,
+    "behind_cached_origin": 0,
+    "staged": 0,
+    "remote_verified": false
+  },
+  "authority_used": "Scoped Goal86 source/tests/qualification/mdkg writes and local validation only",
+  "exclusions": [
+    "No remote Git, publication, tags, deployment/provider actions, canonical migration/worktree change, bundle refresh or blocked-context recovery"
+  ],
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "verify-close-and-checkpoint",
+    "source-grounded-diagnose-and-fix",
+    "bounded security finding review/verification"
+  ],
+  "skill_candidates": []
+}

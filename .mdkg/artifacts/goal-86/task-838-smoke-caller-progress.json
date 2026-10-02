@@ -1,0 +1,1196 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-86",
+  "task": "root:task-838",
+  "checkpoint": "root:chk-643",
+  "status": "PARTIAL_NOT_READY",
+  "source_head": "c10113489381badf2845fc378c49b317376f953e",
+  "owner": "mdkg-project-agent",
+  "source_state": "main; owned changes unstaged/uncommitted; no remote verification",
+  "source_sha256": {
+    "scripts/qualification-smoke.js": "ef4b5ace13382bc7711120e5bba151d5f211e7f379806a8ebf4f058ba7006187",
+    "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+    "scripts/qualification-git.js": "96813af8bcf360bb759a05cd4bda24cc77b561fb52fa5580e4a55a8cd4d57ea8",
+    "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+    "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+    "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+    "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+    "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+    "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+    "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+    "scripts/npm-smoke-proxy.js": "e24e5e383b9078364a2db8ec3697b6b94142f6449a138fa78d81c1c4fcf74e68",
+    "tests/qualification-smoke.test.mjs": "d24145eafbb162abbc22f657983e5666fdfc34965a089596ba23c99b6aea6eb2",
+    "tests/qualification-git.test.mjs": "46b72afb0ba2b0a4dd341e0bd273be1f003920ed3578cd8ccc1f2bd1410ae1ee",
+    "tests/qualification-fixture.test.mjs": "061d6fa2fae431f1fa5e3964b4c9c44fcb6f42ae09aed244fe27f2db5807e9f1",
+    "tests/qualification-artifact.test.mjs": "e7e2f84c39ce713589d7f057f00e8a73d921ca5cfaf940b7f398af8609706e50",
+    "tests/qualification-output.test.mjs": "b15bd150a8360799068c51c448549cbf8b3d8b9b8d54ccc3e7e25daabe4caed8",
+    "dist/tests/coverage-contract.test.js": "03132a11bcd3f473684f4d85e20d8d1810f25ee02edbc431b711e49a6866df72",
+    "dist/tests/ci-topology.test.js": "e180527dbdbf04f38e5bfc46f06749e6cfcaf9fc0b2ffbb62af465fa1359b564",
+    "dist/tests/release-ladder.test.js": "544afe99a95b016e330f6274cb7a62cccc4866bfd6fa9f7a47bff86fd9e4a3e9"
+  },
+  "scope": [
+    "Direct branch/upgrade smoke Git and Node/npm dispatch",
+    "Transitive installed collaboration and recovery process supervision",
+    "Separate source-pinned published-baseline proxy consumption",
+    "Current runtime matrix and local evidence"
+  ],
+  "baseline_reproductions": {
+    "runtime": "v26.0.0",
+    "results": [
+      {
+        "script": "smoke-branch-conflicts",
+        "ambient_index_created": true,
+        "target_index_created": false,
+        "source_sha256": "98c66601fec8ee24e25f2fd1ba226c5a0c08458aa4254c0d737cc6e86fca464b"
+      },
+      {
+        "script": "smoke-upgrade",
+        "ambient_index_created": true,
+        "target_index_created": false,
+        "source_sha256": "abe2e51bc6bb406fdab44086247856a261805642b28dddc233db49cfa703d927"
+      }
+    ],
+    "cleanup": {
+      "removed": true,
+      "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/baseline-FYorBE"
+    }
+  },
+  "baseline_proxy_admission": {
+    "runtime": "v26.0.0",
+    "source_sha256": "99bdf777330a26ed33d95ad3937e8b352ba57a33ee4a3c40ddc7f8b4f507deae",
+    "results": [
+      {
+        "suffix": [
+          "/private/tmp/mdkg-task838-smoke-qual.DekR6L/baseline-admission-xaTTmF/extra-local-package"
+        ],
+        "exit": 0,
+        "stdout": "{\"consumer_called\":true,\"args\":[\"install\",\"/private/tmp/mdkg-task838-smoke-qual.DekR6L/baseline-admission-xaTTmF/baseline.tgz\",\"--offline\",\"/private/tmp/mdkg-task838-smoke-qual.DekR6L/baseline-admission-xaTTmF/extra-local-package\"]}\n",
+        "stderr": ""
+      },
+      {
+        "suffix": [
+          "--offline=false"
+        ],
+        "exit": 0,
+        "stdout": "{\"consumer_called\":true,\"args\":[\"install\",\"/private/tmp/mdkg-task838-smoke-qual.DekR6L/baseline-admission-xaTTmF/baseline.tgz\",\"--offline\",\"--offline=false\"]}\n",
+        "stderr": ""
+      }
+    ],
+    "cleanup": {
+      "removed": true,
+      "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/baseline-admission-xaTTmF"
+    }
+  },
+  "corrections": [
+    "Both direct smoke callers bind native Git to owned roots; ambient GIT and GIT_* redirects do not reach the sentinel index.",
+    "Private exclusive npm config/cache replaces inherited user config and shared smoke cache; trusted npm executable/proxy remains explicit.",
+    "Installed commands use process.execPath and shared POSIX supervision, preserving fault preloads and ordinary nonzero refusals; signals/timeouts throw.",
+    "Branch final success follows owned cleanup and tarball before/after hash checks.",
+    "Published 0.5.2 is a distinct source-pinned baseline route with exact offline argument admission, bounded initial verification, before/after hashes and separate baseline-consumptions receipts.",
+    "Candidate deliveries remain required for candidate tarballs; no environment digest can redefine the published pin."
+  ],
+  "final_focused": {
+    "receipt": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/final-focused-UhqTu3/receipt.json",
+    "sha256": "6a311527cd9a9376936cb2ff6f2234a1753f2936234090eb40b980b0e7ac0ddb",
+    "source_sha256": {
+      "scripts/qualification-smoke.js": "ef4b5ace13382bc7711120e5bba151d5f211e7f379806a8ebf4f058ba7006187",
+      "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+      "scripts/qualification-git.js": "96813af8bcf360bb759a05cd4bda24cc77b561fb52fa5580e4a55a8cd4d57ea8",
+      "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+      "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+      "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+      "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+      "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+      "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+      "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+      "scripts/npm-smoke-proxy.js": "e24e5e383b9078364a2db8ec3697b6b94142f6449a138fa78d81c1c4fcf74e68",
+      "tests/qualification-smoke.test.mjs": "d24145eafbb162abbc22f657983e5666fdfc34965a089596ba23c99b6aea6eb2",
+      "tests/qualification-git.test.mjs": "46b72afb0ba2b0a4dd341e0bd273be1f003920ed3578cd8ccc1f2bd1410ae1ee",
+      "tests/qualification-fixture.test.mjs": "061d6fa2fae431f1fa5e3964b4c9c44fcb6f42ae09aed244fe27f2db5807e9f1",
+      "tests/qualification-artifact.test.mjs": "e7e2f84c39ce713589d7f057f00e8a73d921ca5cfaf940b7f398af8609706e50",
+      "tests/qualification-output.test.mjs": "b15bd150a8360799068c51c448549cbf8b3d8b9b8d54ccc3e7e25daabe4caed8",
+      "dist/tests/coverage-contract.test.js": "03132a11bcd3f473684f4d85e20d8d1810f25ee02edbc431b711e49a6866df72",
+      "dist/tests/ci-topology.test.js": "e180527dbdbf04f38e5bfc46f06749e6cfcaf9fc0b2ffbb62af465fa1359b564",
+      "dist/tests/release-ladder.test.js": "544afe99a95b016e330f6274cb7a62cccc4866bfd6fa9f7a47bff86fd9e4a3e9"
+    },
+    "runs": [
+      {
+        "version": "v24.15.0",
+        "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+        "files": [
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "duration_ms": 6373,
+        "log": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/final-focused-UhqTu3/v24.15.0.log",
+        "sha256": "8ee689c0422eb3efd50adf818cc9a2be68e64c0912f1cae95e65f525d5f8d62e",
+        "summary": [
+          "# tests 117",
+          "# pass 117",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 6297.113667"
+        ]
+      },
+      {
+        "version": "v24.18.0",
+        "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "files": [
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "duration_ms": 6344,
+        "log": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/final-focused-UhqTu3/v24.18.0.log",
+        "sha256": "a64995eb4150ee8410ec415b52df5e9bf268c357346ab8a8d361215d03b44f9b",
+        "summary": [
+          "# tests 117",
+          "# pass 117",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 6284.8495"
+        ]
+      },
+      {
+        "version": "v26.0.0",
+        "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "files": [
+          "tests/qualification-smoke.test.mjs",
+          "tests/qualification-git.test.mjs",
+          "tests/qualification-fixture.test.mjs",
+          "tests/qualification-artifact.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "duration_ms": 6398,
+        "log": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/final-focused-UhqTu3/v26.0.0.log",
+        "sha256": "9c7a71636bd4b05fe16167db6a4ef4f2edff89e1ba43d83a1edf709181a3f61b",
+        "summary": [
+          "# tests 117",
+          "# pass 117",
+          "# fail 0",
+          "# skipped 0",
+          "# duration_ms 6342.989667"
+        ]
+      }
+    ],
+    "unchanged": true,
+    "total_test_files": 172
+  },
+  "installed_runs": [
+    {
+      "receipt_path": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.15.0-tqqa3B/receipt.json",
+      "receipt_sha256": "7f3c8e7519dd3a7ca13396b22ec6f1445597b0b2205c74a19e9f5d4eb18be6e5",
+      "runtime": "v24.15.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/private/tmp/mdkg-bug48-resume.9rDnZj/node-v24.15.0-darwin-arm64/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "source_sha256": {
+        "scripts/qualification-smoke.js": "ef4b5ace13382bc7711120e5bba151d5f211e7f379806a8ebf4f058ba7006187",
+        "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+        "scripts/qualification-git.js": "96813af8bcf360bb759a05cd4bda24cc77b561fb52fa5580e4a55a8cd4d57ea8",
+        "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+        "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+        "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+        "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+        "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+        "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+        "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+        "scripts/npm-smoke-proxy.js": "99bdf777330a26ed33d95ad3937e8b352ba57a33ee4a3c40ddc7f8b4f507deae",
+        "tests/qualification-smoke.test.mjs": "d24145eafbb162abbc22f657983e5666fdfc34965a089596ba23c99b6aea6eb2"
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-YRx0XV"
+      },
+      "runs": [
+        {
+          "label": "smoke-branch-conflicts",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 136080,
+          "stdout": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.15.0-tqqa3B/smoke-branch-conflicts.stdout",
+          "stderr": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.15.0-tqqa3B/smoke-branch-conflicts.stderr",
+          "stdout_sha256": "4497a3984e4f3083ef5253533387b8658a31ae6e7540faee7b1bcc0c931f9ed6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-branch-conflicts",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-YRx0XV/mdkg-branch-conflicts-fWK65X",
+            "plan_hash": "sha256:8e78165f882d6d767b896760e75571c3252ad66b3abcc7139639bacd4b10ed25",
+            "identity": {
+              "runtime": "v24.15.0",
+              "common_ancestor": "c9c3cdd6c68aa7d75af6430fd96a68db3cec8b06",
+              "incoming": "473c201501c5050af364034213c94b91a6857c19",
+              "natural_collision": "task-2",
+              "target_identity": "mdkg://9411dfa3-0f97-4a62-b591-ff7701c520ff/141443db-91ee-4888-a605-801cc3ac1182",
+              "incoming_identity": "mdkg://9411dfa3-0f97-4a62-b591-ff7701c520ff/cb9c871c-89ea-4b93-ba92-faa82d386b12",
+              "incoming_alias_after": "root:task-5",
+              "plan_hash": "sha256:a00ddaf04bc46de54309cd382a07f2365ebcc0a09a0f6220a210f1f552b2ee45",
+              "cross_links_preserved": true,
+              "ordinary_uncommitted_reads_observational": true,
+              "mixed_tracked_node": {
+                "backend": "sqlite",
+                "distinct_head_staged_working_versions": true,
+                "stable_identity_preserved": true,
+                "manual_metadata_stale_cache_reads": true,
+                "reads_and_pack_preview_observational": true,
+                "pack_contains_working_tree_version": true,
+                "explicit_pack_is_only_created_file": true,
+                "ordinary_mutations_preserve_unstaged_body": true,
+                "staged_blob_and_index_unchanged": true,
+                "head_unchanged": true
+              },
+              "git_index_unchanged": true,
+              "external_receipt_sha256": "6ae0ea945776f27cc28f7c59184810e52e7b5de4ff7610ef2b23a361425144ec",
+              "replay_noop": true,
+              "reviewed_reintroduction": true,
+              "revert_replay_noop": true,
+              "cherry_pick_revert_requires_decision": true,
+              "same_identity_conflict_requires_decision": true,
+              "stale_plan_refused_without_writes": true,
+              "newer_incoming_reviewed": true,
+              "semantic_cases": [
+                {
+                  "kind": "target-delete",
+                  "conflict": "$delete-modify",
+                  "reviewed_take": "incoming",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                },
+                {
+                  "kind": "incoming-delete",
+                  "conflict": "$modify-delete",
+                  "reviewed_take": "target",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                },
+                {
+                  "kind": "evidence-conflict",
+                  "conflict": "artifacts",
+                  "reviewed_take": "target",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                }
+              ]
+            },
+            "recovery": {
+              "runtime": "v24.15.0",
+              "cases": [
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "first",
+                  "writes": 15,
+                  "observed_written": 1,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "middle",
+                  "writes": 15,
+                  "observed_written": 8,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "last",
+                  "writes": 15,
+                  "observed_written": 15,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "first",
+                  "writes": 15,
+                  "observed_written": 1,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "middle",
+                  "writes": 15,
+                  "observed_written": 8,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": true
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "last",
+                  "writes": 15,
+                  "observed_written": 15,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "first",
+                  "writes": 6,
+                  "observed_written": 1,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "middle",
+                  "writes": 6,
+                  "observed_written": 4,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "last",
+                  "writes": 6,
+                  "observed_written": 6,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "first",
+                  "writes": 6,
+                  "observed_written": 1,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "middle",
+                  "writes": 6,
+                  "observed_written": 4,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": true
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "last",
+                  "writes": 6,
+                  "observed_written": 6,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                }
+              ],
+              "fault_preload_sha256": "6adb7e44982d7cc6c2e698bcee8e111a30968b6f00de1c07a10f286225d791b8",
+              "limitations": [
+                "Error interruption after real filesystem operations, not SIGKILL or power-loss durability.",
+                "First/middle/last boundaries sampled; not every operation position."
+              ]
+            },
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-YRx0XV/mdkg-branch-conflicts-fWK65X"
+            }
+          }
+        },
+        {
+          "label": "smoke-upgrade",
+          "exit": 1,
+          "signal": null,
+          "duration_ms": 10427,
+          "stdout": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.15.0-tqqa3B/smoke-upgrade.stdout",
+          "stderr": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.15.0-tqqa3B/smoke-upgrade.stderr",
+          "stdout_sha256": "dcda1bc620e72288a09121819a90107245fbc338735d0a9f1c35dd74dca1f3dd",
+          "stderr_sha256": "da585b43ce9a22f8ac1e059fae4574d3bbfead7242a94f1a43f710626c191852",
+          "sentinel_unchanged": true,
+          "current": {
+            "action": "current-upgrade-qualified",
+            "runtime": "v24.15.0",
+            "cases": [
+              "missing-managed-files",
+              "custom-root-guidance",
+              "old-template-fallback",
+              "legacy-spec-migration",
+              "manifest-spec-sibling-conflict",
+              "custom-spike-template",
+              "ignored-event-log"
+            ],
+            "final_acceptance": false
+          },
+          "published": "UNVERIFIED: deliberately unavailable local baseline prevents network fallback"
+        }
+      ]
+    },
+    {
+      "receipt_path": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.18.0-9UlX9l/receipt.json",
+      "receipt_sha256": "242d284f5432eb10fd9091822ef7959e3666c58b35e4638cf415b9fac7681094",
+      "runtime": "v24.18.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "source_sha256": {
+        "scripts/qualification-smoke.js": "ef4b5ace13382bc7711120e5bba151d5f211e7f379806a8ebf4f058ba7006187",
+        "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+        "scripts/qualification-git.js": "96813af8bcf360bb759a05cd4bda24cc77b561fb52fa5580e4a55a8cd4d57ea8",
+        "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+        "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+        "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+        "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+        "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+        "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+        "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+        "scripts/npm-smoke-proxy.js": "99bdf777330a26ed33d95ad3937e8b352ba57a33ee4a3c40ddc7f8b4f507deae",
+        "tests/qualification-smoke.test.mjs": "d24145eafbb162abbc22f657983e5666fdfc34965a089596ba23c99b6aea6eb2"
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-Wq0TaT"
+      },
+      "runs": [
+        {
+          "label": "smoke-branch-conflicts",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 142198,
+          "stdout": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.18.0-9UlX9l/smoke-branch-conflicts.stdout",
+          "stderr": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.18.0-9UlX9l/smoke-branch-conflicts.stderr",
+          "stdout_sha256": "b5131497fd02ca336b2ff393c4f241b0ea01720e788cf321ce201f4d1135de7f",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-branch-conflicts",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-Wq0TaT/mdkg-branch-conflicts-3RRuxi",
+            "plan_hash": "sha256:d8fff307eea83c7cd557e272866110cd94cc5e3e852f2e8c807ddf1830463ede",
+            "identity": {
+              "runtime": "v24.18.0",
+              "common_ancestor": "a44c306b2b5812cfcee7f7122c097ae133ddfb24",
+              "incoming": "6b938a69a42c2b827a06d52c19b11b41aa153061",
+              "natural_collision": "task-2",
+              "target_identity": "mdkg://969d6cef-87e9-44da-a41c-81a616618039/ffc8d329-1936-4bf4-a4d5-20967cb823f3",
+              "incoming_identity": "mdkg://969d6cef-87e9-44da-a41c-81a616618039/ca2ca3c4-2b34-4df5-93cf-eefad9f72f1a",
+              "incoming_alias_after": "root:task-4",
+              "plan_hash": "sha256:71a3b4b7968f9b15a4ed6bf67b10a534a197c9116d1cef5cf6d77614e7718ddd",
+              "cross_links_preserved": true,
+              "ordinary_uncommitted_reads_observational": true,
+              "mixed_tracked_node": {
+                "backend": "sqlite",
+                "distinct_head_staged_working_versions": true,
+                "stable_identity_preserved": true,
+                "manual_metadata_stale_cache_reads": true,
+                "reads_and_pack_preview_observational": true,
+                "pack_contains_working_tree_version": true,
+                "explicit_pack_is_only_created_file": true,
+                "ordinary_mutations_preserve_unstaged_body": true,
+                "staged_blob_and_index_unchanged": true,
+                "head_unchanged": true
+              },
+              "git_index_unchanged": true,
+              "external_receipt_sha256": "cb4c10903cd21534dcc7c9e6629e372362248fb751fb7a933678718f94cc8202",
+              "replay_noop": true,
+              "reviewed_reintroduction": true,
+              "revert_replay_noop": true,
+              "cherry_pick_revert_requires_decision": true,
+              "same_identity_conflict_requires_decision": true,
+              "stale_plan_refused_without_writes": true,
+              "newer_incoming_reviewed": true,
+              "semantic_cases": [
+                {
+                  "kind": "target-delete",
+                  "conflict": "$delete-modify",
+                  "reviewed_take": "incoming",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                },
+                {
+                  "kind": "incoming-delete",
+                  "conflict": "$modify-delete",
+                  "reviewed_take": "target",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                },
+                {
+                  "kind": "evidence-conflict",
+                  "conflict": "artifacts",
+                  "reviewed_take": "target",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                }
+              ]
+            },
+            "recovery": {
+              "runtime": "v24.18.0",
+              "cases": [
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "first",
+                  "writes": 15,
+                  "observed_written": 1,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "middle",
+                  "writes": 15,
+                  "observed_written": 8,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "last",
+                  "writes": 15,
+                  "observed_written": 15,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "first",
+                  "writes": 15,
+                  "observed_written": 1,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "middle",
+                  "writes": 15,
+                  "observed_written": 8,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": true
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "last",
+                  "writes": 15,
+                  "observed_written": 15,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "first",
+                  "writes": 6,
+                  "observed_written": 1,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "middle",
+                  "writes": 6,
+                  "observed_written": 4,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "last",
+                  "writes": 6,
+                  "observed_written": 6,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "first",
+                  "writes": 6,
+                  "observed_written": 1,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "middle",
+                  "writes": 6,
+                  "observed_written": 4,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": true
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "last",
+                  "writes": 6,
+                  "observed_written": 6,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                }
+              ],
+              "fault_preload_sha256": "d3915460b8dfd7de124e2d5945d0aea8ca45da9023d8f286977c5b980c11d688",
+              "limitations": [
+                "Error interruption after real filesystem operations, not SIGKILL or power-loss durability.",
+                "First/middle/last boundaries sampled; not every operation position."
+              ]
+            },
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-Wq0TaT/mdkg-branch-conflicts-3RRuxi"
+            }
+          }
+        },
+        {
+          "label": "smoke-upgrade",
+          "exit": 1,
+          "signal": null,
+          "duration_ms": 12495,
+          "stdout": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.18.0-9UlX9l/smoke-upgrade.stdout",
+          "stderr": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v24.18.0-9UlX9l/smoke-upgrade.stderr",
+          "stdout_sha256": "b7e454254fa6436bda78a689209d5f15d0f1bc05f7582a0db99868f6332d3e13",
+          "stderr_sha256": "28ed73f12df806aa7795990c0a65daa6d0d54089515a0ae1175c09eabe40263a",
+          "sentinel_unchanged": true,
+          "current": {
+            "action": "current-upgrade-qualified",
+            "runtime": "v24.18.0",
+            "cases": [
+              "missing-managed-files",
+              "custom-root-guidance",
+              "old-template-fallback",
+              "legacy-spec-migration",
+              "manifest-spec-sibling-conflict",
+              "custom-spike-template",
+              "ignored-event-log"
+            ],
+            "final_acceptance": false
+          },
+          "published": "UNVERIFIED: deliberately unavailable local baseline prevents network fallback"
+        }
+      ]
+    },
+    {
+      "receipt_path": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v26.0.0-U7h3gs/receipt.json",
+      "receipt_sha256": "5f4460b6750c4de821dff1bb669b245a96d8d25c904c9bcc320c2a860136dbac",
+      "runtime": "v26.0.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+      "source_sha256": {
+        "scripts/qualification-smoke.js": "ef4b5ace13382bc7711120e5bba151d5f211e7f379806a8ebf4f058ba7006187",
+        "scripts/qualification-fixture.js": "1631d2f8968c35b6e36eec6c2df9d67821394babbf76e1b24947bef7866bf139",
+        "scripts/qualification-git.js": "96813af8bcf360bb759a05cd4bda24cc77b561fb52fa5580e4a55a8cd4d57ea8",
+        "scripts/qualification-process.js": "d2207bf8d241a86ce97ecd9e671e9f303cf0ac0c6c797bce5e8b0b2c106051ec",
+        "scripts/qualification-process-context.js": "61e2d30f00411892454de12b55f0ff92282f7238c2a2cf032df50c22508629b7",
+        "scripts/smoke-branch-conflicts.js": "44acb5a136093c8eee0c96d0445b9ca3f468edd93286940a494d9ee2512503a5",
+        "scripts/smoke-upgrade.js": "861a78ae3f0ecc0067be42e44c93be486b1eac6ff1560200d602623e6960f54b",
+        "scripts/installed-identity-collaboration.js": "652a5ce4a724ddd814c0c36bafba4b25596bc6d952296e11056f0a2843078696",
+        "scripts/installed-graph-recovery.js": "a77763ae5ff82e9648bf00f2fe9bebee1137d83b785631ad8c6e97e806edffb6",
+        "scripts/installed-upgrade-recovery.js": "c1c95de3e9e888e5a0abcaad70adcaff02f6ac319bd51d11a9b2db533cb0155e",
+        "scripts/npm-smoke-proxy.js": "99bdf777330a26ed33d95ad3937e8b352ba57a33ee4a3c40ddc7f8b4f507deae",
+        "tests/qualification-smoke.test.mjs": "d24145eafbb162abbc22f657983e5666fdfc34965a089596ba23c99b6aea6eb2"
+      },
+      "source_unchanged": true,
+      "cleanup": {
+        "removed": true,
+        "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-CBOX1v"
+      },
+      "runs": [
+        {
+          "label": "smoke-branch-conflicts",
+          "exit": 0,
+          "signal": null,
+          "duration_ms": 141961,
+          "stdout": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v26.0.0-U7h3gs/smoke-branch-conflicts.stdout",
+          "stderr": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v26.0.0-U7h3gs/smoke-branch-conflicts.stderr",
+          "stdout_sha256": "c5fde347ccc7017c9a20b8ace9c1bdea78aaee51988b92d69abbd54bb31c18ef",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sentinel_unchanged": true,
+          "result": {
+            "action": "smoke-branch-conflicts",
+            "ok": true,
+            "temp_root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-CBOX1v/mdkg-branch-conflicts-ycAK2e",
+            "plan_hash": "sha256:31f4f7ca25423c592d03e853cf244fcb81838a5b411a280bc2c06b979a0ff151",
+            "identity": {
+              "runtime": "v26.0.0",
+              "common_ancestor": "0514e5b5b54bede86513c6a972d91b9a78e202fc",
+              "incoming": "11f32247ebf9ffb8766f613e9768a92845a513c0",
+              "natural_collision": "task-2",
+              "target_identity": "mdkg://d1b07ff8-1767-480a-89f4-57e2765dd686/e21e78a2-dd7f-4964-888e-bea265ae34de",
+              "incoming_identity": "mdkg://d1b07ff8-1767-480a-89f4-57e2765dd686/4a66a820-3b86-4809-a276-b9020883d3e9",
+              "incoming_alias_after": "root:task-5",
+              "plan_hash": "sha256:c403238497544b7a0262900384728504a4ad89ca79e17fe5c55f8bfa599e106e",
+              "cross_links_preserved": true,
+              "ordinary_uncommitted_reads_observational": true,
+              "mixed_tracked_node": {
+                "backend": "sqlite",
+                "distinct_head_staged_working_versions": true,
+                "stable_identity_preserved": true,
+                "manual_metadata_stale_cache_reads": true,
+                "reads_and_pack_preview_observational": true,
+                "pack_contains_working_tree_version": true,
+                "explicit_pack_is_only_created_file": true,
+                "ordinary_mutations_preserve_unstaged_body": true,
+                "staged_blob_and_index_unchanged": true,
+                "head_unchanged": true
+              },
+              "git_index_unchanged": true,
+              "external_receipt_sha256": "996425aa08693dcd3142553e98a4d8bafc4afe645700c04643f9ad291406dafd",
+              "replay_noop": true,
+              "reviewed_reintroduction": true,
+              "revert_replay_noop": true,
+              "cherry_pick_revert_requires_decision": true,
+              "same_identity_conflict_requires_decision": true,
+              "stale_plan_refused_without_writes": true,
+              "newer_incoming_reviewed": true,
+              "semantic_cases": [
+                {
+                  "kind": "target-delete",
+                  "conflict": "$delete-modify",
+                  "reviewed_take": "incoming",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                },
+                {
+                  "kind": "incoming-delete",
+                  "conflict": "$modify-delete",
+                  "reviewed_take": "target",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                },
+                {
+                  "kind": "evidence-conflict",
+                  "conflict": "artifacts",
+                  "reviewed_take": "target",
+                  "refused_without_writes": true,
+                  "git_index_unchanged": true
+                }
+              ]
+            },
+            "recovery": {
+              "runtime": "v26.0.0",
+              "cases": [
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "first",
+                  "writes": 15,
+                  "observed_written": 1,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "middle",
+                  "writes": 15,
+                  "observed_written": 8,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "resume",
+                  "position": "last",
+                  "writes": 15,
+                  "observed_written": 15,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "first",
+                  "writes": 15,
+                  "observed_written": 1,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "middle",
+                  "writes": 15,
+                  "observed_written": 8,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": true
+                },
+                {
+                  "kind": "migration",
+                  "mode": "rollback",
+                  "position": "last",
+                  "writes": 15,
+                  "observed_written": 15,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "first",
+                  "writes": 6,
+                  "observed_written": 1,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "middle",
+                  "writes": 6,
+                  "observed_written": 4,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "resume",
+                  "position": "last",
+                  "writes": 6,
+                  "observed_written": 6,
+                  "state": "applied",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "first",
+                  "writes": 6,
+                  "observed_written": 1,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "middle",
+                  "writes": 6,
+                  "observed_written": 4,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": true,
+                  "rollback_interruption_verified": true
+                },
+                {
+                  "kind": "reconciliation",
+                  "mode": "rollback",
+                  "position": "last",
+                  "writes": 6,
+                  "observed_written": 6,
+                  "state": "rolled-back",
+                  "git_index_preserved": true,
+                  "user_bytes_preserved": true,
+                  "dependency_and_control_refused": false,
+                  "rollback_interruption_verified": false
+                }
+              ],
+              "fault_preload_sha256": "af4fb9742a72c730d4b617acd80a638ac0e06ecec5e7afd548d274b4a90b9a18",
+              "limitations": [
+                "Error interruption after real filesystem operations, not SIGKILL or power-loss durability.",
+                "First/middle/last boundaries sampled; not every operation position."
+              ]
+            },
+            "tarball_sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+            "cleanup": {
+              "removed": true,
+              "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/execution-CBOX1v/mdkg-branch-conflicts-ycAK2e"
+            }
+          }
+        },
+        {
+          "label": "smoke-upgrade",
+          "exit": 1,
+          "signal": null,
+          "duration_ms": 12143,
+          "stdout": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v26.0.0-U7h3gs/smoke-upgrade.stdout",
+          "stderr": "/private/tmp/mdkg-task838-smoke-qual.DekR6L/results-v26.0.0-U7h3gs/smoke-upgrade.stderr",
+          "stdout_sha256": "7d8daf6ba8b3536aad61de529e8c4fd01b2de1a904ab321c59e2313451cd0018",
+          "stderr_sha256": "a7f7c6cb066c62e93dd0c8e29b34b2f4710b3eca38bf609ac6ca757e1c32fb45",
+          "sentinel_unchanged": true,
+          "current": {
+            "action": "current-upgrade-qualified",
+            "runtime": "v26.0.0",
+            "cases": [
+              "missing-managed-files",
+              "custom-root-guidance",
+              "old-template-fallback",
+              "legacy-spec-migration",
+              "manifest-spec-sibling-conflict",
+              "custom-spike-template",
+              "ignored-event-log"
+            ],
+            "final_acceptance": false
+          },
+          "published": "UNVERIFIED: deliberately unavailable local baseline prevents network fallback"
+        }
+      ]
+    }
+  ],
+  "installed_evidence_limit": "Installed runs precede the final baseline-only argument-admission correction. Branch flow does not enter that branch; upgrade stops at an intentionally absent local baseline before installation. Final focused tests cover the exact current parser and fixed caller arguments. No actual published 0.5.2 installation, full release ladder or final-artifact seal is claimed.",
+  "review": {
+    "mode": "one independent read-only source reviewer plus bounded correction follow-ups",
+    "findings": [
+      "Transitive Node children bypassed supervision",
+      "Published baseline conflicted with candidate-only proxy provenance",
+      "Baseline guard admitted extra package/offline overrides"
+    ],
+    "disposition": "All corrected; final bounded review found no remaining defect in those corrections. Not Standard or Task828 release acceptance.",
+    "tests_run_by_reviewer": false
+  },
+  "test_selection": {
+    "boundary": "affected fixture/caller increment, not pre-merge or pre-publish",
+    "total_discovered_files": 172,
+    "coverage_floors_unchanged": {
+      "lines": 89,
+      "branches": 77,
+      "functions": 96
+    },
+    "full_suite_run": false
+  },
+  "custody": {
+    "entry_dirty_paths": 64,
+    "pre_evidence_dirty_paths": 67,
+    "staged_paths": [],
+    "head_unchanged": true,
+    "protected_sha256": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    "preserved_other_captured_paths": [
+      ".agents/skills/pursue-mdkg-goal/SKILL.md",
+      ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+      ".claude/skills/build-pack-and-execute-task/SKILL.md",
+      ".claude/skills/pursue-mdkg-goal/SKILL.md",
+      ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+      ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+      ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+      ".mdkg/skills/registry.md",
+      ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+      ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+      ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+      ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md",
+      ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      "assets/init/skills/default/build-pack-and-execute-task/SKILL.md",
+      "assets/init/skills/default/pursue-mdkg-goal/SKILL.md",
+      "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+      "scripts/coverage-contract.js",
+      "scripts/release-ladder.js",
+      "scripts/smoke-demo-graph.js",
+      "src/commands/db.ts",
+      "src/commands/work.ts",
+      "src/core/project_db_events.ts",
+      "src/core/project_db_migrations.ts",
+      "src/core/project_db_queue.ts",
+      "src/core/project_db_snapshot.ts",
+      "src/graph/sqlite_index.ts",
+      "tests/ci-topology.test.ts",
+      ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json",
+      ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json",
+      ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json",
+      ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json",
+      ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json",
+      ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+      ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md",
+      ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md",
+      ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md",
+      ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md",
+      ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md",
+      ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md",
+      ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md",
+      ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md",
+      ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md",
+      "scripts/demo-graph-fixture.js",
+      "scripts/qualification-artifact.js",
+      "scripts/qualification-git.js",
+      "scripts/qualification-output.js",
+      "scripts/qualification-process-context.js",
+      "src/core/sqlite_observation.ts",
+      "tests/core/sqlite_observation.test.ts",
+      "tests/qualification-fixture.test.mjs",
+      "tests/qualification-git.test.mjs",
+      "tests/qualification-output.test.mjs",
+      ".mdkg/state/selected-goal.json",
+      ".mdkg/db/runtime/project.sqlite",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip"
+    ],
+    "inventory_correction": "The first porcelain line was trim-normalized incorrectly, omitting the first mirror path hash. Corrected with trimEnd. That unchanged mirror matches its prior Task838 snapshot and the independently captured canonical skill hash df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62. No file mutation or source drift was found.",
+    "locks": {
+      ".mdkg/index/write.lock": false,
+      "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index.lock": false
+    },
+    "runtime_files": [
+      "project.sqlite"
+    ]
+  },
+  "temporary_custody": {
+    "root": "/private/tmp/mdkg-task838-smoke-qual.DekR6L",
+    "retained": "compact logs, receipts, synthetic reproduction/qualification scripts; intermediate tarball remains at the prior recorded path",
+    "cleanup": "All successful owned execution roots and synthetic baseline probes removed individually after completion. No user data or unknown paths deleted."
+  },
+  "remaining": [
+    "Classify/migrate remaining smoke and installed fixture callers; the prior 43-file search hit inventory is not a count of vulnerabilities.",
+    "Next direct smoke group includes fix-plan, loop, handoff, command-docs, integration-ux and operator-health; DB/SQLite smoke callers also retain direct Git/environment paths.",
+    "Actual pinned 0.5.2 upgrade and interrupted-upgrade installed qualification remain unverified in this increment. No local baseline artifact was supplied; no download or blocked-context recovery attempted.",
+    "Submodule-specific fixture support, complete installed acceptance, durable final artifact custody, Task828 review, Task829 full ladder and Task830 seal remain.",
+    "Bug60 Node-only design and failing regression, Bugs46/47, Test487 Linux and Goal85 publication gates remain unchanged."
+  ],
+  "authority": {
+    "used": "Goal86 local Node.js implementation, disposable fixtures, one read-only reviewer, mdkg evidence/projections",
+    "excluded": "Rust/Bun, Linux/hosted execution, blocked-context access, remote Git, publication/providers, consumer/root/sibling changes, bundle/subgraph refresh, canonical branch/history mutation",
+    "committed": false,
+    "pushed": false,
+    "persistent_lease_acquired": false
+  },
+  "graph_validation": {
+    "full": { "errors": 0, "warnings": 3, "classification": "preserved stale imports" },
+    "changed_only": { "errors": 0, "warnings": 0 },
+    "index_projections": { "present_and_fresh": 5, "sqlite_verify": true },
+    "git_diff_check": true,
+    "final_dirty_paths": 69,
+    "staged_paths": [],
+    "head_unchanged": true,
+    "protected_hashes_unchanged": true,
+    "other_owned_partial_and_unrelated_bytes_preserved": true,
+    "mutation_locks_present": false
+  },
+  "skill_candidates": []
+}

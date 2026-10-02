@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "kind": "sanitized-linux-qualification-receipt",
+  "original_receipt_sha256": "894be87818b689f3bf1ebbb32f3da2f6d228d550c2cdac2f4e12a73960526d8d",
+  "original_receipt_bytes": 182426,
+  "condensation": "Complete raw synthetic stream hashes verified; large arrays/inventories are represented by hashes/counts. Reproduction uses the pinned capsule and original test assertions. No raw security reports or consumer data.",
+  "evidence": {
+    "kind": "test487-local-docker-installed-families",
+    "started_at": "2026-09-29T04:40:16.897Z",
+    "completed_at": "2026-09-29T04:52:16.006Z",
+    "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "capsule_manifest_sha256": "31ab3b5099d3e6739382183d440c0c05054034049459e9ebbba631e3e190001e",
+    "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+    "source_revision": "36e075b8d64babff04154704a721db4a82926ebe",
+    "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+    "harness_inputs_sha256": "384bcbf50fdb77577b6fa6dc17403633949d225b4134465f9a9f2a39de16c07a",
+    "environment": {
+      "platform": "linux",
+      "arch": "x64",
+      "node": "v24.18.0",
+      "uid": 10001,
+      "kernel": "6.12.76-linuxkit",
+      "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "git": "git version 2.43.0",
+      "npm": "11.16.0",
+      "root_filesystem": {
+        "bytes": 1343,
+        "sha256": "b609c76fb38b66b6e11fc7c8ce820ca686c2008de6f466adba672ddc9054af4b"
+      },
+      "fixture_filesystem": "/dev/vda1[/docker/volumes/bb8d97580656d3d425275eaf2e0a322e06c539757404f7b6030cca664aadd4db/_data] ext4   rw,relatime,discard",
+      "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+      "native_or_emulated": "emulated x86_64 Linux on ARM64 host; no native performance claim"
+    },
+    "completed": [
+      {
+        "name": "scale",
+        "driver": "test-481-installed-scale.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 718362,
+        "pass": true,
+        "stdout_sha256": "71925e159bb4fd3522cfca145557e62f64605eb63988c6710c4d763da91853c1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test481-current-installed-scale-and-routing",
+          "owner": "root:test-481",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "x64",
+          "duration_ms": 717834,
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "384bcbf50fdb77577b6fa6dc17403633949d225b4134465f9a9f2a39de16c07a",
+          "driver_sha256": "77006af992ac2d68789bcee38bbfa7cada381b5fcf69aeba530920e93b7725e1",
+          "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+          "proof": {
+            "schema_version": 1,
+            "runtime": "v24.18.0",
+            "command_timeout_ms": 900000,
+            "scale_backends": [
+              "sqlite"
+            ],
+            "installed_cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+            "cases": {
+              "entry_count": 11,
+              "sha256": "bc87a4de312abddfb40cad4b9494fcd0dc3d43c753215445518b7fd01ff0a75d",
+              "first": {
+                "family": "scale",
+                "backend": "sqlite",
+                "version": "legacy",
+                "state": "warm",
+                "node_count": 2000,
+                "legacy_authored_bytes": 803563,
+                "event_records": 20000,
+                "event_bytes": 3660000,
+                "command_ms": [
+                  781,
+                  751,
+                  808,
+                  771,
+                  1047
+                ],
+                "observational": true
+              },
+              "last": {
+                "family": "goal-routing",
+                "backend": "sqlite",
+                "version": "v2",
+                "both_gate_orders": true,
+                "reopened_gate_blocks": true,
+                "goal_state_not_acceptance": true,
+                "evaluate_observational": true,
+                "artifact_recheck_required": true,
+                "publication_executed": false,
+                "git_index_preserved": true,
+                "selection_preserved": true,
+                "migration": {
+                  "graph_format": 2,
+                  "persisted_identity_count": 17,
+                  "persisted_task_identity_count": 2,
+                  "exact_plan_writes": 20,
+                  "event_history_preserved": true,
+                  "event_history_sha256": null
+                }
+              }
+            },
+            "commands": {
+              "entry_count": 239,
+              "sha256": "4a63f272fa28c9ceee5731f132527875f12c5ffb73d6b2b4182f85ae09406bee",
+              "first": {
+                "fixture": "mdkg-installed-scale-l6vKOM",
+                "executable": "node",
+                "args": [
+                  "/private/tmp/mdkg-scale-goal-CiaPaG/installed/node_modules/mdkg/dist/cli.js",
+                  "init",
+                  "--graph-only"
+                ],
+                "exit": 0,
+                "signal": null,
+                "timeout_ms": 900000,
+                "elapsed_ms": 469,
+                "stdout_bytes": 275,
+                "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+                "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "last": {
+                "fixture": "mdkg-installed-goals-c6J7U0",
+                "executable": "node",
+                "args": [
+                  "/private/tmp/mdkg-scale-goal-CiaPaG/installed/node_modules/mdkg/dist/cli.js",
+                  "validate",
+                  "--json"
+                ],
+                "exit": 0,
+                "signal": null,
+                "timeout_ms": 900000,
+                "elapsed_ms": 589,
+                "stdout_bytes": 1234,
+                "stdout_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+                "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            },
+            "fixtures_removed": 8,
+            "limitations": [
+              "2000-node graph is representative coverage, not a universal performance SLA",
+              "2049-commit refusal exercises the existing limit; exhaustive 2048-commit acceptance is not claimed",
+              "goal routing stores guidance, not artifact verification or publication enforcement"
+            ]
+          },
+          "limitations": [
+            "This Linux execution only; remaining platform rows stay open",
+            "No canonical graph migration or publication",
+            "Qualification allowance is not a new product performance target"
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          }
+        },
+        "capsule_after_verified": true
+      }
+    ],
+    "unverified": [],
+    "pass": true,
+    "limitations": [
+      "Platform subset evidence only until aggregate acceptance; not publication readiness or security clearance",
+      "Bugs46/47 deferred/unresolved; Windows and hosted CI unqualified",
+      "Copied fixture adapters are separately hash-bound; no shipped package inputs changed"
+    ]
+  },
+  "failures": [],
+  "scope": "Platform family evidence only; final security, full ladder and artifact seal remain separate. Deferred Bugs46/47 are not fixed."
+}

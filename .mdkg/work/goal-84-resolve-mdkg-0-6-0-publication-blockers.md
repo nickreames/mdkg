@@ -2,11 +2,11 @@
 id: goal-84
 type: goal
 title: Resolve mdkg 0.6.0 publication blockers
-status: blocked
+status: done
 priority: 1
-goal_state: paused
-goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-835, task-836, task-837, test-487, bug-40, bug-41, bug-42, bug-43, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-838, task-839, test-488]
+goal_state: achieved
+goal_condition: Every in-scope 0.6.0 blocker is fixed and independently verified; Bugs46/47 remain explicitly deferred and unresolved under Goal87 and Dec98, with no automatic deferral of other findings.
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-835, task-836, task-837, test-487, bug-40, bug-41, bug-42, bug-43, bug-44, bug-45, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-838, task-839, test-488, task-841, task-842, test-489, bug-61, bug-62, bug-63, bug-64, bug-65, bug-66, bug-67, bug-68, bug-69, test-491, test-492, bug-70, bug-71, bug-72, test-493, bug-73]
 last_active_node: bug-37
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
@@ -15,20 +15,116 @@ blocked_after_attempts: 3
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/candidate-seal-20260930.json, .mdkg/artifacts/goal-86/requirement-coverage.json, .mdkg/artifacts/goal-86/successor-package-gates-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-private-preview-20260930.json, .mdkg/artifacts/goal-86/local-closeout-20260930.json, .mdkg/artifacts/goal-86/closeout-commit-allowlist-20260930.json]
 relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-83, goal-85, dec-95, edd-82, goal-86, dec-96]
-evidence_refs: [chk-608, chk-610, chk-611, chk-612, chk-613]
+context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-83, goal-85, dec-95, edd-82, goal-86, dec-96, dec-98, goal-87, dec-100, epic-258, epic-257]
+evidence_refs: [chk-608, chk-610, chk-611, chk-612, chk-613, chk-570]
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-15
+updated: 2026-09-30
 ---
 
+# Final local acceptance - 2026-09-30
+
+LOCAL_READY_NOT_PUBLISHED. Exact0.6.0 b5497c5f5e5f022e candidate
+(545431 bytes,237 payload files) is sealed without repacking at source
+b10870355b264355af2be4fc53bb4640851f747b. Task826/Bug7, Tasks828/829/830
+have actual current acceptance, not inferred status-only clearance.
+
+Full discovery:2389/2389 tests pass;92.63% lines,84.36% branches,97.58%
+functions exceed unchanged89/77/96 floors. All37 package smokes pass. All20
+retained installed families are accounted on native macOS ARM64 and Ubuntu24
+ARM64-native/x86_64-emulated. Node24.18 operation plus actual unsupported24.15/26
+refusal/discovery controls are explicit. No native x86_64 performance or Windows
+qualification is claimed.
+
+Fresh Standard plus complete independent remediation supplements and final17-path
+remedy review support acceptance. Original partial reports and failed harness
+attempts remain historical, never relabeled clear/pass. Twelve of14 historical
+findings have in-scope verified remedies; Bugs46/47 remain deferred/unresolved
+under Goal87. No blocked historical context was accessed. This is not a claim
+that no undiscovered bugs exist.
+
+Private installed migration preview refuses task309's surviving mdkg://goal-10
+ambiguity; no identity was invented and no canonical migration applied. The
+current26-row ledger records exact dispositions. Website/Epic258, hosted/Epic257,
+Windows and consumer adoption remain deferred/unverified, not passes.
+
+Selected achieved Goal73, runtime DB, Demo3 bundle and public draft hashes are
+unchanged. Four reviewed source/qualification commits are bound in the seal;
+the final explicit-path evidence commit follows validated closure. Derived
+.mdkg/index/mdkg.sqlite remains locally owned and excluded, not restored/staged.
+Seven exact owned Docker containers/volumes were removed after verified diagnostics
+were retained; images/unrelated resources were preserved.
+
+Goal85 stays paused pending fresh publication approval and independent blocker,
+input and exact-artifact rechecks. No remote Git, push, tag, publication, provider,
+deployment, bundle refresh, history rewrite or root/sibling mutation occurred.
+Skill coverage: pursue-mdkg-goal and verify-close-and-checkpoint; candidates:none.
+
+# Historical acceptance contracts and intermediate evidence
+
+
+# Independent remediation diff intake - 2026-09-30
+
+Scan e5e0584a at immutable c313d804 is complete with PARTIAL coverage, not clear.
+It confirms two low security instances owned by Bugs70/71. Bug63 additionally
+owns materialized destination-root Git custody; Bug72 owns configured DB snapshot
+Git custody. The latter two are confirmed correctness defects suppressed from
+security-advisory reporting for operator-only preconditions, not waived or fixed.
+Test493 and Task828 require remedy and complete supporting-diff acceptance.
+
+The retained f7cbdc1d artifact passed2382 full tests,37 package smokes and local
+macOS ARM64/Ubuntu24 ARM64-native plus x86_64-emulated installed families.
+Tests477-484/486/487 have earned current-byte acceptance; security and seal remain
+open. Local implementation commit c313d804 is reviewed; no push/publication.
+Preserve all historical passes, original6154 bytes, selection/runtime/Demo3 state.
+Any shipped source change needs a successor artifact and affected requalification.
+Goal85 remains paused; Bugs46/47 remain deferred unresolved. NOT_READY.
+
+Sanitized current result: .mdkg/artifacts/goal-86/independent-diff-review-20260930.json.
+Raw reports remain plugin-owned; no blocked historical context was accessed.
+
+# Current source audit intake - 2026-09-29 Chk667
+
+Current Standard scan78faed0e is complete, not clear: Bugs62-68 own seven
+new confirmed security groups; Bug69 owns the separate generated command
+effect-contract defect. Tests491/492 and Task828 require their verified fixes.
+Earlier candidate/platform evidence remains intermediate. Preserve the exact
+6154e4ea artifact; changed package inputs require a successor candidate and
+affected requalification. No new feature or deferral is authorized. Bugs46/47
+remain deferred/unresolved and Goal85 remains paused. See Chk667 and the
+sanitized current-security-audit-20260929.json receipt. Goal86 is NOT_READY.
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Remain the paused blocker ledger. Bug7 is aggregate installed acceptance, not unfinished implementation. Bugs46/47 remain deferred/unresolved under Goal87; all other in-scope remedies require independent acceptance.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
+
 # Current Successor Contract - 2026-09-13
+
+2026-09-28 Dec98 supersedes the version scope, not the historical finding
+record: Bugs46/47 are DEFERRED / UNRESOLVED under paused Goal87 and excluded
+from 0.6.0 remediation dependencies. Never label either accepted, fixed or
+done. Retain their source evidence and disclose the unresolved limitations in
+final review/release guidance. No other finding is automatically deferred.
+Goal86 now also owns portable Tasks841/842 and Test489. Bug60 remains an
+active correctness prerequisite; Node-only portability must not regress its
+no-write observation contract. This goal remains a paused blocker ledger.
+All remaining in-scope remedies, installed/macOS/Linux qualification, separate
+current-source review, full ladder and exact-artifact seal remain mandatory.
 
 2026-09-15 execution addendum: the explicit Goal86 Run has completed local
 implementation acceptance for Bugs35/40 under chk610, Bug17 under chk611 and

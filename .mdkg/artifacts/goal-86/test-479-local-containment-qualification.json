@@ -1,0 +1,910 @@
+{
+  "schema_version": 1,
+  "kind": "test479-current-installed-containment",
+  "owner": "root:test-479",
+  "context_qids": [
+    "root:test-488",
+    "root:goal-86"
+  ],
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 57289,
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "driver_sha256": "0f9e3f8386bf3687923e572f699f6ff77ecf162901040c1e45488f36a15ec68a",
+  "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+  "completed": [
+    {
+      "family": "bundle-provenance",
+      "finding_owner": "root:bug-44",
+      "exit_code": 0,
+      "duration_ms": 20494,
+      "proof": {
+        "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+        "node": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "cases": [
+          {
+            "name": "userinfo-query-fragment:public",
+            "pass": true
+          },
+          {
+            "name": "userinfo-query-fragment:private",
+            "pass": true
+          },
+          {
+            "name": "encoded-userinfo:public",
+            "pass": true
+          },
+          {
+            "name": "encoded-userinfo:private",
+            "pass": true
+          },
+          {
+            "name": "extra-authority-slashes:public",
+            "pass": true
+          },
+          {
+            "name": "extra-authority-slashes:private",
+            "pass": true
+          },
+          {
+            "name": "four-authority-slashes:public",
+            "pass": true
+          },
+          {
+            "name": "four-authority-slashes:private",
+            "pass": true
+          },
+          {
+            "name": "explicit-helper:public",
+            "pass": true
+          },
+          {
+            "name": "explicit-helper:private",
+            "pass": true
+          },
+          {
+            "name": "implicit-helper:public",
+            "pass": true
+          },
+          {
+            "name": "implicit-helper:private",
+            "pass": true
+          },
+          {
+            "name": "malformed-url:public",
+            "pass": true
+          },
+          {
+            "name": "malformed-url:private",
+            "pass": true
+          },
+          {
+            "name": "control-bearing:public",
+            "pass": true
+          },
+          {
+            "name": "control-bearing:private",
+            "pass": true
+          },
+          {
+            "name": "configured-helper:public",
+            "pass": true
+          },
+          {
+            "name": "configured-helper:private",
+            "pass": true
+          },
+          {
+            "name": "control:https://example.invalid/repo%3Fname%23part",
+            "pass": true
+          },
+          {
+            "name": "control:git@example.invalid:org/repo",
+            "pass": true
+          },
+          {
+            "name": "control:../local?name#part",
+            "pass": true
+          },
+          {
+            "name": "control:C:\\repos\\project",
+            "pass": true
+          },
+          {
+            "name": "control:\\\\server\\share\\project",
+            "pass": true
+          },
+          {
+            "name": "control:no-origin",
+            "pass": true
+          },
+          {
+            "name": "control:no-git",
+            "pass": true
+          },
+          {
+            "name": "historical:inspection",
+            "pass": true
+          },
+          {
+            "name": "historical:provenance",
+            "pass": true
+          },
+          {
+            "name": "historical:materialize-refuses-without-writes",
+            "pass": true
+          },
+          {
+            "name": "historical:normalized-authority-refuses-without-rewriting",
+            "pass": true
+          },
+          {
+            "name": "control:materialize-safe-bundle",
+            "pass": true
+          },
+          {
+            "name": "configured:added",
+            "pass": true
+          },
+          {
+            "name": "configured:enabled:list",
+            "pass": true
+          },
+          {
+            "name": "configured:enabled:show",
+            "pass": true
+          },
+          {
+            "name": "configured:enabled:verify",
+            "pass": true
+          },
+          {
+            "name": "configured:enabled:audit",
+            "pass": true
+          },
+          {
+            "name": "configured:enabled:upgrade-plan",
+            "pass": true
+          },
+          {
+            "name": "configured:enabled:sync",
+            "pass": true
+          },
+          {
+            "name": "configured:disabled",
+            "pass": true
+          },
+          {
+            "name": "configured:disabled:list",
+            "pass": true
+          },
+          {
+            "name": "configured:disabled:show",
+            "pass": true
+          },
+          {
+            "name": "configured:disabled:verify",
+            "pass": true
+          },
+          {
+            "name": "configured:disabled:audit",
+            "pass": true
+          },
+          {
+            "name": "configured:disabled:upgrade-plan",
+            "pass": true
+          },
+          {
+            "name": "configured:disabled:sync",
+            "pass": true
+          },
+          {
+            "name": "configured:disabled-sync-text",
+            "pass": true
+          },
+          {
+            "name": "configured:mcp-observation",
+            "pass": true
+          },
+          {
+            "name": "configured:enabled-and-indexed",
+            "pass": true
+          },
+          {
+            "name": "subgraph-sync:shared-producer",
+            "pass": true
+          },
+          {
+            "name": "configured:sqlite-projection",
+            "pass": true
+          }
+        ],
+        "pass": true
+      }
+    },
+    {
+      "family": "source-read-admission",
+      "finding_owner": "root:bug-48",
+      "exit_code": 0,
+      "duration_ms": 3698,
+      "proof": {
+        "pass": true,
+        "cases": [
+          {
+            "name": "CLI config refuses external symlink unchanged",
+            "pass": true
+          },
+          {
+            "name": "CLI config refuses dangling symlink unchanged",
+            "pass": true
+          },
+          {
+            "name": "CLI config refuses device symlink unchanged",
+            "pass": true
+          },
+          {
+            "name": "CLI config refuses FIFO symlink unchanged",
+            "pass": true
+          },
+          {
+            "name": "CLI config refuses FIFO unchanged",
+            "pass": true
+          },
+          {
+            "name": "CLI config refuses directory unchanged",
+            "pass": true
+          },
+          {
+            "name": "CLI config refuses oversized valid JSON unchanged",
+            "pass": true
+          },
+          {
+            "name": "CLI config exact byte ceiling remains valid",
+            "pass": true
+          },
+          {
+            "name": "CLI missing config retains explicit missing diagnostic",
+            "pass": true
+          },
+          {
+            "name": "CLI malformed JSON retains read/parse diagnostic",
+            "pass": true
+          },
+          {
+            "name": "bundle exact source bytes verify without writes",
+            "pass": true
+          },
+          {
+            "name": "explicit external ZIP remains supported",
+            "pass": true
+          },
+          {
+            "name": "explicit linked regular ZIP remains supported",
+            "pass": true
+          },
+          {
+            "name": "selected ZIP refuses FIFO unchanged",
+            "pass": true
+          },
+          {
+            "name": "selected ZIP refuses linked FIFO unchanged",
+            "pass": true
+          },
+          {
+            "name": "selected ZIP refuses device link unchanged",
+            "pass": true
+          },
+          {
+            "name": "selected ZIP refuses directory unchanged",
+            "pass": true
+          },
+          {
+            "name": "selected ZIP leaf replacement cannot block before descriptor admission",
+            "pass": true
+          },
+          {
+            "name": "bundle source refuses external symlink unchanged",
+            "pass": true
+          },
+          {
+            "name": "bundle source refuses dangling symlink unchanged",
+            "pass": true
+          },
+          {
+            "name": "bundle source refuses device symlink unchanged",
+            "pass": true
+          },
+          {
+            "name": "bundle source refuses FIFO symlink unchanged",
+            "pass": true
+          },
+          {
+            "name": "bundle source refuses FIFO unchanged",
+            "pass": true
+          },
+          {
+            "name": "bundle source refuses directory unchanged",
+            "pass": true
+          },
+          {
+            "name": "bundle source refuses larger than admitted payload unchanged",
+            "pass": true
+          },
+          {
+            "name": "bundle missing source is ordinary staleness",
+            "pass": true
+          },
+          {
+            "name": "bundle shorter source is ordinary staleness",
+            "pass": true
+          },
+          {
+            "name": "invalid payload stops before FIFO source access",
+            "pass": true
+          },
+          {
+            "name": "MCP survives FIFO config and subsequent valid request",
+            "pass": true
+          },
+          {
+            "name": "MCP survives external symlink config and subsequent valid request",
+            "pass": true
+          }
+        ],
+        "fixture_cleanup": "exact owned mkdtemp removed",
+        "native_platform": "darwin"
+      }
+    },
+    {
+      "family": "skill-registry-admission",
+      "finding_owner": "root:bug-49",
+      "exit_code": 0,
+      "duration_ms": 14141,
+      "proof": {
+        "pass": true,
+        "cases": [
+          {
+            "name": "default new refuses external symlink without partial writes",
+            "pass": true
+          },
+          {
+            "name": "default new refuses relative external symlink without partial writes",
+            "pass": true
+          },
+          {
+            "name": "default new refuses internal symlink without partial writes",
+            "pass": true
+          },
+          {
+            "name": "default new refuses dangling symlink without partial writes",
+            "pass": true
+          },
+          {
+            "name": "default new refuses directory without partial writes",
+            "pass": true
+          },
+          {
+            "name": "default new refuses FIFO without partial writes",
+            "pass": true
+          },
+          {
+            "name": "default new refuses device symlink without partial writes",
+            "pass": true
+          },
+          {
+            "name": "default new refuses oversized regular registry without partial writes",
+            "pass": true
+          },
+          {
+            "name": "default new refuses linked skills ancestor without partial writes",
+            "pass": true
+          },
+          {
+            "name": "force refuses a linked registry without replacing an existing skill",
+            "pass": true
+          },
+          {
+            "name": "default regular missing registry retains customization",
+            "pass": true
+          },
+          {
+            "name": "default regular customized registry retains customization",
+            "pass": true
+          },
+          {
+            "name": "default regular managed registry retains customization",
+            "pass": true
+          },
+          {
+            "name": "default regular hardlinked registry retains customization",
+            "pass": true
+          },
+          {
+            "name": "CLI rejects unsupported custom root configuration without effects",
+            "pass": true
+          },
+          {
+            "name": "ordinary force updates an existing skill with an admitted customized registry",
+            "pass": true
+          },
+          {
+            "name": "registry growth refuses before skill effects and leaves further valid edits usable",
+            "pass": true
+          },
+          {
+            "name": "init shared refresh preserves an admitted customized registry",
+            "pass": true
+          },
+          {
+            "name": "init rejects a linked registry without copying or changing its target",
+            "pass": true
+          }
+        ],
+        "fixture_cleanup": "exact owned mkdtemp removed"
+      }
+    },
+    {
+      "family": "snapshot-verification",
+      "finding_owner": "root:bug-50",
+      "exit_code": 0,
+      "duration_ms": 10133,
+      "proof": {
+        "pass": true,
+        "cases": [
+          {
+            "name": "valid drained snapshot executes every mandatory check without effects",
+            "pass": true
+          },
+          {
+            "name": "nonempty directories at snapshot are invalid",
+            "pass": true
+          },
+          {
+            "name": "missing snapshot reports missing",
+            "pass": true
+          },
+          {
+            "name": "nonempty directories at manifest are invalid",
+            "pass": true
+          },
+          {
+            "name": "missing manifest reports missing",
+            "pass": true
+          },
+          {
+            "name": "nonempty directories at snapshot+manifest are invalid",
+            "pass": true
+          },
+          {
+            "name": "missing snapshot+manifest reports missing",
+            "pass": true
+          },
+          {
+            "name": "snapshot FIFO refuses without blocking",
+            "pass": true
+          },
+          {
+            "name": "snapshot device target refuses",
+            "pass": true
+          },
+          {
+            "name": "snapshot linked directory is invalid",
+            "pass": true
+          },
+          {
+            "name": "manifest FIFO refuses without blocking",
+            "pass": true
+          },
+          {
+            "name": "manifest device target refuses",
+            "pass": true
+          },
+          {
+            "name": "manifest linked directory is invalid",
+            "pass": true
+          },
+          {
+            "name": "malformed manifest is invalid",
+            "pass": true
+          },
+          {
+            "name": "unsupported manifest shape is invalid",
+            "pass": true
+          },
+          {
+            "name": "corrupt SQLite snapshot is invalid",
+            "pass": true
+          },
+          {
+            "name": "mismatched snapshot_sha256 is invalid",
+            "pass": true
+          },
+          {
+            "name": "mismatched byte_size is invalid",
+            "pass": true
+          },
+          {
+            "name": "mismatched table_counts is invalid",
+            "pass": true
+          },
+          {
+            "name": "mismatched migrations is invalid",
+            "pass": true
+          },
+          {
+            "name": "mismatched queue_summary is invalid",
+            "pass": true
+          },
+          {
+            "name": "absent runtime retains valid portable snapshot",
+            "pass": true
+          },
+          {
+            "name": "missing source hash with runtime present reports missing",
+            "pass": true
+          },
+          {
+            "name": "configured snapshot path uses its derived manifest and rejects directories",
+            "pass": true
+          },
+          {
+            "name": "changed runtime is stale but still structurally valid",
+            "pass": true
+          },
+          {
+            "name": "paused ready queue snapshot is valid under its declared policy",
+            "pass": true
+          }
+        ],
+        "fixture_cleanup": "exact owned mkdtemp removed"
+      }
+    },
+    {
+      "family": "snapshot-containment",
+      "finding_owner": "root:bug-51",
+      "exit_code": 0,
+      "duration_ms": 8287,
+      "proof": {
+        "pass": true,
+        "cases": [
+          {
+            "name": "verify rejects snapshot external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects snapshot internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects snapshot dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects snapshot ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects snapshot fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects snapshot directory before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects manifest external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects manifest internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects manifest dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects manifest ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects manifest fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects manifest directory before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects runtime external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects runtime internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects runtime dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects runtime ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects runtime fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects runtime directory before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects snapshot external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects snapshot internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects snapshot dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects snapshot ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects snapshot fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects snapshot directory before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects manifest external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects manifest internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects manifest dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects manifest ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects manifest fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects manifest directory before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects runtime external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects runtime internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects runtime dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects runtime ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects runtime fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "status rejects runtime directory before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects snapshot external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects snapshot internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects snapshot dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects snapshot ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects snapshot fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects snapshot directory before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects manifest external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects manifest internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects manifest dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects manifest ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects manifest fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects manifest directory before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects runtime external-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects runtime internal-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects runtime dangling-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects runtime ancestor-link before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects runtime fifo before effects",
+            "pass": true
+          },
+          {
+            "name": "seal rejects runtime directory before effects",
+            "pass": true
+          },
+          {
+            "name": "verify rejects oversized manifest before parse",
+            "pass": true
+          },
+          {
+            "name": "status rejects oversized manifest before parse",
+            "pass": true
+          },
+          {
+            "name": "verify does not disclose arbitrary external snapshot digest",
+            "pass": true
+          },
+          {
+            "name": "verify rejects linked snapshot-wal sidecar",
+            "pass": true
+          },
+          {
+            "name": "verify rejects linked snapshot-shm sidecar",
+            "pass": true
+          },
+          {
+            "name": "verify rejects linked snapshot-journal sidecar",
+            "pass": true
+          },
+          {
+            "name": "verify rejects linked runtime-wal sidecar",
+            "pass": true
+          },
+          {
+            "name": "verify rejects linked runtime-shm sidecar",
+            "pass": true
+          },
+          {
+            "name": "verify rejects linked runtime-journal sidecar",
+            "pass": true
+          },
+          {
+            "name": "status does not disclose arbitrary external snapshot digest",
+            "pass": true
+          },
+          {
+            "name": "status rejects linked snapshot-wal sidecar",
+            "pass": true
+          },
+          {
+            "name": "status rejects linked snapshot-shm sidecar",
+            "pass": true
+          },
+          {
+            "name": "status rejects linked snapshot-journal sidecar",
+            "pass": true
+          },
+          {
+            "name": "status rejects linked runtime-wal sidecar",
+            "pass": true
+          },
+          {
+            "name": "status rejects linked runtime-shm sidecar",
+            "pass": true
+          },
+          {
+            "name": "status rejects linked runtime-journal sidecar",
+            "pass": true
+          },
+          {
+            "name": "seal does not disclose arbitrary external snapshot digest",
+            "pass": true
+          },
+          {
+            "name": "seal rejects linked snapshot-wal sidecar",
+            "pass": true
+          },
+          {
+            "name": "seal rejects linked snapshot-shm sidecar",
+            "pass": true
+          },
+          {
+            "name": "seal rejects linked snapshot-journal sidecar",
+            "pass": true
+          },
+          {
+            "name": "seal rejects linked runtime-wal sidecar",
+            "pass": true
+          },
+          {
+            "name": "seal rejects linked runtime-shm sidecar",
+            "pass": true
+          },
+          {
+            "name": "seal rejects linked runtime-journal sidecar",
+            "pass": true
+          },
+          {
+            "name": "first seal and regular reseal retain old snapshot hash",
+            "pass": true
+          },
+          {
+            "name": "portable absent-runtime snapshot verifies without writes",
+            "pass": true
+          }
+        ],
+        "fixture_cleanup": "exact owned mkdtemp removed"
+      }
+    }
+  ],
+  "limitations": [
+    "Native macOS only; remaining platforms and real read-only filesystem stay open",
+    "Five existing finding families only; not complete fourteen-finding acceptance or independent review",
+    "CLI and MCP consumers; installed ZIP codec used only for synthetic fixture construction/inspection",
+    "Bugs46/47 remain deferred and unresolved; no blocked historical scan context accessed"
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  },
+  "pass": true,
+  "evidence_capture": {
+    "authoritative_attempt": "second identical fixture run",
+    "prior_attempt": "203 cases passed; tool output truncation prevented preserving its complete JSON receipt; not counted twice"
+  }
+}

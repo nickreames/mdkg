@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "kind": "test483-current-installed-behavior",
+  "owner": "root:test-483",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "compiledInputs": [
+    {
+      "name": "commands/pack_identity.test.js",
+      "source_sha256": "8a218c9be44d236d5e0056b266d1956f9968e7e315b48ab5a6fe9cee1c91b8a9",
+      "sha256": "f2468c7322bd98e9eae10608db74bb67d3bc9b0caf9ea99c70895b5e7cd807c0"
+    },
+    {
+      "name": "commands/format_identity.test.js",
+      "source_sha256": "1e9317627171836dead532575f4ae3ba13243a15e2bd8d7a3eb291644224f4ba",
+      "sha256": "d6d2a8e5b529bad6ceb4e2885aebb0d8b54629cbd1412f60f1984ce37a9a297d"
+    },
+    {
+      "name": "commands/init_identity.test.js",
+      "source_sha256": "343c35c4cf745f0f35fc918f3f2d025c5b1ce0fd7e1da0137e4508448c1282b4",
+      "sha256": "21596a0726f531d7fd775c81a0779ba9298a914dd7f8c1c4fae365772380f38e"
+    },
+    {
+      "name": "graph/identity_migration_lineage.test.js",
+      "source_sha256": "d98d7d0b5580d657e58eb7adcdd820f6c8e13543c36b150075cde478dbbb96db",
+      "sha256": "15899c1119519ab32059004b6e5566b4bd51996b0ffa3c93dce854cfb8dfc06a"
+    },
+    {
+      "name": "graph/identity_migration_validation.test.js",
+      "source_sha256": "b27c24d271df6c493e32f8b876eef76ae0e9f0aac2fd7b86762efcad15bbbd66",
+      "sha256": "f45bf0376a5c558af6d183066bba946efbd00f4c070a12d5ad719d720fc5e052"
+    },
+    {
+      "name": "commands/upgrade_identity.test.js",
+      "source_sha256": "18eeeedd36230435e75f89cb7cdeeccbfdc66e1aec791ede62f6ae36d887d72f",
+      "sha256": "3a52a0a39b7fca04684523b1413b77fa80b757f3766ae45f691b34ca746c90b0"
+    },
+    {
+      "name": "commands/cli_output.test.js",
+      "source_sha256": "b70cc2c97f27c7618cdedadc155ed22ef093f63a425ef788944e076bb4420cc3",
+      "sha256": "ef33dff3a9994945caf14aa7789d9a285f2620073b0ef729a27219fe0cec9826"
+    },
+    {
+      "name": "graph/identity_dependencies.test.js",
+      "source_sha256": "32862897b5e095d58580bc18b1f210981073343a3218105e5e8b6105f420655d",
+      "sha256": "5dfc5c1beac15633a7eeb43f714c45ed4d71ba554a2f4b0faf052a1b4003d16f"
+    },
+    {
+      "name": "helpers/fs.js",
+      "source_sha256": "e3923188acf4c997504d982877260f456be6f32d2f19823ce008818ba1f5b166",
+      "sha256": "5f1088362ae4b1aaa7b9c7e382293043b601dcdf6b665c7a49d6ba95975d7e73"
+    },
+    {
+      "name": "helpers/config.js",
+      "source_sha256": "fc74edcf7227c9cfa71f492efa7afa75388a2378125e26310a85b27b0ab1cf2f",
+      "sha256": "6307f81b0c70c5533f01d6fd2813f31950bb5ef4c0aff3c2c0d09af1235137fa"
+    },
+    {
+      "name": "helpers/templates.js",
+      "source_sha256": "9bf52d6dc5d4774aae9ff511d5fbad600b9e2d87fd961a2acba48a5e5a1b221f",
+      "sha256": "2967c90df8ff2a4ae681d4b497c1348c25a47aaad73a8bf74a97aaf3157d13a9"
+    },
+    {
+      "name": "helpers/identity_recovery.js",
+      "source_sha256": "fe16bc9b79f74dc2f3c0b33a152c28f4baed0ae207df66c9abbb9660de83cb91",
+      "sha256": "653114a325496f7ef0fac0b267ae0a5dcfe886ddf14e74df9599081e877c0475"
+    }
+  ],
+  "driver_sha256": "0c34d1c763b7f6a6a8c6c8f244ac2caccfa2391f38582059024350d681ed8875",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 144553,
+  "completed": [
+    {
+      "family": "commands/pack_identity.test.js",
+      "test483_cases": [
+        2
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 11199,
+      "stdout_sha256": "7d541750514a47c93f903c6acd32b41d316ebeaf66442f107290906ae393387b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - json authored CLI packs and MCP retain persisted identities without changing staged work",
+        "ok 2 - json remapped CLI packs and MCP retain persisted identities without changing staged work",
+        "ok 3 - json colliding CLI packs and MCP retain persisted identities without changing staged work",
+        "ok 4 - json imported v2 packs retain identities and public visibility remains fail-closed",
+        "ok 5 - json legacy pack output never invents stable identities",
+        "ok 6 - sqlite authored CLI packs and MCP retain persisted identities without changing staged work",
+        "ok 7 - sqlite remapped CLI packs and MCP retain persisted identities without changing staged work",
+        "ok 8 - sqlite colliding CLI packs and MCP retain persisted identities without changing staged work",
+        "ok 9 - sqlite imported v2 packs retain identities and public visibility remains fail-closed",
+        "ok 10 - sqlite legacy pack output never invents stable identities"
+      ]
+    },
+    {
+      "family": "commands/format_identity.test.js",
+      "test483_cases": [
+        3
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 24,
+        "pass": 24,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 12022,
+      "stdout_sha256": "40f6efec765d5841d93bdbc020f02d3dfe629699da66091daf60a994544035d7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - v2 format preserves identities, stable relation values, custom fields and Git staging",
+        "ok 2 - v2 decision supersession retains stable references through repeated formatting",
+        "ok 3 - v2 heading preview and apply preserve exact identity frontmatter",
+        "ok 4 - normal format refuses missing identity before touching any authored or staged file",
+        "ok 5 - headings format refuses missing identity before touching any authored or staged file",
+        "ok 6 - normal format refuses partial identity before touching any authored or staged file",
+        "ok 7 - headings format refuses partial identity before touching any authored or staged file",
+        "ok 8 - normal format refuses foreign graph before touching any authored or staged file",
+        "ok 9 - headings format refuses foreign graph before touching any authored or staged file",
+        "ok 10 - normal format refuses malformed UUID before touching any authored or staged file",
+        "ok 11 - headings format refuses malformed UUID before touching any authored or staged file",
+        "ok 12 - normal format refuses uppercase identity before touching any authored or staged file",
+        "ok 13 - headings format refuses uppercase identity before touching any authored or staged file",
+        "ok 14 - normal format refuses malformed stable scalar before touching any authored or staged file",
+        "ok 15 - headings format refuses malformed stable scalar before touching any authored or staged file",
+        "ok 16 - normal format refuses malformed stable list before touching any authored or staged file",
+        "ok 17 - headings format refuses malformed stable list before touching any authored or staged file",
+        "ok 18 - normal format refuses uppercase stable reference before touching any authored or staged file",
+        "ok 19 - headings format refuses uppercase stable reference before touching any authored or staged file",
+        "ok 20 - normal format refuses conflict markers before touching any authored or staged file",
+        "ok 21 - headings format refuses conflict markers before touching any authored or staged file",
+        "ok 22 - normal format refuses unknown format before touching any authored or staged file",
+        "ok 23 - headings format refuses unknown format before touching any authored or staged file",
+        "ok 24 - legacy formatting does not invent identities and rejects accidental identity adoption"
+      ]
+    },
+    {
+      "family": "commands/init_identity.test.js",
+      "test483_cases": [
+        4
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 22,
+        "pass": 22,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 18841,
+      "stdout_sha256": "d8886a1416e80a96c8c438f831875bfb47690d8c9c7b8e31749e00788e58a865",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - init preserves complete adopted graph and customized instructions {}",
+        "ok 2 - init refuses missing adopted core identity without partial writes {}",
+        "ok 3 - force init cannot replace adopted identities with legacy seed {}",
+        "ok 4 - init preserves complete adopted graph and customized instructions {\"graphOnly\":true}",
+        "ok 5 - init refuses missing adopted core identity without partial writes {\"graphOnly\":true}",
+        "ok 6 - force init cannot replace adopted identities with legacy seed {\"graphOnly\":true}",
+        "ok 7 - init preserves complete adopted graph and customized instructions {\"agent\":true}",
+        "ok 8 - init refuses missing adopted core identity without partial writes {\"agent\":true}",
+        "ok 9 - force init cannot replace adopted identities with legacy seed {\"agent\":true}",
+        "ok 10 - init refuses future manifest before creating bootstrap files (force=false)",
+        "ok 11 - init refuses future manifest before creating bootstrap files (force=true)",
+        "ok 12 - init refuses writer manifest before creating bootstrap files (force=false)",
+        "ok 13 - init refuses writer manifest before creating bootstrap files (force=true)",
+        "ok 14 - init refuses reader manifest before creating bootstrap files (force=false)",
+        "ok 15 - init refuses reader manifest before creating bootstrap files (force=true)",
+        "ok 16 - init refuses feature manifest before creating bootstrap files (force=false)",
+        "ok 17 - init refuses feature manifest before creating bootstrap files (force=true)",
+        "ok 18 - init refuses manifest loss instead of erasing adopted identities",
+        "ok 19 - init resumes missing non-node bootstrap files on an adopted graph",
+        "ok 20 - init preserves unfinished upgrade custody and requires explicit recovery",
+        "ok 21 - init checks fallback core nodes before restoring missing adopted nodes",
+        "ok 22 - init respects a competing writer and never changes its lock or graph"
+      ]
+    },
+    {
+      "family": "graph/identity_migration_lineage.test.js",
+      "test483_cases": [
+        7
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 22,
+        "pass": 22,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 21181,
+      "stdout_sha256": "7e8fcd1f145726c075a80931515852fb5119f933d6c1404a6db6c8f9b37093f7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - legacy distinct recreation requires reviewed provenance rather than matching alias/path",
+        "ok 2 - legacy byte-identical restoration requires reviewed provenance rather than matching alias/path",
+        "ok 3 - legacy working-tree recreation requires reviewed provenance rather than matching alias/path",
+        "ok 4 - legacy staged deletion and recreated file requires reviewed provenance rather than matching alias/path",
+        "ok 5 - legacy rename away and back requires reviewed provenance rather than matching alias/path",
+        "ok 6 - legacy alias changed and restored requires reviewed provenance rather than matching alias/path",
+        "ok 7 - uninterrupted committed and uncommitted edits retain accepted ancestor identity",
+        "ok 8 - legacy migration refuses shallow history without changing it",
+        "ok 9 - explicit restore-ancestor preserves bodies and binds current cross-links without staging",
+        "ok 10 - explicit new-identity preserves bodies and binds current cross-links without staging",
+        "ok 11 - review choices reject unknown, unused, malformed and stale evidence",
+        "ok 12 - history loss after preview or interruption prevents application and resume",
+        "ok 13 - both preserved merge lineages retain identity but one recreated parent requires review",
+        "ok 14 - merged side branch predating accepted ancestor is not silently omitted",
+        "ok 15 - migration CLI consumes exact reviewed QID decisions without writing during preview",
+        "ok 16 - staged duplicate with a newline filename is included in lineage review",
+        "ok 17 - null and array decision documents fail closed in API and CLI",
+        "ok 18 - legacy journals lacking continuity evidence can roll back exact owned bytes but cannot resume",
+        "ok 19 - partial/promisor history is refused without contacting a remote",
+        "ok 20 - generated lineage evidence must fit per-file, aggregate and file-count budgets before application",
+        "ok 21 - grafted or missing historical objects refuse preview without guessing continuity",
+        "ok 22 - unchanged authored bytes do not let old decisions survive new HEAD or staged inputs"
+      ]
+    },
+    {
+      "family": "graph/identity_migration_validation.test.js",
+      "test483_cases": [
+        8
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 57,
+        "pass": 57,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 14991,
+      "stdout_sha256": "8d7c087e4d771a21a59f3c780865b22cb0d3dcd5f4c31300c487f5c6f838130a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - missing required skill fails both normal validation and migration preview without writes",
+        "ok 2 - valid required skill permits migration and subsequent normal validation",
+        "ok 3 - skill content after preview refuses before migration writes",
+        "ok 4 - skill addition after preview refuses before migration writes",
+        "ok 5 - skill removal after preview refuses before migration writes",
+        "ok 6 - orphan skill directories are not omitted from candidate validity",
+        "ok 7 - template body changes with unchanged schema invalidate exact migration approval",
+        "ok 8 - identity header expansion must fit the resulting node per-file limit",
+        "ok 9 - changed skill dependency prevents interrupted migration from resuming",
+        "ok 10 - supported skill-update proposal references require an existing canonical skill",
+        "ok 11 - invalid malformed skill refuses candidate approval",
+        "ok 12 - invalid both skill refuses candidate approval",
+        "ok 13 - new orphan-skill dependency invalidates reviewed plan without writes",
+        "ok 14 - new template-add dependency invalidates reviewed plan without writes",
+        "ok 15 - new fallback-replacement dependency invalidates reviewed plan without writes",
+        "ok 16 - new event-add dependency invalidates reviewed plan without writes",
+        "ok 17 - malformed event history blocks candidate approval without rewriting history",
+        "ok 18 - self-hashed missing-contract plan cannot bypass pre-write validation",
+        "ok 19 - self-hashed omitted-dependency plan cannot bypass pre-write validation",
+        "ok 20 - self-hashed invalid-output plan cannot bypass pre-write validation",
+        "ok 21 - self-hashed conflict-markers plan cannot bypass pre-write validation",
+        "ok 22 - underbound legacy journal refuses resume but preserves exact rollback",
+        "ok 23 - authored template dependency overlap is refused before it can strand recovery",
+        "ok 24 - oversized skill is refused before dependency fingerprinting can scan it",
+        "ok 25 - existing event history participates in the resulting graph aggregate budget",
+        "ok 26 - migration respects actual read-only imported targets: present",
+        "ok 27 - migration respects actual read-only imported targets: missing",
+        "ok 28 - migration respects actual read-only imported targets: disabled",
+        "ok 29 - migration respects actual read-only imported targets: illegal-parent",
+        "ok 30 - derived cache task collision refuses identity planning before writes",
+        "ok 31 - derived cache new-node collision refuses identity planning before writes",
+        "ok 32 - derived cache template collision refuses identity planning before writes",
+        "ok 33 - derived cache skill collision refuses identity planning before writes",
+        "ok 34 - derived cache event collision refuses identity planning before writes",
+        "ok 35 - derived cache format collision refuses identity planning before writes",
+        "ok 36 - derived cache config collision refuses identity planning before writes",
+        "ok 37 - derived cache runtime collision refuses identity planning before writes",
+        "ok 38 - derived cache journal collision refuses identity planning before writes",
+        "ok 39 - derived cache duplicate-json collision refuses identity planning before writes",
+        "ok 40 - derived cache duplicate-sqlite collision refuses identity planning before writes",
+        "ok 41 - derived cache file-prefix collision refuses identity planning before writes",
+        "ok 42 - non-root capability skill metadata is validated before migration writes",
+        "ok 43 - SQLite sidecar -wal is reserved even when not yet present",
+        "ok 44 - SQLite sidecar -shm is reserved even when not yet present",
+        "ok 45 - SQLite sidecar -journal is reserved even when not yet present",
+        "ok 46 - an existing SQLite sidecar is preserved and blocks migration before journaling",
+        "ok 47 - dedicated custom json cache paths remain supported",
+        "ok 48 - dedicated custom sqlite cache paths remain supported",
+        "ok 49 - cache writes cannot borrow disabled-workspace ownership",
+        "ok 50 - cache writes cannot borrow imported-root ownership",
+        "ok 51 - repository-root template discovery cannot authorize overlapping writes",
+        "ok 52 - unsafe cache destinations in old journals refuse rollback before restoring any bytes",
+        "ok 53 - changed enabled non-root skill blocks application without changing that owner",
+        "ok 54 - observed case-alias cache destinations cannot evade authored ownership",
+        "ok 55 - absent future-format case aliases are compared using observed filesystem behavior",
+        "ok 56 - absent future-caches case aliases are compared using observed filesystem behavior",
+        "ok 57 - literal POSIX backslashes in template filenames retain native dependency identity"
+      ]
+    },
+    {
+      "family": "commands/upgrade_identity.test.js",
+      "test483_cases": [
+        9
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 53103,
+      "stdout_sha256": "f5f5feca15ead244189cf816dfedc9f20e6ef93636516e0575093139d757af63",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - upgrade refuses missing v2 core restoration with no identity and no partial writes",
+        "ok 2 - managed seed provenance cannot authorize erasing or replacing a v2 identity",
+        "ok 3 - same-identity managed content and safe non-node subsets remain upgradeable",
+        "ok 4 - upgrade preview refuses unknown graph formats without creating state",
+        "ok 5 - reviewed config-only upgrade fences pre-fence v2 without changing identities (apply)",
+        "ok 6 - reviewed config-only upgrade fences pre-fence v2 without changing identities (resume)",
+        "ok 7 - reviewed config-only upgrade fences pre-fence v2 without changing identities (recover)",
+        "ok 8 - completed fence-upgrade repeats refuse changed terminal config without effects",
+        "ok 9 - completed fence-upgrade repeats refuse changed terminal dependency without effects",
+        "ok 10 - completed fence-upgrade repeats refuse changed terminal opposite-state without effects",
+        "ok 11 - recovered fence-upgrade repeats refuse changed terminal config without effects",
+        "ok 12 - recovered fence-upgrade repeats refuse changed terminal dependency without effects",
+        "ok 13 - recovered fence-upgrade repeats refuse changed terminal opposite-state without effects",
+        "ok 14 - fence upgrade checks late operation custody before recording completion",
+        "ok 15 - fence upgrade checks late dependency custody before recording completion",
+        "ok 16 - equivalent manifest byte movement invalidates a reviewed safe subset before writes",
+        "ok 17 - resume and recovery bind the preview's manifest and non-operation graph dependencies",
+        "ok 18 - interrupted upgrades refuse unreviewed additions while preserving Git staging",
+        "ok 19 - recovery rejects valid new nodes in previously empty graph directories",
+        "ok 20 - v2 upgrades resume or recover after each interruption with exact identities and unchanged staging",
+        "ok 21 - legacy journals cannot resume or recover even with valid original v2 identities",
+        "ok 22 - recovery rejects path aliases and canonical manifest or ownership changes",
+        "ok 23 - journal validation rejects self-target and duplicate separator aliases",
+        "ok 24 - safe non-node upgrade does not count directories as Markdown files",
+        "ok 25 - transaction plans reject separator and filesystem case aliases before writes"
+      ]
+    },
+    {
+      "family": "commands/cli_output.test.js",
+      "test483_cases": [
+        11
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 1575,
+      "stdout_sha256": "52ab01eebdcae423dbcfad621f8ca8acf059c0d6abf334582744d32865c73f29",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - CLI drains complete large UTF-8 text output to a pipe",
+        "ok 2 - CLI drains complete large UTF-8 json output to a pipe",
+        "ok 3 - CLI drains complete large UTF-8 xml output to a pipe",
+        "ok 4 - CLI drains complete large UTF-8 toon output to a pipe",
+        "ok 5 - CLI drains complete large UTF-8 md output to a pipe",
+        "ok 6 - CLI waits for a slow output consumer without truncation",
+        "ok 7 - CLI drains large handled command diagnostics with the correct exit code",
+        "ok 8 - CLI drains large rejected async diagnostics with the correct exit code"
+      ]
+    },
+    {
+      "family": "graph/identity_dependencies.test.js",
+      "test483_cases": [
+        12
+      ],
+      "exit_code": 0,
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "duration_ms": 10377,
+      "stdout_sha256": "3d685aae4ae467c5a61ab95ab488a12dd0ef81b6fb615644fdc5761ded172361",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases": [
+        "ok 1 - reference mapping preserves dependency labels but visits explicit identities and actual graph links",
+        "ok 2 - legacy MANIFEST SPEC and WORK migration preserves dependency labels despite matching aliases",
+        "ok 3 - ordinary v2 binding preserves labels and retains explicit identity checks",
+        "ok 4 - reconciliation keeps portable dependency changes semantic rather than alias-bound",
+        "ok 5 - template identity import preserves labels and remaps explicit graph dependencies",
+        "ok 6 - independent fork preserves labels but changes explicit dependency identities",
+        "ok 7 - v2 validation still rejects unresolved immutable dependencies and wrong subagent roles",
+        "ok 8 - JSON and SQLite capability reads preserve dependency labels after migration"
+      ]
+    }
+  ],
+  "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+  "original_payload_files": 234,
+  "original_payload_file_manifest_sha256": "f3a4f75dd9391ada5d11ca72c9287b5506f34cbf829ff76b804079f13afcf0a9",
+  "original_payload_bytes_preserved": true,
+  "inert_test_additions": 12,
+  "instrumented_inventory_sha256": "58d6c8501cd40c2145636adbdf0d23a0d1cfa71ab4db542486a62e8a32452797",
+  "canonical_implementation_imports_refused": true,
+  "limitations": [
+    "Native macOS only; Linux/platform and independent acceptance remain open",
+    "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+    "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+    "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+    "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  },
+  "pass": true
+}

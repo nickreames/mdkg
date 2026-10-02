@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "test480-current-old-client-runtime-boundary",
+  "owner": "root:test-480",
+  "consumer": "root:test-482",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "driver_sha256": "a1accfc9d73f0f8563e359ef0cfc2e3f48f50cb9c16d89397cee6a5ba9942083",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 3881,
+  "rows": [
+    {
+      "case": "published0.5.2 legacy writer positive",
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 warm fenced writer refusal",
+      "command": [
+        "new",
+        "task",
+        "Must refuse",
+        "--json"
+      ],
+      "exit_code": 4,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 warm fenced writer refusal",
+      "command": [
+        "task",
+        "start",
+        "task-1",
+        "--json"
+      ],
+      "exit_code": 4,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "current warm v2 compatible writer positive",
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 cold fenced writer refusal",
+      "command": [
+        "new",
+        "task",
+        "Must refuse",
+        "--json"
+      ],
+      "exit_code": 4,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 cold fenced writer refusal",
+      "command": [
+        "task",
+        "start",
+        "task-1",
+        "--json"
+      ],
+      "exit_code": 4,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "current cold v2 compatible writer positive",
+      "pass": true
+    }
+  ],
+  "downloads": [
+    {
+      "kind": "published-package",
+      "url": "https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz",
+      "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+      "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+      "bytes": 425431
+    }
+  ],
+  "limits": [
+    "Native macOS only; Linux rows remain open.",
+    "Old init bypass is an observed unsupported behavior, not accepted secure authoring.",
+    "No canonical migration, package changes or global runtime installation."
+  ],
+  "pass": false,
+  "error": "fixture qualification failed; cleanup={\"removed\":true,\"root\":\"/private/tmp/mdkg-old-client-runtime-NCl1io\"}\nExpected values to be strictly equal:\n\n2 !== 1\n",
+  "disposition": "Nonpassing harness attempt: expected old init to remove schema2 unconditionally. Existing source/evidence distinguishes init manifest writes (schema2 retained) from force-init fence removal. No product defect inferred; corrected affected test follows.",
+  "earlier_environment_attempt": {
+    "pass": false,
+    "rows": 0,
+    "reason": "restricted public-registry DNS unavailable",
+    "cleanup_removed": true
+  }
+}

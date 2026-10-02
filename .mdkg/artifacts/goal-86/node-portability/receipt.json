@@ -1,0 +1,469 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-node-portability-scope-and-feasibility",
+  "recorded_at": "2026-09-28",
+  "goal_qid": "root:goal-86",
+  "work_qid": "root:bug-60",
+  "decision_qid": "root:dec-98",
+  "source_head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+  "branch": "main",
+  "remote_state": "cached origin/main ahead 69; no fetch or remote verification",
+  "baseline_dirty_paths": 65,
+  "writer": "mdkg-project-agent",
+  "authority": "Current explicit Goal86 continuation and Dec98; no standing checkout lease.",
+  "disposition": {
+    "deferred": [
+      {
+        "qid": "root:bug-46",
+        "status": "backlog",
+        "semantic_disposition": "deferred/unresolved, not accepted/fixed"
+      },
+      {
+        "qid": "root:bug-47",
+        "status": "backlog",
+        "semantic_disposition": "deferred/unresolved, not accepted/fixed"
+      }
+    ],
+    "follow_up_goal": "root:goal-87 paused, unclaimed",
+    "new_work": [
+      "root:task-841",
+      "root:task-842",
+      "root:test-489"
+    ],
+    "security_inventory": "Preserve original fourteen findings, five medium/nine low; the two deferrals are not remediation passes.",
+    "publication": "Goal85 paused; NOT_READY"
+  },
+  "scope": {
+    "changes": "Local mdkg planning/evidence and required projections plus this isolated synthetic prototype; no production source/metadata/guidance change.",
+    "excluded": [
+      "remote Git",
+      "stage/commit in this milestone",
+      "publication/tag",
+      "provider/deployment",
+      "native helper",
+      "blocked security context recovery or rerun",
+      "canonical migration",
+      "bundle/subgraph refresh",
+      "root/sibling writes"
+    ],
+    "source_implementation": "not changed by this milestone",
+    "ownership": "supported Goal86 bug60 claim and transient CLI locks; no DB lease acquired"
+  },
+  "protected_bookends": [
+    {
+      "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+      "type": "file",
+      "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    {
+      "path": ".mdkg/db/runtime/project.sqlite",
+      "type": "file",
+      "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+    },
+    {
+      "path": ".mdkg/state/selected-goal.json",
+      "type": "file",
+      "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+    }
+  ],
+  "prototype": [
+    {
+      "command": "/opt/homebrew/opt/node@24/bin/node --expose-gc .mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+      "exit_code": 0,
+      "kind": "node-only-sqlite-memory-feasibility",
+      "runtime": "v24.18.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "source_sha256": "c47567bea5d85271f12eada970eb2050cf6455428e693458bbecb6d36571b661",
+      "capability": {
+        "deserialize": true,
+        "setAuthorizer": true,
+        "defensive": true
+      },
+      "fixture_created": true,
+      "fixture_removed": true,
+      "tests": [
+        {
+          "name": "closed database query and integrity with unchanged fixture files",
+          "status": "pass",
+          "duration_ms": 1.0802089999999964
+        },
+        {
+          "name": "INSERT refused",
+          "status": "pass",
+          "duration_ms": 0.28658399999999773
+        },
+        {
+          "name": "DDL refused",
+          "status": "pass",
+          "duration_ms": 0.181083000000001
+        },
+        {
+          "name": "temporary DDL refused",
+          "status": "pass",
+          "duration_ms": 0.17516700000000185
+        },
+        {
+          "name": "ATTACH refused",
+          "status": "pass",
+          "duration_ms": 0.17866700000000435
+        },
+        {
+          "name": "query_only reset refused",
+          "status": "pass",
+          "duration_ms": 0.13674999999999926
+        },
+        {
+          "name": "temp_store reset refused",
+          "status": "pass",
+          "duration_ms": 0.12483299999999531
+        },
+        {
+          "name": "VACUUM INTO refused",
+          "status": "pass",
+          "duration_ms": 0.13354100000000102
+        },
+        {
+          "name": "extension loading refused",
+          "status": "pass",
+          "duration_ms": 0.14158299999999713
+        },
+        {
+          "name": "ordinary intentional writer remains functional",
+          "status": "pass",
+          "duration_ms": 0.43795800000000185
+        },
+        {
+          "name": "closed WAL header refused without creating sidecars",
+          "status": "pass",
+          "duration_ms": 0.43283300000000224
+        },
+        {
+          "name": "-wal state refused",
+          "status": "pass",
+          "duration_ms": 0.14687500000000142
+        },
+        {
+          "name": "-shm state refused",
+          "status": "pass",
+          "duration_ms": 0.14904200000000145
+        },
+        {
+          "name": "-journal state refused",
+          "status": "pass",
+          "duration_ms": 0.49645899999999443
+        },
+        {
+          "name": "malformed image refused",
+          "status": "pass",
+          "duration_ms": 0.35379199999999855
+        },
+        {
+          "name": "corrupt body fails without native file effects",
+          "status": "pass",
+          "duration_ms": 0.32533300000000054
+        },
+        {
+          "name": "same-inode update during observation refuses its result",
+          "status": "pass",
+          "duration_ms": 1.274166000000001
+        },
+        {
+          "name": "pathname replacement during observation refuses its result",
+          "status": "pass",
+          "duration_ms": 1.441042000000003
+        },
+        {
+          "name": "journal transition after capture refuses without observer sidecars",
+          "status": "pass",
+          "duration_ms": 1.1017080000000021
+        }
+      ],
+      "measurements": [
+        {
+          "requested_mib": 4,
+          "file_bytes": 4206592,
+          "duration_ms": 0.5870420000000038,
+          "rss_delta_while_loaded": 4227072,
+          "external_delta_while_loaded": -100712
+        },
+        {
+          "requested_mib": 16,
+          "file_bytes": 16801792,
+          "duration_ms": 2.0789589999999976,
+          "rss_delta_while_loaded": 16826368,
+          "external_delta_while_loaded": -8413284
+        },
+        {
+          "requested_mib": 32,
+          "file_bytes": 33595392,
+          "duration_ms": 4.088374999999999,
+          "rss_delta_while_loaded": 33619968,
+          "external_delta_while_loaded": 0
+        }
+      ],
+      "limitations": [
+        "Synthetic macOS execution is not Windows/Linux or installed-package acceptance.",
+        "No guarantee against adversarial ancestor substitution or ACL preservation is claimed.",
+        "Memory and timing samples are bounded feasibility measurements, not a runtime size policy.",
+        "SQL callbacks are trusted package code, not a sandbox for arbitrary JavaScript."
+      ],
+      "status": "bounded-feasibility-pass"
+    },
+    {
+      "command": "/opt/homebrew/bin/node --expose-gc .mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+      "exit_code": 0,
+      "kind": "node-only-sqlite-memory-feasibility",
+      "runtime": "v26.0.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "source_sha256": "c47567bea5d85271f12eada970eb2050cf6455428e693458bbecb6d36571b661",
+      "capability": {
+        "deserialize": false,
+        "setAuthorizer": true,
+        "defensive": true
+      },
+      "fixture_created": false,
+      "fixture_removed": false,
+      "tests": [],
+      "measurements": [],
+      "limitations": [
+        "Synthetic macOS execution is not Windows/Linux or installed-package acceptance.",
+        "No guarantee against adversarial ancestor substitution or ACL preservation is claimed.",
+        "Memory and timing samples are bounded feasibility measurements, not a runtime size policy.",
+        "SQL callbacks are trusted package code, not a sandbox for arbitrary JavaScript."
+      ],
+      "status": "unsupported-capability"
+    }
+  ],
+  "resource_assessment": {
+    "tested_images_mib": [
+      4,
+      16,
+      32
+    ],
+    "result": "Linear image memory is a tradeoff to address explicitly during production integration; no arbitrary production size cap was introduced.",
+    "limitation": "Process RSS/external deltas are snapshots subject to allocator reuse and GC, not peak-memory or low-memory/OOM guarantees.",
+    "final_artifact_pass": false
+  },
+  "remaining": [
+    "Production portable SQLite observer and all affected callers/regressions",
+    "Task841 exact-evidence recovery with explicit operator-confirmed quiescence",
+    "Task842 verified runtime capability/range and release/fixture contract parity",
+    "Test489 installed candidate proof, resource/low-memory behavior, and unsupported-runtime refusal",
+    "Existing installed macOS/Linux, independent current-source review, full ladder and exact artifact seal"
+  ],
+  "validation": {
+    "status": "passed for planning and bounded feasibility",
+    "source_tests": "not run: production source/package inputs unchanged in this milestone",
+    "index_refresh": {
+      "command": "node dist/cli.js index",
+      "exit_code": 0
+    },
+    "full_graph": {
+      "command": "node dist/cli.js validate --summary --limit 12 --json",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 3,
+      "warning_scope": "unchanged stale subgraph bundles; refresh excluded"
+    },
+    "changed_graph": {
+      "command": "node dist/cli.js validate --changed-only --summary --limit 12 --json",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "diff_check": {
+      "command": "git --no-optional-locks diff --check",
+      "exit_code": 0
+    },
+    "dependency_review": {
+      "targets": [
+        "task-826",
+        "task-828",
+        "task-839",
+        "task-841",
+        "task-842",
+        "test-479",
+        "test-480",
+        "test-487",
+        "test-488",
+        "test-489"
+      ],
+      "reachable_nodes": 82,
+      "cycles": false,
+      "deferred_bugs_reachable": false
+    },
+    "probe": {
+      "pass": 19,
+      "fail": 0,
+      "runtime": "v24.18.0",
+      "unsupported_control": "v26.0.0; no fixture created"
+    },
+    "corrected_invocation": "An initial index --json invocation was refused with no effects. The supported index command succeeded.",
+    "acceptance_scope": "focused planning/feasibility; not pre-merge, pre-publish, installed or independent security acceptance",
+    "sqlite_index": {
+      "command": "node dist/cli.js db index verify --json",
+      "exit_code": 0,
+      "failure_count": 0,
+      "checks_passed": 5
+    },
+    "final_recheck": {
+      "full_graph": {
+        "errors": 0,
+        "warnings": 3
+      },
+      "changed_graph": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "diff_check": "pass"
+    }
+  },
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": [],
+  "checkpoint_qid": "root:chk-652",
+  "changed_paths_this_milestone": [
+    ".mdkg/index/mdkg.sqlite",
+    ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+    ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+    ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+    ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+    ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+    ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+    ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+    ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+    ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+    ".mdkg/design/dec-98-keep-0-6-0-portable-in-node-and-defer-unresolved-filesystem-hardening.md",
+    ".mdkg/work/goal-87-resolve-deferred-filesystem-bugs-and-harden-portable-mdkg-operations.md",
+    ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+    ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+    ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+    ".mdkg/artifacts/goal-86/requirement-coverage.json",
+    ".mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+    ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+    ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+    ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+    ".mdkg/work/chk-652-defer-unresolved-filesystem-hardening-and-ground-node-only-portability-continuat.md",
+    ".mdkg/artifacts/goal-86/node-portability/receipt.json"
+  ],
+  "final_bookend": {
+    "head": "6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+    "branch": "main",
+    "cached_origin_main_divergence": {
+      "behind": 0,
+      "ahead": 69
+    },
+    "remote_verified": false,
+    "dirty_paths": 82,
+    "staged_paths": [],
+    "new_commits": [],
+    "locks": {
+      "mdkg_write": false,
+      "git_index": false
+    },
+    "runtime_lease": "none acquired; initial five released leases unchanged with runtime DB bytes",
+    "active_work": "root:goal-86 / root:bug-60 remains logical active work; no process or transient writer lock retained",
+    "protected_hashes_match": true,
+    "unexpected_changed_paths": [],
+    "unknown_paths": [],
+    "missing_preserved_paths": [],
+    "remaining_custody": "Initial 65-path baseline preserved except seven explicitly owned planning/projection paths; current milestone owns 24 named paths, some overlapping the baseline. No production source or existing unrelated evidence/skills/CI bytes changed."
+  },
+  "evidence_input_hashes": [
+    {
+      "path": ".mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+      "sha256": "c47567bea5d85271f12eada970eb2050cf6455428e693458bbecb6d36571b661"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      "sha256": "0a5d12d6ac9c9d95cd84413290599ef41c2f5002256c717e5ed5f81acc88bd75"
+    },
+    {
+      "path": ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+      "sha256": "9809bc4aec6177005dbfabdb04663bdab71689e85fdb25a1e3b8a60e34b903c0"
+    },
+    {
+      "path": ".mdkg/design/dec-98-keep-0-6-0-portable-in-node-and-defer-unresolved-filesystem-hardening.md",
+      "sha256": "7e40ff65ad0db289e742dd2214d01b50c1ab04a1393b37b9f7b7218dc24bd796"
+    },
+    {
+      "path": ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+      "sha256": "012a82514bab911ab48f41f659ac056b818cb3c4bdf169db9dd6eeb1dfff3c0d"
+    },
+    {
+      "path": ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+      "sha256": "5f773a92395a398ad305b8f0be60ab98602be50a1bcf0b6839f23ecc171fbec3"
+    },
+    {
+      "path": ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+      "sha256": "4e70cfafd3b9481abf20f87f759f0a55a3afd79c2954f509c895cc89df76bc39"
+    },
+    {
+      "path": ".mdkg/work/chk-652-defer-unresolved-filesystem-hardening-and-ground-node-only-portability-continuat.md",
+      "sha256": "df750c4984e6c2ee82c86eaccffc2791bc570064915aa7ad268cbbdacd4c9698"
+    },
+    {
+      "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+      "sha256": "8a91752891cc7a4c0b3a95ec546929f3811acac29c4b371c33076c94412d34eb"
+    },
+    {
+      "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+      "sha256": "173eac233e3f605bfaea2921b7e2564f183909236069388052f13f4bd7d6fbbe"
+    },
+    {
+      "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      "sha256": "b8ca1dfcf6866363a990ad6ecd0927855357f3174c2e48f0bb4de783c4ca736c"
+    },
+    {
+      "path": ".mdkg/work/goal-87-resolve-deferred-filesystem-bugs-and-harden-portable-mdkg-operations.md",
+      "sha256": "a7a5bb22353a30794ae449dd5a420e084b9a3e29b554e69f52720ab8cf9f8e98"
+    },
+    {
+      "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+      "sha256": "502f11610e547b34732cfdba2005789464db4e7b1e6e57b84ba0d26e3679103f"
+    },
+    {
+      "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      "sha256": "1040f90d4bf3ab26c9503da5c660d5efe9e5f0bb085d66bafe60c73c236fd448"
+    },
+    {
+      "path": ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+      "sha256": "bd3ca4abdbbdef394553f30ba3f0939cfaa07b9d510bff996be66dd15475e377"
+    },
+    {
+      "path": ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+      "sha256": "a2125e6c12d2837c26915deb11282306f366f70b02ee4e65d6c04eeed139617e"
+    },
+    {
+      "path": ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+      "sha256": "a5cb3b00b80f5d4e639877a89fc01d24c187e936c76efabbd2978695d7a169a8"
+    },
+    {
+      "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "e4eded039c01a914d9b04c5b371c7de1e12bc7e43f2738978c8f0e82fc6b701c"
+    },
+    {
+      "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "1cbaa882b59b242db31db1314ad7ecf46be085ba1591e1bd009fa160a6b2308c"
+    },
+    {
+      "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      "sha256": "2f8eb9f031fa09602d086425a927003496b50ab70483156a186ede1ce2255938"
+    },
+    {
+      "path": ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+      "sha256": "3d5913f51a07b93a229972ae0631f525b5a759d365cf51d72154878956afc9a1"
+    },
+    {
+      "path": ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+      "sha256": "9450e1d4ef3d270fec944abc27eb9dc9078cebd1d310bb7bb42a2add1fd1765d"
+    }
+  ]
+}

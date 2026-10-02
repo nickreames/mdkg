@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "owner": "root:task-843",
+  "test": "root:test-490",
+  "kind": "isolated-package-prepack-qualification",
+  "ok": true,
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 10726,
+  "artifact_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "qualification_inputs_sha256": "f2aa82a20e5f650bdaae9777f7c7394a989fe1b79cc3f221dcf0b606d6c3b8cb",
+  "command": "npm run prepack --offline",
+  "package_scope": true,
+  "website_dependency_trees": 0,
+  "website_builds": 0,
+  "installed_or_downloaded_dependencies": false,
+  "payload_files": 234,
+  "new_tarball_created": false,
+  "original_artifact_preserved": true,
+  "stdout_sha256": "60f2f90b6c78c8530f901e3f42de397aaf4c25fed1c8a45eb574930b1514cc9f",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "limits": [
+    "Local macOS build/prepack evidence only",
+    "Not the full37-smoke ladder",
+    "Historical matrix verification is not fresh independent security acceptance"
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  }
+}

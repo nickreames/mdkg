@@ -1,0 +1,2111 @@
+{
+  "schema_version": 1,
+  "kind": "sanitized-linux-qualification-receipt",
+  "original_receipt_sha256": "0d820970823edabaf6318d4d0f2c50401bb919b426b4e611c24d5ba2b8ad4973",
+  "original_receipt_bytes": 392727,
+  "condensation": "Complete raw synthetic stream hashes verified; large arrays/inventories are represented by hashes/counts. Reproduction uses the pinned capsule and original test assertions. No raw security reports or consumer data.",
+  "evidence": {
+    "kind": "test487-local-docker-installed-families",
+    "started_at": "2026-09-29T03:51:08.398Z",
+    "completed_at": "2026-09-29T03:57:42.750Z",
+    "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "capsule_manifest_sha256": "8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+    "runtime_manifest_sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+    "source_revision": "36e075b8d64babff04154704a721db4a82926ebe",
+    "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+    "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+    "environment": {
+      "platform": "linux",
+      "arch": "arm64",
+      "node": "v24.18.0",
+      "uid": 10001,
+      "kernel": "6.12.76-linuxkit",
+      "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "git": "git version 2.43.0",
+      "npm": "11.16.0",
+      "root_filesystem": {
+        "bytes": 1159,
+        "sha256": "75d1128b4dbd4cf544e8dea6423b0e0d444fdd845314939ee39fe001cf5afbe6"
+      },
+      "fixture_filesystem": "/dev/vda1[/docker/volumes/fddc8ac99a5bd3ce2418d170344d0d0de1e0c17a2cbaa3d13dc4e015a5ee22b9/_data] ext4   rw,relatime,discard",
+      "packages": "ca-certificates 20260601~24.04.1\ngit 1:2.43.0-1ubuntu7.3\nlibc6 2.39-0ubuntu8.8\nxz-utils 5.6.1+really5.4.5-1ubuntu0.3",
+      "native_or_emulated": "native ARM64 Linux on ARM64 host"
+    },
+    "completed": [
+      {
+        "name": "bootstrap",
+        "driver": "test-477-installed-bootstrap.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 16520,
+        "stdout_sha256": "d2ff6e4df587fe59c01abdc95f4a191684812f779dfeacf305a9a4434a80f536",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "test477-local-installed-bootstrap",
+          "started_at": "2026-09-29T03:51:08.459Z",
+          "runtime": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "candidate": {
+            "path": "/capsule/.mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.tgz",
+            "sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "bytes": 536766,
+            "integrity": "sha512-uceQapU39WgfiPoElMBvqsCoclwU+zwOjUq+FD+KeV5psJKaFHZ4FTs/hkv+wlbq+J8IwKATXBAKqWmOdkzU3A==",
+            "retained": true,
+            "sealed": false,
+            "input_capture": "/capsule/.mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.linux-bootstrap-inputs.json",
+            "input_capture_sha256": "369f19fd62e7108ecfc8c355fbba2a029026aed68aad45871ddcccf757f520b0"
+          },
+          "runner_sha256": "eff44366ed4e7234a2ff282e485371189c325c375f36b27c230c170ea9530578",
+          "source_inputs": {
+            "sha256": "c9a129755cf10eb97bd13cecd067348e00e0e0c3876266b854422e1586e623d5"
+          },
+          "pack": null,
+          "baseline": {
+            "version": "0.5.2",
+            "url": "https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz",
+            "bytes": 425431,
+            "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+            "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+            "source": "verified-local-cache-no-download"
+          },
+          "completed": [
+            {
+              "entrypoint": "scripts/smoke-init.js",
+              "duration_ms": 5002.119543,
+              "exit_code": 0,
+              "signal": null,
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "input_capture_verification": {
+                "sha256": "157c7da4bf1f2afd94cc1cc11a198a0b8370e7f55469173e16bb7b3a5d642258"
+              },
+              "stdout": {
+                "bytes": 565,
+                "sha256": "200a5557b03af22de6704faa2bb6c3a6a1557aa48056d2df42bcd70dc6154512"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            },
+            {
+              "entrypoint": "scripts/smoke-upgrade.js",
+              "duration_ms": 11472.583172,
+              "exit_code": 0,
+              "signal": null,
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "input_capture_verification": {
+                "sha256": "157c7da4bf1f2afd94cc1cc11a198a0b8370e7f55469173e16bb7b3a5d642258"
+              },
+              "stdout": {
+                "bytes": 7841,
+                "sha256": "b6cb49de24f3ad07d56c6aa1fc37f42dd2ca5b55cb89ff1ef5a91bc0a58c9f63"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          ],
+          "deliveries": {
+            "sha256": "8061a1d145b56935e79c99703b97031a4093e941f9fad63b55a85d6f46276caf",
+            "entry_count": 2
+          },
+          "consumptions": {
+            "sha256": "d088759b5c0278d48693f1b30ff0bcc780526674e2e78ae45a975b1baa69c6cf",
+            "entry_count": 2
+          },
+          "baselines": {
+            "sha256": "5f52e289e9600a0a425d7e73fbe881c488a295ff3a26970c87be4bd326605bbf",
+            "entry_count": 2
+          },
+          "source_inputs_unchanged": true,
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-bootstrap-qualification-yWxGBn"
+          },
+          "final_artifact_qualification": false
+        },
+        "pass": true
+      },
+      {
+        "name": "collaboration",
+        "driver": "test-478-installed-collaboration.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 62107,
+        "stdout_sha256": "4929a5a32c6b5c9e83b6e315b2ec3cd53d0119c9cde3d14842f2acc686115dde",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "test478-local-installed-collaboration",
+          "started_at": "2026-09-29T03:51:25.001Z",
+          "runtime": "v24.18.0",
+          "platform": "linux",
+          "arch": "arm64",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_capture_sha256": "a91c76cd23aa9e5315a96ffd44da43938cf4b54d265206593f4862905f0a5b0f",
+          "source_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "selected_family": "all",
+          "drivers": {
+            "sha256": "598552ad25adee38b283f6d8a5308992fd21ca5190335e3949b71c9a67fe88ea",
+            "entry_count": 2
+          },
+          "completed": [
+            {
+              "name": "existing-installed-identity-collaboration",
+              "duration_ms": 9913.865587999999,
+              "proof": {
+                "runtime": "v24.18.0",
+                "common_ancestor": "2348aae8ffd8ec1bdbadac950df6b129c277edd1",
+                "incoming": "8205099f6025e0fb9a77192e32d2f58c76b6ca8a",
+                "natural_collision": "task-2",
+                "target_identity": "mdkg://3960cd55-66a7-4cb7-8ccc-04b764e5d278/d74087c7-5b98-4a65-8c15-a2ac560fc983",
+                "incoming_identity": "mdkg://3960cd55-66a7-4cb7-8ccc-04b764e5d278/b6467198-3a36-4c54-bc7b-88b0417df9ec",
+                "incoming_alias_after": "root:task-4",
+                "plan_hash": "sha256:b75c882a7fdab83c6b5cf408ab74fb6ae35b8462f09cb19cd2b9206dfb0f898e",
+                "cross_links_preserved": true,
+                "ordinary_uncommitted_reads_observational": true,
+                "mixed_tracked_node": {
+                  "backend": "sqlite",
+                  "distinct_head_staged_working_versions": true,
+                  "stable_identity_preserved": true,
+                  "manual_metadata_stale_cache_reads": true,
+                  "reads_and_pack_preview_observational": true,
+                  "pack_contains_working_tree_version": true,
+                  "explicit_pack_is_only_created_file": true,
+                  "ordinary_mutations_preserve_unstaged_body": true,
+                  "staged_blob_and_index_unchanged": true,
+                  "head_unchanged": true
+                },
+                "git_index_unchanged": true,
+                "external_receipt_sha256": "d9ca6aaac26a517684873389371d0b111391c02a53f81d0a27c8fb19e0eb753d",
+                "replay_noop": true,
+                "reviewed_reintroduction": true,
+                "revert_replay_noop": true,
+                "cherry_pick_revert_requires_decision": true,
+                "same_identity_conflict_requires_decision": true,
+                "stale_plan_refused_without_writes": true,
+                "newer_incoming_reviewed": true,
+                "semantic_cases": [
+                  {
+                    "kind": "target-delete",
+                    "conflict": "$delete-modify",
+                    "reviewed_take": "incoming",
+                    "refused_without_writes": true,
+                    "git_index_unchanged": true
+                  },
+                  {
+                    "kind": "incoming-delete",
+                    "conflict": "$modify-delete",
+                    "reviewed_take": "target",
+                    "refused_without_writes": true,
+                    "git_index_unchanged": true
+                  },
+                  {
+                    "kind": "evidence-conflict",
+                    "conflict": "artifacts",
+                    "reviewed_take": "target",
+                    "refused_without_writes": true,
+                    "git_index_unchanged": true
+                  }
+                ]
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            },
+            {
+              "name": "existing-installed-git-observation",
+              "duration_ms": 41591.359601,
+              "proof": {
+                "schema": "mdkg.git-observation-qualification.v1",
+                "node": "v24.18.0",
+                "platform": "linux",
+                "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+                "git": "git version 2.43.0",
+                "topologies": [
+                  "standalone",
+                  "worktrees",
+                  "submodule",
+                  "gitdir"
+                ],
+                "cases": 288,
+                "controls": [
+                  {
+                    "topology": "standalone",
+                    "native_refresh_observed": true,
+                    "checkouts": 2,
+                    "intentional_graph_mutation_preserves_git_index": true,
+                    "preview_zero_mutation_attempts": true,
+                    "real_sync_mutation_attempt_verified": true,
+                    "competing_lock_preserved": true,
+                    "unsupported_format_refused": true,
+                    "missing_output_parent_preview_preserved": true,
+                    "real_sync_creates_output_parents": true
+                  },
+                  {
+                    "topology": "worktrees",
+                    "native_refresh_observed": true,
+                    "checkouts": 6,
+                    "intentional_graph_mutation_preserves_git_index": true,
+                    "preview_zero_mutation_attempts": true,
+                    "real_sync_mutation_attempt_verified": true,
+                    "competing_lock_preserved": true,
+                    "unsupported_format_refused": true,
+                    "missing_output_parent_preview_preserved": true,
+                    "real_sync_creates_output_parents": true
+                  },
+                  {
+                    "topology": "submodule",
+                    "native_refresh_observed": true,
+                    "checkouts": 2,
+                    "intentional_graph_mutation_preserves_git_index": true,
+                    "preview_zero_mutation_attempts": true,
+                    "real_sync_mutation_attempt_verified": true,
+                    "competing_lock_preserved": true,
+                    "unsupported_format_refused": true,
+                    "missing_output_parent_preview_preserved": true,
+                    "real_sync_creates_output_parents": true
+                  },
+                  {
+                    "topology": "gitdir",
+                    "native_refresh_observed": true,
+                    "checkouts": 2,
+                    "intentional_graph_mutation_preserves_git_index": true,
+                    "preview_zero_mutation_attempts": true,
+                    "real_sync_mutation_attempt_verified": true,
+                    "competing_lock_preserved": true,
+                    "unsupported_format_refused": true,
+                    "missing_output_parent_preview_preserved": true,
+                    "real_sync_creates_output_parents": true
+                  }
+                ],
+                "scope": "persistent path/mode/content and Git index custody; not proof against transient helper execution or lock syscalls",
+                "external_actions": "none",
+                "cleanup": {
+                  "removed": true,
+                  "root": "/private/tmp/mdkg-collaboration-EPZ21n/git-observation-2C1ZFL"
+                },
+                "results_sha256": "6cc1dc8471dd96f85c457f02419b353ea27f5aa706b00710ed321b318983133b",
+                "result_count": 288,
+                "all_case_custody_checks_passed": true
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            },
+            {
+              "name": "linked-worktree-concurrency-recovery-integration",
+              "duration_ms": 10175.155128999999,
+              "proof": {
+                "graph_id": "9180ae65-536d-4a29-9d04-ee62cfb1e98e",
+                "ancestor": "79b808ac9ed43a9ee56c632f22155c3002edd469",
+                "target": "a65e3db804191830ac23a2d5a505f9533f53e764",
+                "incoming": "4dda651bc267b0dcf1acb94bf5ebff37aa34237e",
+                "newer_incoming": "e4c8972f96135f8cf6095e0702d6ccc4be4ba60e",
+                "semantic_commit": "4c3618511f6ec17e3eb07638b233455b6ea35a20",
+                "merge_commit": "9c860ba3c65f8513e979cd5bfaaaf0caf2480d6e",
+                "simultaneous_creation": true,
+                "same_identity_parallel_edits": true,
+                "alias_collision": "task-2",
+                "distinct_stable_identities": [
+                  "mdkg://9180ae65-536d-4a29-9d04-ee62cfb1e98e/47a195ad-0c37-441e-b0bf-c1d0c4c2cf18",
+                  "mdkg://9180ae65-536d-4a29-9d04-ee62cfb1e98e/b74b95db-b6a9-4b61-a199-520104b4795c"
+                ],
+                "exclusion": {
+                  "mode": "exclusion",
+                  "same_checkout_refused": true,
+                  "other_checkout_succeeded": true,
+                  "owner": {
+                    "action": "created",
+                    "node": {
+                      "workspace": "root",
+                      "id": "task-3",
+                      "qid": "root:task-3",
+                      "path": ".mdkg/work/task-3-active-left-writer.md",
+                      "type": "task",
+                      "title": "Active left writer",
+                      "identity": {
+                        "graph_id": "9180ae65-536d-4a29-9d04-ee62cfb1e98e",
+                        "node_id": "c84894a8-3250-46d2-b7af-942f4d2e072a"
+                      },
+                      "stable_ref": "mdkg://9180ae65-536d-4a29-9d04-ee62cfb1e98e/c84894a8-3250-46d2-b7af-942f4d2e072a",
+                      "status": "backlog",
+                      "priority": 9
+                    }
+                  },
+                  "peer": {
+                    "action": "created",
+                    "node": {
+                      "workspace": "root",
+                      "id": "task-3",
+                      "qid": "root:task-3",
+                      "path": ".mdkg/work/task-3-independent-right-writer.md",
+                      "type": "task",
+                      "title": "Independent right writer",
+                      "identity": {
+                        "graph_id": "9180ae65-536d-4a29-9d04-ee62cfb1e98e",
+                        "node_id": "c252a1b5-086b-4dcc-a721-ef18d2de8653"
+                      },
+                      "stable_ref": "mdkg://9180ae65-536d-4a29-9d04-ee62cfb1e98e/c252a1b5-086b-4dcc-a721-ef18d2de8653",
+                      "status": "backlog",
+                      "priority": 9
+                    }
+                  }
+                },
+                "local_states": [
+                  ".mdkg/index/mdkg.sqlite",
+                  ".mdkg/state/selected-goal.json",
+                  ".mdkg/db/runtime/project.sqlite"
+                ],
+                "observations": {
+                  "entry_count": 60,
+                  "sha256": "6c5d1b5372ade9db9df84b8d8ba25c1393e00d9e1678a861608e908414469346",
+                  "first": {
+                    "backend": "json",
+                    "warmth": "warm",
+                    "checkout": "left",
+                    "command": "show",
+                    "explicit_root": true,
+                    "optional_locks": "1"
+                  },
+                  "last": {
+                    "backend": "sqlite",
+                    "warmth": "cold",
+                    "checkout": "right",
+                    "command": "git",
+                    "explicit_root": true,
+                    "optional_locks": "1"
+                  }
+                },
+                "pinned_input_stability": true,
+                "advanced_symbolic_ref_refused": true,
+                "two_actual_sigkill_journals": true,
+                "cross_checkout_approval_refused": true,
+                "peer_journal_lock_and_index_preserved": true,
+                "unknown_lock_file_refused_without_cleanup": true,
+                "unresolved_git_stages_refused": true,
+                "native_conflicts": [
+                  ".mdkg/config.json",
+                  ".mdkg/work/task-1-shared-worktree-ancestor.md",
+                  ".mdkg/work/task-2-parallel-authored-task.md",
+                  "src/features.cjs"
+                ],
+                "graph_resolution_paths": {
+                  "entry_count": 11,
+                  "sha256": "52709167a46d101466ac3103163a52b305361708a63470ecc2c3c4b79dcc06e2",
+                  "first": ".mdkg/work/goal-1-checkout-local-selection.md",
+                  "last": ".mdkg/identity/reconciliations/2dd70ae9938656f341b4aeb876b3f62b1e52f4adcbc4dda0d0befe1de8f3ea1b.json"
+                },
+                "configuration_resolution": "explicit incoming configuration; not semantic graph overwrite",
+                "merged_source_sha256": "254b1ad897516edb69d907d5d438bf7aa5d01c90bd7e30863d2a191e199d2d23",
+                "staged_merge_paths": [
+                  ".mdkg/config.json",
+                  "external-receipt.json",
+                  "incoming-only.txt",
+                  "src/features.cjs"
+                ],
+                "ancestry_and_replay": true,
+                "stale_decision_reuse_refused": true,
+                "external_receipt_sha256": "1bf6758bbfe7230740a9c8269afbae978499396f14bd37890b9864f9c24bab96",
+                "native_retention_lock_is_not_writer_lease": true,
+                "limitations": [
+                  "Newer incoming source-only commit remains intentionally unmerged; old reviewed incoming was pinned.",
+                  "Submodule-backed linked worktree mutation is not inferred from observational submodule coverage."
+                ]
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            }
+          ],
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-collaboration-EPZ21n"
+          },
+          "final_artifact_pass": false
+        },
+        "pass": true
+      },
+      {
+        "name": "gitdir",
+        "driver": "test-478-indirection-qualification.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 13381,
+        "stdout_sha256": "709203951d60df10b23e6d77652a224798de585fefc62e03cced3a5f3a833f79",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "test478-local-installed-indirection",
+          "started_at": "2026-09-29T03:52:27.142Z",
+          "runtime": "v24.18.0",
+          "platform": "linux",
+          "arch": "arm64",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_capture_sha256": "a91c76cd23aa9e5315a96ffd44da43938cf4b54d265206593f4862905f0a5b0f",
+          "source_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "selected_family": "linked-gitdir",
+          "drivers": {
+            "sha256": "b003e76d1fc85bc1ea0f94bf165cbba94e477f169f2fe39e68f18e4ef1f5511c",
+            "entry_count": 2
+          },
+          "completed": [
+            {
+              "name": "linked-gitdir-concurrency-recovery-integration",
+              "duration_ms": 12907.277381999998,
+              "proof": {
+                "key_count": 37,
+                "sha256": "51424d32e1f5d21acd9cec3b9bd37e6eee6ba84ffc4475bf47434276f54fbcc2",
+                "sample_keys": [
+                  "topology",
+                  "seed_gitdir",
+                  "seed_git_marker",
+                  "superproject_bookend"
+                ]
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            }
+          ],
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-collaboration-wc8Bze"
+          },
+          "final_artifact_pass": false
+        },
+        "pass": true
+      },
+      {
+        "name": "submodule",
+        "driver": "test-478-indirection-qualification.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 13369,
+        "stdout_sha256": "e2307ec069d8a6162e8c99d3da7252d99caac79e8bdc7714f92c2518f3effa56",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "test478-local-installed-indirection",
+          "started_at": "2026-09-29T03:52:40.547Z",
+          "runtime": "v24.18.0",
+          "platform": "linux",
+          "arch": "arm64",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_capture_sha256": "a91c76cd23aa9e5315a96ffd44da43938cf4b54d265206593f4862905f0a5b0f",
+          "source_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "selected_family": "linked-submodule",
+          "drivers": {
+            "sha256": "b003e76d1fc85bc1ea0f94bf165cbba94e477f169f2fe39e68f18e4ef1f5511c",
+            "entry_count": 2
+          },
+          "completed": [
+            {
+              "name": "linked-submodule-concurrency-recovery-integration",
+              "duration_ms": 12879.397881,
+              "proof": {
+                "key_count": 37,
+                "sha256": "dd6a3986299555333f3c5b021d74e541fae59177987eb8bbe56615b2e361a65a",
+                "sample_keys": [
+                  "topology",
+                  "seed_gitdir",
+                  "seed_git_marker",
+                  "superproject_bookend"
+                ]
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            }
+          ],
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-collaboration-HQWac4"
+          },
+          "final_artifact_pass": false
+        },
+        "pass": true
+      },
+      {
+        "name": "ownership",
+        "driver": "test-479-installed-ownership.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 27878,
+        "stdout_sha256": "a7315208e4485d0dad15fb35f92674d423a7fcdac61fdd9e2d3b3dbf16c4c3d3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "test479-local-installed-ownership",
+          "started_at": "2026-09-29T03:52:53.953Z",
+          "setup_ms": 420.661001,
+          "runtime": "v24.18.0",
+          "platform": "linux",
+          "arch": "arm64",
+          "selected_family": "all",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_capture_sha256": "a91c76cd23aa9e5315a96ffd44da43938cf4b54d265206593f4862905f0a5b0f",
+          "source_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "drivers": {
+            "sha256": "18349d4bb8b0842b97995b5d050b17f4beee3dc16b8d027c1dd33f2e397adca1",
+            "entry_count": 3
+          },
+          "completed": [
+            {
+              "name": "portable-state-and-malformed-transport",
+              "duration_ms": 4593.385336,
+              "proof": {
+                "node": "0.6.0",
+                "runtime": "v24.18.0",
+                "platform": "linux-arm64",
+                "cases": 22,
+                "case_names": {
+                  "entry_count": 22,
+                  "sha256": "681d37013fccc63d2fe0d5732de9dcbbc8dec06578ae9d5a42720a0105f5b891",
+                  "first": "public: state exclusions and portable contract",
+                  "last": "private: explicitly registered nested ownership preserves portable checkpoint policy"
+                },
+                "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+                "final_qualification": false
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            },
+            {
+              "name": "sampled-migration-and-reconciliation-recovery",
+              "duration_ms": 22768.429677,
+              "proof": {
+                "runtime": "v24.18.0",
+                "cases": {
+                  "entry_count": 12,
+                  "sha256": "238f8f762261b2cf870969a6e6bb93c34111965dbae7c2257868d07aa5d68056",
+                  "first": {
+                    "kind": "migration",
+                    "mode": "resume",
+                    "position": "first",
+                    "writes": 15,
+                    "observed_written": 1,
+                    "state": "applied",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  },
+                  "last": {
+                    "kind": "reconciliation",
+                    "mode": "rollback",
+                    "position": "last",
+                    "writes": 6,
+                    "observed_written": 6,
+                    "state": "rolled-back",
+                    "git_index_preserved": true,
+                    "user_bytes_preserved": true,
+                    "dependency_and_control_refused": false,
+                    "rollback_interruption_verified": false
+                  }
+                },
+                "fault_preload_sha256": "25a364ebffff713920d3a97507a8c31bc897d2e7f063483550e837f91eeef266",
+                "limitations": [
+                  "Error interruption after real filesystem operations, not SIGKILL or power-loss durability.",
+                  "First/middle/last boundaries sampled; not every operation position."
+                ]
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            }
+          ],
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-ownership-Rcl5oP"
+          },
+          "final_artifact_pass": false
+        },
+        "pass": true
+      },
+      {
+        "name": "state-admission",
+        "driver": "test-479-state-admission.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 4350,
+        "stdout_sha256": "bddde3cfac46d3f3f66a2632f0f13d6c128919b141ca1e05e735e8347a788804",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "test479-state-admission",
+          "started_at": "2026-09-29T03:53:21.861Z",
+          "setup_ms": 417.75879199999997,
+          "runtime": "v24.18.0",
+          "platform": "linux",
+          "arch": "arm64",
+          "selected_family": "all",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_capture_sha256": "a91c76cd23aa9e5315a96ffd44da43938cf4b54d265206593f4862905f0a5b0f",
+          "source_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "drivers": {
+            "sha256": "4bf9e2bdc77855d21ae12cb8bb1bf394d821ae90b3f0ee38a7727d1b2d46bf9a",
+            "entry_count": 2
+          },
+          "completed": [
+            {
+              "name": "actual-runtime-and-selector-transport",
+              "duration_ms": 2205.4730010000003,
+              "proof": {
+                "cases": {
+                  "entry_count": 9,
+                  "sha256": "b5f46f65f78a2776aa29cf3223b11943a4d3594bbcac8ac5cde250ac95b12db6",
+                  "first": {
+                    "name": "actual-leased-runtime-and-selected-goal-excluded",
+                    "pass": true
+                  },
+                  "last": {
+                    "name": "public-inspection-tree-restores-no-checkout-state-or-private-checkpoint",
+                    "pass": true
+                  }
+                },
+                "runtime": "v24.18.0",
+                "actual_sqlite_runtime": true,
+                "actual_queue_claim": {
+                  "message_id": "active",
+                  "status": "leased",
+                  "lease_owner": "synthetic-ephemeral-owner"
+                },
+                "selected_goal_file_excluded": true,
+                "snapshot_queue_policy": "paused",
+                "limitations": [
+                  "Structural local transport proof, not remote execution/authentication/attestation.",
+                  "An authored lifecycle goal is project knowledge, not an imported checkout lease."
+                ]
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            },
+            {
+              "name": "live-and-ambiguous-recovery-admission",
+              "duration_ms": 1663.0749589999996,
+              "proof": {
+                "cases": [
+                  {
+                    "name": "live-writer-refused",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "suspended-writer-refused",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "ambiguous-pid-refused",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "unknown-entry-refused:.mdkg/index/write.lock/unknown.txt",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "unknown-entry-refused:.mdkg/work/task-999-unknown.md",
+                    "pass": true,
+                    "complete_inventory_unchanged": true
+                  },
+                  {
+                    "name": "competing-opposite-recovery-one-winner",
+                    "pass": true,
+                    "winning_mode": "rollback",
+                    "exact_terminal_bytes": true,
+                    "repeated_terminal_read_only": true
+                  }
+                ],
+                "runtime": "v24.18.0",
+                "platform": "linux",
+                "arch": "arm64",
+                "ambiguity": "synthetic EPERM refusal control",
+                "live_and_suspended": "actual owned child process"
+              },
+              "artifact_verification": {
+                "sha256": "102ecd8aa35fcf56d6f3bcb3fd7e0346041057749e13c89423361423eb9b8ad8"
+              },
+              "capture_verification": {
+                "sha256": "e8063338265bf1ab2a1aa4b3d81fb16f1af74f0f626a9bf39fcd783ac7123fcf"
+              }
+            }
+          ],
+          "cleanup": {
+            "removed": true,
+            "root": "/private/tmp/mdkg-ownership-state-TJQD2U"
+          },
+          "final_artifact_pass": false
+        },
+        "pass": true
+      },
+      {
+        "name": "containment",
+        "driver": "test-479-installed-containment.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 26779,
+        "stdout_sha256": "ff3e2dd0dce48288cb9a663cc44e148d23600a9908dfa9cef7a366ace2711f51",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test479-current-installed-containment",
+          "owner": "root:test-479",
+          "context_qids": [
+            "root:test-488",
+            "root:goal-86"
+          ],
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "duration_ms": 26702,
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "driver_sha256": "66e1b74273c1b623ec44da08fa0748aff0e25385fe011926f9bea639f3eb7718",
+          "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+          "completed": [
+            {
+              "family": "bundle-provenance",
+              "finding_owner": "root:bug-44",
+              "exit_code": 0,
+              "duration_ms": 9769,
+              "proof": {
+                "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+                "node": "/opt/node-v24.18.0-linux-arm64/bin/node",
+                "cases": {
+                  "entry_count": 49,
+                  "sha256": "b9ef5ff2496dce3a02b3def14227324df23a66f89f259cefaa15b35112ed9887",
+                  "first": {
+                    "name": "userinfo-query-fragment:public",
+                    "pass": true
+                  },
+                  "last": {
+                    "name": "configured:sqlite-projection",
+                    "pass": true
+                  }
+                },
+                "pass": true
+              }
+            },
+            {
+              "family": "source-read-admission",
+              "finding_owner": "root:bug-48",
+              "exit_code": 0,
+              "duration_ms": 1997,
+              "proof": {
+                "pass": true,
+                "cases": {
+                  "entry_count": 30,
+                  "sha256": "f7c1ef736a1bd9df8b0f3590d85992de12459e6d0eb6b7f214b0043f049fb4d4",
+                  "first": {
+                    "name": "CLI config refuses external symlink unchanged",
+                    "pass": true
+                  },
+                  "last": {
+                    "name": "MCP survives external symlink config and subsequent valid request",
+                    "pass": true
+                  }
+                },
+                "fixture_cleanup": "exact owned mkdtemp removed",
+                "native_platform": "linux"
+              }
+            },
+            {
+              "family": "skill-registry-admission",
+              "finding_owner": "root:bug-49",
+              "exit_code": 0,
+              "duration_ms": 4751,
+              "proof": {
+                "pass": true,
+                "cases": {
+                  "entry_count": 19,
+                  "sha256": "e51433c6ff1dff33291dd15b6d1b52432aecb7cafa616e1386f23820025a9432",
+                  "first": {
+                    "name": "default new refuses external symlink without partial writes",
+                    "pass": true
+                  },
+                  "last": {
+                    "name": "init rejects a linked registry without copying or changing its target",
+                    "pass": true
+                  }
+                },
+                "fixture_cleanup": "exact owned mkdtemp removed"
+              }
+            },
+            {
+              "family": "snapshot-verification",
+              "finding_owner": "root:bug-50",
+              "exit_code": 0,
+              "duration_ms": 5554,
+              "proof": {
+                "pass": true,
+                "cases": {
+                  "entry_count": 26,
+                  "sha256": "09a7f31760b783916f51c4b79e9fba48d4a5226287bc32167d698a05e5f2cb71",
+                  "first": {
+                    "name": "valid drained snapshot executes every mandatory check without effects",
+                    "pass": true
+                  },
+                  "last": {
+                    "name": "paused ready queue snapshot is valid under its declared policy",
+                    "pass": true
+                  }
+                },
+                "fixture_cleanup": "exact owned mkdtemp removed"
+              }
+            },
+            {
+              "family": "snapshot-containment",
+              "finding_owner": "root:bug-51",
+              "exit_code": 0,
+              "duration_ms": 4064,
+              "proof": {
+                "pass": true,
+                "cases": {
+                  "entry_count": 79,
+                  "sha256": "486a85446afdd0ea7c987b5229135c144dcdd133a324e81535c8c1cca575c479",
+                  "first": {
+                    "name": "verify rejects snapshot external-link before effects",
+                    "pass": true
+                  },
+                  "last": {
+                    "name": "portable absent-runtime snapshot verifies without writes",
+                    "pass": true
+                  }
+                },
+                "fixture_cleanup": "exact owned mkdtemp removed"
+              }
+            }
+          ],
+          "limitations": [
+            "This Linux execution only; remaining platforms and real read-only filesystem stay open",
+            "Five existing finding families only; not complete fourteen-finding acceptance or independent review",
+            "CLI and MCP consumers; installed ZIP codec used only for synthetic fixture construction/inspection",
+            "Bugs46/47 remain deferred and unresolved; no blocked historical scan context accessed"
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "remedies",
+        "driver": "test-479-installed-remedies.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 80930,
+        "stdout_sha256": "88e3c950d749355dc9cf6b49fb70464dc3317c2479c04df367492c0d33c18c2c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test479-current-installed-remaining-remedies",
+          "owner": "root:test-479",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "compiledInputs": {
+            "sha256": "ba9b25c9a218bbf82e28336f17261da68c56d4a00ed42d47ce0c9a86b9f99558",
+            "entry_count": 13
+          },
+          "driver_sha256": "a22e3af8b9a49d24708cb50eade04bb68194cafd61d6134076a6d009b2e00304",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "duration_ms": 80856,
+          "completed": [
+            {
+              "family": "commands/upgrade_approval.test.js",
+              "finding_owner": "root:bug-52",
+              "exit_code": 0,
+              "counts": {
+                "tests": 48,
+                "pass": 48,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 1541,
+              "stdout_sha256": "9666e78356db087937ee899193418b7218a1733acbcf6f46aac14072585d336d",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 48,
+                "sha256": "c4ed8de724175ce9a397b018305725634df2feb129b4364dccaeb690a48915f3",
+                "first": "ok 1 - approved recovery refuses substitute tampering before effects (resume)",
+                "last": "ok 48 - CLI recovery refuses substituted ordinary-file operations and legacy journals without any effects"
+              }
+            },
+            {
+              "family": "commands/init_manifest_ownership.test.js",
+              "finding_owner": "root:bug-53",
+              "exit_code": 0,
+              "counts": {
+                "tests": 12,
+                "pass": 12,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 2438,
+              "stdout_sha256": "9cb15fc599abddc35c11af0aef7aa91db579a7d90fd986fd46d0e34c2d428535",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 12,
+                "sha256": "cb89c6ee94c4460e9a1938d067de63a0219c81a9a60ee18b87e0a5fba477ed82",
+                "first": "ok 1 - init refuses a hard-linked manifest before effects: default force=false",
+                "last": "ok 12 - manifest writer creates missing owned parents and a valid exclusive new file"
+              }
+            },
+            {
+              "family": "commands/numeric_allocation.test.js",
+              "finding_owner": "root:bug-54",
+              "exit_code": 0,
+              "counts": {
+                "tests": 86,
+                "pass": 86,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 9706,
+              "stdout_sha256": "83053b385722a582651fae6360dffb8810f92adf648b3b83e3fa60d5908ef264",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 86,
+                "sha256": "2b1f447daaf1fc8a34f112431751ee5ec2223ee402daa59aa0bc0d38105a51a5",
+                "first": "ok 1 - v1 json new refuses unsafe or exhausted 9007199254740991 before authored effects",
+                "last": "ok 86 - prospective admission retains bundled manifest fallback"
+              }
+            },
+            {
+              "family": "commands/loop_seed_safety.test.js",
+              "finding_owner": "root:bug-55",
+              "exit_code": 0,
+              "counts": {
+                "tests": 63,
+                "pass": 63,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 7199,
+              "stdout_sha256": "c163ebc2153388f58452b2cc354bda93f0b47f6f1797fa2f1be8968921010648",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 63,
+                "sha256": "8e2699ba81b725d84bedc4f28fd029d4437bbd31a002bb1e3a22b6272b3a42b1",
+                "first": "ok 1 - new loop json v1 refuses file-link before effects",
+                "last": "ok 63 - shared seed catalog enforces depth budget without writes"
+              }
+            },
+            {
+              "family": "commands/loop_seed_budget.test.js",
+              "finding_owner": "root:bug-56",
+              "exit_code": 0,
+              "counts": {
+                "tests": 41,
+                "pass": 41,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 12296,
+              "stdout_sha256": "1d1b512e6668293b1457438266cbd328033a9c5d774cff203950e7735a5e4a03",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 41,
+                "sha256": "073e75df5b4f6b70d3991552f1bf41045a5a7b059a0e6019351f5a4c561f731d",
+                "first": "ok 1 - loop list reuses seed provenance once, templates=true",
+                "last": "ok 41 - imported loop body and local provenance consume the same total budget"
+              }
+            },
+            {
+              "family": "commands/archive_payload_ownership.test.js",
+              "finding_owner": "root:bug-57",
+              "exit_code": 0,
+              "counts": {
+                "tests": 38,
+                "pass": 38,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 5110,
+              "stdout_sha256": "6229280a5d935c34ca64e12f3b7751503b1fa83d080edcc3a5eda5f7dd991c74",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 38,
+                "sha256": "d7c890c49a32d94f21707b170de209d0cb84fa9a1b3c1e173fe5c08ca5e1f7c4",
+                "first": "ok 1 - compression refuses raw payload owned by nested disabled workspace",
+                "last": "ok 38 - sidecar payload authority changed after index admission refuses before writes"
+              }
+            },
+            {
+              "family": "commands/mcp_request_admission.test.js",
+              "finding_owner": "root:bug-58",
+              "exit_code": 0,
+              "counts": {
+                "tests": 35,
+                "pass": 35,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 1784,
+              "stdout_sha256": "4a23923e59201c6189ceeeaa73dae53772f7a01a66d47efb9b017d52580e341e",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 35,
+                "sha256": "dbd15f961a186a649dda97b6610f8b0b64c9daf80ca8566b6740c4b8f75bcb4a",
+                "first": "ok 1 - invalid request envelope 0 returns an error and preserves the stdio session",
+                "last": "ok 35 - direct boundary accepts unknown input without dereferencing null or undefined"
+              }
+            },
+            {
+              "family": "commands/skill_git_metadata.test.js",
+              "finding_owner": "root:bug-59",
+              "exit_code": 0,
+              "counts": {
+                "tests": 47,
+                "pass": 47,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 624,
+              "stdout_sha256": "e3ccd764a71516ee5b43354e815f37a88bd8ff5789c25066db865dc189d97dda",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 47,
+                "sha256": "df1ee340367da0dd207682af8a6905eb4f9d2b44f4e9e987a3280194942eb946",
+                "first": "ok 1 - skill sync refuses .git/hooks with force=false before all effects",
+                "last": "ok 47 - distinct case-sensitive alternate stores retain separate traversal identity"
+              }
+            },
+            {
+              "family": "core/sqlite_observation.test.js",
+              "finding_owner": "root:bug-60",
+              "exit_code": 0,
+              "counts": {
+                "tests": 61,
+                "pass": 61,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 26923,
+              "stdout_sha256": "62d97bb4af5262039e4aff8889928d72c3350b1be7062c7960ecfc2e91a2a56f",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 61,
+                "sha256": "5190d4a2b5725e98d0f94c59510993f4b92626f937e2b11cd7f03787959d53f1",
+                "first": "ok 1 - meta observation uses only an in-memory native connection",
+                "last": "ok 61 - CLI observations preserve complete permission-read-only inventories"
+              }
+            },
+            {
+              "family": "core/sqlite_memory_observation.test.js",
+              "finding_owner": "root:bug-60",
+              "exit_code": 0,
+              "counts": {
+                "tests": 25,
+                "pass": 25,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 144,
+              "stdout_sha256": "4660347306b3d61efc3547882c5287aa92d436978cb973dc2a2c2cebedbaa9c1",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 25,
+                "sha256": "febb7db20e59b7a5957c83527e2e292f94ba28f45dec9ede0d273f5c3bfdd048",
+                "first": "ok 1 - portable SQLite observation opens memory only without OS dispatch or tools",
+                "last": "ok 25 - a falsy thrown callback value still fails and releases the connection"
+              }
+            },
+            {
+              "family": "transport-admission",
+              "finding_owner": "root:bug-45",
+              "exit_code": 0,
+              "duration_ms": 12173,
+              "proof": {
+                "pass": true,
+                "cases": {
+                  "entry_count": 167,
+                  "sha256": "30a00f02a00f14681a423236626d48d7f584d59be3956568293848129f072f37",
+                  "first": {
+                    "name": "historical clone: legitimate graph assets and private snapshot",
+                    "pass": true
+                  },
+                  "last": {
+                    "name": "directory clone refuses .mdkg/assets/.GiT/config",
+                    "pass": true
+                  }
+                },
+                "runtime": "v24.18.0",
+                "platform": "linux-arm64",
+                "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+                "final_qualification": false
+              }
+            }
+          ],
+          "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+          "canonical_implementation_imports_refused": true,
+          "limitations": [
+            "This Linux execution only; other platforms and independent acceptance remain open",
+            "Mixed installed CLI and shipped internal-module regressions, not all public CLI tests",
+            "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "compatibility",
+        "driver": "test-480-installed-compatibility.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 33500,
+        "stdout_sha256": "509c8dabb57ee8804135e717c00ff7dee0cc143f4d147cfc65786c3062753b1d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test480-current-installed-compatibility",
+          "owner": "root:test-480",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "duration_ms": 33384,
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "driver_sha256": "e04984545b722ada4cc4e50c45ecf8a969ddd63ab8d83021914ebd1fc6b70b82",
+          "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+          "completed": [
+            {
+              "family": "cache-freshness",
+              "duration_ms": 21657,
+              "proof": {
+                "cases": {
+                  "entry_count": 242,
+                  "sha256": "160c59706b526d4c58811a7623507107766f0a9db2ff9a7ae403fae4a9490b1d",
+                  "first": {
+                    "format": "legacy",
+                    "backend": "json",
+                    "state": "fresh",
+                    "command": "show task-1 --json",
+                    "result": "pass"
+                  },
+                  "last": {
+                    "format": "legacy",
+                    "backend": "sqlite",
+                    "state": "zip-corrupted",
+                    "command": "explicit-compression-and-verification",
+                    "result": "pass"
+                  }
+                },
+                "runtime": "v24.18.0",
+                "platform": "linux",
+                "arch": "arm64",
+                "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db"
+              }
+            },
+            {
+              "family": "changed-warnings",
+              "duration_ms": 11265,
+              "proof": {
+                "runtime": "v24.18.0",
+                "platform": "linux",
+                "arch": "arm64",
+                "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+                "rows": {
+                  "entry_count": 16,
+                  "sha256": "423ad803cda552f531c117e32a1c8b09417cd28cb013d7072f885d46b4ea641f",
+                  "first": {
+                    "topology": "standalone",
+                    "nested": false,
+                    "cache": "present",
+                    "caller_optional_locks": "1",
+                    "native_rename_and_copy": true,
+                    "expected_paths": [
+                      ".mdkg/work/copied with space.md",
+                      ".mdkg/work/ordinary.md",
+                      ".mdkg/work/rename-before.md",
+                      ".mdkg/work/renamed with\\literal\nline.md",
+                      ".mdkg/work/untracked\\literal\nline.md",
+                      ".mdkg/work/with\nnewline.md",
+                      ".mdkg/work/with space.md",
+                      ".mdkg/work/with\\literal.md"
+                    ],
+                    "changed_paths": [
+                      ".mdkg/work/copied with space.md",
+                      ".mdkg/work/ordinary.md",
+                      ".mdkg/work/rename-before.md",
+                      ".mdkg/work/renamed with\\literal\nline.md",
+                      ".mdkg/work/untracked\\literal\nline.md",
+                      ".mdkg/work/with\nnewline.md",
+                      ".mdkg/work/with space.md",
+                      ".mdkg/work/with\\literal.md"
+                    ],
+                    "missing_paths": [],
+                    "expected_warnings": 42,
+                    "actual_warnings": 42,
+                    "warnings_match": true,
+                    "paths_match": true,
+                    "global_errors_preserved": true,
+                    "inventory_unchanged": true
+                  },
+                  "last": {
+                    "topology": "gitdir",
+                    "nested": true,
+                    "cache": "absent",
+                    "caller_optional_locks": "unset",
+                    "native_rename_and_copy": true,
+                    "expected_paths": {
+                      "entry_count": 9,
+                      "sha256": "e7f166c57aac052252ff5b125f4b6a1414e10a1377f6646cdcd21ef7504db808",
+                      "first": ".mdkg/index/mdkg.sqlite",
+                      "last": ".mdkg/work/with\\literal.md"
+                    },
+                    "changed_paths": {
+                      "entry_count": 9,
+                      "sha256": "e7f166c57aac052252ff5b125f4b6a1414e10a1377f6646cdcd21ef7504db808",
+                      "first": ".mdkg/index/mdkg.sqlite",
+                      "last": ".mdkg/work/with\\literal.md"
+                    },
+                    "missing_paths": [],
+                    "expected_warnings": 42,
+                    "actual_warnings": 42,
+                    "warnings_match": true,
+                    "paths_match": true,
+                    "global_errors_preserved": true,
+                    "inventory_unchanged": true
+                  }
+                }
+              }
+            }
+          ],
+          "limitations": [
+            "This Linux execution only; remaining platform rows stay open",
+            "No canonical graph migration or bundle refresh",
+            "These cases do not complete all Test480 obligations or final release acceptance"
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          }
+        },
+        "pass": true
+      },
+      {
+        "name": "work",
+        "driver": "test-480-installed-work-smokes.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 27686,
+        "stdout_sha256": "431d1e6065a04ff60f2b8bc95f8a296f1f23dfc739700644edf9e4966e40f265",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test480-current-installed-work-archive-fork",
+          "owner": "root:test-480",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "driver_sha256": "d62a344c6f65c7ef9b4c0494c7f49069850900fc222ad456754b4298eee38f9a",
+          "duration_ms": 27607,
+          "completed": [
+            {
+              "script": "smoke-archive-work.js",
+              "exit_code": 0,
+              "signal": null,
+              "duration_ms": 11497,
+              "stdout": {
+                "bytes": 907,
+                "sha256": "756a56f86a2f4b4af31959408958be5ed6c03cc5446ba3e5dbf66dd52711fc97"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            },
+            {
+              "script": "smoke-work-invocation.js",
+              "exit_code": 0,
+              "signal": null,
+              "duration_ms": 12884,
+              "stdout": {
+                "bytes": 1263,
+                "sha256": "3412963193959e5687f4b0430269b5b4dfde345d6bf65c7a025fc706c6579564"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            },
+            {
+              "script": "smoke-graph-clone.js",
+              "exit_code": 0,
+              "signal": null,
+              "duration_ms": 3068,
+              "stdout": {
+                "bytes": 493,
+                "sha256": "32f2b3a597dd8286294a39903d499df9de9b696527acb59b15c94f6a87dd0b9a"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          ],
+          "deliveries": {
+            "sha256": "13654c5114fdd754d9b78172b3f0865ef5c2f6cd177d7d979d9b0c814528eaf2",
+            "entry_count": 3
+          },
+          "consumptions": {
+            "sha256": "90acda4e26eee6c8346870ea3e57c45f0e05fad5c16ee47f5f7829474647af69",
+            "entry_count": 3
+          },
+          "limitations": [
+            "Three existing smokes only, not the complete37-smoke release ladder.",
+            "This Linux execution only; old-client/runtime/platform and independent acceptance remain separate."
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "runtime",
+        "driver": "test-480-old-client-runtime.cjs",
+        "status": 1,
+        "signal": null,
+        "duration_ms": 2460,
+        "stdout_sha256": "6414a37f79e83431431a8b978522967098f106a9201277f94fce704213fa7b61",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test480-current-old-client-runtime-boundary",
+          "owner": "root:test-480",
+          "consumer": "root:test-482",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "driver_sha256": "9072bf21acc2df8f70edc287ec18885550720e7a58525739cd33257e7e972a77",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "duration_ms": 2371,
+          "rows": {
+            "entry_count": 15,
+            "sha256": "6d2d45d5bcd81813c3ac44cefe083d00a050f85538051877e089656fb1959a31",
+            "first": {
+              "case": "published0.5.2 legacy writer positive",
+              "pass": true
+            },
+            "last": {
+              "case": "unsupported runtime discovery positive",
+              "runtime": "v24.15.0",
+              "command": [
+                "--version"
+              ],
+              "pass": true
+            }
+          },
+          "downloads": [
+            {
+              "kind": "published-package",
+              "url": "https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz",
+              "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+              "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+              "bytes": 425431
+            },
+            {
+              "kind": "official-node-runtime",
+              "version": "24.18.0",
+              "arch": "arm64",
+              "url": "https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-arm64.tar.xz",
+              "sha256": "58c9520501f6ae2b52d5b210444e24b9d0c029a58c5011b797bc1fe7105886f6",
+              "bytes": 30473480,
+              "checksum_manifest_sha256": "3927bab574a00ca0560c9583fe19655ba19603a1c5851414e4325d34ac50e469"
+            },
+            {
+              "kind": "official-node-runtime",
+              "version": "24.15.0",
+              "arch": "arm64",
+              "url": "https://nodejs.org/download/release/v24.15.0/node-v24.15.0-linux-arm64.tar.xz",
+              "sha256": "f3d5a797b5d210ce8e2cb265544c8e482eaedcb8aa409a8b46da7e8595d0dda0",
+              "bytes": 30108656,
+              "checksum_manifest_sha256": "1e812945dee26c3e4ca41a8c0b582668ff2401ba0ae727a122300c0e8514edb0"
+            },
+            {
+              "kind": "official-node-runtime",
+              "version": "26.0.0",
+              "arch": "arm64",
+              "url": "https://nodejs.org/download/release/v26.0.0/node-v26.0.0-linux-arm64.tar.xz",
+              "sha256": "f0f94e55142149a4d34634dc3d7e103921d898512dd0cef995ecb62c5ebd3f29",
+              "bytes": 31819656,
+              "checksum_manifest_sha256": "d9ed90999491bdda1a4e0668a18c11554b149bae4ef6be02ecbf456c5dd173ae"
+            }
+          ],
+          "limits": [
+            "This Linux execution only; Other platform rows remain separately accounted.",
+            "Old init bypass is an observed unsupported behavior, not accepted secure authoring.",
+            "No canonical migration, package changes or global runtime installation."
+          ],
+          "pass": false,
+          "error": "fixture qualification failed; cleanup={\"removed\":true,\"root\":\"/private/tmp/mdkg-old-client-runtime-TNLO2z\"}\nExpected values to be strictly equal:\n\n127 !== 0\n"
+        },
+        "pass": false
+      },
+      {
+        "name": "behavior",
+        "driver": "test-483-installed-behavior.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 55647,
+        "stdout_sha256": "a7dd8a35a8457c72473eef433da180cdbd1eccf645ea81adee489ba885ddb02a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test483-current-installed-behavior",
+          "owner": "root:test-483",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "compiledInputs": {
+            "sha256": "53782990d72a0323407af6cea05a54b2c3cc3374e3ac9d880b57e6ebc4d92730",
+            "entry_count": 12
+          },
+          "driver_sha256": "53539f992539e731f71bc341ec1038799e2d613e4fe34e5054ff85deea06d627",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "duration_ms": 55570,
+          "completed": [
+            {
+              "family": "commands/pack_identity.test.js",
+              "test483_cases": [
+                2
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 10,
+                "pass": 10,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 6484,
+              "stdout_sha256": "718a78536fc4125770eaa656be51b602e94205b1961cf60392defdf7197437f4",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 10,
+                "sha256": "a4999f84473fa39cf80c697b7c88cfdc2ca849bbb4788716e9655d997fd836c0",
+                "first": "ok 1 - json authored CLI packs and MCP retain persisted identities without changing staged work",
+                "last": "ok 10 - sqlite legacy pack output never invents stable identities"
+              }
+            },
+            {
+              "family": "commands/format_identity.test.js",
+              "test483_cases": [
+                3
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 24,
+                "pass": 24,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 6338,
+              "stdout_sha256": "3f5490258979e550a3cf2f6d04b8dbfdf6868914687bcc7f43ff155b630aaa13",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 24,
+                "sha256": "3e98d43946a7d158ad89e6fc53dec1749026b6c4e9067f31c2dbecb83e129a43",
+                "first": "ok 1 - v2 format preserves identities, stable relation values, custom fields and Git staging",
+                "last": "ok 24 - legacy formatting does not invent identities and rejects accidental identity adoption"
+              }
+            },
+            {
+              "family": "commands/init_identity.test.js",
+              "test483_cases": [
+                4
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 22,
+                "pass": 22,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 6182,
+              "stdout_sha256": "6c5d35b04efe8beb8dcc109b433242b9aae3513516348735a58cde3823dcfdaf",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 22,
+                "sha256": "703eddef8d65d6daf1caae682f97a2f4962e87ff9d9b7f19da625809d64423a6",
+                "first": "ok 1 - init preserves complete adopted graph and customized instructions {}",
+                "last": "ok 22 - init respects a competing writer and never changes its lock or graph"
+              }
+            },
+            {
+              "family": "graph/identity_migration_lineage.test.js",
+              "test483_cases": [
+                7
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 22,
+                "pass": 22,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 5723,
+              "stdout_sha256": "935675eb42b9a74776b5f8026b7f9db31693e49d4d604eb58fbae57e0ce302be",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 22,
+                "sha256": "0bc72d775a02ee940fce436a12930a56be4e2df627ad7e56278b975e008d6b10",
+                "first": "ok 1 - legacy distinct recreation requires reviewed provenance rather than matching alias/path",
+                "last": "ok 22 - unchanged authored bytes do not let old decisions survive new HEAD or staged inputs"
+              }
+            },
+            {
+              "family": "graph/identity_migration_validation.test.js",
+              "test483_cases": [
+                8
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 57,
+                "pass": 57,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 7448,
+              "stdout_sha256": "853fd489c76378d35638bb4bfbc99ad99d4a299747af11ceca222ba1736ead52",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 57,
+                "sha256": "24a0103af352ec9f6eea609739e1035d78f5b36751b1f87b9e69ef88d947a4b2",
+                "first": "ok 1 - missing required skill fails both normal validation and migration preview without writes",
+                "last": "ok 57 - literal POSIX backslashes in template filenames retain native dependency identity"
+              }
+            },
+            {
+              "family": "commands/upgrade_identity.test.js",
+              "test483_cases": [
+                9
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 25,
+                "pass": 25,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 17364,
+              "stdout_sha256": "3a472db885cc0a67a0cdf789416ea0ca078a72355ad263ffe9181e0ad4afb973",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 25,
+                "sha256": "e2c62f99f8b21bcb6cd271e76eb7db72b6343228ba1210b5f3a2638bbd8bf936",
+                "first": "ok 1 - upgrade refuses missing v2 core restoration with no identity and no partial writes",
+                "last": "ok 25 - transaction plans reject separator and filesystem case aliases before writes"
+              }
+            },
+            {
+              "family": "commands/cli_output.test.js",
+              "test483_cases": [
+                11
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 8,
+                "pass": 8,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 1108,
+              "stdout_sha256": "dd3806ad3e6938340fed647e126fe1e57e2121ce5ec6a4572b2a3de539230ebe",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": [
+                "ok 1 - CLI drains complete large UTF-8 text output to a pipe",
+                "ok 2 - CLI drains complete large UTF-8 json output to a pipe",
+                "ok 3 - CLI drains complete large UTF-8 xml output to a pipe",
+                "ok 4 - CLI drains complete large UTF-8 toon output to a pipe",
+                "ok 5 - CLI drains complete large UTF-8 md output to a pipe",
+                "ok 6 - CLI waits for a slow output consumer without truncation",
+                "ok 7 - CLI drains large handled command diagnostics with the correct exit code",
+                "ok 8 - CLI drains large rejected async diagnostics with the correct exit code"
+              ]
+            },
+            {
+              "family": "graph/identity_dependencies.test.js",
+              "test483_cases": [
+                12
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 8,
+                "pass": 8,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 4048,
+              "stdout_sha256": "121abed46e778f9f03c496080ee21fbe6227a41f5fcb5d0a22673a765151ceb2",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": [
+                "ok 1 - reference mapping preserves dependency labels but visits explicit identities and actual graph links",
+                "ok 2 - legacy MANIFEST SPEC and WORK migration preserves dependency labels despite matching aliases",
+                "ok 3 - ordinary v2 binding preserves labels and retains explicit identity checks",
+                "ok 4 - reconciliation keeps portable dependency changes semantic rather than alias-bound",
+                "ok 5 - template identity import preserves labels and remaps explicit graph dependencies",
+                "ok 6 - independent fork preserves labels but changes explicit dependency identities",
+                "ok 7 - v2 validation still rejects unresolved immutable dependencies and wrong subagent roles",
+                "ok 8 - JSON and SQLite capability reads preserve dependency labels after migration"
+              ]
+            }
+          ],
+          "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+          "original_payload_files": 234,
+          "original_payload_file_manifest_sha256": "f3a4f75dd9391ada5d11ca72c9287b5506f34cbf829ff76b804079f13afcf0a9",
+          "original_payload_bytes_preserved": true,
+          "inert_test_additions": 12,
+          "instrumented_inventory_sha256": "58d6c8501cd40c2145636adbdf0d23a0d1cfa71ab4db542486a62e8a32452797",
+          "canonical_implementation_imports_refused": true,
+          "limitations": [
+            "This Linux execution only; Linux/platform and independent acceptance remain open",
+            "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+            "Init/upgrade identity regressions use synthetic closed graphs; untouched packaged seed qualification remains separately evidenced by Test477",
+            "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+            "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "pack-controls",
+        "driver": "test-483-installed-pack-controls.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 949,
+        "stdout_sha256": "140c687b9fc9ca427fd606fe09a796f5709e8658af4853f397a3a743c08bfa2c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test483-current-installed-pack-controls",
+          "owner": "root:test-483",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "compiledInputs": {
+            "sha256": "9033d7cc5246ee91dff55877e37327e0d59e0266cb065d57b15eafc94c4fea3c",
+            "entry_count": 7
+          },
+          "driver_sha256": "5bb538b7f7096020177a59319f976841351e78037976086019cd192a95d55e2e",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "duration_ms": 869,
+          "completed": [
+            {
+              "family": "commands/pack.test.js",
+              "test483_cases": [
+                2
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 12,
+                "pass": 12,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 177,
+              "stdout_sha256": "d9cb2e4d1962ca5274e4f94e16820494c87b11d220bdb8b1ae5a54c9ee37df11",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": {
+                "entry_count": 12,
+                "sha256": "ad0c1512179878eeb0dcdaac61fd4674023472afa575feb364a27e6f2f64c7de",
+                "first": "ok 1 - runPackCommand concise profile shapes body and writes stats/report sidecars",
+                "last": "ok 12 - runPackCommand --visibility public records metadata and includes public spike archives"
+              }
+            },
+            {
+              "family": "pack/budget.test.js",
+              "test483_cases": [
+                2
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 2,
+                "pass": 2,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 45,
+              "stdout_sha256": "90b33d6229f3095a56ca02362d868d6018d5f391aa69ffa1bbec271ed8bf3cea",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": [
+                "ok 1 - applyPackBudgets drops tail nodes before truncating root body",
+                "ok 2 - applyPackBudgets truncates root body when a single node still exceeds limits"
+              ]
+            },
+            {
+              "family": "pack/profile.test.js",
+              "test483_cases": [
+                2
+              ],
+              "exit_code": 0,
+              "counts": {
+                "tests": 8,
+                "pass": 8,
+                "fail": 0,
+                "cancelled": 0,
+                "skipped": 0,
+                "todo": 0
+              },
+              "duration_ms": 46,
+              "stdout_sha256": "60b2f2d01f187027fbf1b8eb72554953d1e5541f6376a251005c3060361961ca",
+              "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "cases": [
+                "ok 1 - resolvePackProfile supports concise shorthand",
+                "ok 2 - listPackProfiles exposes built-in profiles",
+                "ok 3 - resolvePackProfile rejects conflicting concise flags",
+                "ok 4 - resolvePackProfile normalizes defaults and rejects invalid inputs",
+                "ok 5 - shapePackBodies concise summary follows template heading order",
+                "ok 6 - shapePackBodies summary falls back and preserves empty bodies",
+                "ok 7 - shapePackBodies caps code blocks across closed and open fences",
+                "ok 8 - shapePackBodies headers profile removes body content"
+              ]
+            }
+          ],
+          "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+          "original_payload_files": 234,
+          "original_payload_file_manifest_sha256": "f3a4f75dd9391ada5d11ca72c9287b5506f34cbf829ff76b804079f13afcf0a9",
+          "original_payload_bytes_preserved": true,
+          "inert_test_additions": 7,
+          "instrumented_inventory_sha256": "21986e578114cc8badfb87837053abfa9740f1f033e32ab1f69b7f2e9dcc49ea",
+          "canonical_implementation_imports_refused": true,
+          "limitations": [
+            "This Linux execution only; Linux/platform and independent acceptance remain open",
+            "Mixed installed CLI/internal-module regressions with inert test drivers added to an owned install; all original payload bytes pinned",
+            "Historical website cache case5 is deferred to Epic258 by Dec100, not counted as a pass",
+            "Bugs46/47 remain deferred/unresolved; no blocked historical context or remote actions"
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "generic",
+        "driver": "test-484-installed-generic.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 2951,
+        "stdout_sha256": "59676d4c04441a66081c8f9c6f4f651643d02d8ffac6489f385d2e852b2f566b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test484-current-installed-generic-boundary",
+          "owner": "root:test-484",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "driver_sha256": "3482e0d7e7e70fc825e7d102df83d3c3f30b5d4166e84cf9348dd74259d0e3c8",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "duration_ms": 2875,
+          "generic": {
+            "node": "v24.18.0",
+            "tarball_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+            "rejected_invocations": 9,
+            "subprocesses_on_refusal": 0,
+            "generic_work": true,
+            "old_runtime_token_rejected": true,
+            "custom_fields_preserved": true,
+            "cached_projection_neutral": true,
+            "synthetic_import_projection_neutral": true,
+            "imported_bytes_preserved": true
+          },
+          "removed_git": [
+            {
+              "command": "git clone",
+              "pass": true,
+              "writes": false,
+              "subprocesses": false
+            },
+            {
+              "command": "git fetch",
+              "pass": true,
+              "writes": false,
+              "subprocesses": false
+            },
+            {
+              "command": "git push",
+              "pass": true,
+              "writes": false,
+              "subprocesses": false
+            },
+            {
+              "command": "git materialize",
+              "pass": true,
+              "writes": false,
+              "subprocesses": false
+            },
+            {
+              "command": "git closeout",
+              "pass": true,
+              "writes": false,
+              "subprocesses": false
+            },
+            {
+              "command": "git push-ready",
+              "pass": true,
+              "writes": false,
+              "subprocesses": false
+            }
+          ],
+          "observational_git_positive": true,
+          "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+          "limitations": [
+            "This Linux execution only; remaining platform and full package-parity gates stay open",
+            "Synthetic historical-shaped imported bundle; not recovered public evidence",
+            "Structural local contracts do not prove consumer adoption or external execution",
+            "No blocked historical scan context, remote Git or publication"
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "options",
+        "driver": "test-486-linux-options.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 22657,
+        "stdout_sha256": "4ab8ba45d89e27c4f2590a2edf54a500fa45adefe3ac7e1ef30677beb7b2b928",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "schema_version": 1,
+          "kind": "test486-current-installed-option-admission",
+          "owner": "root:test-486",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "architecture": "arm64",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+          "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+          "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+          "driver_sha256": "554426b303b19a285cbd5083f300060cee2cc14ca6c3491e198673413f95ee64",
+          "duration_ms": 22583,
+          "completed": [
+            {
+              "script": "smoke-command-matrix.js",
+              "exit_code": 0,
+              "signal": null,
+              "duration_ms": 22512,
+              "stdout": {
+                "bytes": 1481,
+                "sha256": "67d9c606dba4427c855559de3a2db448ab9b5af41743065b17ba7da8ff3a7daa"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          ],
+          "deliveries": {
+            "sha256": "80c8604bf9bc07f517f7dab1bbb8c49bcfa0f0860c7dce27265c465ef849c8ea",
+            "entry_count": 1
+          },
+          "consumptions": {
+            "sha256": "75e3497e5a57d4eaba187bea2ca34e67bbf3a9a80fd3243483f842bfdd9fb0d4",
+            "entry_count": 1
+          },
+          "limitations": [
+            "Existing command-matrix smoke, not the complete37-smoke release ladder.",
+            "This Linux execution only; old-client/runtime/platform and independent acceptance remain separate."
+          ],
+          "cleanup": {
+            "removed": true,
+            "owned_fixture_only": true
+          },
+          "pass": true
+        },
+        "pass": true
+      },
+      {
+        "name": "readonly",
+        "driver": "test-487-docker-readonly.cjs",
+        "status": 0,
+        "signal": null,
+        "duration_ms": 2713,
+        "stdout_sha256": "9ec4019dd8269bcb2011c010b441a7c3d3e8f000f4be44cc6bd1b1fa3ae60afe",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt": {
+          "kind": "linux-real-readonly-filesystem",
+          "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+          "node": "v24.18.0",
+          "platform": "linux",
+          "arch": "arm64",
+          "uid": 10001,
+          "cases": {
+            "entry_count": 46,
+            "sha256": "fe0ebd8075386119e1b47347ea141e9d640cf585ca84698f114194c3fb54c042",
+            "first": {
+              "fixture": "json-legacy",
+              "command": [
+                "status",
+                "--json"
+              ],
+              "pass": true,
+              "refused": false
+            },
+            "last": {
+              "fixture": "sqlite-v2",
+              "command": [
+                "new",
+                "task",
+                "Must refuse readonly write"
+              ],
+              "pass": true,
+              "refused": true
+            }
+          },
+          "pass": true,
+          "inventory_sha256": "9cd5001bef4b7e21a36beb11eb97939f41927329652602a4fb585f125ace9bf9",
+          "filesystem": "Docker read-only image root; direct write independently returned EROFS",
+          "limitations": [
+            "Not a fix for deferred Bugs46/47; image/volume and native/emulated identities are in outer receipt"
+          ]
+        },
+        "pass": true
+      }
+    ],
+    "pass": false,
+    "limitations": [
+      "Platform subset evidence only until aggregate acceptance; not publication readiness or security clearance",
+      "Bugs46/47 deferred/unresolved; Windows and hosted CI unqualified",
+      "Copied fixture adapters are separately hash-bound; no shipped package inputs changed"
+    ]
+  },
+  "failures": [
+    {
+      "family": "runtime",
+      "status": 1,
+      "signal": null,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "diagnostic_tail": "",
+      "diagnostic_head": ""
+    }
+  ],
+  "runtime_safe_controls": 13,
+  "unsupported_old_init_observations": [
+    {
+      "case": "published0.5.2 init bypass",
+      "disposition": "UNSUPPORTED OLD EXECUTABLE: manifest writes ignore schema2 admission; not a no-effect safety pass"
+    },
+    {
+      "case": "published0.5.2 force-init bypass",
+      "disposition": "UNSUPPORTED OLD EXECUTABLE: schema2 fence removed; not a safety pass"
+    }
+  ],
+  "scope": "Platform family evidence only; final security, full ladder and artifact seal remain separate. Deferred Bugs46/47 are not fixed."
+}

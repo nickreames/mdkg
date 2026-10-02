@@ -1,0 +1,2304 @@
+{
+  "schema_version": 1,
+  "kind": "test480-current-installed-compatibility",
+  "owner": "root:test-480",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 59940,
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "driver_sha256": "bbf1195141f5d8193fa52fa7cf5593e66fb698ebba606dfed7b0ad921ee82e9a",
+  "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+  "completed": [
+    {
+      "family": "cache-freshness",
+      "duration_ms": 38080,
+      "proof": {
+        "cases": [
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "fresh",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "older-time",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "deleted",
+            "command": "search Cache original task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "deleted",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "deleted",
+            "command": "skill search Cache original skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "deleted",
+            "command": "capability search Cache original rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "deleted",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "absent",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "search Cache original task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "skill search Cache original skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "capability search Cache original rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "fresh",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "copied-stale",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "equal-time",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "older-time",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "deleted",
+            "command": "search Cache original task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "deleted",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "deleted",
+            "command": "skill search Cache original skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "deleted",
+            "command": "capability search Cache original rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "deleted",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "json",
+            "state": "absent",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "fresh",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "copied-stale",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "equal-time",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "explicit-no-reindex",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "explicit-no-cache",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "older-time",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "search Cache original task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "skill search Cache original skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "capability search Cache original rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "deleted",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "show task-1 --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "search Cache current task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "list --type task --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "skill show cache-proof --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "skill search Cache current skill --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "capability search Cache current rule --json",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "pack task-1 --dry-run --skills none",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "mcp serve --stdio",
+            "result": "pass"
+          },
+          {
+            "format": "v2",
+            "backend": "sqlite",
+            "state": "absent",
+            "command": "normal-index-and-authoring",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "zip-restored",
+            "command": "search archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "zip-restored",
+            "command": "show archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "zip-restored",
+            "command": "explicit-compression-and-verification",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "raw-repaired",
+            "command": "search archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "raw-repaired",
+            "command": "show archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "raw-repaired",
+            "command": "explicit-compression-and-verification",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "zip-corrupted",
+            "command": "search archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "zip-corrupted",
+            "command": "show archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "json",
+            "state": "zip-corrupted",
+            "command": "explicit-compression-and-verification",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "zip-restored",
+            "command": "search archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "zip-restored",
+            "command": "show archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "zip-restored",
+            "command": "explicit-compression-and-verification",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "raw-repaired",
+            "command": "search archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "raw-repaired",
+            "command": "show archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "raw-repaired",
+            "command": "explicit-compression-and-verification",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "zip-corrupted",
+            "command": "search archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "zip-corrupted",
+            "command": "show archive",
+            "result": "pass"
+          },
+          {
+            "format": "legacy",
+            "backend": "sqlite",
+            "state": "zip-corrupted",
+            "command": "explicit-compression-and-verification",
+            "result": "pass"
+          }
+        ],
+        "runtime": "v24.18.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db"
+      }
+    },
+    {
+      "family": "changed-warnings",
+      "duration_ms": 19899,
+      "proof": {
+        "runtime": "v24.18.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+        "rows": [
+          {
+            "topology": "standalone",
+            "nested": false,
+            "cache": "present",
+            "caller_optional_locks": "1",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "standalone",
+            "nested": false,
+            "cache": "absent",
+            "caller_optional_locks": "unset",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "standalone",
+            "nested": true,
+            "cache": "present",
+            "caller_optional_locks": "1",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "standalone",
+            "nested": true,
+            "cache": "absent",
+            "caller_optional_locks": "unset",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "worktree",
+            "nested": false,
+            "cache": "present",
+            "caller_optional_locks": "1",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "worktree",
+            "nested": false,
+            "cache": "absent",
+            "caller_optional_locks": "unset",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "worktree",
+            "nested": true,
+            "cache": "present",
+            "caller_optional_locks": "1",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "worktree",
+            "nested": true,
+            "cache": "absent",
+            "caller_optional_locks": "unset",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "submodule",
+            "nested": false,
+            "cache": "present",
+            "caller_optional_locks": "1",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "submodule",
+            "nested": false,
+            "cache": "absent",
+            "caller_optional_locks": "unset",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "submodule",
+            "nested": true,
+            "cache": "present",
+            "caller_optional_locks": "1",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "submodule",
+            "nested": true,
+            "cache": "absent",
+            "caller_optional_locks": "unset",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "gitdir",
+            "nested": false,
+            "cache": "present",
+            "caller_optional_locks": "1",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "gitdir",
+            "nested": false,
+            "cache": "absent",
+            "caller_optional_locks": "unset",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "gitdir",
+            "nested": true,
+            "cache": "present",
+            "caller_optional_locks": "1",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          },
+          {
+            "topology": "gitdir",
+            "nested": true,
+            "cache": "absent",
+            "caller_optional_locks": "unset",
+            "native_rename_and_copy": true,
+            "expected_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/copied with space.md",
+              ".mdkg/work/ordinary.md",
+              ".mdkg/work/rename-before.md",
+              ".mdkg/work/renamed with\\literal\nline.md",
+              ".mdkg/work/untracked\\literal\nline.md",
+              ".mdkg/work/with\nnewline.md",
+              ".mdkg/work/with space.md",
+              ".mdkg/work/with\\literal.md"
+            ],
+            "missing_paths": [],
+            "expected_warnings": 42,
+            "actual_warnings": 42,
+            "warnings_match": true,
+            "paths_match": true,
+            "global_errors_preserved": true,
+            "inventory_unchanged": true
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "macOS only; remaining platform rows stay open",
+    "No canonical graph migration or bundle refresh",
+    "These cases do not complete all Test480 obligations or final release acceptance"
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  }
+}

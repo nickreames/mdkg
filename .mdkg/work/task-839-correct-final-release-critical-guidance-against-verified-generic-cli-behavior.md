@@ -2,24 +2,31 @@
 id: task-839
 type: task
 title: Correct final release-critical guidance against verified generic CLI behavior
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, release-guidance]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/task-839-release-guidance.json]
 relates: []
-blocked_by: [bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60]
+blocked_by: [bug-44, bug-45, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-841, task-842]
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, dec-98, goal-87, chk-656]
 context_refs: [goal-86, goal-84, task-837]
-evidence_refs: []
+evidence_refs: [chk-656]
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-28
 ---
 # Overview
+
+2026-09-28 Dec98: explicitly disclose Bugs46/47 as deferred and unresolved
+under Goal87, never accepted/fixed. Their full remedies are not prerequisites
+of this version's guidance. Require accurate portable SQLite/runtime and
+operator-confirmed recovery instructions after Tasks841/842, with real
+platform limitations and no native-helper claim. Broad documentation polish
+remains separate. This amendment does not itself change public documentation.
 
 Goal: correct materially false active release instructions after final remedies,
 without expanding into the deferred broad documentation audit or polish goal.
@@ -72,4 +79,34 @@ Task828/829 consume this completed work; no dependency on their own acceptance.
 
 ## Current State
 
-Planned / backlog; final guidance waits for its affected source remedies.
+2026-09-28 local guidance implementation and qualification complete. Full graph
+validation has0errors and3preserved stale-subgraph warnings; changed-only has
+0errors/0warnings, SQLite index5/5 and diff checks pass. Chk656 and the
+sanitized task receipt bind the exact twelve owned guidance/checker/test paths.
+
+Active retired Git and consumer-profile guidance is removed; capability cache,
+runtime DB, structured-format, compact-init and reviewed-upgrade claims match
+current behavior. Bugs46/47 are explicitly deferred/unresolved under Goal87.
+Historical changelog chronology remains intact, release state draft/unpublished,
+and broad documentation polish remains out of scope.
+
+The checker now validates actual parser/command-option admission, including
+missing values, without executing examples. An independent bounded source
+review found three remaining prose contradictions plus the missing-value guard;
+all are corrected with regression coverage and final reviewer readback.
+34 focused checks,499 current examples across66 files, source/help/seed/generated
+reference checks,8 skills and local site/docs/SEO smokes pass.59 illustrative
+and13 historical examples are separately reported, not counted as current passes.
+
+Normally packed/installed command-docs smoke passes on Node24.18.0/macOSarm64:
+114 command entries and seven operational examples, with explicit index and
+final graph validation. Intermediate tarball SHA256:
+6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca.
+Its owned temporary root was removed. Guidance/seed changes invalidate older
+tarballs for final qualification; earlier passes retain their snapshot-bound
+intermediate value. Final independent security/platform acceptance, full
+coverage/ladder and exact seal remain Goal86 gates, not this guidance milestone.
+
+No new staging/commit, remote action, bundle refresh, blocked-context access or
+production change. Selection/runtime/Demo3/draft-release bookends match.
+Skill coverage reused; new candidates:none.

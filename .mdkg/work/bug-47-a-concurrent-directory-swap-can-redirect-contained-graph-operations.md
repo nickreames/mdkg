@@ -4,22 +4,47 @@ type: bug
 title: A concurrent directory swap can redirect contained graph operations
 status: backlog
 priority: 1
-tags: [release-0.6.0, security]
+tags: [release-0.6.0, security, deferred, post-0.6.0]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-47-recorded-0.5.2-source-assessment.json, .mdkg/artifacts/goal-86/bug-47-macos-fd-path-feasibility.json, .mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, dec-97, epic-256, goal-87, dec-98]
 context_refs: [goal-86, goal-84, task-837]
-evidence_refs: []
+evidence_refs: [chk-651]
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-28
 ---
 # Overview
+
+## Current disposition - 2026-09-28
+
+**DEFERRED / UNRESOLVED**, owned by paused Goal87 under Dec98. Nick explicitly
+removed remediation of this finding from the 0.6.0 completion gate while
+keeping mdkg Node-only. Lifecycle is backlog with a deferred tag because the
+schema has no deferred status. This is not accepted, fixed, closed, qualified,
+or a standing authorization to implement native code. Preserve the medium
+severity and all evidence below. Goal86 must disclose the limitation and
+independently verify the remaining in-scope release work. Older blocker/native
+decision language below is historical and superseded only for 0.6.0 routing.
+
+2026-09-28 scoped continuation supersedes Dec97 only for owned local
+filesystem feasibility experiments and a local fail-closed CI stub. The linked
+filesystem-feasibility receipt records a deterministic validation-to-sink
+ancestor swap in current Node code: read reached outside bytes, append changed
+an outside sentinel, and remove deleted it. An experimental C fixture then
+held directory descriptors and kept read, create, append, replace, and remove
+inside the original directory after the pathname swap on macOS and isolated
+Ubuntu ARM64. This is promising OS-primitive evidence, not a production mdkg
+remedy, cross-process exploit proof, or release clearance. Bug47 stays blocked.
+
+Dec97's original Node-only/no-VM routing is historical. The new local scope
+does not authorize native runtime integration, hosted CI, or a waiver. Repeated
+pathname checks remain insufficient for the stated invariant.
 
 Goal: remediate g86-baseline-004 from the completed fresh Standard scan
 9d6a2ca2-4273-45de-9013-20452c7651d0 under Task837. Publication blocker.
@@ -95,11 +120,39 @@ evidence, not reopened or substituted for this new regression.
 # Links / Artifacts
 
 - .mdkg/artifacts/goal-86/task-837-standard-security-audit.json
+- .mdkg/artifacts/goal-86/bug-47-macos-fd-path-feasibility.json
 - root:task-837; root:test-488; root:task-828; root:test-487
 - Canonical raw finding/report remains plugin-owned; only sanitized evidence,
   hashes and regression/disposition references belong in this graph.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-25 bounded Node-only feasibility: under an explicit Goal86 claim, two
+owned disposable macOS arm64/Node26 probes held an open directory descriptor
+and tested `/dev/fd/<fd>/item`. The child read returned ENOENT both before and
+after replacing the original directory pathname; `/dev/fd/<fd>` itself stat'ed
+as a directory but readdir returned ENOTDIR. All matching fixture roots were
+removed. The linked receipt binds the exact source revision, synthetic setup,
+results and limits. This rules out that simple macOS descriptor-path shortcut,
+not every Node-only design; it neither reproduces the full race nor remedies
+it, and provides no Linux proof. With Dec97 deferring native/bridge authority,
+the bug is now explicitly blocked rather than silently left in backlog. Its
+release gate and required security invariant remain unchanged.
+
+2026-09-25 source-version assessment: the recorded 0.5.2 source revision
+867ac7099faaa0b8eeed1e167609e0e1e482d519 retains the same ancestor
+pathname check followed by later pathname-based sinks; its skill mirror also
+reads source paths by name. The linked sanitized artifact binds exact blobs and
+hashes to chk-535/task-823 provenance. This is static source-pattern evidence,
+not an installed 0.5.2 test, race reproduction, cross-principal exploit proof,
+or an earlier-version range. The bug remains unresolved and release-blocking;
+Dec97 does not waive it. No blocked scan context was accessed.
+
+Historical planning state: source finding accepted; no full exploit reproduction
+or remediation had been performed. Goal85 remains paused.
+
+2026-09-28 local feasibility addendum: exact probe/source hashes, synthetic
+results, VM custody, and unverified cases are in the linked receipt. Neither
+native prototype is shipped by mdkg. Callback path sinks, failure injection,
+installed artifacts, x64, independent security review, and package delivery
+still need a bounded implementation and qualification design.

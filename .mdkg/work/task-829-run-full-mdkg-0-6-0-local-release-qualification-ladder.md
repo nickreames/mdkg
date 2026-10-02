@@ -2,23 +2,36 @@
 id: task-829
 type: task
 title: Run full mdkg 0.6.0 local release qualification ladder
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/successor-security-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-package-gates-20260930.json, .mdkg/artifacts/goal-86/successor-private-preview-20260930.json]
 relates: []
-blocked_by: [task-828, test-477, test-478, test-479, test-480, test-481, test-482, task-827, bug-30, task-837, test-483, test-484, test-486, test-487, task-838, task-839, test-488]
+blocked_by: [task-828, test-477, test-478, test-479, test-480, test-481, test-482, task-827, bug-30, task-837, test-483, test-484, test-486, test-487, task-838, task-839, test-488, test-490]
 blocks: []
-refs: []
+refs: [dec-100]
 context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-17
+updated: 2026-09-30
 ---
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+Run37 CLI/package smokes, full applicable discovery, unchanged89/77/96 coverage, packaged guidance/skills/contracts/MCP/seed parity, graph/SQLite/diff checks. Consume admitted retained bytes without silent repacking. Task843/Test490 prepare the harness before Task828; this task performs final acceptance afterward.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
 
 # Current Successor Contract - 2026-09-13
 

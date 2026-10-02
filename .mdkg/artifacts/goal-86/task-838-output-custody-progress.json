@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "task": "root:task-838",
+  "goal": "root:goal-86",
+  "status": "partial-not-release-qualified",
+  "source_head": "c10113489381badf2845fc378c49b317376f953e",
+  "source_state": "owned uncommitted qualification-infrastructure changes on main",
+  "source_sha256": {
+    "scripts/qualification-output.js": "3bfeabab55f6a14e5dcea1890e5d414fcc055cf8316f470db12a98b103c1c1db",
+    "scripts/coverage-contract.js": "d353ac54d6528c17a85e73adc465f90e3ff7b45ba9df56c3addb3f3d683e0a70",
+    "scripts/release-ladder.js": "3ba1ed6e19443cdfef0150f6ddd5dc9bc78dcc635882572db68612ab1e73ff6f",
+    "tests/qualification-output.test.mjs": "b15bd150a8360799068c51c448549cbf8b3d8b9b8d54ccc3e7e25daabe4caed8",
+    "tests/ci-topology.test.ts": "4df1c9fab33e6a70d75d60d71c7c15ee5a892e42aa93f85ac8f7d25a05134f73",
+    "scripts/qualification-artifact.js": "00aefd31e3bbbd488ada301311a92cea3bb48ec7d6ed1095c3170b5fafdfd957",
+    "scripts/npm-smoke-proxy.js": "5caf570b15dc95edaf894e91346cbbca3cde4808a9580a7e4561e6b043f4935d",
+    "tests/qualification-artifact.test.mjs": "67400fe1f86b0848744b17cf123c3b9f7c0e75efe71a3070f82aea4d122a5494"
+  },
+  "baseline": {
+    "cases": 3,
+    "failures": 3,
+    "duration_ms": 145.309708,
+    "runtime": "Node 26.0.0 macOS arm64",
+    "observations": [
+      "Configured coverage cleanup deleted a prior-evidence sentinel before spawning tests.",
+      "Full-context preparation deleted a populated destination instead of refusing.",
+      "Full-context restoration deleted different existing dist content."
+    ],
+    "scope": "new disposable sentinel roots only; baseline output retained in task tool history, not represented as a separately retained raw file"
+  },
+  "corrections": [
+    "Output admission never deletes an existing destination to make room for evidence.",
+    "Standalone coverage retains distinct run-* directories; explicit MDKG_COVERAGE_DIR requires a fresh or empty exact destination.",
+    "Full-context preparation validates inputs first, accepts an empty CI destination, and uses exclusive independent artifact copies.",
+    "Context restoration reuses matching dist without inode replacement and refuses different existing content.",
+    "Manifest and package leaf admission precedes content reads; linked, hardlinked and special inputs refuse.",
+    "MDKG_RELEASE_RECEIPT_DIR names an evidence collection; each invocation creates a fresh run-* child and reports its exact receipt_dir."
+  ],
+  "compatibility": {
+    "output_paths": "Physical directory paths required; arbitrary symlink-containing overrides are rejected. Internally selected temporary bases are canonicalized before creation.",
+    "ci": "Existing empty context and recursive collection uploads remain compatible in local source/contract tests; hosted execution is unverified.",
+    "coverage": "Exact ladder summary.json layout retained; standalone JSON receipt now identifies output_dir and stderr reports its path even before execution.",
+    "json_metadata_limit_bytes": 1048576,
+    "cleanup": "Failed or partial output is preserved for inspection, not automatically deleted."
+  },
+  "command_arguments": [
+    "--test", "--test-reporter=tap",
+    "tests/qualification-output.test.mjs", "tests/qualification-artifact.test.mjs",
+    "dist/tests/ci-topology.test.js", "dist/tests/coverage-contract.test.js", "dist/tests/release-ladder.test.js"
+  ],
+  "validation_environment": "Inherited GIT_* keys removed for these runs; global/system config, prompts and optional index writes disabled. This does not fix the remaining fixture-helper call sites and is not an OS sandbox.",
+  "runs": [
+    {
+      "node": "24.15.0", "platform": "darwin", "arch": "arm64",
+      "tests": 61, "passed": 61, "failed": 0, "skipped": 0, "cancelled": 0,
+      "duration_ms": 1526,
+      "log": "/private/tmp/mdkg-task838-output-checks-p5EWWd/node-24.15.0.tap",
+      "log_sha256": "133c260fbb8e10108b637721f2392c92c62e2d2779e0689e92d9cee02a889fa2"
+    },
+    {
+      "node": "24.18.0", "platform": "darwin", "arch": "arm64",
+      "tests": 61, "passed": 61, "failed": 0, "skipped": 0, "cancelled": 0,
+      "duration_ms": 2438,
+      "log": "/private/tmp/mdkg-task838-output-checks-p5EWWd/node-24.18.0.tap",
+      "log_sha256": "e0a8f92e80d8f14538cb8c5e8cc1d2eb2e473a6992ab45dcb52850bdd99cae53"
+    },
+    {
+      "node": "26.0.0", "platform": "darwin", "arch": "arm64",
+      "tests": 61, "passed": 61, "failed": 0, "skipped": 0, "cancelled": 0,
+      "duration_ms": 2408,
+      "log": "/private/tmp/mdkg-task838-output-checks-p5EWWd/node-26.0.0.tap",
+      "log_sha256": "30c3b3248bb4a3850ebaaa1da5b57db47acf6450df395a69295e7a23bcc13c31"
+    }
+  ],
+  "test_coverage": {
+    "new_cases": 22,
+    "existing_neighbor_cases": 39,
+    "full_discovery_files": 169,
+    "real_execution": "Synthetic measured Node modules exercise actual coverage reporting and output retention; synthetic context and FIFO fixtures exercise failure boundaries. These are not installed-candidate or package-coverage results.",
+    "fixture_tools": "mkfifo constructs disposable FIFO fixtures only; no system-tool filesystem bridge is used by implementation."
+  },
+  "review": {
+    "reviewer": "task838_output_review",
+    "scope": "one independent read-only source reviewer, followed by review of corrections",
+    "findings_disposition": "Fixed tarball pre-read ordering, manifest leaf admission and populated receipt overwrites; corrected the existing macOS temporary-base fixture. Follow-up found no unresolved concrete issue in this bounded unit.",
+    "limits": "Not a Standard security scan, final remediation acceptance, ancestor-race guarantee or full Task838 clearance. No blocked context was accessed."
+  },
+  "remaining": [
+    "Git environment/root admission across mutating fixture helpers",
+    "Demo smoke scratch isolation and exact owned cleanup",
+    "Durable final evidence retention and real installed controls",
+    "Task828 independent final acceptance, Task829 full ladder and Task830 exact artifact seal",
+    "Bug60 failing journal-transition regression and pending design choice; Bugs46/47 and Linux qualification remain open"
+  ],
+  "protected_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Goal86 scoped Node-only local implementation, synthetic validation and mdkg evidence; no commit, remote, native implementation, Linux/hosted run, blocked-context access, publication, provider, deployment, graph migration, bundle refresh or cross-project change."
+}

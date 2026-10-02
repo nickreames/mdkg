@@ -1,0 +1,1622 @@
+{
+  "schema_version": 1,
+  "kind": "reviewed-local-qualification-harness-commit",
+  "owner": "root:goal-86",
+  "work_qid": "root:test-487",
+  "checkpoint": "root:chk-666",
+  "recorded_at": "2026-09-29T05:14:51.603Z",
+  "commit": "72a3c8780af7d4c2888590b02158ddc60476facc",
+  "parent": "36e075b8d64babff04154704a721db4a82926ebe",
+  "paths": [
+    "scripts/installed-scale-goal.js",
+    "tests/installed-scale-goal.test.mjs"
+  ],
+  "staged_paths_exact": true,
+  "staged_patch_sha256": "183b5da7d93e458f92cc8017aacabaac89bf0e7d4e08b35d4e9fb64dd9ef1285",
+  "scope": "Bounded selective emulation qualification only; no package/runtime input change or full readiness assertion",
+  "validation": {
+    "focused_scale_helper": {
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 81.938584
+    },
+    "runner_fault_controls": {
+      "passed": 5,
+      "failed": 0
+    },
+    "linux_installed_family_groups_per_architecture": 18,
+    "linux_architectures": [
+      "native-arm64",
+      "rosetta-emulated-x64"
+    ],
+    "unique_x64_scale_rows": 15,
+    "macos_matching_installed_controls": 28,
+    "full_graph": {
+      "ok": true,
+      "errors": 0,
+      "known_stale_subgraph_warnings": 3
+    },
+    "changed_graph": {
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite_index_checks": 5,
+    "diff_check": true,
+    "full_release_ladder": false,
+    "task828_security_acceptance": false
+  },
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_before": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "harness_inputs_after": "384bcbf50fdb77577b6fa6dc17403633949d225b4134465f9a9f2a39de16c07a",
+  "protected_before": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "protected_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "upstream": {
+    "remote_url": "git@github.com:nickreames/mdkg.git",
+    "branch": "origin/main",
+    "cached_divergence": "71\t0",
+    "live_verified": false
+  },
+  "remaining_dirty_count_before_this_receipt": 279,
+  "remaining_custody": "280 known owned paths remain unstaged:245 initial paths, of which240 are byte-identical and five are owned evidence/projection amendments;35 new Test487 evidence/checkpoint/receipt paths. Two reviewed harness files are committed. This receipt omits its own recursive hash.",
+  "ownership": {
+    "owner": "mdkg-project-agent",
+    "runtime_lease_acquired": false,
+    "transient_locks": [],
+    "active_node": "root:test-487",
+    "active_pointer_is_not_live_lease": true
+  },
+  "readiness": "NOT_READY",
+  "goal85": "paused",
+  "remaining_gates": [
+    "family/aggregate acceptance without blanket reruns",
+    "Task828 independent frozen-current-source and complete remediation-diff acceptance",
+    "Task829 full37-smoke package ladder, parity and89/77/96 coverage",
+    "Task830 exact seal and final local custody/goal acceptance"
+  ],
+  "excluded_actions_performed": false,
+  "published": false,
+  "skill_candidates": [],
+  "final_validation": {
+    "recorded_at": "2026-09-29T05:15:43.340Z",
+    "results": [
+      {
+        "command": "node dist/cli.js validate --json",
+        "exit": 0,
+        "ok": true,
+        "error_count": 0,
+        "warning_count": 3,
+        "stdout_sha256": "ffd609ec85fedc9ec8f98403dc3c769f2f4d4b4a1e63e19a91c60d1d5389ad0a"
+      },
+      {
+        "command": "node dist/cli.js validate --changed-only --json",
+        "exit": 0,
+        "ok": true,
+        "error_count": 0,
+        "warning_count": 0,
+        "stdout_sha256": "13a076adfc1e16a85da5d8f12e8f8c5df9c7f26fbe194bb8e05810d09c6c99cf"
+      },
+      {
+        "command": "node dist/cli.js db index verify --json",
+        "exit": 0,
+        "ok": true,
+        "error_count": 0,
+        "warning_count": 0,
+        "checks": [
+          {
+            "name": "global",
+            "ok": true
+          },
+          {
+            "name": "skills",
+            "ok": true
+          },
+          {
+            "name": "capabilities",
+            "ok": true
+          },
+          {
+            "name": "subgraphs",
+            "ok": true
+          },
+          {
+            "name": "sqlite",
+            "ok": true
+          }
+        ],
+        "stdout_sha256": "e07e1220097d82eecd55c9e5891a9c7e9ab37ca77810efe5af7e64e4651610ba"
+      }
+    ],
+    "diff_check": true,
+    "candidate": {
+      "admitted": true,
+      "payload_count": 234,
+      "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+      "harness_inputs_sha256": "384bcbf50fdb77577b6fa6dc17403633949d225b4134465f9a9f2a39de16c07a"
+    },
+    "published": false
+  },
+  "final_bookend_at": "2026-09-29T05:15:43.472Z",
+  "remaining_dirty_count": 280,
+  "staged_after": "",
+  "transient_locks_after": [],
+  "custody": {
+    "initial_dirty_count": 245,
+    "preserved_unchanged_initial_paths": 240,
+    "amended_initial_paths": [
+      {
+        "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+        "sha256": "3377f19bd7790645d4fca3a50ad6f7252aa6ed2c34704691e1c1646975751d71"
+      },
+      {
+        "path": ".mdkg/index/mdkg.sqlite",
+        "sha256": "1f01809ba9fb6c5027b61330e0958b4e16e6848deb28697d54ad4ea03645f7c9"
+      },
+      {
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        "sha256": "ab693225c9e383f61c0bdc70bf96bcad2a41b8d7f06942a5f71775c3d445d61e"
+      },
+      {
+        "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+        "sha256": "998667d622ada80e03fb6812beeb570d2e57f01feca721b9102fd7891c2fb162"
+      },
+      {
+        "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+        "sha256": "fb780ea56b5cf65c9036ef2a2fbc6af305780df1b1a582644aa1697dfbe8fb6a"
+      }
+    ],
+    "new_dirty_paths": [
+      ".mdkg/artifacts/goal-86/private/test-487-docker-capsule-manifest.json",
+      ".mdkg/artifacts/goal-86/private/test-487-docker-scale-retry-capsule-manifest.json",
+      ".mdkg/artifacts/goal-86/private/test-487-docker-supplement-capsule-manifest.json",
+      ".mdkg/artifacts/goal-86/test-487-cleanup.json",
+      ".mdkg/artifacts/goal-86/test-487-condense-evidence.cjs",
+      ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-amd64-runtime.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-disposition.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-partial.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-retry.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-amd64-supplement.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-arm64-runtime.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-arm64-scale.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-arm64-supplement.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-capsule.cjs",
+      ".mdkg/artifacts/goal-86/test-487-docker-downloads.cjs",
+      ".mdkg/artifacts/goal-86/test-487-docker-execution-identities.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-isolation.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-readonly.cjs",
+      ".mdkg/artifacts/goal-86/test-487-docker-runner-controls.cjs",
+      ".mdkg/artifacts/goal-86/test-487-docker-runner-controls.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-runner.cjs",
+      ".mdkg/artifacts/goal-86/test-487-docker-runtime-downloads.json",
+      ".mdkg/artifacts/goal-86/test-487-docker-runtime.Dockerfile",
+      ".mdkg/artifacts/goal-86/test-487-docker-scope.md",
+      ".mdkg/artifacts/goal-86/test-487-docker-supplement.Dockerfile",
+      ".mdkg/artifacts/goal-86/test-487-docker.Dockerfile",
+      ".mdkg/artifacts/goal-86/test-487-final-executor-identities.json",
+      ".mdkg/artifacts/goal-86/test-487-installed-capability-umask.cjs",
+      ".mdkg/artifacts/goal-86/test-487-local-commit.json",
+      ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+      ".mdkg/artifacts/goal-86/test-487-macos-capability-umask.json",
+      ".mdkg/work/chk-666-qualify-local-ubuntu-platform-families-and-preserve-bounded-scale-retry-evidence.md"
+    ],
+    "self_hash_exclusion": ".mdkg/artifacts/goal-86/test-487-local-commit.json",
+    "remaining_paths": [
+      {
+        "path": ".agents/skills/build-pack-and-execute-task/SKILL.md",
+        "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".agents/skills/pursue-mdkg-goal/SKILL.md",
+        "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+        "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".claude/skills/build-pack-and-execute-task/SKILL.md",
+        "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".claude/skills/pursue-mdkg-goal/SKILL.md",
+        "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+        "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".github/workflows/release-readiness.yml",
+        "sha256": "0aa57871ea4690141f85c46bc3b56b1d13b4473aa96141a4b4de062d3aa4c106",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-47-macos-fd-path-feasibility.json",
+        "sha256": "dc3e3ce3aeba8c364d7391382318eb6cd60854a0fbb4af0f547db1d349424525",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-47-recorded-0.5.2-source-assessment.json",
+        "sha256": "c1573547690aacf715a5d439a2cd1cd5278ff6529dcf393fc78b02b0892d7728",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-60-local-resume-evidence.json",
+        "sha256": "af8508235be4385599823cd90e6017d84ec51e4259affa09b1ed5c5637ef5429",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/current-finding-qualification-map.json",
+        "sha256": "7714789b4103bce720052e14d3c4f964ae67825d94beeda8f6db0b8691ae1d34",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/native-primitive-probe.c",
+        "sha256": "ffb8f612f6645ad361ad776d1bc3ffcc30bd3343031a94133fb93ae5ed0089de",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/node-baseline-probe.cjs",
+        "sha256": "87855e17dbc519d89efc73e1515ddf63389dd65875943ec7abf987b6ffa00936",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json",
+        "sha256": "75c55bb5b18199dd968df9acf1a6ba2ab87a948376380719a3199cd8c615ac14",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/combined-installed-probe.cjs",
+        "sha256": "e735cc581886e665df21ceb456a9779fd408fa6b776d937f81a2bb1c2122531d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/installed-qualification.json",
+        "sha256": "301f1874efa4717be90c7b0950cf06b9ac60424228dd352288a9f75c6ee36494",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/portable-source-progress.json",
+        "sha256": "9f9c91083396fb46bfe160e64bacca1bb8ed9abcd76d27d8deaea6ffbf600bda",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/receipt.json",
+        "sha256": "f7d1b4ebe2940d50063776fad31d55741cfaeeedf0a5d7556ed942c9be6875d4",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/recovery-admission-installed-probe.cjs",
+        "sha256": "89b28492cfa5fc2ef7082cdc8c6e62d7890eca29d7b08f434026ea0f3c4285d7",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/recovery-admission-worker.cjs",
+        "sha256": "a3c62a111f3d0205fa6893dd0f70b33497841c9875b59d7ba3bb25726a33b776",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/recovery-installed-probe.cjs",
+        "sha256": "98363bc0e94ecf88162a29a9e5d1914cffa8c7b267d2381b7f562eb521ea5347",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/recovery-qualification.json",
+        "sha256": "9d4ea718eb5df9b72bfdb912f52bf034b0f8c17bbacc4f8ca05b73dea1d3f335",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/runtime-installed-probe.cjs",
+        "sha256": "e087b4a5ebf0e69be03750ba2f9fcb57259c14f62b5624d77530d59ec6679622",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/runtime-qualification.json",
+        "sha256": "418585c5e0738f8c1b7b2d45856fcde4090a811fa171fe959d849eb9b9b92341",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/node-portability/sqlite-memory-probe.cjs",
+        "sha256": "c47567bea5d85271f12eada970eb2050cf6455428e693458bbecb6d36571b661",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/package-closeout-custody.json",
+        "sha256": "3f1324ca4e56ecb33e691b5048f56df59068643000fd09a2c98788940c4d1848",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/package-closeout-progress-receipt.json",
+        "sha256": "9b18c67a5dbaa5ea8937b9a26b06f58087919a8d946c77175c5836b4b3008dbb",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.inputs.json",
+        "sha256": "114b25fcb5cf870dd7d30558fd6f8a0eff1054acc6578e5e8d6a3f3cf80cc1ab",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.package-inputs-dec100.json",
+        "sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-6154e4ea920bfa09.qualification-inputs-bug61.json",
+        "sha256": "29e0f1e2a62cb56160e58f8534ee1d96d6c512ab9bea12ffd50bb16af897496f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/private/test-487-docker-capsule-manifest.json",
+        "sha256": "8ae237307f5de2541787fe9471ded52e9c720b302e89374cd1632c223d8b6dc1",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/private/test-487-docker-scale-retry-capsule-manifest.json",
+        "sha256": "31ab3b5099d3e6739382183d440c0c05054034049459e9ebbba631e3e190001e",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/private/test-487-docker-supplement-capsule-manifest.json",
+        "sha256": "092cc3be9b253eece9cafe96ab9a8dbb995dfb0fc86b3ebe27a296663b97af03",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/private/test-487-linux-arm64-capsule-manifest.json",
+        "sha256": "de483e12ee4f6ac6d68fba9d0013ac08e14fccbc300ffca8bff366e7972d59b3",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+        "sha256": "3377f19bd7790645d4fca3a50ad6f7252aa6ed2c34704691e1c1646975751d71",
+        "custody": "owned-goal86-evidence-projection-amendment"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-artifact-custody-progress.json",
+        "sha256": "dc93ee15023f855eae9323d5da2299f33a5580a380c7f521dd9c1a49d92142ba",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-consumer-smoke-progress.json",
+        "sha256": "c8786e387cb2fa02b50727a6ede0fb0d523162526e6343ddb6e38cf3ed6e0ec1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-db-smoke-caller-progress.json",
+        "sha256": "0d488a683d914ea591b4c65919e8271c09082136fd6405ea88af6222da0b94de",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-demo-fixture-progress.json",
+        "sha256": "9cba2451fc8c9a53939f5e1b88392d881328ce564f2f4c9515152cf641cde077",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-git-boundary-progress.json",
+        "sha256": "36267d21b945b950c906d559310225004bc654d6519f288090fcf921cbc5c9c9",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-git-fixture-progress.json",
+        "sha256": "009d6ad4be6723d3f44c9892c5fcc3e2babddee21a4df54141555932ea6e2e2a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-graph-smoke-caller-progress.json",
+        "sha256": "8d2bc3e54a8679764ba4314d989aa4ecd23659bcb4f3e5f1aee3cfb2e4b34e99",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-local-commit.json",
+        "sha256": "385408ae0090fcbfb4ddaac790752203bdc9b8d6b79db569bd527f1ab9ab7420",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-mcp-smoke-progress.json",
+        "sha256": "afc1aaf3c914a08fd67cdd0625857c6f5bacd290f8c48f2832a2235515f1df80",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-output-custody-progress.json",
+        "sha256": "37d3a68d9ecae6f89cc24e27ed0fc7ecf56e4559ea1522245f122d666febbb1b",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-six-smoke-caller-progress.json",
+        "sha256": "3e8393ab1918f358453f691a0913aa5cbaab6c78e2327b35d37d1edc5b60e015",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-smoke-caller-progress.json",
+        "sha256": "324ae4fefbbb11481b00afcbb33f31407dbfc9edacd406fafc6d365241b39880",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-sync-smoke-caller-progress.json",
+        "sha256": "5c141a50bd3ad78ddaa92b6eef8fa9b5c48a2b663d1cdc566beed7d078b66a7e",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-838-tail-smoke-progress.json",
+        "sha256": "a43fbf6ba97e023954831809b2759b849cb67067bc2c1ddafdbf2f577340b30a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-839-release-guidance.json",
+        "sha256": "b6d7f9a3b1f78b18e838fdee678b8e4d45f5775d51b0b69b80d906cd20e27146",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-843-final-qualification.json",
+        "sha256": "9e0e4dc0f74a8bb3de268995d6eec05ba46864d1056cb068fd39de6d852de212",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-843-isolated-package-gates.cjs",
+        "sha256": "0f3eee94ace06f5aca718a6a59541ebea63471bec2ae27ec64ad79999457d9cc",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-843-isolated-package-gates.json",
+        "sha256": "6943e35d84ab2094fa30c933ce9149e528ee8a5114a6594018229cf21ea70d4d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-843-local-commit.json",
+        "sha256": "a1d681b2e57610a5d78523cb401568f818c5c7f785c4706b45f4091447b87792",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-843-package-profile-qualification.json",
+        "sha256": "b7d37cf4a28bb52d11eb1a8757a78b9aed32e462b734520e7474d700c0a54503",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/task-843-qualification-inputs.json",
+        "sha256": "1b9a9b51c42f89c3ead2021d7ea0089ac4fa8572d757bdfe3312ff74b6318b76",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-477-installed-bootstrap.cjs",
+        "sha256": "87c2b24907ed8c23a05de719ed3db34c530b22310f4ba8fee35bffbd6776416f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-477-local-bootstrap-qualification.json",
+        "sha256": "b25de0c915c6ca89220f5f3b3e42c710ee3968f17364ea0a72f4b6b6fe9558ba",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.cjs",
+        "sha256": "b00e336f20bd60e805830a191b30992adefb1f2340c7644b4ba037ce40af5ca6",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-478-indirection-qualification.json",
+        "sha256": "80dbbdcd0fe961a9e44847dde0c72289f7d653d5f313cc0b81cd542dd58e3e39",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-478-installed-collaboration.cjs",
+        "sha256": "305eb0bdec0ffc6ade3f47d96c03b6223c7e5413211e8fc461e6690ce92492de",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-478-installed-worker.cjs",
+        "sha256": "8688b3a9209e28b6e72e15485ecd334fdb7df2270df1e972d6ec10a1f2c411db",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-478-local-collaboration-qualification.json",
+        "sha256": "c9820e7099d445650dc6c3b9d6d2110d62d35b256aab4442686bd57f63f880f1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-installed-containment.cjs",
+        "sha256": "0f9e3f8386bf3687923e572f699f6ff77ecf162901040c1e45488f36a15ec68a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-installed-ownership.cjs",
+        "sha256": "90d240d870be5c985b620cf5755f28c7ecb6f98e05b1415c166b6e14a73ebb90",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-installed-remedies.cjs",
+        "sha256": "704dcbcd967bfdbf62d4230dec44157a2e381820fce006d39a82d05d30db451e",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-local-containment-qualification.json",
+        "sha256": "7f07f1a302e5070bd446a4ace768659cded92745e386e3b13b68f26c4d2ef6ef",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-local-ownership-qualification.json",
+        "sha256": "757e71d5a12dd89392a88fe10d805af426dafff6f4ad1d4187d30fc623d4bdb7",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-local-remedies-qualification.json",
+        "sha256": "7219c0170a68058a15d9a7a364707e56de06bbb562da68274f43ee7f9b3cbb1f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-readonly-filesystem.cjs",
+        "sha256": "5c521ffc23fa9d64a8a21c9a2a9b818825771a0514ab3d02c9b9faae8fab66ac",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-readonly-harness-attempt.json",
+        "sha256": "8d1db78e126e5791ecaa643e8538a38b4b2a9d00abd5a7c6161151835825e6b6",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-readonly-restricted-attempt.json",
+        "sha256": "f6eeb6b3079324088c259193ddff65b1faf1a23137042339b608a5f250778e84",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-real-readonly-qualification.json",
+        "sha256": "345ef33cbf326d6e4cacfb308c9990e876ade3630bbf40a03c14c6ca0529476c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-479-state-admission.cjs",
+        "sha256": "33a041efeef820bc07d772e01af26b3f661b82f1a5356fb00fea13ce29d29389",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-historical-reference-disposition.json",
+        "sha256": "962f4c535b2d0295a2ef7d2f0308d2604b655600367141d6321e9d9269aad1e9",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-installed-compatibility.cjs",
+        "sha256": "bbf1195141f5d8193fa52fa7cf5593e66fb698ebba606dfed7b0ad921ee82e9a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-installed-work-smokes.cjs",
+        "sha256": "4ad77d8880a3a32d3d0d1db4b4eeb96935b84091fec46646a98a6a7d21dabef7",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-local-compatibility-qualification.json",
+        "sha256": "f5008c597609c431de9eb92197e07390633b7e9b9d56a9fc4913424407a9d049",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-local-work-qualification.json",
+        "sha256": "d7929b2e7030526c5d39d228c97cb4b2a4549b0548b9ffa65d5930d680a4f305",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-old-client-harness-attempt.json",
+        "sha256": "de53bb04a1df38faf0cd088d48db59475ea8b4a66845854729c4d3aaced14663",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-old-client-runtime-qualification.json",
+        "sha256": "60f63c87ad05c0896da41ec74f01a61c7e545c91437dc50eb624f6260e15dc9d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-old-client-runtime.cjs",
+        "sha256": "b654a3822c205f695a966c74af66d1b844b79373c2e481a44bfbe4483ded95ac",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-private-preview-qualification.json",
+        "sha256": "6b97f9e9a67105492f2b3e944082e12d65bbce4a93384cd26cc72712c5ad428e",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-480-private-preview.cjs",
+        "sha256": "fa1c09f44fb526de83369a9272bd5a87dd698965322adef183778193e2986a43",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-481-installed-scale.cjs",
+        "sha256": "3ac882938132d438d360fcdcf32423dc3fbbb7837fce02e5577d808c21297d75",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-481-local-scale-qualification.json",
+        "sha256": "1d26e596b7b5acbf6513c6915c8a89cfd9a21ddc4bf5cee69a2d1057ac67a10d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-483-installed-behavior.cjs",
+        "sha256": "0c34d1c763b7f6a6a8c6c8f244ac2caccfa2391f38582059024350d681ed8875",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-483-installed-pack-controls.cjs",
+        "sha256": "e2546b7386cec0977acf22faaefa4b0f9a7f9b1b76cae6caad54ff5bada1967b",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-483-local-behavior-qualification.json",
+        "sha256": "697e6dbb0ff343ee1a02f91fcc78b27e0996417dd3328e9bcec1e85e1160471f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-483-local-pack-controls-qualification.json",
+        "sha256": "faf6998ba8776e0d521f7e364d8c1abce356495e5423751e99453c2a9b03d6d2",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-484-installed-generic.cjs",
+        "sha256": "b4dc20d956b9965c17f9e2874c033e7ba641de43ce95fe1b5ae7359a366a2f2f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-484-local-generic-qualification.json",
+        "sha256": "50ce95eaddb71e3f22f37d1ccf32848f301394e766dc5198c76305ede6c30686",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-486-local-option-qualification.json",
+        "sha256": "a43d6f51a8fb5956e52dab4fbe3c4184c4ab6f1afcfa54386decb38f48846122",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-cleanup.json",
+        "sha256": "21e14992bdd6fc691efe81953b9f9beef8ee7433d6394a3eced183217a880f1c",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-condense-evidence.cjs",
+        "sha256": "0a9204a24ddc137b0464e2f5993c7bbe41894522db33fa06ad99ded790d751f5",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-families.json",
+        "sha256": "56df033f31e9dfe4dc9a2ecc15d7fce743e906ea9652e584e0016223b26a8e53",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-runtime.json",
+        "sha256": "f5ffdbe00c0583b3d195aeb57f7cd16eea0c0ad83e35f79eabf74644f6667647",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-disposition.json",
+        "sha256": "8936a14caa264158e007faa68d7aed6c5879d1d4f930aa2a590cea9f5b0f26dc",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-partial.json",
+        "sha256": "fecda78d0ff87653c53229857c62ba2dbe1d760e2a84b3a08165e4caa175312e",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale-retry.json",
+        "sha256": "7f681eed585572357f78a45a58b0d773b65911b41f10c668939d513e3981a5b7",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-scale.json",
+        "sha256": "ba986ebeb578f1d471ea72b652555b254f88bddce24bfd8caf7f5ddab22d14c6",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-amd64-supplement.json",
+        "sha256": "91adcc721b72aafdedf50d44603db496f1896c233c8acd93f96fb9397e253fa1",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-families.json",
+        "sha256": "e9bed7a66fa2b99a7fa2fb6570b8672d12c74427bfa7a580bbb59e18589cbc8b",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-runtime.json",
+        "sha256": "27205d6aa6f87c936b0b492d0d56b504f3f0c08d20909b56760512c2c9d210cc",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-scale.json",
+        "sha256": "2c12dca8dcd90a1fb4849302c8c93c99742146f07c0646c821175b20dfc07499",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-arm64-supplement.json",
+        "sha256": "9eb9f6d9d67649fcaf2a17ba0eda492ed18ac94e6612be6d23225ec78b955fbc",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-capsule.cjs",
+        "sha256": "cd96078dc9831c6e49c9b40dd36cc1ffe942e899135c6835ca9c4f6bec4e5521",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-downloads.cjs",
+        "sha256": "09cc19be231adc8270356b4c9e8f4afd6a6cad97ee96c281d049ec04b214ba4b",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-execution-identities.json",
+        "sha256": "aaeb90537e3aa2d504d27542601f3e21fe9fc2c315dd26af72e588742e1a8788",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-isolation.json",
+        "sha256": "792ff39dcd8d0886753901877c2c9d1ffd3faa02b871a50f75b90a41b22c96d7",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-readonly.cjs",
+        "sha256": "405fe417c60e1f023dfd7c2320ac83e20eff8b9c257b8fabcae08a08c4b0d883",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-runner-controls.cjs",
+        "sha256": "2ab5c51759d7dac9e2681d253bcae425c90acdef319d17e5e30aa9250f0a978b",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-runner-controls.json",
+        "sha256": "bf8a20048a40330a19f6f57f670bd22df02e822e4bee38f07d6bb11ef903f2aa",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-runner.cjs",
+        "sha256": "9cedf11caae4f151007dac1b0d44607c2248eb42f53f1a4bba2e6a03ede9e482",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-runtime-downloads.json",
+        "sha256": "5f8b7b11253de552b41e66328a490877a725bdac63738fc1c45dd204c6a33f10",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-runtime.Dockerfile",
+        "sha256": "5b71ecf2f90444a961e20946b9d1b1e25af2441b4f2fbb49224e42b5e2130245",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-scope.md",
+        "sha256": "8bf78ab7c3654022120a86122470bc8aadc52f9224e8019bdbeb8b5f8ca08685",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker-supplement.Dockerfile",
+        "sha256": "0c7efbd317bd5234d2674a20c0981adfb3bda6dfc4e5373d767e4a89d1b68326",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-docker.Dockerfile",
+        "sha256": "1b5e5ca9a1d0adb9124aef6feb3e1fa6c1df34164b74c44989a716bd7e0609d1",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-final-executor-identities.json",
+        "sha256": "e78079f41f1d551e663489d2438d5caf3f55ac104de24ea8c58cb6e0f2e7765d",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-installed-capability-umask.cjs",
+        "sha256": "7daeae2be02d4e10900b818d0e1f222f9211b7c6673e5a52c897264a537ad536",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-linux-arm64-qualification.json",
+        "sha256": "ae604a4d5cf75455d206c1d6883a2ef57d08f4b69d42142f5992977f775763f3",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-linux-capsule.cjs",
+        "sha256": "5e928e5ec4cb709d0587e087a6de98ae533b48d1b72c926e70e55d40acdf13f3",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-linux-runner.cjs",
+        "sha256": "55c6289e6992b18b5bd4db04272789aafa4e212a279a6e4a16eed074115e3519",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-local-commit.json",
+        "sha256": null,
+        "self_receipt": true,
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-local-linux-scope.md",
+        "sha256": "693e22975e7cbc6595b26ba7f350eac51c08c05f40ed1c6772a7b0f256526488",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-local-platform-composition.json",
+        "sha256": "2075ee8044274e6ac1065652f279d3d9fef0575d30860f1e73e5a41aab0dec60",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/test-487-macos-capability-umask.json",
+        "sha256": "54f8240a88d8c84af8b13bef83e90e25ad7908ccd159c00597699b9375c0ad0e",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/design/dec-100-bound-0-6-0-acceptance-to-the-package-and-local-platforms.md",
+        "sha256": "799ac6951c9ddb622677b7c62b6bb375575b713419964c6a1dbf48bfeb89187d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/design/dec-97-keep-current-mdkg-development-node-js-and-local-with-deferred-native-and-hosted.md",
+        "sha256": "9809bc4aec6177005dbfabdb04663bdab71689e85fdb25a1e3b8a60e34b903c0",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/design/dec-98-keep-0-6-0-portable-in-node-and-defer-unresolved-filesystem-hardening.md",
+        "sha256": "7e40ff65ad0db289e742dd2214d01b50c1ab04a1393b37b9f7b7218dc24bd796",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/design/dec-99-retain-local-linux-qualification-and-require-fresh-current-source-security-accep.md",
+        "sha256": "4b813999fd898437d1e69ddf8bfdb2ea53925e7e5d770bf13282c6aedba3da59",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/index/mdkg.sqlite",
+        "sha256": "1f01809ba9fb6c5027b61330e0958b4e16e6848deb28697d54ad4ea03645f7c9",
+        "custody": "owned-goal86-evidence-projection-amendment"
+      },
+      {
+        "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/skills/registry.md",
+        "sha256": "1b83dfea49d4f563a8edc3b94c387a886508a89e47b5378ff2af7b1381c6dc2e",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+        "sha256": "012a82514bab911ab48f41f659ac056b818cb3c4bdf169db9dd6eeb1dfff3c0d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+        "sha256": "5f773a92395a398ad305b8f0be60ab98602be50a1bcf0b6839f23ecc171fbec3",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+        "sha256": "a95a5f579ac16627e5d964df7b03141c2ba79c58eab39c69cd41862e363f4636",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/bug-61-qualification-git-admission-rejects-valid-submodule-linked-worktrees.md",
+        "sha256": "4996bd4b73af87a382114dbd2b66846b025b993636d6cbd530ec90af00fc740d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+        "sha256": "ba8ebead77e0d73b3ca830246bf0f6385ee35d7777c7233799b534af9a568d73",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-570-accept-mdkg-0-6-0-full-local-qualification.md",
+        "sha256": "f0c233ec51cd45b2eb909e8da11ee4c49912d2c79fe51e35aadcf8ace88bd92e",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-637-pause-goal-86-and-record-0-6-0-release-readiness.md",
+        "sha256": "c82a923d6265dafe99a9d0aae11572b2888d162f36b0eb38aae43f976a04d97a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-638-record-node-only-local-scope-and-deferred-mdkg-qualification-epics.md",
+        "sha256": "c813fc0b2c1a62c96c7a2e452fcb0a55288aabffed967e9e23c043861caccbca",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-639-resume-goal86-with-sqlite-race-evidence-and-artifact-custody-progress.md",
+        "sha256": "e19c84b4a940a6105c4b49637f2f192281c7b6cedd542e2deed515ecd8a6e5c1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-640-preserve-qualification-outputs-and-verify-local-context-custody.md",
+        "sha256": "d6cbef7ef9835db38e35688be254f98d594c1a4d0714f6e573bb19ee0b10fb1c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-641-isolate-demo-qualification-and-bind-cleanup-to-owned-roots-and-child-shutdown.md",
+        "sha256": "8d96e8d33889caaa2d0f784c55924d853adcec7be3a9a3d3a3c29267c60c9d0f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-642-bind-native-git-fixtures-to-owned-metadata-and-supervised-process-trees.md",
+        "sha256": "5bd5a51e750a6553c3be2dd5f06bae5c66d010b83aa673c7f263be6cc615878f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-643-isolate-installed-smoke-callers-and-separate-published-baseline-provenance.md",
+        "sha256": "82d6b5966727cf745c56b1673c10930cc7fe7669a719af6ae175fb507498e44f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-644-isolate-six-installed-smoke-callers-and-verify-artifacts-before-installation.md",
+        "sha256": "494bd94c9fd402758339b4295633fa9ca26d160fc78230c072d973dab72882f7",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-645-isolate-installed-db-and-sqlite-fixtures-from-ambient-git-state.md",
+        "sha256": "9439d3b75b9ff44b1e10ba45470381f474c01b186ffe6151e899d0f8d7fc5355",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-646-isolate-installed-graph-workflow-fixtures-and-verify-supported-routing-refusals.md",
+        "sha256": "d1cd054555e251f743bc001aae2d87261193c6194f056d959f708318ead774a6",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-647-isolate-synchronous-installed-smoke-callers-and-preserve-diagnostic-evidence.md",
+        "sha256": "cbf8e53d4848de75abfdf82a75371c7c01107596e2c5b7b1ebaddd91702f9653",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-648-qualify-git-boundary-smoke-across-three-local-node-runtimes.md",
+        "sha256": "68a420b965e6c4ad7ae47aa1faa8c986f772b5b0b96f7a8c8e4c402ce9b46205",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-649-qualify-remaining-release-smoke-callers-and-retain-intermediate-candidate-custod.md",
+        "sha256": "5c665481a19526e24b996993e5d61dc59521c8c24d9638ad385b4eb88a52d918",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-650-verify-descriptor-backed-sqlite-observation-under-local-node-runtimes.md",
+        "sha256": "2e9486cd6515e8110217469fff0e0ee13304a1a0054f66a6168298a68c08a514",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-651-bound-local-filesystem-feasibility-and-fail-closed-linux-ci-stub.md",
+        "sha256": "202108df9d3e7c8ca0f806893c2ba4014a0c5842e8a79db3419f79293e90242f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-652-defer-unresolved-filesystem-hardening-and-ground-node-only-portability-continuat.md",
+        "sha256": "df750c4984e6c2ee82c86eaccffc2791bc570064915aa7ad268cbbdacd4c9698",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-653-implement-portable-sqlite-observation-and-align-the-node-runtime-contract.md",
+        "sha256": "3b5a6449a8b2edc88b895cd51e80937abf7a35913099dd9099e13e4e5d116c77",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-654-implement-portable-operator-confirmed-graph-recovery-with-exact-evidence.md",
+        "sha256": "81c7739039e6fc6a7488e25cdda3d941eb54a704bf73cc04f6002aab40fa04df",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-655-qualify-portable-node-sqlite-recovery-and-native-linked-worktrees-locally.md",
+        "sha256": "500603b216c9dbea555bd1f2bbdcb4160525524a3288bcbed7f5057ddb724ebb",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-656-correct-release-critical-guidance-and-verify-installed-command-discovery.md",
+        "sha256": "b888b5de681bf4d7273004a37bea8683cdc003edf713d5a25a45e432e63d51d4",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-657-bind-installed-cli-option-qualification-to-owned-fixtures-and-the-release-matrix.md",
+        "sha256": "043b6313d551f0cac7e78afdfbf88dc4b7ee1343b9dd885ccffb6802f7ada543",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-658-qualify-retained-candidate-initialization-and-real-published-upgrades-locally.md",
+        "sha256": "d8648f0a062a35ed4c366c15f9d795d32d1bdd293cfb5e0cb37de68bdfaca55a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-659-qualify-installed-concurrent-worktrees-and-reviewed-native-integration-locally.md",
+        "sha256": "f9b5d3db22fe84d3e923539e96944c1783785f0c896c449854d557c05e1bf688",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-660-qualify-submodule-linked-worktrees-and-sampled-incomplete-journal-refusals.md",
+        "sha256": "c70dcfeca6e9e695ab6e0b2b62ca0d6fb7902a085472c6f6f4bff016cc977797",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-661-qualify-installed-transport-authority-and-sampled-recovery-admission.md",
+        "sha256": "f14904b1542c56bf2a9288957610bba18b78c92887a21c34e624fab237cc0bc2",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-662-record-local-linux-installed-candidate-transport-and-recovery-proof.md",
+        "sha256": "91e71fa93628fae07cd71e30e13ecedc7e0c4f64801f7ceaf29d1913be6f6294",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-663-record-bounded-package-only-pre-publish-enhancement-and-remaining-evidence.md",
+        "sha256": "fca1df4795d480e49862112c42cd6cc662d2cb751856b196b98614748e45ed4c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-664-qualify-package-only-gates-and-exact-retained-candidate-admission.md",
+        "sha256": "235ac3c5979022f6a1e003615f76a82850413ef54b92c58d94b0d8eef1864dad",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-665-record-retained-candidate-installed-qualification-and-remaining-platform-accepta.md",
+        "sha256": "d688e49dcc91693f5e3675811f471c93ffd96e911acd7fba80384e3eddcf9c3f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/chk-666-qualify-local-ubuntu-platform-families-and-preserve-bounded-scale-retry-evidence.md",
+        "sha256": "abd62569671a234f541436e376ddd2989519ba17ccc140d5f10822502d922e09",
+        "custody": "test487-new-owned-evidence"
+      },
+      {
+        "path": ".mdkg/work/epic-256-explore-a-rust-filesystem-authority-component-for-future-mdkg-versions.md",
+        "sha256": "853e2b91e8acaf8318b719c3870ab1339ae385fcb209f861c4aa7c521f701dc8",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/epic-257-qualify-mdkg-on-linux-through-github-actions.md",
+        "sha256": "de574a2c44c2d4ecc90618a0d1f50cf6fd2a0ede902c86054eb3e35c4bf77abb",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/epic-258-qualify-deferred-website-and-documentation-release-surfaces.md",
+        "sha256": "6aa8d80e7621bb3ec2ec84a2edef82970d066132eb081ecb913b17811b9a86f8",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/goal-83-audit-and-locally-qualify-mdkg-0-6-0.md",
+        "sha256": "dc50e58e5e53e066b4058eb72a6d5cb4ea091713fc68100d141f1025a57b3337",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+        "sha256": "a964017b8dbdf354b9a06f152543f97d4382ec92ab3ebd2b6fd1b6d74901371d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+        "sha256": "47eef09c5fbbdc572781eaf6220691c480f7aae44b4a7f3b58ac1d10bb0a86e9",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        "sha256": "ab693225c9e383f61c0bdc70bf96bcad2a41b8d7f06942a5f71775c3d445d61e",
+        "custody": "owned-goal86-evidence-projection-amendment"
+      },
+      {
+        "path": ".mdkg/work/goal-87-resolve-deferred-filesystem-bugs-and-harden-portable-mdkg-operations.md",
+        "sha256": "a7a5bb22353a30794ae449dd5a420e084b9a3e29b554e69f52720ab8cf9f8e98",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+        "sha256": "0a01928ab5dea9e2a8712959c8d33fe8374f8451ec00350c6d9627b421bc0175",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+        "sha256": "6560660591df0667a9b9c212342abe786ad6043eab61d2587c87b6b73db96f57",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+        "sha256": "03b27d597f01a8371cc0852646b69efdad1f91cb4608eed51b2bac448614f970",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+        "sha256": "63af79fc8af29614de193a24ae86ab60ebd424b1e898edbc6b95f1085c8efc57",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md",
+        "sha256": "88df5c061c5da55913c8e8cf91a831c16c4d3a7906752c35f0e04ccec49e5d08",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+        "sha256": "e0a4cee9cac051e0f9678a9432e25da918bf9810c1969cb959b3583aa753a955",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-840-define-selective-testing-and-full-readiness-gates-in-existing-skills.md",
+        "sha256": "7889f6a29e7b1893ca2107255d4f3416855e3d2e2c07b99a9ff1bec515f49d03",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-841-replace-os-bound-interrupted-writer-proof-with-reviewed-portable-recovery.md",
+        "sha256": "2da80e84bf2c84a388eddd414e41eb3af9e5b4db62d76ab404fb40dcddbfff68",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-842-align-node-only-runtime-compatibility-and-release-qualification.md",
+        "sha256": "4650019a85c24cc513745ade9ac02472962dca675ecdeacc0f37b75401a3b8e5",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/task-843-separate-package-release-gates-and-admit-retained-candidate-bytes.md",
+        "sha256": "9957e7f82a2496860074b045897e769ed9de2ecffb2f346128c7b44ae67ef934",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+        "sha256": "e2dcad212a862041aa4ff92670059f230940e5b37df653835fd44476a068bf2f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+        "sha256": "bd80dd2c55cee344044d1558cd77d76d23cd150aa6b26f520de38efd42bde9d2",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+        "sha256": "b0917b0945dcac0c092c1088b9d880025e433d5e74d009da9a41093455af29d7",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+        "sha256": "80063432262e80199cc09b740057a528faf875c790d0fa1c5d63a8a5ce117514",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+        "sha256": "998667d622ada80e03fb6812beeb570d2e57f01feca721b9102fd7891c2fb162",
+        "custody": "owned-goal86-evidence-projection-amendment"
+      },
+      {
+        "path": ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+        "sha256": "9b612cea7a2003a8ba06bac6c377fb10322009c3c80955fcc8db5a3324f4b7d3",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+        "sha256": "185ecbd9c3e9dbc8b5aec431e7569d1a78394d9788c9e7d2766c13a454f03023",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+        "sha256": "240e29735f91829a9224e5bda7540aa2a8308a9da5ef9a31fe19e630a69c02dc",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-485-git-inspection-preserves-status-provenance-and-credential-boundaries.md",
+        "sha256": "d5211c79f4d77df48e903b6b283725ebfa4869390e6079ccf70c537995c4e780",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+        "sha256": "6eb104f6d1081fc9148943b8b49eb4a2092fc56fce089a88a6dbbcc754daf895",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+        "sha256": "fb780ea56b5cf65c9036ef2a2fbc6af305780df1b1a582644aa1697dfbe8fb6a",
+        "custody": "owned-goal86-evidence-projection-amendment"
+      },
+      {
+        "path": ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+        "sha256": "4c1d32be079d77a8df9fc8e825164b4dc28cffed294f75e3dc60759ad6e8b07a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-489-qualify-portable-sqlite-observation-and-explicit-recovery-without-os-utilities.md",
+        "sha256": "218f11f0d059e9ce9c3db078f49c90cab8cc4f9e013eb9eb123956e55929c75c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": ".mdkg/work/test-490-verify-package-gate-membership-and-retained-artifact-custody.md",
+        "sha256": "2b76babc60d56f926ad39a723aaba08d82fe8897398ea1e7b1c69c47eade5868",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "CHANGELOG.md",
+        "sha256": "07e265bcd4b6ba748801d60fe2e9fc708e5708000e1413b33163170fa91c885d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "CLI_COMMAND_MATRIX.md",
+        "sha256": "824acb61a013096abfffa74076b5e095f69c7a1f01ad03f7d6ff5f7df56428cd",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "README.md",
+        "sha256": "d5794a88aeb8bc67c6647a5e3c5903c69f669d8a7a939b307fdf095d28f449e6",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "assets/init/CLI_COMMAND_MATRIX.md",
+        "sha256": "a273d0b02f9b00775b7a6fbafc3ba09497a7bcdb927168da3a9e0b8739f83e0f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "assets/init/skills/default/build-pack-and-execute-task/SKILL.md",
+        "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "assets/init/skills/default/pursue-mdkg-goal/SKILL.md",
+        "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+        "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/_generated/cli-reference.md",
+        "sha256": "2d186dae1f5b8eab94ff190b4dcb54c109fc5fa91cfe62ae8b1022b89b18bca7",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/_generated/command-contract-summary.json",
+        "sha256": "b36fbca0d6935699f1bdea38fcbb9c0de09dd535a4b6bec530e9a788f0562ce8",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/_generated/release-notes.json",
+        "sha256": "17c805a21a3a55c3f383da52758ce84c83a8460b47714eadd5e339813ea87f99",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/advanced-alpha/graph-movement.md",
+        "sha256": "cb275ee1b7b8adcd69869a9966d9a9abd4ac334297db20c11869e7e1e5863c49",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/guides/agent-workflow.md",
+        "sha256": "448216dad33f7de29fbaec7b9470ada79927e0ade4805254ca1d7f354fd81bcd",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/src/content/docs/advanced-alpha/graph-movement.md",
+        "sha256": "cb275ee1b7b8adcd69869a9966d9a9abd4ac334297db20c11869e7e1e5863c49",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/src/content/docs/project/changelog.md",
+        "sha256": "5548d7bc86de525c7d2ae50d51d627b4cdd96b3aca5d0b58a8f97b0f2d0d682d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/src/content/docs/start-here/install.md",
+        "sha256": "d456fd819f7ec152a13c841124d96c6dac243e3129c0dd9378840418325e9b76",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/src/content/docs/start-here/safety-boundaries.md",
+        "sha256": "93538dae18b4912c7c0b7356b45ea41a035fa363f0837fb2a2c95179decad7b5",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/start-here/install.md",
+        "sha256": "973090cd27a32347b36e7dbaf17261db5d236cae6f3d560d7b11460371043a1c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "docs/start-here/safety-boundaries.md",
+        "sha256": "86dd737965cc2b41f59ab1d2536277ed7c290faa4facb94d2a702468e4ced52e",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "mdkg-dev/src/pages/index.astro",
+        "sha256": "778565bf635fd4c858ba2b81cebc19605783efd173e5ebe2c19c710005350e1a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "mdkg-dev/src/pages/quickstart.astro",
+        "sha256": "c05e292980e6a1c6ca91f80044134afbad5676dc02d58f62517a6b219fe82340",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "mdkg-dev/src/pages/trust.astro",
+        "sha256": "6ce298a0983880989b765fa3f396284ecc2e5909f62dfdb35d85b9dc885a83d6",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "da6367ac0f9bc63d4471076a45dfa58492be76e468dc720b8eb8b560aaa5aca4",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "package.json",
+        "sha256": "3bde1e4761660a74bd50d7b467f5fae247964ad9811d421c2d05e91cd72d3672",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/assert-publish-ready.js",
+        "sha256": "011defbd91ef236e531830e9c0b952068fa960aa1460734a6c7af9493f716e94",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/check-doc-command-examples.js",
+        "sha256": "a6132e97efb2f99628fa1a6100c7cfbda131e1ac6513c700583ed99963650c06",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/dependency-boundary.js",
+        "sha256": "ec727013983d6972da3f5de60666a89717e475d3c242eb5fa045970072fdda7f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/generate-ci-workflow.js",
+        "sha256": "4fab4e318cd52de8a36345185dffa685dde5e42e3249ca06b7416630bba1544e",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/generate-command-contract.js",
+        "sha256": "99f20b6dfc4e944085f9a3bc46b5693345b69a942d7c736d6674fb41323aa2ea",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/installed-graph-recovery.js",
+        "sha256": "a45b9a147b73f959a75bff86e2b453c9e65fea7d48e42fbc9b5ef284d4458b2c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/mdkg-dev-smoke-utils.js",
+        "sha256": "b650fccc815df480ad9bd612679d8d20338fdfcc016693c803057d843fd2dde1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/qualification-git.js",
+        "sha256": "068a5de8d69d578424777f13f74e4ee47b10c1833f30e49dbf3fd0b9cc75920e",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/qualification-smoke.js",
+        "sha256": "95264669589387e90c12aae8c021e49755135ee6c097a7bf29c5a7a691c76a75",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/release-ladder.js",
+        "sha256": "60d446a6a966b1bd1850eca54d60479e31c378b3533ec1c9876aeb4b5eaa892c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/release-scope.js",
+        "sha256": "fa941b37be5465e7ab596c5d1ec46f01c4cfc0e7d8abc93bcea168f937be891c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/retained-release-candidate.js",
+        "sha256": "c198ddc7dfb98247de610b6d03fc65fae115417d1956af03901b5b4946be9a77",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/smoke-command-matrix.js",
+        "sha256": "320b6849bb6992fff5ba2190c845bacc97b9388a1c7ae25125a6e916e73ae6d7",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/smoke-manifest.json",
+        "sha256": "ef748ecd1185bb46c3d57717dcd3c6bfafc363abce48351809f8dabe4ee255e2",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "scripts/smoke-mdkg-dev.js",
+        "sha256": "dfeefa4d6f2511f67b7b137a404b158e4a356dee461f1d810b74eabb82d36e2f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/cli.ts",
+        "sha256": "542924f0b193db6496d3a58912e5c4eb41b7cacd2de864f311c1c897184e09b8",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/commands/doctor.ts",
+        "sha256": "fd9c8c77e50082700aca2090c16a71c61b4266cb8c4ab8f2bc753ac8b0c0ab46",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/commands/graph_identity.ts",
+        "sha256": "2ba6fdf164fb442153af0af1884110a7ad1b3eca8ffa21c54392eb6abe20f77a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/commands/option_contract.ts",
+        "sha256": "ee891fb4a1f611ff86377822f21e2ba0c5314f68749d80a058beea4d49120e41",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/core/node_runtime.ts",
+        "sha256": "2b3c81bac7443a8629d6f06de95c7e6ce0e5c4588f595bf62763c4f3dd3fafee",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/core/project_db_events.ts",
+        "sha256": "f513efea1ba226191bbbc758d9d0132fcb35ca5d71326f84c00c9dce364c6d57",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/core/project_db_migrations.ts",
+        "sha256": "f708327a012e4a3c30c238b4a1eebe1e2b0959bbd18a5b504a388b456518e165",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/core/project_db_queue.ts",
+        "sha256": "60908d81cda539729d1e4eb8f8825a7c97d5a0047ddc7628d4369c7c915ea2e1",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/core/project_db_snapshot.ts",
+        "sha256": "40086394f2b87dd16f0ba3f7c04bb9d2ba68b98eb5222c331c9fc0faa3ced24d",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/core/sqlite_observation.ts",
+        "sha256": "78c8705ee0865b31382c45c60ff6426dc563d7417635caf0c18943c657409754",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/graph/identity_transaction.ts",
+        "sha256": "b2fe38b9a3da3e1a7e503168c5900aa8b21fcb0b18a2f6e6b6e35ac74e3994de",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/graph/sqlite_index.ts",
+        "sha256": "870dd974d92a4dfd98d042df2aa903974541e96b8756a2565a495818415517df",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/util/argparse.ts",
+        "sha256": "369edeac1eaabdf56b424e4ba290defa3dc345a9316ff22707550b6099ef8a6a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/util/lock.ts",
+        "sha256": "dda74f39604276d422fc3ce6dfb5d46b2138cb53c069b08d8a5aac2c1c31015f",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "src/util/lock_evidence.ts",
+        "sha256": "f147ca96b09396cc2b4ca7ef166ead2b693062d59a2cbe63ef122e5de60c938b",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/ci-topology.test.ts",
+        "sha256": "7318ad1b6d75ba5a5837e2d90b265afdc354f14ec0b0239809e01082fc99b954",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/commands/cli_option_admission.test.ts",
+        "sha256": "50edb71d3cb184fd45d0ae9fa02a68d660144f1c75aeda3f8741ac419f69afbf",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/commands/node_runtime_admission.test.ts",
+        "sha256": "76705409aa84ae92ca7203f077b702d98eca62e2bb86f3442e8c9c231b930185",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/core/snapshot_containment.test.ts",
+        "sha256": "f402655d8e68652ad99fad73bb1de13f766b7af0f8cc88cddefa221c4e814ef0",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/core/sqlite_memory_observation.test.ts",
+        "sha256": "02bfc91735fef6bddfcc4e3d2d90a8b3495a14b5534420c92201d82e2b7e9112",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/core/sqlite_observation.test.ts",
+        "sha256": "d6b2e7dd9c21966e36defa021c0bae14aa263cd9ee5b4f19754afe0bcb67223a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/dependency-boundary.test.ts",
+        "sha256": "7322c7d4c2990e4b82b7a5fb5558a8b09a4dfb40b2406690951378af350c352a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/fixtures/cli-options.cjs",
+        "sha256": "9648a355d5d688d80b690fff18bcfcb3152b2522b351448cba0fd3ebef800206",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/fixtures/interrupted-writer.cjs",
+        "sha256": "24631ec727644511207b403d6bd698d667a018e2967c43fcace7a65acaa1edf0",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/graph/identity_interrupted_writer.test.ts",
+        "sha256": "1f6f3f13e9d445ac7b88c04856437ebccc12e1b98f2f4c52166f3804a2b66551",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/graph/identity_migration.test.ts",
+        "sha256": "fd5f866ccffc59c1ab81991b48f7f3776ed10dbf9fa41b84bec53298e2e3a4d0",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/graph/identity_migration_lineage.test.ts",
+        "sha256": "d98d7d0b5580d657e58eb7adcdd820f6c8e13543c36b150075cde478dbbb96db",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/graph/identity_migration_validation.test.ts",
+        "sha256": "b27c24d271df6c493e32f8b876eef76ae0e9f0aac2fd7b86762efcad15bbbd66",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/graph/identity_portable_recovery.test.ts",
+        "sha256": "2138a09674dd9bf27072b3fa807999ebd61cc7ab527f15006ba7f272ed6ee935",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/graph/identity_reconciliation_plan.test.ts",
+        "sha256": "1165bafa18fe2ee9ae375caa0cfb0b1befd9ba48ea4835205721d1d8ec23c7de",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/graph/identity_writer_fence.test.ts",
+        "sha256": "0538b32f4c1b90c09c9f187c711f3167e7a3d9f399b8bc7de1f9a036a0780978",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/helpers/identity_recovery.ts",
+        "sha256": "fe16bc9b79f74dc2f3c0b33a152c28f4baed0ae207df66c9abbb9660de83cb91",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/installed-cli-options.test.mjs",
+        "sha256": "521a41daaa5eb13fc7ee57a6eaf12b2d282a5fbe623f14cbd1b38825783f240a",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/package-release-profile.test.mjs",
+        "sha256": "f13fd3125488cd709127f092d4cdf0552786ef0634859661eb3021d1f651ac5c",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/qualification-git.test.mjs",
+        "sha256": "3fda554cd23ccc3847cc43b70970de025c3ec9113fbae2e715910a486f7a5804",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/release-guidance.test.mjs",
+        "sha256": "68127ab370e37907da3b08a46e1c2da1b20b3fad04c4cf93881dd9f11ca42cd3",
+        "custody": "preserved-existing-goal86"
+      },
+      {
+        "path": "tests/release-ladder.test.ts",
+        "sha256": "ece57a4f454d51b185102fd852922db1b5200e39437f1a9ac69e88ad29964df5",
+        "custody": "preserved-existing-goal86"
+      }
+    ]
+  }
+}

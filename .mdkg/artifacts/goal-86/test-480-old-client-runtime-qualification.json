@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "kind": "test480-current-old-client-runtime-boundary",
+  "owner": "root:test-480",
+  "consumer": "root:test-482",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "driver_sha256": "b654a3822c205f695a966c74af66d1b844b79373c2e481a44bfbe4483ded95ac",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 42607,
+  "rows": [
+    {
+      "case": "published0.5.2 legacy writer positive",
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 warm fenced writer refusal",
+      "command": [
+        "new",
+        "task",
+        "Must refuse",
+        "--json"
+      ],
+      "exit_code": 4,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 warm fenced writer refusal",
+      "command": [
+        "task",
+        "start",
+        "task-1",
+        "--json"
+      ],
+      "exit_code": 4,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "current warm v2 compatible writer positive",
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 cold fenced writer refusal",
+      "command": [
+        "new",
+        "task",
+        "Must refuse",
+        "--json"
+      ],
+      "exit_code": 4,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 cold fenced writer refusal",
+      "command": [
+        "task",
+        "start",
+        "task-1",
+        "--json"
+      ],
+      "exit_code": 4,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "current cold v2 compatible writer positive",
+      "pass": true
+    },
+    {
+      "case": "published0.5.2 init bypass",
+      "exit_code": 0,
+      "disposition": "UNSUPPORTED OLD EXECUTABLE: manifest writes ignore schema2 admission; not a no-effect safety pass",
+      "schema_after": 2,
+      "inventory_changed": true,
+      "changed_paths": [
+        ".mdkg/init-manifest.json"
+      ]
+    },
+    {
+      "case": "published0.5.2 force-init bypass",
+      "exit_code": 0,
+      "disposition": "UNSUPPORTED OLD EXECUTABLE: schema2 fence removed; not a safety pass",
+      "schema_after": 1,
+      "inventory_changed": true,
+      "changed_paths": [
+        ".mdkg/README.md",
+        ".mdkg/config.json",
+        ".mdkg/core/COLLABORATION.md",
+        ".mdkg/core/HUMAN.md",
+        ".mdkg/core/SOUL.md",
+        ".mdkg/core/core.md",
+        ".mdkg/core/guide.md",
+        ".mdkg/core/rule-1-mdkg-conventions.md",
+        ".mdkg/core/rule-2-context-pack-rules.md",
+        ".mdkg/core/rule-3-cli-contract.md",
+        ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+        ".mdkg/core/rule-5-release-and-versioning.md",
+        ".mdkg/core/rule-6-templates-and-schemas.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/templates/default/work.md",
+        ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md"
+      ]
+    },
+    {
+      "case": "actual unsupported runtime refuses",
+      "runtime": "v24.15.0",
+      "binary_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "command": [
+        "init",
+        "--graph-only"
+      ],
+      "exit_code": 2,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "actual unsupported runtime refuses",
+      "runtime": "v24.15.0",
+      "binary_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "command": [
+        "index"
+      ],
+      "exit_code": 2,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "actual unsupported runtime refuses",
+      "runtime": "v24.15.0",
+      "binary_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "command": [
+        "db",
+        "verify",
+        "--json"
+      ],
+      "exit_code": 2,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "actual unsupported runtime refuses",
+      "runtime": "v24.15.0",
+      "binary_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "command": [
+        "mcp",
+        "serve",
+        "--stdio"
+      ],
+      "exit_code": 2,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "unsupported runtime discovery positive",
+      "runtime": "v24.15.0",
+      "command": [
+        "--help"
+      ],
+      "pass": true
+    },
+    {
+      "case": "unsupported runtime discovery positive",
+      "runtime": "v24.15.0",
+      "command": [
+        "--version"
+      ],
+      "pass": true
+    },
+    {
+      "case": "actual unsupported runtime refuses",
+      "runtime": "v26.0.0",
+      "binary_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "command": [
+        "init",
+        "--graph-only"
+      ],
+      "exit_code": 2,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "actual unsupported runtime refuses",
+      "runtime": "v26.0.0",
+      "binary_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "command": [
+        "index"
+      ],
+      "exit_code": 2,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "actual unsupported runtime refuses",
+      "runtime": "v26.0.0",
+      "binary_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "command": [
+        "db",
+        "verify",
+        "--json"
+      ],
+      "exit_code": 2,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "actual unsupported runtime refuses",
+      "runtime": "v26.0.0",
+      "binary_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "command": [
+        "mcp",
+        "serve",
+        "--stdio"
+      ],
+      "exit_code": 2,
+      "inventory_unchanged": true,
+      "pass": true
+    },
+    {
+      "case": "unsupported runtime discovery positive",
+      "runtime": "v26.0.0",
+      "command": [
+        "--help"
+      ],
+      "pass": true
+    },
+    {
+      "case": "unsupported runtime discovery positive",
+      "runtime": "v26.0.0",
+      "command": [
+        "--version"
+      ],
+      "pass": true
+    }
+  ],
+  "downloads": [
+    {
+      "kind": "published-package",
+      "url": "https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz",
+      "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+      "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+      "bytes": 425431
+    },
+    {
+      "kind": "official-node-runtime",
+      "url": "https://nodejs.org/download/release/v24.15.0/node-v24.15.0-darwin-arm64.tar.gz",
+      "sha256": "372331b969779ab5d15b949884fc6eaf88d5afe87bde8ba881d6400b9100ffc4",
+      "bytes": 51450940,
+      "checksum_manifest_sha256": "1e812945dee26c3e4ca41a8c0b582668ff2401ba0ae727a122300c0e8514edb0"
+    }
+  ],
+  "limits": [
+    "Native macOS only; Linux rows remain open.",
+    "Old init bypass is an observed unsupported behavior, not accepted secure authoring.",
+    "No canonical migration, package changes or global runtime installation."
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  },
+  "pass": true
+}

@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-current-audit-bounded-remediation-progress",
+  "recorded_at": "2026-09-29T18:54:09.845Z",
+  "goal": "root:goal-86",
+  "source_head": "72a3c8780af7d4c2888590b02158ddc60476facc",
+  "status": "SOURCE_REMEDIATION_NOT_RELEASE_ACCEPTANCE",
+  "source_snapshot_scan": "78faed0e-5058-4db4-969a-62ccb02d6910",
+  "baseline_candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "baseline_candidate_treatment": "preserved unchanged; superseded for final qualification by changed package inputs",
+  "fixes": [
+    {
+      "qid": "root:bug-62",
+      "scope": "exact payload visibility and archive aliases",
+      "tests": {
+        "chunk_id": "d5bcd6",
+        "wall_time_seconds": 0.000004667,
+        "exit_code": 0,
+        "original_token_count": 1669
+      },
+      "review": "one reused-worker post-patch cycle; confirmed case-alias omission fixed; 13 archive/bundle supplement cases pass"
+    },
+    {
+      "qid": "root:bug-63",
+      "scope": "native Git metadata destinations and aggregate generated output preflight",
+      "tests": {
+        "chunk_id": "b0e9e7",
+        "wall_time_seconds": 0.000004292,
+        "exit_code": 0,
+        "original_token_count": 3379
+      },
+      "review": "one reused-worker cycle; nested Git destination and legitimate target-root materialization corrections verified with 17 cache and 2 subgraph controls"
+    },
+    {
+      "qid": "root:bug-64",
+      "scope": "multiply-linked event append target refusal",
+      "tests": {
+        "chunk_id": "fb5d0b",
+        "wall_time_seconds": 0.000013833,
+        "exit_code": 0,
+        "original_token_count": 1689
+      },
+      "review": "one reused-worker source readback; no surviving issue reported"
+    },
+    {
+      "qid": "root:bug-65",
+      "scope": "shared exact frontmatter framing",
+      "tests": {
+        "chunk_id": "ba18c1",
+        "wall_time_seconds": 0.000004667,
+        "exit_code": 0,
+        "original_token_count": 1531
+      },
+      "review": "one reused-worker source readback; no surviving issue reported"
+    },
+    {
+      "qid": "root:bug-66",
+      "scope": "bounded contained diagnostic cache, state, changelog and directory/skill reads",
+      "tests": {
+        "chunk_id": "f5f2ee",
+        "wall_time_seconds": 0.938622625,
+        "exit_code": 0,
+        "original_token_count": 318
+      },
+      "review": "one reused-worker cycle; skill freshness traversal and fingerprint read bounds corrected; 36 focused diagnostic/skill/capability cases passed after supplements"
+    },
+    {
+      "qid": "root:bug-67",
+      "scope": "whole aliases, foreign/opaque refs and post-base canonical preservation",
+      "tests": {
+        "tests": 31,
+        "pass": 31,
+        "fail": 0,
+        "duration_ms": 14768.89375,
+        "command": "node --test dist/tests/util/legacy_id_rewrite.test.js dist/tests/commands/fix.test.js"
+      },
+      "failing_before": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3,
+        "duration_ms": 1376.649458,
+        "candidate": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "cases": [
+          "long aliases and foreign evidence",
+          "two duplicates all postdate base",
+          "three duplicates all postdate base"
+        ]
+      },
+      "review": "one reused-worker cycle; concrete URI, compact frontmatter and canonical rewrite defects corrected; parent final regression verified"
+    },
+    {
+      "qid": "root:bug-68",
+      "scope": "workspace-owned workflow evidence in authored, cached, imported and v2 representations",
+      "tests": {
+        "pass": 48,
+        "fail": 0,
+        "totalRun": {
+          "tests": 57,
+          "pass": 56,
+          "fail": 1,
+          "classification": "command-contract new harness expected exit1 instead of actual validation exit2; not Bug68 failure"
+        },
+        "duration_ms": 80740.955166,
+        "families": [
+          "archive_work",
+          "capability",
+          "subgraph",
+          "capabilities_indexer"
+        ],
+        "note": "Independent readback followups fixed and all included workflow assertions passed. Separate final installed acceptance pending."
+      },
+      "failing_before": {
+        "candidate": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+        "pass": 0,
+        "fail": 4,
+        "duration_ms": 188.153167,
+        "cases": [
+          "json projection contamination",
+          "sqlite projection contamination",
+          "warm and stale cache contamination",
+          "qualified reference cross-association"
+        ]
+      },
+      "review": "one reused-worker cycle; host-root linkage, cached attribute authority and explicit stale-discovery regression corrected; current 10 capability and 2 imported controls pass; 26 prior v2/capability controls passed"
+    },
+    {
+      "qid": "root:bug-69",
+      "scope": "truthful generated command safety metadata and explicit classification completeness",
+      "tests": {
+        "pass": 9,
+        "fail": 0,
+        "duration_ms": 26601.913042,
+        "command": "node --test dist/tests/commands/command_contract.test.js",
+        "harnessCorrection": "Doctor ValidationError exits2, not1; strict cold cache case explicitly expects2"
+      },
+      "review": "independent source inventory reconciled; metadata-only changes, no new CLI behavior"
+    }
+  ],
+  "path_hashes": [
+    {
+      "path": ".mdkg/artifacts/goal-86/current-security-audit-20260929.json",
+      "sha256": "378bc1bbc1a39e24af47c234abed8960252987772a309c01ff221cb30dce396e"
+    },
+    {
+      "path": ".mdkg/work/bug-62-bind-public-archive-exports-to-exact-owned-payload-visibility.md",
+      "sha256": "60706dc1f29918a82efbe3a881dadfe1b06674f719f62d936e37e62201f8cf0a"
+    },
+    {
+      "path": ".mdkg/work/bug-63-protect-native-git-administration-from-generated-graph-outputs.md",
+      "sha256": "52103c9752b10c35035f78fdd506e792865e1beaffe62598fa3075a9457a8de4"
+    },
+    {
+      "path": ".mdkg/work/bug-64-reject-multiply-linked-event-append-targets.md",
+      "sha256": "33bb15e0a527a20b3616d50733dbe8bebb387ec55cf590b521e1c94632fab668"
+    },
+    {
+      "path": ".mdkg/work/bug-65-share-exact-frontmatter-boundaries-across-graph-rewriters.md",
+      "sha256": "d95028c7fdb041a9152b3d5ef3ee29fc5e67f93e6afc96cd367cc210ff3402b0"
+    },
+    {
+      "path": ".mdkg/work/bug-66-bound-and-contain-diagnostic-file-reads-and-storage-walks.md",
+      "sha256": "21312951d2390e06d8d79cef7d79557db2fab1964930c138a316e163cbd03426"
+    },
+    {
+      "path": ".mdkg/work/bug-67-preserve-whole-identifiers-during-legacy-duplicate-id-repair.md",
+      "sha256": "05c0312d7e2f05903c4f2771645fac346b6818853edb90846b1e2e50b57050b9"
+    },
+    {
+      "path": ".mdkg/work/bug-68-resolve-workflow-evidence-using-its-owning-workspace.md",
+      "sha256": "06819a39cb2565b574da50c1b75115e7268d73693ecb57848b49393c210180cb"
+    },
+    {
+      "path": ".mdkg/work/bug-69-correct-generated-command-mutation-and-write-path-contracts.md",
+      "sha256": "2eec937575bb6060933425ce88bb13e1d978750c7072b8faa21c8500dd5e5116"
+    },
+    {
+      "path": ".mdkg/work/chk-667-capture-current-source-security-audit-and-qualified-blocker-intake.md",
+      "sha256": "8db79b8f8e02659e1b05e7aad7ad31b9667b0ca2e47ed3a2c5efcca4a7952d2b"
+    },
+    {
+      "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+      "sha256": "df2c80c836a0af1f189eed880140881b079d6caba21fa43c12a7f877a0b3cc60"
+    },
+    {
+      "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      "sha256": "1dc45a4caaf5bae4d612fc965ed3c84246c0e2e45b8150baedf0f4195e9a1132"
+    },
+    {
+      "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      "sha256": "88b5e628758c60cde5298c692e9a7faa3da334a6b6373750aea44e2ec277406b"
+    },
+    {
+      "path": ".mdkg/work/test-491-verify-current-audit-remedies-and-installed-boundary-controls.md",
+      "sha256": "3f193a84ca6a3a3c33b879f8900ce1425eb88c66dad47b946b0ce4d08094e1a8"
+    },
+    {
+      "path": ".mdkg/work/test-492-verify-generated-command-safety-contracts-against-real-effects.md",
+      "sha256": "ed604d7c4a358f87c66e4dd97ec3da1b5191e2e11a1af97ffba4d8986dfb9584"
+    },
+    {
+      "path": "docs/_generated/cli-reference.md",
+      "sha256": "532b5b06d57cef38eb79f16c1239ff510f43e7cd8e7f4fea76e7baa093411129"
+    },
+    {
+      "path": "docs/_generated/command-contract-summary.json",
+      "sha256": "87b5497a0dff2800dfd2c0761dc3e94420913ac74081b517fb0382957b9df84f"
+    },
+    {
+      "path": "scripts/generate-command-contract.js",
+      "sha256": "b0679253ccb2eebafd2960b2bee7ae16a1d1560015420c139f15aa3ca89117ea"
+    },
+    {
+      "path": "src/commands/bundle.ts",
+      "sha256": "796694bd7b21b74f6553fe9973fcbd32e9a6f5be0708c77f69acd81c36ee56af"
+    },
+    {
+      "path": "src/commands/db.ts",
+      "sha256": "36c68aaccd278d48f29fd0d065145602553aa8fb751c588014969f1fcbdb6df2"
+    },
+    {
+      "path": "src/commands/doctor.ts",
+      "sha256": "6fafbc7d68c90a938550dd3668ab353fa85ad21a79d163011bdc4e8f8de8932f"
+    },
+    {
+      "path": "src/commands/fix.ts",
+      "sha256": "ede4c22d4e139194d93ccee202270a6eda48c0fc3b7a990e821daa448e26150f"
+    },
+    {
+      "path": "src/commands/format.ts",
+      "sha256": "f4bf4525f720bf3e76bcd8f03cbb41f67685a9413fe72c8e8d6654315cea242d"
+    },
+    {
+      "path": "src/commands/loop_descriptors.ts",
+      "sha256": "b71c349113981c11e32ba55b6882e1eeff8d31fb39af8c42dd3b4c2f9c9216a8"
+    },
+    {
+      "path": "src/commands/status.ts",
+      "sha256": "7a30aa79550ed262977081bf6861ba42fdbf89ad00a4ac97d7136abf6b4d163f"
+    },
+    {
+      "path": "src/commands/subgraph.ts",
+      "sha256": "dd40a4774636916c21b649106911d12ca4059401c7e1f338b51f0ed954aeb666"
+    },
+    {
+      "path": "src/commands/work.ts",
+      "sha256": "372b253e96357c72a6dcaef8cd84e503d40249dad4aa61d06a9161acaea45e08"
+    },
+    {
+      "path": "src/core/filesystem_authority.ts",
+      "sha256": "7b7a28dcee3545808349c5b6f584c075017f7d3a1cbd4de83407b8a3461d95eb"
+    },
+    {
+      "path": "src/graph/cache_output.ts",
+      "sha256": "6465c07d8b5d3a94e1bf167cba184ee0c37932d34487238e9c2e3c42b6cffdd4"
+    },
+    {
+      "path": "src/graph/cache_sources.ts",
+      "sha256": "af39021c7fccf59fe1f96b5a89ab196e63b9fe48f80f530d82bc41b36c6d53f1"
+    },
+    {
+      "path": "src/graph/capabilities_index_cache.ts",
+      "sha256": "7ec8f110a3ac2a1877dfc2a4af7cc5e106d44181d018ef5a3ae1d29cb2ad8649"
+    },
+    {
+      "path": "src/graph/capabilities_indexer.ts",
+      "sha256": "487fd83a037097149d634e45f176bd7fc2176f45d76380c16bc216faf4215767"
+    },
+    {
+      "path": "src/graph/frontmatter.ts",
+      "sha256": "a2048814cfbd8e94a10fe89d07296afa963aa3aed5c40b7fd5e23921b861335b"
+    },
+    {
+      "path": "src/graph/identity_migration.ts",
+      "sha256": "a483104146c7ebeb5df56846f000465f8254df2874a407429057a1ee3a21d367"
+    },
+    {
+      "path": "src/graph/identity_reconcile.ts",
+      "sha256": "b8b8173b84c12d425415bcf1d215c22a4d0b1016bafa7503a91b2d0e6c93db07"
+    },
+    {
+      "path": "src/graph/identity_validation.ts",
+      "sha256": "71ee912d43d97daf08d6c99086025b034b63c2cf6c48269a287b1fe90f35d475"
+    },
+    {
+      "path": "src/graph/index_cache.ts",
+      "sha256": "8099f18ac9ccb19136278738af13c3e3d81b223b10a3aabcf9be871e9700c83c"
+    },
+    {
+      "path": "src/graph/json_cache_fingerprint.ts",
+      "sha256": "f61d57324155d8f5cafbbca8e4314019be7145eec996cfc5b69d4869f3dac8c9"
+    },
+    {
+      "path": "src/graph/reindex.ts",
+      "sha256": "cb2fbd4bb2746f8ea04713c76a2f248b208fe13d5853a950077f3551809a9a42"
+    },
+    {
+      "path": "src/graph/selected_goal.ts",
+      "sha256": "feeb448f2f31912eb5ac67e486dabd57645bd10f929fb2b037b440f830a4b00f"
+    },
+    {
+      "path": "src/graph/skills_index_cache.ts",
+      "sha256": "d89473a45a580a493f38133ab9087e422661baeddca589d8d8a27816dec7debb"
+    },
+    {
+      "path": "src/graph/skills_indexer.ts",
+      "sha256": "13453c8238376c44c531e00b6248e27dbf45bb57734471efddd4c18a16f010cc"
+    },
+    {
+      "path": "src/graph/sqlite_index.ts",
+      "sha256": "f903fcdba19b0c552f0f54163608a437f0d1562faa6a432ff252a919de84a000"
+    },
+    {
+      "path": "src/graph/subgraphs.ts",
+      "sha256": "cf8d77ecfa9cb178a4d51078c29314f814ef1d6e6768fe7ab6115e67dd74e1d2"
+    },
+    {
+      "path": "src/graph/workflow_refs.ts",
+      "sha256": "5afb6b071e9e9b09811122076a58826f62aaae948fbbd9d00ef6a5e7fe50a8c8"
+    },
+    {
+      "path": "src/util/git_metadata.ts",
+      "sha256": "d02b6ef34727b28b5106e7356423945599b13171caf9602c68af1dd1b5ec47b9"
+    },
+    {
+      "path": "src/util/legacy_id_rewrite.ts",
+      "sha256": "df909ce20c2b866c39cfa9f1626155ecc00a80923be6c9b44486e43de6e7cfd0"
+    },
+    {
+      "path": "tests/commands/bundle_archive_visibility.test.ts",
+      "sha256": "3d9f534d8f456df5836151abb07ec747f286503fb3394af4804be3e8eb0b4a68"
+    },
+    {
+      "path": "tests/commands/command_contract.test.ts",
+      "sha256": "22fb4ec0657b246f41e5dd6dd64795745c4d4916671798a8ecbcb482fba0aa77"
+    },
+    {
+      "path": "tests/commands/diagnostic_containment.test.ts",
+      "sha256": "c2d0e7ade4f99a472e76a5162535e48c921eefe8ca8eed39fe3fd6100548b6fb"
+    },
+    {
+      "path": "tests/commands/fix.test.ts",
+      "sha256": "0d95afa3a92bd44ebc5f8558cdc6ea6802d35dd7e71f36e286271f02cfde0b59"
+    },
+    {
+      "path": "tests/commands/format_identity.test.ts",
+      "sha256": "1718e990d0987947a8d5ed1b07b8dcee28f6cc56b419ee9e137da716306d6b37"
+    },
+    {
+      "path": "tests/commands/subgraph.test.ts",
+      "sha256": "bee63c0173a2c387ddef81baa4cad3055fb0f3d94da2342213b1b0607867d23d"
+    },
+    {
+      "path": "tests/commands/task_event.test.ts",
+      "sha256": "3e03e66d78150038ee87eade6d61a7b19371b1390630b8b865232f9310297f80"
+    },
+    {
+      "path": "tests/core/filesystem_authority.test.ts",
+      "sha256": "49a1f5f6d3b2930bd0dbf44fbe73fddc5ba99f1f981ee1d053175fee7cbfb4ad"
+    },
+    {
+      "path": "tests/graph/cache_git_metadata.test.ts",
+      "sha256": "1de84aeb34645a811bbcb6da8676b4bba2a73ad10e616671a544f4a5af431866"
+    },
+    {
+      "path": "tests/graph/capabilities_indexer.test.ts",
+      "sha256": "238f8bcf8450093ad54cd1a5f7ece558cae39171efd5bc876bb91def1eadb822"
+    },
+    {
+      "path": "tests/graph/frontmatter.test.ts",
+      "sha256": "1d27e55e59eceb87e28a79250343623a1f1977271870cdadca0d30ca3681c8c9"
+    },
+    {
+      "path": "tests/graph/identity_migration.test.ts",
+      "sha256": "b4914f863a2b54148951ae44e0e8b32a46d5af3eadc5245a0c25abaadcdc9bbe"
+    },
+    {
+      "path": "tests/graph/identity_reconcile.test.ts",
+      "sha256": "bb287c819cd0fc025ec7d0c0a22f2cb35c569fa2b4d2cb5fb6bc46912b964852"
+    },
+    {
+      "path": "tests/util/legacy_id_rewrite.test.ts",
+      "sha256": "5fbd26a9ebb705417b4c6c13f0c6cab7fefb9727df124bcce075f0eea48e4373"
+    }
+  ],
+  "protected": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "release/public-release.json": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+  },
+  "staged_paths": [],
+  "locks": [],
+  "remaining": [
+    "Fresh independent complete remediation-diff acceptance",
+    "Exact successor installed package and affected macOS/Linux qualification",
+    "Full test/coverage and 37-package-smoke ladder",
+    "Artifact seal and scoped local commits",
+    "Goal83/84/86 acceptance and Goal85 paused recheck"
+  ],
+  "limitations": [
+    "Tests are focused/source-subsystem evidence, not final package or release acceptance",
+    "Some review candidates changed during one bounded cycle; final independent frozen diff review remains required",
+    "No blocked historical security context accessed or recovered",
+    "Bugs46/47 remain deferred and unresolved under Goal87",
+    "Historical security matrix is not current clearance"
+  ],
+  "authority": {
+    "local_goal_run": true,
+    "publication": false,
+    "remote_git": false,
+    "provider": false,
+    "canonical_bundle_refresh": false
+  },
+  "skills": {
+    "coverage": [
+      "pursue-mdkg-goal",
+      "verify-close-and-checkpoint",
+      "codex-security:fix-finding"
+    ],
+    "candidates": []
+  }
+}

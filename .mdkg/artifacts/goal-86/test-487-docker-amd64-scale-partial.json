@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "kind": "current-failed-run-completed-scale-rows",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "platform": "linux-x64",
+  "source_stream_sha256": "5a488adc429fa4a3ef74afdfd30f0faa49b5126d72e052e0acd5deaebeb29ec9",
+  "literal_sha256": "8ad7571f4d6d1882723a10a02bc8101d2e3139468f3c8eaaab92341db02a9d91",
+  "extraction": "Parse only the completed_cases literal from the current synthetic error JSON; restricted quoted-string/key normalization followed by JSON.parse, never evaluation",
+  "cases": [
+    {
+      "family": "scale",
+      "backend": "json",
+      "version": "legacy",
+      "state": "warm",
+      "node_count": 2000,
+      "legacy_authored_bytes": 803563,
+      "event_records": 20000,
+      "event_bytes": 3660000,
+      "command_ms": [
+        794,
+        765,
+        774,
+        793,
+        811
+      ],
+      "observational": true
+    },
+    {
+      "family": "scale",
+      "backend": "json",
+      "version": "legacy",
+      "state": "cold",
+      "node_count": 2000,
+      "legacy_authored_bytes": 803563,
+      "event_records": 20000,
+      "event_bytes": 3660000,
+      "command_ms": [
+        786,
+        760,
+        787,
+        792,
+        818
+      ],
+      "observational": true
+    },
+    {
+      "family": "scale",
+      "backend": "json",
+      "version": "v2",
+      "state": "warm",
+      "node_count": 2000,
+      "legacy_authored_bytes": 803563,
+      "event_records": 20000,
+      "event_bytes": 3660000,
+      "command_ms": [
+        869,
+        811,
+        860,
+        862,
+        906
+      ],
+      "observational": true,
+      "migration": {
+        "graph_format": 2,
+        "persisted_identity_count": 2010,
+        "persisted_task_identity_count": 2000,
+        "exact_plan_writes": 2013,
+        "event_history_preserved": true,
+        "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+      }
+    },
+    {
+      "family": "scale",
+      "backend": "json",
+      "version": "v2",
+      "state": "cold",
+      "node_count": 2000,
+      "legacy_authored_bytes": 803563,
+      "event_records": 20000,
+      "event_bytes": 3660000,
+      "command_ms": [
+        865,
+        850,
+        841,
+        865,
+        876
+      ],
+      "observational": true,
+      "migration": {
+        "graph_format": 2,
+        "persisted_identity_count": 2010,
+        "persisted_task_identity_count": 2000,
+        "exact_plan_writes": 2013,
+        "event_history_preserved": true,
+        "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+      }
+    },
+    {
+      "family": "scale",
+      "backend": "sqlite",
+      "version": "legacy",
+      "state": "warm",
+      "node_count": 2000,
+      "legacy_authored_bytes": 803563,
+      "event_records": 20000,
+      "event_bytes": 3660000,
+      "command_ms": [
+        882,
+        869,
+        950,
+        999,
+        1189
+      ],
+      "observational": true
+    },
+    {
+      "family": "scale",
+      "backend": "sqlite",
+      "version": "legacy",
+      "state": "cold",
+      "node_count": 2000,
+      "legacy_authored_bytes": 803563,
+      "event_records": 20000,
+      "event_bytes": 3660000,
+      "command_ms": [
+        882,
+        842,
+        802,
+        859,
+        870
+      ],
+      "observational": true
+    }
+  ],
+  "aggregate_pass": false,
+  "limitations": [
+    "These six rows completed before the SQLite migration timeout. They are not a successful whole-family run.",
+    "A later SQLite-only retry can reuse the four JSON rows but must not double-count the two SQLite legacy rows."
+  ]
+}

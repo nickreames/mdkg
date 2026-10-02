@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "test484-current-installed-generic-boundary",
+  "owner": "root:test-484",
+  "candidate_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+  "input_manifest_sha256": "bcc8b6e1ec5aac804e20ef2fe6676ecfdfa8ae367f69e35a884b5b5980c8fe90",
+  "package_inputs_sha256": "cd254a9dd04bcb2dc300f91bef68b900bb40716608d71c1049c8a35daaa9b832",
+  "harness_inputs_sha256": "106f6f40db10787f7e687caa77e37bcba7ea1a0f4899df7554cdece908527676",
+  "driver_sha256": "b4dc20d956b9965c17f9e2874c033e7ba641de43ce95fe1b5ae7359a366a2f2f",
+  "node": "v24.18.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "duration_ms": 4848,
+  "generic": {
+    "node": "v24.18.0",
+    "tarball_sha256": "6154e4ea920bfa09d57532171df808f3f406250b44b2b318f0bb48542f82cdca",
+    "rejected_invocations": 9,
+    "subprocesses_on_refusal": 0,
+    "generic_work": true,
+    "old_runtime_token_rejected": true,
+    "custom_fields_preserved": true,
+    "cached_projection_neutral": true,
+    "synthetic_import_projection_neutral": true,
+    "imported_bytes_preserved": true
+  },
+  "removed_git": [
+    {
+      "command": "git clone",
+      "pass": true,
+      "writes": false,
+      "subprocesses": false
+    },
+    {
+      "command": "git fetch",
+      "pass": true,
+      "writes": false,
+      "subprocesses": false
+    },
+    {
+      "command": "git push",
+      "pass": true,
+      "writes": false,
+      "subprocesses": false
+    },
+    {
+      "command": "git materialize",
+      "pass": true,
+      "writes": false,
+      "subprocesses": false
+    },
+    {
+      "command": "git closeout",
+      "pass": true,
+      "writes": false,
+      "subprocesses": false
+    },
+    {
+      "command": "git push-ready",
+      "pass": true,
+      "writes": false,
+      "subprocesses": false
+    }
+  ],
+  "observational_git_positive": true,
+  "installed_inventory_sha256": "5fd7777b0578f8c1e97d718f07a18839d099d7db5a41cd69bc259804e1a82ae0",
+  "limitations": [
+    "Native macOS only; remaining platform and full package-parity gates stay open",
+    "Synthetic historical-shaped imported bundle; not recovered public evidence",
+    "Structural local contracts do not prove consumer adoption or external execution",
+    "No blocked historical scan context, remote Git or publication"
+  ],
+  "cleanup": {
+    "removed": true,
+    "owned_fixture_only": true
+  },
+  "pass": true,
+  "consumer_extraction": {
+    "verified_files": 152,
+    "manifest_sha256": "7ad3dc58e759bd8891089ae532bba513170387a610dbbc77084917c11bc9068a",
+    "status": "LOCAL / UNDISPATCHED / CONSUMER ADOPTION UNVERIFIED",
+    "source_revision": "cd0eb6fcc3f5945cfa3c29fe0cb356d9805e518c",
+    "payloads_executed": false
+  }
+}

@@ -2,12 +2,12 @@
 id: test-484
 type: test
 title: Qualify native Git boundaries and generic-only mdkg 0.6.0 contracts
-status: backlog
+status: done
 priority: 1
 tags: []
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/test-484-local-generic-qualification.json, .mdkg/artifacts/goal-86/test-484-installed-generic.cjs, .mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/final-installed-platform-qualification-20260930.json, .mdkg/artifacts/goal-86/candidate-seal-20260930.json, .mdkg/artifacts/goal-86/successor-installed-case-acceptance-20260930.json, .mdkg/artifacts/goal-86/successor-installed-platform-qualification-20260930.json]
 relates: []
 blocked_by: [bug-36, bug-37, task-827, test-478, task-839, task-838]
 blocks: []
@@ -18,8 +18,66 @@ aliases: []
 skills: []
 cases: []
 created: 2026-09-11
-updated: 2026-09-17
+updated: 2026-09-30
 ---
+
+# Current sealed successor acceptance - 2026-09-30
+
+This record's final acceptance now consumes b5497c5f5e5f022e candidate bytes
+at source b10870355b264355af2be4fc53bb4640851f747b, not the earlier f7/6154
+candidate. The successor-installed-case-acceptance and successor-installed-platform-
+qualification receipts bind this QID's actual bounded cases, three exact platforms,
+source/package/harness hashes and limitations. The exact artifact is sealed in
+candidate-seal-20260930.json; Chk570 records complete local acceptance.
+
+All20 retained installed families are accounted on native macOS ARM64 and Ubuntu24
+ARM64-native/x86_64-emulated; minimum/supported Node24.18.0 operation is counted
+once, with actual24.15/26 early refusal/discovery controls. No Windows, native x64
+performance, hosted/website or consumer-adoption proof is claimed. Earlier failures
+and intermediate passes below remain historical and are not relabeled. Bugs46/47
+remain deferred/unresolved. Goal85 remains paused; no publication authority follows.
+
+# Historical family contracts and intermediate candidate evidence
+
+
+# Final installed family acceptance - 2026-09-30
+
+Removed Git commands/options refuse; generic/removed profile/token/namespace/work boundaries; strict refs/redaction/visibility/receipts; customization-preserving published0.5.2 upgrade; extraction hashes verified but undispatched/adoption unverified; native integration.
+
+The retained f7cbdc1d tarball passes all amended package cases on native macOS
+ARM64 and Ubuntu24 ARM64/native and x86_64/emulated. Exact SHA256/SHA512,
+package inputs, case ownership and platform/failed-run/supplement provenance are
+recorded in `.mdkg/artifacts/goal-86/final-installed-family-case-acceptance-20260930.json`
+and `final-installed-platform-qualification-20260930.json` in that directory.
+Earlier candidates remain historical. Bugs46/47 are deferred/unresolved, not
+fixed or accepted. Windows/hosted CI and native-x64 performance are unqualified.
+Family completion is not Task828 independent security acceptance, Task830 seal
+or publication authority. No package input or protected canonical state changed.
+
+# Current accepted package closeout contract - 2026-09-28 Dec100
+
+2026-09-28 current6154e4ea macOS proof: all six retired Git commands and nine
+consumer-specific invocations refuse with complete unchanged inventories and
+subprocess traps. Retained Git inspect succeeds observationally. Generic work,
+orchestrated runtime vocabulary, old-token refusal, custom-field preservation
+and neutral cached/imported capability projections pass. Imported bytes remain
+unchanged. Synthetic historical-shaped bundles are not recovered public evidence.
+All152 consumer-extraction files reverify under manifest7ad3dc58, remain excluded
+from the package allowlist, and stay local/undispatched/adoption-unverified.
+Exact input/artifact/installed bookends and owned cleanup pass. Remaining full
+package parity, family aggregation and Linux platform rows are still open.
+Evidence: `.mdkg/artifacts/goal-86/test-484-local-generic-qualification.json`.
+
+Verify current generic-only contracts, removed-command refusal, help/docs/MCP/seeds/package agreement and extraction hashes/completeness. Reuse Test477/478/486 controls. Consumer adoption and website/hosted proof are not package prerequisites.
+
+Dec100 requires37 package smokes plus local platform/security/guidance acceptance.
+All46 definitions remain; nine website smokes/nine site profiles defer to Epic258
+and hosted execution to Epic257. Same-input case evidence can be reused; missing
+seal does not erase passes. Node >=24.18.0 <25 replaces old runtime success gates.
+Bugs46/47 remain deferred/unresolved; no blocked scan context recovery. This
+amendment is not qualification proof or publication authority.
+
+# Historical contract and evidence retained below
 
 # Current Successor Contract - 2026-09-13
 

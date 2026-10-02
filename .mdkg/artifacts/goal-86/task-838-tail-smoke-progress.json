@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "task-progress",
+  "qid": "root:task-838",
+  "goal_qid": "root:goal-86",
+  "date": "2026-09-22",
+  "status": "LOCAL_FIXTURE_QUALIFIED_RELEASE_NOT_READY",
+  "owner": "mdkg-project-agent",
+  "scope": "Remaining release-manifest capability, visibility, and parallel smoke callers",
+  "baseline": {
+    "branch": "main",
+    "head": "c10113489381badf2845fc378c49b317376f953e",
+    "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "staged_paths": []
+  },
+  "candidate": {
+    "version": "0.6.0",
+    "classification": "UNSEALED_INTERMEDIATE_NOT_FINAL_RELEASE",
+    "sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+    "private_local_copy": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-intermediate-058e981a.tgz",
+    "private_copy_sha256_verified": true,
+    "private_copy_git_ignored": true,
+    "package_input_changes_this_unit": false,
+    "repacked": false,
+    "visibility_installed_same_bytes": true
+  },
+  "source_sha256": {
+    "scripts/smoke-capabilities.js": "815367f226d40497a2e5fef4f75e238d783ebc9ff70e72587d10c6de8c9e6565",
+    "scripts/smoke-parallel.js": "793fc3c3a9f9ec8e2aac1895024c58306fdffbd9431507d196362102beee40de",
+    "scripts/smoke-visibility.js": "91a105418c0e4f3917763211f7195e350b83a8db05b04b8577bf2e4aafbb2840",
+    "tests/qualification-smoke.test.mjs": "e56760eb5789e4aafd6419167ced5f3e8ba657744399b19230d826e66b570972"
+  },
+  "implementation": [
+    "Capabilities smoke retains root/child registry, cache, observational show, doctor, and validation scenarios under owned fixture and supervised Node execution.",
+    "Visibility smoke packs through private npm state, admits the candidate before installation, verifies exact bytes after exercise, and retains archive/pack/subgraph visibility refusal scenarios.",
+    "Parallel smoke retains 32 SQLite and 16 JSON concurrent creation, checkpoint, reference update, index, and validation scenarios inside one supervised worker; it now removes the owned root only after child closure.",
+    "The parallel internal worker refuses direct invocation and requires the supervised context plus an exact per-run owner token stored in a single-link regular file; focused controls verify refusal before graph writes.",
+    "All three command-line entrypoints emit machine-readable success and cleanup receipts while retaining their existing human-readable success text.",
+    "Release-manifest smoke entrypoint inventory no longer has raw spawnSync or mkdtempSync except the intentional hostile-Git shim text in smoke-git-boundary, already separately qualified."
+  ],
+  "review": {
+    "reviewer": "task838_tail_review",
+    "scope": "bounded read-only source review, not Task828 or Standard security acceptance",
+    "correction": "The directly runnable parallel internal worker accepted another temporary root; supervised-context and owner-token admission plus a pre-write refusal regression were added.",
+    "qualification_limit": "Visibility uses the immutable candidate only in the proxy-qualified release run. A standalone direct invocation without the proxy can execute package prepack against canonical source and is not covered by this no-repack claim."
+  },
+  "runs": [
+    {
+      "node": "24.15.0",
+      "platform": "darwin-arm64",
+      "smokes": ["capabilities", "visibility", "parallel"],
+      "affected_tests": 101,
+      "pass": 101,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "inner_and_outer_owned_roots_removed": true,
+      "receipt_sha256": "994b20cd7cddc733182ce2d70be4adcacc99604fced51a65358cd9c865bde286"
+    },
+    {
+      "node": "24.18.0",
+      "platform": "darwin-arm64",
+      "smokes": ["capabilities", "visibility", "parallel"],
+      "affected_tests": 101,
+      "pass": 101,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "inner_and_outer_owned_roots_removed": true,
+      "receipt_sha256": "a1ad7f28019d1260681cd73a8cef4468a2abf61df86e6741409bfab1b6ca0bf1"
+    },
+    {
+      "node": "26.0.0",
+      "platform": "darwin-arm64",
+      "smokes": ["capabilities", "visibility", "parallel"],
+      "affected_tests": 101,
+      "pass": 101,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "inner_and_outer_owned_roots_removed": true,
+      "receipt_sha256": "cdb1ae9b47a4486e64a051e957cfce3a7c9d8e3a4b3db520a2748327808ea059"
+    }
+  ],
+  "protected_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "remaining": [
+    "The ignored private local candidate copy is retained for custody only. It is not a final sealed or shared Git artifact. Final release-wide validation, security acceptance, exact 0.6.0 artifact seal and required platform evidence are separate gates.",
+    "Historical blocked raw security context remains inaccessible by current user direction; no recovery or rerun was attempted."
+  ],
+  "superseded_attempts": [
+    "First three-runtime passes had 100 affected checks before the independent reviewer identified direct internal-worker entry; the corrected 101-check reruns above supersede them."
+  ],
+  "authority": "local Goal86 execution only; no stage, commit, push, remote, tag, publication, provider, deployment, bundle refresh or sibling action",
+  "skill_candidates": []
+}

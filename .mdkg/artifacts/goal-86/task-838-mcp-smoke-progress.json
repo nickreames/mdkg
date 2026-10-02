@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "task-progress",
+  "qid": "root:task-838",
+  "goal_qid": "root:goal-86",
+  "date": "2026-09-22",
+  "status": "PARTIAL_NOT_READY",
+  "owner": "mdkg-project-agent",
+  "scope": "MCP installed smoke isolation, bounded asynchronous server shutdown, JSON/SQLite read parity, and failure diagnostics",
+  "baseline": {
+    "branch": "main",
+    "head": "c10113489381badf2845fc378c49b317376f953e",
+    "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "source_path": "scripts/smoke-mcp.js",
+    "regression_path": "tests/qualification-smoke.test.mjs",
+    "staged_paths": []
+  },
+  "candidate": {
+    "version": "0.6.0",
+    "classification": "UNSEALED_INTERMEDIATE_NOT_FINAL_RELEASE",
+    "sha256": "058e981a86fee0e3902ab262eeedc1ac6ac59f7593ffd1f3c5d7ed8b8fc4c951",
+    "package_input_changes_this_unit": false,
+    "repacked": false
+  },
+  "source_sha256": {
+    "scripts/smoke-mcp.js": "5b59bb796f883b574c4925385923e9848bc505824f3077b83adec657cd1b4b34",
+    "tests/qualification-smoke.test.mjs": "137e36accd76a31cfc4a7863c50a33ca096e9d53d3fe08c2020eea82a369d88d"
+  },
+  "implementation": [
+    "The installed candidate is admitted before offline installation. One supervised worker owns all asynchronous MCP conversations, fixture Git subprocesses, and nested CLI processes; success is emitted only after bounded server shutdown and owned-root cleanup.",
+    "The server launches with the selected process.execPath. An unadmitted installed CLI path fails before a graph is created.",
+    "The original read tool inventory, unknown mutation-tool refusal, staged/unstaged v2 content checks, child-pack identity, ten JSON/SQLite cache and backend-parity states, and read-only mount checks remain active.",
+    "Protocol parsing errors, server exit errors, and stderr remain separately visible even when they occur together."
+  ],
+  "review": {
+    "reviewer": "task838_output_review",
+    "scope": "bounded read-only source review, not Task828 or Standard security acceptance",
+    "corrections": [
+      "Malformed trailing JSON after a valid final response previously allowed a false pass; retained failure now reaches stop.",
+      "Server launch used the bin shebang and could select a different Node; it now uses process.execPath.",
+      "Worker error projection hid nested exercise and shutdown diagnostics; recursive formatting retains both.",
+      "Protocol failure plus nonzero exit/stderr previously lost one cause; stop now aggregates all three after closure."
+    ],
+    "final_narrow_verdict": "no remaining concrete gap in the reviewed correction; source-only"
+  },
+  "installed_runs": [
+    {
+      "node": "24.15.0",
+      "platform": "darwin-arm64",
+      "duration_ms": 41025,
+      "identity_read_states": 10,
+      "affected_tests": 99,
+      "pass": 99,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "inner_and_outer_owned_roots_removed": true,
+      "receipt_sha256": "6076fd1213def229dbf2fa32091ded23bf6266cb7b43249418aa5a525231d381"
+    },
+    {
+      "node": "24.18.0",
+      "platform": "darwin-arm64",
+      "duration_ms": 43877,
+      "identity_read_states": 10,
+      "affected_tests": 99,
+      "pass": 99,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "inner_and_outer_owned_roots_removed": true,
+      "receipt_sha256": "4b434c2d754f71774defbb9689ac4e01f5008c907d8aaa7d310d83653003c2d4"
+    },
+    {
+      "node": "26.0.0",
+      "platform": "darwin-arm64",
+      "duration_ms": 43804,
+      "identity_read_states": 10,
+      "affected_tests": 99,
+      "pass": 99,
+      "fail": 0,
+      "skip": 0,
+      "source_unchanged": true,
+      "ambient_sentinel_unchanged": true,
+      "inner_and_outer_owned_roots_removed": true,
+      "receipt_sha256": "fa8df26a6672f08bf6a683958c074198ed5662bb5f47c2df77b6cf28518edeb1"
+    }
+  ],
+  "superseded_attempts": [
+    "First local manual harness invoked the npm proxy without its npm tool discriminator; packing refused and the owned root was removed.",
+    "Earlier installed MCP passes preceded the independent review corrections and are intermediate only."
+  ],
+  "protected_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "remaining": [
+    "Classify release-manifest smoke-capabilities, smoke-parallel, and smoke-visibility raw process/cleanup paths before Task838 closure.",
+    "Task838 final acceptance and final artifact custody; full release ladder and seal remain separate gates."
+  ],
+  "authority": "local Goal86 execution only; no stage, commit, push, remote, tag, publication, provider, deployment, bundle refresh or sibling action",
+  "skill_candidates": []
+}

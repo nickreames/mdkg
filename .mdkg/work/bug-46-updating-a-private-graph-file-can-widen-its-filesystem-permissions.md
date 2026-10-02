@@ -2,24 +2,49 @@
 id: bug-46
 type: bug
 title: Updating a private graph file can widen its filesystem permissions
-status: blocked
+status: backlog
 priority: 1
-tags: [release-0.6.0, security]
+tags: [release-0.6.0, security, deferred, post-0.6.0]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-86/bug-46-investigation.json]
+artifacts: [.mdkg/artifacts/goal-86/bug-46-investigation.json, .mdkg/artifacts/goal-86/filesystem-feasibility/receipt.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828, chk-623]
+refs: [task-837, goal-84, goal-86, task-828, chk-623, dec-97, epic-256, goal-87, dec-98]
 context_refs: [goal-86, goal-84, task-837]
-evidence_refs: [chk-623]
+evidence_refs: [chk-623, chk-651]
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-18
+updated: 2026-09-28
 ---
 # Overview
+
+## Current disposition - 2026-09-28
+
+**DEFERRED / UNRESOLVED**, owned by paused Goal87 under Dec98. Nick explicitly
+removed remediation of this finding from the 0.6.0 completion gate while
+keeping mdkg Node-only. Lifecycle is backlog with a deferred tag because the
+schema has no deferred status. This is not accepted, fixed, closed, qualified,
+or a standing authorization to implement native code. Preserve the low
+severity and all evidence below. Goal86 must disclose the limitation and
+independently verify the remaining in-scope release work. Older blocker/native
+decision language below is historical and superseded only for 0.6.0 routing.
+
+2026-09-28 scoped continuation supersedes Dec97 only for owned local
+filesystem feasibility experiments and a local fail-closed CI stub. The linked
+filesystem-feasibility receipt records macOS and isolated Ubuntu ARM64 native
+metadata primitives: mode, owner, group, and ACL were matched on a new inode
+before content bytes in synthetic controls. Node copyFile retained 0600 mode
+in one control but dropped a restrictive named macOS ACL. This makes a bounded
+native design plausible, not a product fix or a safety waiver. Production
+interface, distribution, failure handling, installed-platform coverage, and
+independent review remain undecided. Bug46 stays blocked and publication-blocking.
+
+Dec97's original Node-only/no-VM routing is historical; it was not general
+authorization to integrate native code, run hosted CI, or weaken ACL/owner/group
+preservation. Mode-only mitigation remains incomplete.
 
 Goal: remediate g86-baseline-003 from the completed fresh Standard scan
 9d6a2ca2-4273-45de-9013-20452c7651d0 under Task837. Publication blocker.
@@ -144,3 +169,10 @@ Do not weaken the existing security invariant or treat alpha status as a waiver.
 
 Chk623 and bug-46-investigation.json bind exact evidence, source hashes,
 version-assessment limits and the pending decision. Goal85 remains paused.
+
+2026-09-28 local feasibility addendum: the receipt under
+`.mdkg/artifacts/goal-86/filesystem-feasibility/` binds the exact current-source
+and probe hashes, baseline ACL loss, macOS/Ubuntu ARM64 metadata controls, and
+explicit unverified cases. No `src/` remedy, installed-package test, x64 proof,
+cross-principal test, or final security acceptance was produced. The release
+gate remains unchanged.
