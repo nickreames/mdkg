@@ -6,7 +6,7 @@ authors: [mdkg]
 links: [AGENT_START.md, CLI_COMMAND_MATRIX.md]
 ---
 
-# Goal
+# Purpose
 
 Classify ownership before boundary-sensitive mdkg planning so generic project
 memory primitives are described as mdkg capabilities and product-specific
@@ -86,7 +86,74 @@ runtime policy does not leak into public mdkg naming.
   not ready for the active release lane
 - Validation and dirty-state evidence when durable writes are made
 
-## Safety
+## Checkout And Publication Planning
+
+- Re-inventory HEAD, branch, index, refs, worktrees, locks, and dirty-unit owners
+  before accepting checkout custody or making guidance changes. Historical
+  releases, selected goals, and a passing check do not grant a writer lease.
+  Preserve inherited bytes and state; stop on a conflicting writer or drift.
+- The reviewed existing-branch bootstrap/cleanup is a one-time exception on
+  `main`. It does not open new feature branches, PRs, or publication.
+- New feature branches and PRs wait for accepted full-history git-gud
+  completion in the portfolio root's Task549. After that gate and a scoped
+  authorization, plan one isolated native Git worktree and feature branch per
+  owner and useful outcome from the accepted integration tip. mdkg library/docs
+  PRs target `main`; stacks require actual dependencies. Nick manually reviews
+  and merges.
+- For deployed-app consumers, canonical `staging` is the intended integration
+  branch. Preserve Web's reviewed `stage` source and `staging` deployment mirror
+  until ancestry, environment isolation, hosting triggers, and rollback support
+  a separately approved migration. This skill authorizes no rename or routing
+  change in a consumer repository.
+- Record separate dev/staging/prod data, credential refs, configuration,
+  runtime resources, and synthetic fixtures. Require technical CI/hosting and
+  environment controls; prose alone is not isolation proof. PR checks receive
+  no production secrets. Review triggers on normal, backup, and rewritten refs
+  before any proposed publication.
+- A production-triggering publication needs explicit Nick approval of that
+  consequence or an approved isolated route. A production action needs approval
+  naming environment, exact candidate, action, and rollback. Commits, pushes,
+  tags, releases, providers, history changes, root projections, and deployments
+  each remain within their explicitly approved scopes.
+- Keep repository cleanup separate from unfinished source, tracked cache, and
+  release units. Retain published Goal85/Task832 evidence and achieved
+  Goals78/82; paused Goal87 stays its own follow-up. Do not republish 0.6.0,
+  refresh tracked SQLite, or repair runtime operational behavior as cleanup.
+
+## Required Capabilities
+
+- Read-only Git and focused mdkg discovery.
+- Canonical skill authoring and supported mirror sync only when authorized.
+- Unit-scoped graph, skill, mirror, and preservation checks.
+
+## Resources Touched
+
+- Assigned repository guidance and this canonical skill.
+- Configured native mirrors through `mdkg skill sync`.
+- Private baseline and validation receipts within the accepted scope.
+- Root and consumer context is read-only unless separately authorized.
+
+## Validation Checks
+
+- Validate this skill with `mdkg skill validate service-boundary-ownership-check --json`.
+- After authorized edits, run `mdkg skill sync --json`, then
+  `mdkg skill validate --json` for canonical/mirror/public projection checks.
+- Run `mdkg validate --changed-only --json` and full graph validation, plus
+  `git diff --check`; distinguish warnings and stale caches from graph errors.
+- Verify exact changed paths, unchanged inherited bytes/state/index/refs, and
+  absence of conflicting writers. Do not refresh caches to hide a warning.
+
+## Closeout Evidence
+
+- Owner, authority, repo/HEAD/branch, baseline path/hash, and custody bookends.
+- Exact guidance/mirror paths and each inherited, migration, or new unit's
+  disposition, checks, and gaps.
+- Accepted history gate evidence before future branch/PR work, and separate
+  commit/publication/production approvals before those actions.
+- Root or consumer decisions still pending; no clean-candidate claim for a
+  dirty checkout or substitute clone.
+
+## Safety Rules
 
 - Prefer repo truth over chat memory.
 - Keep secrets out of skills, references, and generated artifacts.
@@ -101,10 +168,31 @@ runtime policy does not leak into public mdkg naming.
   raw model output, queue bodies, provider dumps, or runtime state roots in
   mdkg.
 
-## Failure Handling
+## Failure Modes
 
 - If required context or policy is unclear, stop and ask before proceeding.
 - If the procedure needs more detail, load the specific reference rather than broad context.
 - If a release/publish lane would need to claim unfinished remote Git or
   project-memory primitives, checkpoint the gap and route it to a generic
   successor planning node.
+- If a paused goal, required mutation, or product decision falls outside current
+  authority, return an exact patch proposal or blocker to the coordinator. Do
+  not bypass the gate, weaken checks, or implement source merely to clean Git.
+
+## Related Manifests
+
+- None required; the assigned work contract and accepted decisions define scope.
+
+## Projection Targets
+
+- Canonical: `.mdkg/skills/service-boundary-ownership-check/SKILL.md`.
+- Configured `.agents/skills/` and `.claude/skills/` mirrors only.
+- Repository-only exclusion under DEC89: do not project this private policy
+  into `assets/init/skills/default/`, built public seeds, or generic consumers.
+
+## Open Questions
+
+- Before future branch/PR work, the root coordinator must supply accepted
+  Task549 full-history completion evidence.
+- Before publication or production actions, resolve current origin freshness,
+  branch/provider triggers, environment isolation, and exact action approval.

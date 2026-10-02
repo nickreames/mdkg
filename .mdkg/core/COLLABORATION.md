@@ -35,6 +35,11 @@ then use `HUMAN.md` only for compatibility notes not yet migrated.
 - Include ask-before-doing constraints for risky or high-impact actions.
 - Record preferred environment assumptions and validation commands.
 - Preserve local operator customizations during `mdkg upgrade --apply`.
+- Current user instructions and qualified work define authority; these stable
+  preferences and historical graph state do not expand it.
+- Keep one writer per checkout. Separate native Git branches/worktrees may
+  collaborate through reviewed graph reconciliation; read access to another
+  graph grants no write authority over it.
 
 # Notes
 

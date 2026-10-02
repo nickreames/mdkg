@@ -1,8 +1,18 @@
 {
   "schema_version": 1,
   "tool": "mdkg",
-  "mdkg_version": "0.5.0",
+  "mdkg_version": "0.6.0",
   "files": [
+    {
+      "path": ".mdkg/AGENT_START.md",
+      "category": "startup_doc",
+      "sha256": "dc248fcb3e466cff15d21f6634fea99a362458ac9fc5b04a64a526acb79b61d3"
+    },
+    {
+      "path": ".mdkg/CLI_COMMAND_MATRIX.md",
+      "category": "startup_doc",
+      "sha256": "a273d0b02f9b00775b7a6fbafc3ba09497a7bcdb927168da3a9e0b8739f83e0f"
+    },
     {
       "path": ".mdkg/core/COLLABORATION.md",
       "category": "core",
@@ -16,7 +26,7 @@
     {
       "path": ".mdkg/core/guide.md",
       "category": "core",
-      "sha256": "ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae"
+      "sha256": "d61baf21254be6283bd18bd505c87bed83a27a607b76011e5d6a6d5bc1e24ca1"
     },
     {
       "path": ".mdkg/core/HUMAN.md",
@@ -26,32 +36,32 @@
     {
       "path": ".mdkg/core/rule-1-mdkg-conventions.md",
       "category": "core",
-      "sha256": "03db1635d170331517efb0ac24351b477a8020a96e51edf5bd67910a49bb5db7"
+      "sha256": "9cf912380532de20bab0e658bfdefdce177f2ec3733b2f94196eb0cca072c31c"
     },
     {
       "path": ".mdkg/core/rule-2-context-pack-rules.md",
       "category": "core",
-      "sha256": "9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f"
+      "sha256": "3214954d5ed0eb8620b175a9a50b3429fa718ea17f2eb74c0ad146b627d5e8ca"
     },
     {
       "path": ".mdkg/core/rule-3-cli-contract.md",
       "category": "core",
-      "sha256": "362fb8f22525f51c15ef54d81f63ebef4ab4b1dbaf37bd1415462a204ab78e45"
+      "sha256": "864baaf1edc8bdafb5195c7c1c9847960a18358eaffdf07a8555636f2b10610b"
     },
     {
       "path": ".mdkg/core/rule-4-repo-safety-and-ignores.md",
       "category": "core",
-      "sha256": "3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8"
+      "sha256": "b821c48482bd67066a0224a2ad102e027c326ff0b956454d18bfedeb14555746"
     },
     {
       "path": ".mdkg/core/rule-5-release-and-versioning.md",
       "category": "core",
-      "sha256": "d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03"
+      "sha256": "59b87afc83eccf34d7c324c006ba97a0a676e77379378f240d0e03aea1d936a7"
     },
     {
       "path": ".mdkg/core/rule-6-templates-and-schemas.md",
       "category": "core",
-      "sha256": "3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f"
+      "sha256": "7ab6849b86460c051496df97cb4070ff263711d92b34cf2e00d478b576343bb3"
     },
     {
       "path": ".mdkg/core/SOUL.md",
@@ -59,19 +69,39 @@
       "sha256": "2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a"
     },
     {
+      "path": ".mdkg/llms.txt",
+      "category": "startup_doc",
+      "sha256": "8b00eb116ad7818dcff7d4b3d0cb1d2022129f9e4ad0b19cfe942b633a811758"
+    },
+    {
       "path": ".mdkg/skills/author-mdkg-skill/SKILL.md",
       "category": "default_skill",
-      "sha256": "ffacd8b8412ab5453b53d91a192f27e0458da4591f80d82d4933805a6fb5a05d"
+      "sha256": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3"
     },
     {
       "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
       "category": "default_skill",
-      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae"
+      "sha256": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62"
     },
     {
       "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
       "category": "default_skill",
-      "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5"
+      "sha256": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a"
+    },
+    {
+      "path": ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+      "category": "default_skill",
+      "sha256": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992"
+    },
+    {
+      "path": ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+      "category": "default_skill",
+      "sha256": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a"
+    },
+    {
+      "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+      "category": "default_skill",
+      "sha256": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1"
     },
     {
       "path": ".mdkg/templates/default/archive.md",
@@ -186,7 +216,7 @@
     {
       "path": ".mdkg/templates/default/work.md",
       "category": "template",
-      "sha256": "1ab3c4c79ecdaff2b76007bfbb9844bf581da592f70ac2a2475594b9c279d7cd"
+      "sha256": "1a2d22b922b37a208a1e51ad0fc51d8914dea6acb0ece4d9c6e19cdf907cd426"
     },
     {
       "path": ".mdkg/templates/loops/backend-api-cli-bloat-audit.loop.md",
@@ -216,7 +246,7 @@
     {
       "path": ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
       "category": "template",
-      "sha256": "84d12faf4c33d808eae229f13f169f5b1aedd199e9ef5ef3f1b4b055f0fb3c39"
+      "sha256": "2c8b395e43129681574f5417d00311ed30568a3d86bee7639f3254af5a5caa12"
     },
     {
       "path": ".mdkg/templates/loops/user-story-audit-and-recommendations.loop.md",
@@ -327,6 +357,18 @@
       "path": ".mdkg/templates/specs/tool.SPEC.md",
       "category": "template",
       "sha256": "05b827bbce4f721ea25beda62850688aff3db644aec65e71b9cf76cad8e5f46f"
+    },
+    {
+      "path": "AGENTS.md",
+      "category": "agent_doc",
+      "sha256": "e78e71eca9edba1ef30384d06d3f7c8eb4ab905670fab563b5b5a99067bfbcf9",
+      "managed_section_sha256": "07bf1edfa9d15f084eb1a86d314d4deb5aec439d5213a543372e9dff9dfb228f"
+    },
+    {
+      "path": "CLAUDE.md",
+      "category": "agent_doc",
+      "sha256": "b8a21a3637da8185112060c50bec3c2d5cd19f6200e155d7daec55f75c49bcbd",
+      "managed_section_sha256": "fda0afb2e0a1366108764166d591d15db97d9f251603dc6bec88a5ff64eade2f"
     }
   ]
 }

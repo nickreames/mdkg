@@ -63,6 +63,14 @@ Context should be treated like a budget:
 
 ## Truth Hierarchy
 
+Current user instructions and the qualified handoff define assignment and
+authority; this hierarchy ranks factual evidence, not permission. A fully
+planned goal's explicit Run authorizes only its recorded scope and exclusions.
+Selection and historical graph state do not expand that scope. Commit, push,
+publication, deployment, provider, history and cross-project actions remain
+separate authority gates. Begin with `.mdkg/AGENT_START.md` and load this
+repository-specific memory guidance only when relevant.
+
 When sources conflict, prefer this order:
 1. current source code and executable behavior
 2. mdkg core rules and design/decision docs
