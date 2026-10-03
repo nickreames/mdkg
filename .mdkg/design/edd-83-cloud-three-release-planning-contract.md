@@ -229,6 +229,18 @@ The single completed planning receipt chk-681 certifies only
 this design audit/checks. It does not satisfy implementation acceptance.
 
 Goal 2 is blocked by Goal1's final readiness checkpoint; Goal 3 by Goal2's.
+Completing a readiness assessment is distinct from satisfying its dependency.
+Use exactly one checkpoint verdict tag: `readiness:not-run`,
+`readiness:not-ready` or `readiness:ready-pending-approval`. NOT_RUN stays non-done;
+NOT_READY must have `status: blocked` or `status: review`, never done. Retain its
+failure receipt and downstream blocked_by edges. Only an evidenced, independently
+reviewed READY_PENDING_APPROVAL assessment may be marked done to satisfy the
+next-release prerequisite; publication/adoption approval remains separate.
+The node parser and goal-next dependency guard reject invalid done/NOT_READY
+states; docs:check also enforces the exact three gate markers and downstream
+edges, including missing markers. A scoped explicit owner prerequisite exception
+may authorize specified work while a release remains NOT_READY, but must be
+recorded separately and never relabel that checkpoint done or READY.
 Do not run these three implementation goals in parallel. Recheck each previous
 checkpoint's exact inputs and compatibility before the next goal. Readiness
 can permit the next planning/implementation step under separate Run authority;

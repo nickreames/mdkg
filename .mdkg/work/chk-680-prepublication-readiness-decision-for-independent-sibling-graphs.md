@@ -4,7 +4,7 @@ type: checkpoint
 title: Prepublication readiness decision for independent sibling graphs
 status: backlog
 priority: 1
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, design-only, readiness:not-run]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -55,3 +55,11 @@ NOT_RUN; attach actual milestone commands, input identities, results and retaine
 # Links / Artifacts
 
 edd-83; docs/cloud-planning-experiment.md. Future artifact references must be added after they exist.
+
+# Enforced Readiness Dependency
+
+NOT_RUN stays non-done. A completed assessment reporting NOT_READY must remain
+blocked or review, with readiness:not-ready, preserving downstream blockers.
+Only evidenced independent READY_PENDING_APPROVAL acceptance may become done
+with readiness:ready-pending-approval; this grants no publication or adoption.
+Parser/goal-next and the docs plan guard enforce this distinction.

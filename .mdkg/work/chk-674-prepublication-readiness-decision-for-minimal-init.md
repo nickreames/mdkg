@@ -2,9 +2,9 @@
 id: chk-674
 type: checkpoint
 title: Prepublication readiness decision for minimal init
-status: backlog
+status: blocked
 priority: 1
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, design-only, readiness:not-ready]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -96,3 +96,18 @@ and infers no approval. Goal89 remains paused for parent review.
 
 Evidence: .mdkg/artifacts/goal-88/qualification-4/COMPARISON.md and checks.json;
 qualification-3/checks.json records sites/minimum runtime and hosted access gap.
+
+# Enforced Readiness Dependency
+
+NOT_RUN stays non-done. A completed assessment reporting NOT_READY must remain
+blocked or review, with readiness:not-ready, preserving downstream blockers.
+Only evidenced independent READY_PENDING_APPROVAL acceptance may become done
+with readiness:ready-pending-approval; this grants no publication or adoption.
+Parser/goal-next and the docs plan guard enforce this distinction.
+
+# Current P2 Correction
+
+The independent assessment is NOT_READY; status is now explicitly blocked with
+readiness:not-ready. Both historical qualification narratives and the new
+enforced dependency contract survive the normal stack merge. No approval or
+complete readiness is inferred from recording this decision.
