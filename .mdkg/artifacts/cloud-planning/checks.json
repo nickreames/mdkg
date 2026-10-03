@@ -1,0 +1,546 @@
+{
+  "schema_version": 1,
+  "purpose": "docs-only cloud planning evidence; future feature tests NOT_RUN",
+  "base_sha": "d9b74c3fa172688a99406fd908571c7e3f666395",
+  "branch": "docs/cloud-three-release-plan",
+  "environment": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "node": "24.19.0",
+    "npm": "11.9.0",
+    "git": "2.52.0",
+    "mdkg": "0.6.0",
+    "node_engine": ">=24.18.0 <25"
+  },
+  "checks": [
+    {
+      "command": "NPM_CONFIG_CACHE=/tmp/mdkg-cloud-npm-cache npm run deps:bootstrap",
+      "status": "passed",
+      "notes": "All three lockfile owners installed"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed"
+    },
+    {
+      "command": "node dist/cli.js validate --summary --json --limit 15 (baseline)",
+      "status": "passed",
+      "error_count": 0,
+      "warning_count": 1,
+      "warnings": [
+        "SQLite cache may be stale because source graph files or config changed; run mdkg index"
+      ]
+    },
+    {
+      "command": "node dist/cli.js skill validate --json (baseline)",
+      "status": "passed",
+      "checked_count": 8,
+      "error_count": 0,
+      "warning_count": 0
+    },
+    {
+      "command": "synthetic fresh/repeat init and upgrade preview",
+      "status": "passed",
+      "receipt": {
+        "synthetic_only": true,
+        "source_sha": "d9b74c3fa172688a99406fd908571c7e3f666395",
+        "receipts": [
+          {
+            "phase": "fresh",
+            "exit_code": 0,
+            "root_files": [
+              ".gitignore",
+              ".npmignore",
+              "AGENTS.md",
+              "CLAUDE.md"
+            ],
+            "file_count": 94,
+            "startup_files": [
+              ".mdkg/AGENT_START.md",
+              ".mdkg/CLI_COMMAND_MATRIX.md",
+              ".mdkg/llms.txt",
+              "CLAUDE.md"
+            ]
+          },
+          {
+            "phase": "repeat",
+            "exit_code": 0,
+            "root_files": [
+              ".gitignore",
+              ".npmignore",
+              "AGENTS.md",
+              "CLAUDE.md"
+            ],
+            "file_count": 94,
+            "startup_files": [
+              ".mdkg/AGENT_START.md",
+              ".mdkg/CLI_COMMAND_MATRIX.md",
+              ".mdkg/llms.txt",
+              "CLAUDE.md"
+            ]
+          },
+          {
+            "phase": "upgrade-preview",
+            "exit_code": 0,
+            "root_files": [
+              ".gitignore",
+              ".npmignore",
+              "AGENTS.md",
+              "CLAUDE.md"
+            ],
+            "file_count": 94,
+            "startup_files": [
+              ".mdkg/AGENT_START.md",
+              ".mdkg/CLI_COMMAND_MATRIX.md",
+              ".mdkg/llms.txt",
+              "CLAUDE.md"
+            ]
+          }
+        ]
+      },
+      "notes": "Initial non-Git fixture attempt failed; owned Git fixture rerun passed; path inventory parity only"
+    },
+    {
+      "command": "node dist/cli.js validate (initial authored scope)",
+      "status": "failed",
+      "error_count": 9,
+      "notes": "Checkpoint types unsupported by goal scope_refs; corrected in docs"
+    },
+    {
+      "command": "node dist/cli.js validate --summary --json --limit 5 (corrected plan)",
+      "status": "passed",
+      "error_count": 0,
+      "warning_count": 1,
+      "warnings": [
+        "SQLite cache may be stale because source graph files or config changed; run mdkg index"
+      ]
+    },
+    {
+      "command": "npm run ci:workflow:check",
+      "status": "passed"
+    },
+    {
+      "command": "source skill tree byte parity",
+      "status": "passed",
+      "receipt": {
+        "mirror_parity": {
+          "status": "passed",
+          "canonical_skills": 8,
+          "required_targets": [
+            ".agents/skills",
+            ".claude/skills"
+          ]
+        },
+        "synthetic_cases": [
+          {
+            "case": "graph-only",
+            "status": "passed",
+            "exit_code": 0,
+            "notes": "current 0.6.0 behavior only"
+          },
+          {
+            "case": "invalid-combination",
+            "status": "passed",
+            "exit_code": 1,
+            "notes": "expected refusal without artifacts"
+          },
+          {
+            "case": "custom-instructions",
+            "status": "passed",
+            "exit_code": 0,
+            "notes": "current 0.6.0 behavior only"
+          }
+        ]
+      }
+    },
+    {
+      "command": "node dist/cli.js skill audit --json; skill audit",
+      "status": "failed",
+      "notes": "Unsupported current CLI; no command effects. Historical wording corrected. Supported skill validation and direct byte parity passed."
+    },
+    {
+      "command": "planning ID/goal/scope/link and exact staged path audit",
+      "status": "passed",
+      "new_goals": 3,
+      "new_graph_nodes": 30,
+      "staged_paths": 32,
+      "unique_local_ids": 2664
+    },
+    {
+      "command": "git diff --cached --check",
+      "status": "passed"
+    },
+    {
+      "command": "NPM_CONFIG_CACHE=/tmp/mdkg-cloud-npm-cache MDKG_RELEASE_RECEIPT_DIR=/tmp/mdkg-cloud-fast-ci npm run ci:release",
+      "status": "failed",
+      "completed_gates": [
+        {
+          "id": "dependency-preflight",
+          "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /workspace/mdkg-cloud-plan/scripts/dependency-boundary.js preflight --json",
+          "exit_code": 0,
+          "duration_ms": 57,
+          "timed_out": false
+        },
+        {
+          "id": "coverage",
+          "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/lib/node_modules/npm/bin/npm-cli.js run test:coverage",
+          "exit_code": 1,
+          "duration_ms": 342021,
+          "timed_out": false
+        }
+      ],
+      "completed_smokes": 0,
+      "receipt_directory": "/tmp/mdkg-cloud-fast-ci/run-O3tYBJ",
+      "log": "/tmp/mdkg-cloud-fast-ci.log",
+      "session_id": 92863,
+      "notes": "Original failure/invalidated custody retained. Representative environment-caused failures reproduced on pristine base; focused corrected-runner comparison passed149/149 each. Failures beyond those reproduced representative cases remain unclassified. The subsequent full-run failure and stable custody are recorded below.",
+      "exit_code": 1,
+      "test_summary": {
+        "tests": 2389,
+        "passed": 1380,
+        "failed": 1008,
+        "skipped": 1
+      },
+      "coverage": {
+        "lines_percent": 79.87,
+        "branches_percent": 75.19,
+        "functions_percent": 87.11,
+        "required_floors": {
+          "lines": 89,
+          "branches": 77,
+          "functions": 96
+        }
+      }
+    },
+    {
+      "command": "frozen CLI matrix/command-contract/docs/workflow drift checks",
+      "status": "passed",
+      "docs_checked_examples": 499,
+      "docs_failed_examples": 0
+    },
+    {
+      "command": "same-base selected nine-family comparison with clean TMPDIR and real owned-descendant subreaper",
+      "status": "passed",
+      "candidate": 149,
+      "baseline": 149,
+      "future_features": "NOT_RUN"
+    },
+    {
+      "command": "TMPDIR=/dev/shm/mdkg-cloud-fixtures NPM_CONFIG_CACHE=/tmp/mdkg-cloud-npm-cache MDKG_RELEASE_RECEIPT_DIR=/tmp/mdkg-cloud-corrected-ci python3 /tmp/mdkg-cloud-subreaper.py npm run ci:release",
+      "status": "failed",
+      "exit_code": 1,
+      "tested_commit": "ca15ecb60b2019b76b7a12f11cc62dfb2b354726",
+      "frozen32_docs_sha256": "0bf5254f74c4c5c929fd487e75cf4fa1712daa9700159d3a57b7882723e531f4",
+      "duration_ms": 351216,
+      "gates": [
+        {
+          "id": "dependency-preflight",
+          "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /workspace/mdkg-cloud-plan/scripts/dependency-boundary.js preflight --json",
+          "exit_code": 0,
+          "duration_ms": 54,
+          "timed_out": false
+        },
+        {
+          "id": "coverage",
+          "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/lib/node_modules/npm/bin/npm-cli.js run test:coverage",
+          "exit_code": 1,
+          "duration_ms": 350598,
+          "timed_out": false
+        }
+      ],
+      "test_counts": {
+        "tests": 2389,
+        "failed": 1003,
+        "passed": 1385,
+        "cancelled": 0,
+        "skipped": 1,
+        "todo": 0,
+        "topLevel": 2389,
+        "suites": 0
+      },
+      "smokes_run": 0,
+      "later_gates": "NOT_RUN",
+      "git_boundary": {
+        "head_unchanged": true,
+        "branch_unchanged": true,
+        "status_unchanged": true,
+        "tracked_tree_unchanged": true,
+        "selected_goal_unchanged": true,
+        "lockfiles_unchanged": true,
+        "diff_check_clean": true
+      },
+      "changed_tracked_paths": [],
+      "notes": "Full ladder overrides TMPDIR to receipt_dir/tmp. Receipt dir under /tmp retained invalid ancestor marker; subreaper resolved five supervision failures but clean outer TMPDIR was overridden. The local CI gap remains unresolved; failures beyond the reproduced representative cases remain unclassified. No full pass or hosted/platform qualification asserted."
+    }
+  ],
+  "future_tests": {
+    "test-494": "NOT_RUN",
+    "test-495": "NOT_RUN",
+    "test-496": "NOT_RUN"
+  },
+  "not_run": [
+    "feature implementation",
+    "full prepublication ladder",
+    "hosted full/Linux qualification dispatch",
+    "macOS or other-platform installed acceptance",
+    "publication and professional adoption"
+  ],
+  "pr": {
+    "status": "created-and-verified",
+    "url": "https://github.com/nickreames/mdkg/pull/10",
+    "number": 10,
+    "created_at": "2026-10-02T03:30:29Z",
+    "draft": true,
+    "state": "open",
+    "merged": false,
+    "base_branch": "main",
+    "base_sha": "d9b74c3fa172688a99406fd908571c7e3f666395",
+    "head_branch": "docs/cloud-three-release-plan",
+    "head_sha_at_creation": "8fbb01bc1bdce247bb7524151d44e4ec1589a785",
+    "changed_files_at_creation": 32,
+    "plan_commit": "ca15ecb60b2019b76b7a12f11cc62dfb2b354726",
+    "evidence_commit": "8fbb01bc1bdce247bb7524151d44e4ec1589a785",
+    "notes": "A subsequent normal creation-receipt commit changes only two evidence files. Final head is independently verified in PR description/final handoff."
+  },
+  "nodes": {
+    "design": "edd-83",
+    "g1": "goal-88",
+    "g2": "goal-89",
+    "g3": "goal-90",
+    "g1_design": "task-844",
+    "g1_design_checkpoint": "chk-672",
+    "g1_build1": "task-845",
+    "g1_build2": "task-846",
+    "g1_acceptance": "test-494",
+    "g1_acceptance_checkpoint": "chk-673",
+    "g1_prepublish": "task-847",
+    "g1_prepublish_checkpoint": "chk-674",
+    "g2_design": "task-848",
+    "g2_design_checkpoint": "chk-675",
+    "g2_build1": "task-849",
+    "g2_build2": "task-850",
+    "g2_acceptance": "test-495",
+    "g2_acceptance_checkpoint": "chk-676",
+    "g2_prepublish": "task-851",
+    "g2_prepublish_checkpoint": "chk-677",
+    "g3_design": "task-852",
+    "g3_design_checkpoint": "chk-678",
+    "g3_build1": "task-853",
+    "g3_build2": "task-854",
+    "g3_acceptance": "test-496",
+    "g3_acceptance_checkpoint": "chk-679",
+    "g3_prepublish": "task-855",
+    "g3_prepublish_checkpoint": "chk-680",
+    "planning_checkpoint": "chk-681",
+    "deferred": "task-856"
+  },
+  "checkpoint": {
+    "kind": "planning PR final evidence before draft creation",
+    "base_sha": "d9b74c3fa172688a99406fd908571c7e3f666395",
+    "plan_commit": "ca15ecb60b2019b76b7a12f11cc62dfb2b354726",
+    "plan_freeze_sha256": "0bf5254f74c4c5c929fd487e75cf4fa1712daa9700159d3a57b7882723e531f4",
+    "push": "passed",
+    "pr": "verified draft PR10; open and unmerged",
+    "source_or_package_or_threshold_changes": false,
+    "remaining_gaps": [
+      "Local fast CI full ladder FAILED under receipt-root setup; later gates/smokes NOT_RUN.",
+      "Representative environment-caused failures reproduced on pristine base; remaining failures are unclassified, so no environment-only conclusion is supported.",
+      "Current-head unmodified hosted PR checks in progress/pending final verification. Full Linux portable/macOS/adoption qualification NOT_RUN.",
+      "Names/compatibility/retention/selector decisions require Nick design review; original implementation/git-gud gate and unknown Mac reconciliation remain."
+    ]
+  },
+  "diagnosis": {
+    "pristine_worktree": "/workspace/mdkg-cloud-baseline",
+    "base_sha": "d9b74c3fa172688a99406fd908571c7e3f666395",
+    "candidate_freeze_sha256": "e0b1cef909969125642a389dc7f08cb0e1b4b7c257eb4541ee372cacf2351b97",
+    "source_scripts_tests_init_assets": "byte-identical candidate/base",
+    "categories": [
+      {
+        "cause": "invalid /tmp/.git ancestor marker leads naturalGitContext to rev-parse refusal",
+        "representative": "validate and index accept valid Agent workflow file fixtures",
+        "original_candidate": "failed",
+        "pristine_base": "failed",
+        "permitted_clean_tmp_pristine_base": "passed"
+      },
+      {
+        "cause": "orphaned terminated descendant zombie adopted by PID1 leaves supervised group observable",
+        "representative": "timed-out bootstrap descendants cannot keep writing while fixture cleanup runs",
+        "pristine_base": "failed",
+        "temporary_owned_descendant_subreaper_pristine_base": "passed"
+      }
+    ],
+    "focused_comparison": {
+      "candidate": {
+        "counts": {
+          "tests": 149,
+          "pass": 149,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "duration_ms": 184816.705837,
+        "failed_cases": []
+      },
+      "baseline": {
+        "counts": {
+          "tests": 149,
+          "pass": 149,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "duration_ms": 183965.324138,
+        "failed_cases": []
+      }
+    },
+    "setup_changes": [
+      "clean TMPDIR under separately permitted /dev/shm/mdkg-cloud-fixtures",
+      "temporary Linux subreaper owns/reaps only runner descendants; real exit status retained"
+    ],
+    "project_source_or_threshold_changes": false,
+    "original_full_counts": {
+      "tests": 2389,
+      "passed": 1380,
+      "failed": 1008,
+      "skipped": 1
+    },
+    "effective_release_environment_controls": [
+      {
+        "variant": "baseline",
+        "place": "original",
+        "effective_tmpdir": "/tmp/mdkg-cloud-effective-baseline/tmp",
+        "exit_code": 1,
+        "expected_exit_code": 1,
+        "result": "passed-control",
+        "error": "Git rev-parse observation failed; no successful observation emitted"
+      },
+      {
+        "variant": "baseline",
+        "place": "clean",
+        "effective_tmpdir": "/dev/shm/mdkg-cloud-fixtures/effective-baseline/tmp",
+        "exit_code": 0,
+        "expected_exit_code": 0,
+        "result": "passed-control",
+        "error": null
+      },
+      {
+        "variant": "plan",
+        "place": "original",
+        "effective_tmpdir": "/tmp/mdkg-cloud-effective-plan/tmp",
+        "exit_code": 1,
+        "expected_exit_code": 1,
+        "result": "passed-control",
+        "error": "Git rev-parse observation failed; no successful observation emitted"
+      },
+      {
+        "variant": "plan",
+        "place": "clean",
+        "effective_tmpdir": "/dev/shm/mdkg-cloud-fixtures/effective-plan/tmp",
+        "exit_code": 0,
+        "expected_exit_code": 0,
+        "result": "passed-control",
+        "error": null
+      }
+    ],
+    "not_exhaustive": "Representative environment-caused failures reproduced on pristine base and149affected cases compared; not every failure in either full run individually traced. Remaining failures outside the reproduced representative cases are unclassified."
+  },
+  "resources": {
+    "os": {
+      "PRETTY_NAME": "\"Debian GNU/Linux 13 (trixie)\"",
+      "NAME": "\"Debian GNU/Linux\"",
+      "VERSION_ID": "\"13\"",
+      "VERSION": "\"13 (trixie)\"",
+      "VERSION_CODENAME": "trixie",
+      "DEBIAN_VERSION_FULL": "13.6",
+      "ID": "debian",
+      "HOME_URL": "\"https://www.debian.org/\"",
+      "SUPPORT_URL": "\"https://www.debian.org/support\"",
+      "BUG_REPORT_URL": "\"https://bugs.debian.org/\""
+    },
+    "architecture": "x86_64",
+    "kernel": "6.18.44",
+    "visible_logical_cpus": 5,
+    "affinity_logical_cpus": 5,
+    "cgroup": {
+      "cpu.max": "400000 100000",
+      "cpuset.cpus.effective": "0-4",
+      "memory.max": "17179869184",
+      "memory.current": "5167493120",
+      "pids.max": "max",
+      "pids.current": "232"
+    },
+    "meminfo_kib": {
+      "MemTotal": 18440136,
+      "MemAvailable": 14510408
+    },
+    "disks": {
+      "/workspace": {
+        "total_bytes": 33770192896,
+        "free_bytes": 30346870784,
+        "used_bytes": 1688559616
+      },
+      "/tmp": {
+        "total_bytes": 9441349632,
+        "free_bytes": 6660001792,
+        "used_bytes": 2781347840
+      },
+      "/dev/shm": {
+        "total_bytes": 9441349632,
+        "free_bytes": 9441349632,
+        "used_bytes": 0
+      }
+    },
+    "executables": {
+      "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "npm": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+      "git": "/usr/local/bin/git",
+      "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "gh": "/usr/bin/gh",
+      "chromium": "/usr/bin/chromium",
+      "chromium-browser": null,
+      "google-chrome": null,
+      "firefox": null,
+      "playwright": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/playwright",
+      "agent-browser": null,
+      "docker": "/usr/local/bin/docker",
+      "unshare": "/usr/bin/unshare",
+      "tini": null
+    },
+    "versions": {
+      "node": "v24.19.0",
+      "npm": "11.9.0",
+      "git": "git version 2.52.0",
+      "python3": "Python 3.12.14",
+      "gh": "gh version 2.46.0 (2025-01-13 Debian 2.46.0-3)"
+    },
+    "qualification": "observations only; no guaranteed plan capacity or restart/durability proof",
+    "browser_e2e": "NOT_RUN"
+  },
+  "runner_evidence": {
+    "mdkg-cloud-subreaper.py": {
+      "sha256": "acf0d61ef262e11f3d0313b547cef2efe77c0da97f71148eacf20dcd2fa3f531",
+      "source": "#!/usr/bin/env python3\n\"\"\"Reap only descendants of this diagnostic runner; never alter test outcomes.\"\"\"\nimport ctypes\nimport os\nimport signal\nimport sys\n\nif len(sys.argv) < 2:\n    raise SystemExit('usage: mdkg-cloud-subreaper.py COMMAND [ARG ...]')\nlibc = ctypes.CDLL(None, use_errno=True)\nif libc.prctl(36, 1, 0, 0, 0) != 0:  # Linux PR_SET_CHILD_SUBREAPER\n    raise OSError(ctypes.get_errno(), 'PR_SET_CHILD_SUBREAPER failed')\nmain_pid = os.fork()\nif main_pid == 0:\n    os.execvp(sys.argv[1], sys.argv[1:])\n\ndef forward(signum, _frame):\n    try:\n        os.kill(main_pid, signum)\n    except ProcessLookupError:\n        pass\n\nsignal.signal(signal.SIGINT, forward)\nsignal.signal(signal.SIGTERM, forward)\nmain_status = None\nreaped = 0\nwhile True:\n    try:\n        pid, status = os.waitpid(-1, 0)\n    except InterruptedError:\n        continue\n    except ChildProcessError:\n        break\n    if pid == main_pid:\n        main_status = os.waitstatus_to_exitcode(status)\n    else:\n        reaped += 1\nprint(f'cloud runner: reaped {reaped} owned descendant(s); command exit {main_status}', file=sys.stderr)\nif main_status is None:\n    raise SystemExit('main command exit status was not observed')\nraise SystemExit(main_status if main_status >= 0 else 128 - main_status)\n",
+      "scope": "temporary cloud diagnostic harness; never changes project source/assertions/thresholds or substitutes tool output"
+    },
+    "mdkg-cloud-effective-temp-probe.cjs": {
+      "sha256": "05723784eb8deb43c86dd43cfaef23d8c7fa96f4aa508353db030f3b5e585f32",
+      "source": "const fs = require('node:fs');\nconst path = require('node:path');\nconst { spawnSync } = require('node:child_process');\nconst cases = [];\nfor (const variant of ['baseline', 'plan']) {\n  const root = `/workspace/mdkg-cloud-${variant}`;\n  const { releaseEnvironment } = require(path.join(root, 'scripts/release-ladder.js'));\n  for (const place of ['original', 'clean']) {\n    const receipts = place === 'original'\n      ? `/tmp/mdkg-cloud-effective-${variant}`\n      : `/dev/shm/mdkg-cloud-fixtures/effective-${variant}`;\n    const env = releaseEnvironment(receipts, {\n      npm: '/opt/codex/runtimes/codex-primary-runtime/dependencies/node/lib/node_modules/npm/bin/npm-cli.js',\n      npx: '/opt/codex/runtimes/codex-primary-runtime/dependencies/node/lib/node_modules/npm/bin/npx-cli.js',\n    });\n    const result = spawnSync(process.execPath, [\n      '--test', '--test-reporter=tap',\n      '--test-name-pattern=validate and index accept valid Agent workflow file fixtures',\n      'dist/tests/commands/agent_file_types.test.js',\n    ], { cwd: root, env, encoding: 'utf8' });\n    const expected = place === 'original' ? 1 : 0;\n    fs.writeFileSync(`/tmp/mdkg-cloud-effective-${variant}-${place}.log`, result.stdout + result.stderr);\n    cases.push({ variant, place, effective_tmpdir: env.TMPDIR, exit_code: result.status,\n      expected_exit_code: expected, result: result.status === expected ? 'passed-control' : 'unexpected',\n      error: place === 'original' ? 'Git rev-parse observation failed; no successful observation emitted' : null });\n  }\n}\nfs.writeFileSync('/tmp/mdkg-cloud-effective-temp-results.json', JSON.stringify(cases, null, 2) + '\\n');\nconsole.log(JSON.stringify(cases, null, 2));\nprocess.exitCode = cases.every(c => c.result === 'passed-control') ? 0 : 1;\n",
+      "scope": "temporary cloud diagnostic harness; never changes project source/assertions/thresholds or substitutes tool output"
+    },
+    "effective_ladder_tmpdir": "/tmp/mdkg-cloud-corrected-ci/run-K3omp9/tmp",
+    "separate_extra_filesystem_permission": "/dev/shm/mdkg-cloud-fixtures",
+    "hosted_ci": "Unmodified hosted workflow was not exercised by this local harness. Full Linux portable qualification remains an explicit stub; do not conflate results."
+  },
+  "hosted_pr_ci_observation": {
+    "head_sha": "8fbb01bc1bdce247bb7524151d44e4ec1589a785",
+    "workflow": "Release readiness",
+    "event": "pull_request",
+    "run_id": 36960478488,
+    "url": "https://github.com/nickreames/mdkg/actions/runs/36960478488",
+    "status": "in_progress",
+    "conclusion": null,
+    "notes": "Actual unmodified hosted workflow, distinct from local custom harness. Creation receipt push will trigger current-head CI; verify separately without claiming a pass."
+  }
+}
