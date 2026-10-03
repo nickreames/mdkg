@@ -1,0 +1,23 @@
+[
+  {
+    "name": "docs-precheck-prefix-fixed",
+    "command": [
+      "npm",
+      "run",
+      "docs:check:built"
+    ],
+    "exit": 0,
+    "seconds": 0.465
+  },
+  {
+    "name": "guidance-prefix-fixed",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "tests/release-guidance.test.mjs"
+    ],
+    "exit": 0,
+    "seconds": 0.165
+  }
+]

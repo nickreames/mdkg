@@ -80,6 +80,10 @@ import {
   runGraphRefsCommand,
 } from "./commands/graph";
 import { runGraphMigrateCommand, runGraphRecoverCommand, runGraphReconcileCommand } from "./commands/graph_identity";
+import { runGraphRegistryCommand, runGraphRegistrationsCommand } from "./commands/graph_registry";
+import { resolveGraphContext } from "./core/graph_selection";
+import { GraphContext, GraphVisibility, withGraphContext } from "./core/graph_context";
+import { loadConfig } from "./core/config";
 import { runGitInspectCommand } from "./commands/git";
 import {
   runSubgraphAddCommand,
@@ -181,9 +185,10 @@ function resolveRuntime(runtime: CliRuntime = {}): ResolvedCliRuntime {
   };
 }
 
-function printGlobalOptions(log: LogFn): void {
+function printGlobalOptions(log: LogFn, includeGraph=true): void {
   log("\nGlobal options:");
   log("  --root, -r <path>   Run against a specific repo root");
+  if(includeGraph)log("  --graph <name>      Select an explicitly registered independent project root");
   log("  --help, -h          Show help");
   log("  --version, -V       Show version");
 }
@@ -806,6 +811,27 @@ function printBundleHelp(log: LogFn, subcommand?: string): void {
 
 function printGraphHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
+    case "register":
+      log("Usage:");
+      log("  mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]");
+      log("\nNotes:");
+      log("  - explicit host-level preview/apply; target must already contain an independent .mdkg and proven existing binding");
+      log("  - local ignored registry; private targets must be untracked; preview includes necessary ignore changes");
+      log("  - no migration, graph copying, deletion, index rebuild or shared mirror creation; --graph is unsupported here");
+      break;
+    case "unregister":
+      log("Usage:");
+      log("  mdkg graph unregister <name> [--apply --plan-hash <sha256>] [--json]");
+      log("\nNotes:");
+      log("  - preview/apply removes only the host-local mapping; preserves every graph byte and ignore entry");
+      log("  - explicit host-level operation; --graph is unsupported here");
+      break;
+    case "registrations":
+      log("Usage:");
+      log("  mdkg graph registrations [--json]");
+      log("\nNotes:");
+      log("  - explicit host-local registry metadata inspection; never opens/indexes graph roots; --graph is unsupported here");
+      break;
     case "reconcile":
       log("Usage:");
       log("  mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]");
@@ -883,13 +909,14 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg graph refs <id-or-qid> [--ws <alias>] [--json]");
       log("\nNotes:");
       log("  - graph clone/fork preserve numeric aliases; v2 clones share identity, independent forks record new identity and lineage");
+      log("  - graph register/unregister preview hash-bound host-local name mappings; graph registrations inspects metadata only");
       log("  - graph migrate previews explicit versioned identity migration; graph recover inspects or resumes its journal");
       log("  - graph reconcile reviews ancestor-backed identity changes and applies only an exact accepted plan hash");
       log("  - graph import-template imports template work nodes into the current graph with rewritten IDs");
       log("  - graph refs is read-only and explains local plus subgraph graph relationships");
       log("  - subgraphs remain read-only bundle projections for orchestration context");
   }
-  printGlobalOptions(log);
+  printGlobalOptions(log,!["register","unregister","registrations"].includes(subcommand??""));
 }
 
 function printGitHelp(log: LogFn, subcommand?: string): void {
@@ -2200,6 +2227,18 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const target = requireFlagValue("--target", parsed.flags["--target"]);
   const json = parseBooleanFlag("--json", parsed.flags["--json"]);
   switch (subcommand) {
+    case "register":
+    case "unregister": {
+      if(!source||parsed.positionals.length!==3)throw new UsageError(`graph ${subcommand} requires exactly one name`);
+      const visibility=requireFlagValue("--visibility",parsed.flags["--visibility"]);
+      if(visibility!==undefined&&!["private","internal","public"].includes(visibility))throw new UsageError("invalid graph visibility");
+      runGraphRegistryCommand({root,request:{action:subcommand,name:source,...(target?{target}:{}),...(visibility?{visibility:visibility as GraphVisibility}:{})},
+        apply:parseBooleanFlag("--apply",parsed.flags["--apply"]),planHash:requireFlagValue("--plan-hash",parsed.flags["--plan-hash"]),json});
+      return 0;
+    }
+    case "registrations":
+      if(parsed.positionals.length!==2)throw new UsageError("graph registrations takes no arguments");
+      runGraphRegistrationsCommand(root,json);return 0;
     case "reconcile": {
       if (parsed.positionals.length !== 2) throw new UsageError("graph reconcile does not accept positional arguments");
       const ancestor = requireFlagValue("--ancestor", parsed.flags["--ancestor"]);
@@ -3621,6 +3660,32 @@ function removedOptionError(parsed: ParsedArgs, argv: string[]): string | undefi
   return undefined;
 }
 
+function isRegistryOperation(parsed:ParsedArgs):boolean {
+  return parsed.positionals[0]?.toLowerCase()==="graph" && ["register","unregister","registrations"].includes(parsed.positionals[1]?.toLowerCase());
+}
+function assertSelectedOutputPolicy(selected:GraphContext,parsed:ParsedArgs):void {
+  if(!selected.name||selected.name==="default")return;
+  for(const flag of ["--out","--json-out","--stats-out","--truncation-report"]) {
+    const value=parsed.flags[flag];if(value===undefined)continue;
+    const output=path.resolve(selected.root,String(value)),rel=path.relative(selected.root,output);
+    if(!rel||rel===".."||rel.startsWith(`..${path.sep}`)||path.isAbsolute(rel))throw new UsageError("named graph output must remain inside its selected project root");
+    let current=selected.root;
+    for(const part of rel.split(path.sep)) {
+      current=path.join(current,part);
+      if(fs.existsSync(current)&&fs.lstatSync(current).isSymbolicLink())throw new UsageError("named graph output refuses linked paths");
+    }
+  }
+  if(selected.visibility!=="private")return;
+  const [family,operation]=parsed.positionals.map(s=>s.toLowerCase());
+  const visibility=parsed.flags["--visibility"];
+  if(visibility==="public"||visibility==="internal")throw new UsageError("private graph selection permits local/private output only");
+  if(family==="graph"&&["clone","fork","import-template"].includes(operation))throw new UsageError("private graph transport is unsupported; selection grants no export authority");
+  if(family==="bundle"&&operation==="create") {
+    const profile=parsed.flags["--pack-profile"]??loadConfig(selected.root).bundles.default_profile;
+    if(profile==="public")throw new UsageError("private graph selection cannot produce a public bundle");
+  }
+}
+
 export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
   const io = resolveRuntime(runtime);
   const parsed = parseArgs(argv);
@@ -3668,14 +3733,13 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
 
   try { assertNodeRuntime(); }
   catch (err) { return handleCommandError(err, command, io); }
-  const root = parsed.root ? path.resolve(parsed.root) : io.cwd();
-  if (shouldRequireConfig(command, parsed.flags) && !hasConfig(root)) {
-    printRootError(io.error, root);
-    return 1;
-  }
-
   try {
-    return runCommand(parsed, root, io);
+    const selected=resolveGraphContext(parsed.root?path.resolve(parsed.root):io.cwd(),requireFlagValue("--graph",parsed.flags["--graph"]));
+    if(selected.name)io.error(`selected graph: ${selected.name}; root: ${selected.root}`);
+    if(!isRegistryOperation(parsed)&&shouldRequireConfig(command,parsed.flags)&&!hasConfig(selected.root)) {
+      printRootError(io.error,selected.root);return 1;
+    }
+    return withGraphContext(selected,()=>{assertSelectedOutputPolicy(selected,parsed);return runCommand(parsed,selected.root,io);});
   } catch (err) {
     return handleCommandError(err, command, io);
   }
@@ -3728,17 +3792,16 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
 
   try { assertNodeRuntime(); }
   catch (err) { return handleCommandError(err, command, io); }
-  const root = parsed.root ? path.resolve(parsed.root) : io.cwd();
-  if (shouldRequireConfig(command, parsed.flags) && !hasConfig(root)) {
-    printRootError(io.error, root);
-    return 1;
-  }
-
   try {
-    if (command === "mcp") {
-      return await runMcpSubcommand(parsed, root);
+    const selected=resolveGraphContext(parsed.root?path.resolve(parsed.root):io.cwd(),requireFlagValue("--graph",parsed.flags["--graph"]));
+    if(selected.name)io.error(`selected graph: ${selected.name}; root: ${selected.root}`);
+    if(!isRegistryOperation(parsed)&&shouldRequireConfig(command,parsed.flags)&&!hasConfig(selected.root)) {
+      printRootError(io.error,selected.root);return 1;
     }
-    return runCommand(parsed, root, io);
+    return await withGraphContext(selected,async()=>{
+      assertSelectedOutputPolicy(selected,parsed);
+      return command==="mcp"?await runMcpSubcommand(parsed,selected.root):runCommand(parsed,selected.root,io);
+    });
   } catch (err) {
     return handleCommandError(err, command, io);
   }

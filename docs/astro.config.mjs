@@ -93,6 +93,7 @@ export default defineConfig({
             { label: "Packs And Handoffs", slug: "guides/packs-and-handoffs" },
             { label: "Research Spikes", slug: "guides/research-spikes" },
             { label: "Working Storage", slug: "guides/working-storage" },
+            { label: "Independent Graphs", slug: "guides/independent-graphs" },
           ],
         },
         {

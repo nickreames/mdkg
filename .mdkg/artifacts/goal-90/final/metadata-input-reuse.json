@@ -1,0 +1,17 @@
+{
+  "changed_product_files": [
+    "release/public-release.json"
+  ],
+  "state_preserved": "draft",
+  "runtime_source_unchanged": true,
+  "compiled_build_unchanged": true,
+  "feature_and_working_harnesses_unchanged": true,
+  "package_bytes_unchanged": true,
+  "installed_bytes_unchanged": true,
+  "tar_sha256": "3d6a0f9973749ebf2d3c8b5d19204bc03bf0fb517f79be6515854b6ac414473a",
+  "reason": "Necessary draft release target/id parity correction; no runtime, tests, npm payload or visibility approval change.",
+  "superseded_check": "release-contracts:23pass/5fail due stale0.6.2 target; retained as introduced metadata failure",
+  "prior_product_sha256": "eec3b68aa2b90b48668dc5f623321e46c2037d7b9421259a163c0241d9358e05",
+  "final_product_sha256": "fd22d620715646e6dd33d1fdbec1d7ea220b525b16516d9a9a4e83e4b1d10aae",
+  "harness_sha256": "df78927e5e98d5106fb0c25914605d39e83d5caf0f14eceb6b4e10c0c4de7dd7"
+}

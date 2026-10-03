@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-10-03
-package_version_in_source: 0.6.2
+package_version_in_source: 0.6.3
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -96,8 +96,19 @@ Usage:
 
 Global flags:
 - `--root`, `-r <path>`
+- `--graph <name>`
 - `--help`, `-h`
 - `--version`, `-V`
+
+`--graph` optionally selects an explicitly registered independent project root
+containing `.mdkg`. Names are exact lowercase aliases; numeric, path, UUID and
+repeated selectors refuse. No selector or `--graph default` keeps the existing
+default root. Unknown names never fall back or initialize anything. Relative
+paths, workspaces, storage and mirrors belong to the selected root. The selected
+name/root appears on stderr without changing command JSON stdout. Help/version
+remain graph-independent. Host-level registry commands do not accept `--graph`.
+See [independent graphs](docs/guides/independent-graphs.md) for the local registry,
+binding, private visibility and preview/apply rules.
 
 Hidden but supported runtime flags used by selected commands:
 - `--no-cache`
@@ -751,6 +762,9 @@ When to use:
 - prepare selected-goal demo handoffs from reusable graph templates
 
 Usage:
+- `mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]`
+- `mdkg graph unregister <name> [--apply --plan-hash <sha256>] [--json]`
+- `mdkg graph registrations [--json]`
 - `mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]`
 - `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
 - `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
@@ -770,6 +784,7 @@ Flags:
 - `--json`
 
 Notes:
+- `graph register` and `unregister` preview hash-bound host-local name mappings; `graph registrations` inspects metadata only. Registration requires an existing independent root and proven canonical-v2 or 0.6.2 working-host binding. Paths and identities must not collide. Registry metadata/lock stay ignored and untracked; private graph roots also stay ignored and untracked. Removal preserves files and ignore rules. No migration, copying, merging or graph deletion occurs. Private named selection permits local/private output and refuses public/internal visibility, public bundles and graph transport. Direct `--root` retains existing operator semantics.
 - `graph clone` and `graph fork` preserve numeric aliases. For v2, clone preserves same-project identity; independent fork creates new graph/node identities and a durable lineage mapping. V2 transport excludes checkout execution state.
 - clone/fork targets must be empty or absent and stay under the current mdkg root
 - live directory sources are never mutated; clone/fork refuses targets nested inside a live source directory
@@ -1527,20 +1542,20 @@ Local ignored files are not backup. See the working storage guide for custody
 and recovery limits.
 
 ```text
-  mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-  mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-  mdkg working list [--json]
-  mdkg working show <id...> [--json]
-  mdkg working search <query> [--json]
-  mdkg working verify [--json]
+  mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+  mdkg working list [--graph <value>] [--json]
+  mdkg working show <id...> [--graph <value>] [--json]
+  mdkg working search <query> [--graph <value>] [--json]
+  mdkg working verify [--graph <value>] [--json]
 ```

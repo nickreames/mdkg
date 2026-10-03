@@ -1,0 +1,14 @@
+{
+  "kind": "expected new-feature controls on unchanged 0.6.2 base",
+  "base_head": "1e5b5981611b019c4ab0d14ec9d0bcccf3c171ef",
+  "command": [
+    "python3",
+    "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+    "node",
+    "--test",
+    "tests/independent-graphs.test.mjs"
+  ],
+  "exit": 1,
+  "seconds": 0.218,
+  "log_sha256": "083a047b0c46b2c10a409f6b5c6ab410f7c0feba217016b851ee67bef9f2ada4"
+}

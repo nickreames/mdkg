@@ -2,6 +2,7 @@ import type { ParsedArgs } from "../util/argparse";
 import { optionValueKind } from "../util/argparse";
 import { ALLOWED_TYPES, WORK_TYPES } from "../graph/node";
 import { isAgentFileType } from "../graph/agent_file_types";
+import { graphNameError } from "../core/graph_context";
 
 const QUERY = "json xml toon md";
 const CACHE = "no-cache no-reindex";
@@ -101,6 +102,9 @@ const definitions: Record<string, string> = {
   "graph migrate": "graph-id origin ancestor decisions apply plan-hash json",
   "graph reconcile": "ancestor incoming target decisions apply plan-hash json",
   "graph recover": "resume rollback lock-evidence confirm-quiescent json",
+  "graph register": "target visibility apply plan-hash json",
+  "graph unregister": "apply plan-hash json",
+  "graph registrations": "json",
   "graph clone": "target json",
   "graph fork": "target start-goal json",
   "graph import-template": "start-goal id-prefix dry-run apply select-goal json",
@@ -182,7 +186,7 @@ for (const requestedType of ALLOWED_TYPES) {
 
 export const COMMAND_OPTIONS: Readonly<Record<string, readonly string[]>> = Object.freeze(
   Object.fromEntries(Object.entries(definitions).map(([key, words]) => [key,
-    Object.freeze(["--root", "--help", "--version", ...words.split(" ").filter(Boolean).map(word => `--${word}`)])]))
+    Object.freeze(["--root", "--help", "--version", ...(!["graph register", "graph unregister", "graph registrations"].includes(key)?["--graph"]:[]), ...words.split(" ").filter(Boolean).map(word => `--${word}`)])]))
 );
 
 const INTEGERS = new Set("priority depth limit max-code-lines max-chars max-lines max-tokens max-stale-seconds lease-ms available-at-ms max-attempts retry-after-ms"
@@ -212,6 +216,13 @@ export function optionCommandsForHelp(positionals: readonly string[]): Array<{ c
 // Pure admission: called by BOTH entrypoints before cwd/config discovery, help,
 // package-version reads, output creation, locks, or subprocesses.
 export function commandOptionError(parsed: ParsedArgs): string | undefined {
+  const selectors=(parsed.options??[]).filter(o=>o.flag==="--graph");
+  if(selectors.length>1)return "--graph may appear only once; no command effects attempted";
+  if(parsed.flags["--graph"]!==undefined) {
+    const value=parsed.flags["--graph"];
+    if(typeof value!=="string")return "--graph requires a value";
+    const error=graphNameError(value);if(error)return error;
+  }
   const help = parsed.help || parsed.positionals[0]?.toLowerCase() === "help";
   const positionals = parsed.positionals[0]?.toLowerCase() === "help"
     ? parsed.positionals.slice(1) : parsed.positionals;
@@ -219,7 +230,7 @@ export function commandOptionError(parsed: ParsedArgs): string | undefined {
   const helpPrefix = positionals.join(" ").toLowerCase();
   const listProfiles = parsed.flags["--list-profiles"];
   const allowed = new Set(key === "pack" && !help && (listProfiles === true || listProfiles === "true")
-    ? ["--root", "--help", "--version", "--list-profiles"] : key ? COMMAND_OPTIONS[key] : ["--root", "--help", "--version"]);
+    ? ["--root", "--graph", "--help", "--version", "--list-profiles"] : key ? COMMAND_OPTIONS[key] : ["--root", "--graph", "--help", "--version"]);
   if (help && !key) {
     for (const [command, flags] of Object.entries(COMMAND_OPTIONS)) {
       if (command.startsWith(`${helpPrefix} `)) for (const flag of flags) allowed.add(flag);

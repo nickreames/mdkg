@@ -54,6 +54,7 @@ const READ_ONLY_TARGETS = new Set([
   "subgraph list", "subgraph show", "subgraph verify", "graph refs",
   "goal show", "goal current", "goal next", "goal evaluate",
   "skill list", "skill show", "skill search", "skill validate",
+  "graph registrations",
 ]);
 
 function mixedSafety(effects, paths, lock, atomic, receipts = []) {
@@ -62,6 +63,18 @@ function mixedSafety(effects, paths, lock, atomic, receipts = []) {
 }
 
 const SAFETY_OVERRIDES = {
+  "graph register": {
+    ...mixedSafety(["explicit-local-registry-metadata", "reviewed-gitignore-update"],
+      [".mdkg-graphs.local.json", ".mdkg-graphs.lock", ".gitignore"], "host-registry-writer-lock", "ignore-first-atomic-registry-replacement"),
+    read_paths: [".mdkg/config.json", ".mdkg/graph.json", ".mdkg/working-host.json", "<selected-root>/.mdkg/config.json", "<selected-root>/.mdkg/graph.json", "<selected-root>/.mdkg/working-host.json", ".mdkg-graphs.local.json", ".gitignore", "<local-git-index>"],
+    dry_run: {supported:true,default:true}, receipts:["graph.registry", "graph.register"],
+  },
+  "graph unregister": {
+    ...mixedSafety(["explicit-local-registry-metadata"], [".mdkg-graphs.local.json", ".mdkg-graphs.lock", ".gitignore"], "host-registry-writer-lock", "ignore-first-atomic-registry-replacement"),
+    read_paths: [".mdkg-graphs.local.json", ".gitignore", ".mdkg/config.json", ".mdkg/graph.json", ".mdkg/working-host.json", "<local-git-index>"],
+    dry_run: {supported:true,default:true}, receipts:["graph.registry", "graph.unregister"],
+  },
+  "graph registrations": {read_paths:[".mdkg-graphs.local.json"],receipts:["graph.registrations"]},
   init: {
     side_effects: ["initialize-mdkg-scaffold"],
     write_paths: READ_WRITE_PATHS.init,
@@ -603,8 +616,8 @@ const SAFETY_OVERRIDES = {
   "work order": mixedSafety(["create-or-update-work-order; status-is-observational"], [...READ_WRITE_PATHS.graph, ".mdkg/work/**/WORK_ORDER.md"],
     "mutation-lock-required-for-new-update", "exclusive-create-or-atomic-file-write", ["work-order-receipt", "work-order-status"]),
   graph: mixedSafety(["read-or-write-graph-transport-identity-and-reconciliation-state"],
-    [...READ_WRITE_PATHS.graph, ".mdkg/graph.json", ".mdkg/identity/**", ".mdkg/state/**", "<--target>/**"],
-    "operation-specific; target-index-lock-for-clone-fork; mutation-lock-for-apply", "operation-specific-exclusive-create-or-journaled-atomic-writes", ["graph-receipt"]),
+    [...READ_WRITE_PATHS.graph, ".mdkg/graph.json", ".mdkg/identity/**", ".mdkg/state/**", "<--target>/**", ".mdkg-graphs.local.json", ".mdkg-graphs.lock", ".gitignore"],
+    "operation-specific; host-registry-writer-lock-for-registration; target-index-lock-for-clone-fork; mutation-lock-for-apply", "operation-specific-exclusive-create-or-journaled-atomic-writes", ["graph-receipt", "graph.registry"]),
   "graph clone": mixedSafety(["create-new-target-graph-and-derived-indexes"], ["<--target>/**"],
     "exclusive-empty-target-admission-and-target-index-lock", "exclusive-file-creation; failed-target-may-remain", ["graph-clone-receipt"]),
   "graph fork": mixedSafety(["create-independent-target-graph-and-optional-selected-goal"], ["<--target>/**"],

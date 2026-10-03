@@ -16,6 +16,13 @@ described in older entries. Use the current command reference and
 [native Git migration guide](/advanced-alpha/git-materialization/) for candidate
 behavior; no old command is restored by its appearance in release history.
 
+## `0.6.3` candidate
+
+Draft, unpublished and awaiting complete qualification and local owner review.
+The current candidate adds explicit [independent graph selection](/guides/independent-graphs/).
+See the root changelog for exact behavior and limits. Earlier candidate notes
+remain below; these notes do not authorize publication or professional adoption.
+
 ## `0.6.2` candidate
 
 Draft, unpublished and awaiting complete qualification and local owner review.

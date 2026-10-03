@@ -168,25 +168,22 @@ function matchMdkgCommand(command, commands) {
   if (words[0] !== "mdkg") {
     return { ok: false, reason: "not an mdkg command" };
   }
+  let parsed;
   try {
-    const parsed = parseArgs(words.slice(1));
+    parsed = parseArgs(words.slice(1));
     if (parsed.error) return { ok: false, reason: parsed.error };
     const optionError = commandOptionError(parsed);
     if (optionError) return { ok: false, reason: optionError };
   } catch (error) {
     return { ok: false, reason: error instanceof Error ? error.message : String(error) };
   }
-  if (words[1] === "--version" || words[1] === "-V" || words[1] === "--help" || words[1] === "-h") {
+  if (parsed.version || parsed.help) {
     return { ok: true, key: "<global>" };
   }
 
-  const commandWords = [];
-  for (const word of words.slice(1)) {
-    if (word.startsWith("-")) {
-      break;
-    }
-    commandWords.push(word);
-  }
+  // Use the same admitted positional path as dispatch. Prefix global options
+  // such as --root/--graph and their values are not command words.
+  const commandWords = parsed.positionals;
   for (let size = commandWords.length; size >= 1; size -= 1) {
     const key = commandWords.slice(0, size).join(" ");
     const contractCommand = commands.get(key);

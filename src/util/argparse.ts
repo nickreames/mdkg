@@ -14,6 +14,7 @@ const NORMALIZE_VALUE_FLAGS = new Set(["--ws", "--type", "--status", "--template
 const VALUE_FLAGS = new Set([
   "--plan", "--owner", "--file", "--work-ref", "--summary-file", "--archive-id",
   "--root",
+  "--graph",
   "--id",
   "--ws",
   "--type",

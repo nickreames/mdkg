@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+    "node",
+    "--test",
+    "tests/independent-graphs.test.mjs"
+  ],
+  "exit": 1,
+  "seconds": 10.365,
+  "log_sha256": "4f17171dd7994e5d250fb55cb8db204e4c19e37c9a1c12af36efef6cb7a29865",
+  "tests": 12,
+  "pass": 4,
+  "fail": 8,
+  "skipped": 0,
+  "cancelled": 0
+}

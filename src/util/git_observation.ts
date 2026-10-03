@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { TextDecoder } from "util";
 import { ValidationError } from "./errors";
+import { currentGraphContext } from "../core/graph_context";
 
 export type GitStatusEntry = {
   index: string;
@@ -193,6 +194,9 @@ function assertNoContentFilterExecution(
 export function readGitStatus(
   root: string, options: { untracked?: "all" | "normal" | "no"; paths?: string[]; maxBuffer?: number } = {}
 ): GitStatusEntry[] {
+  const selected=currentGraphContext();
+  if(options.paths===undefined && selected?.name && selected.name!=="default" && path.resolve(root)===selected.root)
+    options={...options,paths:["."]};
   assertNoContentFilterExecution(root, options.paths, options);
   return parseGitStatus(observeGit(root, [
     "status", "--porcelain=v1", "-z", `--untracked-files=${options.untracked ?? "normal"}`,

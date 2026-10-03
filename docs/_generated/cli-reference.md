@@ -1,16 +1,16 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 0446ae709d7abf79ab25a09511b6b5830968e6f939ec5c1547a463dbb87baac2 -->
+<!-- contract-hash: c8244ba6c0e267f03997db940ea52fc3d4325b111106cb1bf63f6a1a50e533a8 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
 The page is generated from current command metadata in `dist/command-contract.json`, which keeps usage, flags, output formats, and safety notes aligned with the CLI.
 
 - Tool: mdkg
-- Package version: 0.6.2
+- Package version: 0.6.3
 - Schema version: 1
-- Command count: 131
+- Command count: 134
 - Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, git, global, goal, graph, guide, handoff, index, init, list, loop, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, working, workspace
 
 ## Categories
@@ -27,7 +27,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - git: 2
 - global: 1
 - goal: 13
-- graph: 8
+- graph: 11
 - guide: 1
 - handoff: 1
 - index: 1
@@ -60,173 +60,176 @@ Boolean values use `=true` or `=false`; `init --agent` also preserves its legacy
 
 | Command | Accepted command options |
 | --- | --- |
-| `mdkg working init` | `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working add` | `--file <value>`, `--owner <value>`, `--work-ref <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working adopt` | `--file <value>`, `--owner <value>`, `--work-ref <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working retain` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working release` | `--owner <value>`, `--confirm-stopped`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working pin` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working unpin` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working promote` | `--owner <value>`, `--summary-file <value>`, `--archive-id <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working gc` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working recover` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working purge` | `--owner <value>`, `--confirm-loss`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
-| `mdkg working resume` | `--owner <value>`, `--confirm-stopped`, `--apply`, `--plan-hash <value>`, `--lock-evidence <value>`, `--confirm-quiescent`, `--json` |
-| `mdkg working list` | `--json` |
-| `mdkg working show` | `--json` |
-| `mdkg working search` | `--json` |
-| `mdkg working verify` | `--json` |
-| `mdkg init` | `--force`, `--agent`, `--graph-only`, `--no-update-ignores`, `--update-gitignore`, `--update-npmignore`, `--update-dockerignore` |
-| `mdkg upgrade` | `--dry-run`, `--apply`, `--resume`, `--recover`, `--plan-hash <value>`, `--only <value>`, `--json` |
-| `mdkg guide` | none |
-| `mdkg index` | `--tolerant` |
-| `mdkg new` | `--id <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--cases <value>`, `--tags <value>`, `--owners <value>`, `--supersedes <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--receipt-kind <value>`, `--redaction-class <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg show` | `--ws <value>`, `--meta`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
-| `mdkg list` | `--ws <value>`, `--type <value>`, `--status <value>`, `--epic <value>`, `--priority <integer>`, `--blocked`, `--tags <value>`, `--tags-mode <value>`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
-| `mdkg search` | `--ws <value>`, `--type <value>`, `--status <value>`, `--tags <value>`, `--tags-mode <value>`, `--limit <integer>`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
-| `mdkg pack` | `--ws <value>`, `--depth <integer>`, `--edges <value>`, `--verbose`, `--concise`, `--strip-code`, `--format <value>`, `--pack-profile <value>`, `--max-code-lines <integer>`, `--max-chars <integer>`, `--max-lines <integer>`, `--max-tokens <integer>`, `--skills <value>`, `--skills-depth <value>`, `--visibility <value>`, `--dry-run`, `--stats`, `--stats-out <value>`, `--truncation-report <value>`, `--out <value>`, `--list-profiles`, `--no-cache`, `--no-reindex` |
-| `mdkg handoff create` | `--ws <value>`, `--out <value>`, `--depth <integer>`, `--json` |
-| `mdkg next` | `--ws <value>`, `--no-cache`, `--no-reindex` |
-| `mdkg checkpoint new` | `--ws <value>`, `--json`, `--run-id <value>`, `--note <value>`, `--relates <value>`, `--scope <value>`, `--kind <value>`, `--status <value>`, `--priority <integer>`, `--template <value>` |
-| `mdkg validate` | `--out <value>`, `--json-out <value>`, `--quiet`, `--changed-only`, `--summary`, `--limit <integer>`, `--json` |
-| `mdkg status` | `--json` |
-| `mdkg mcp serve` | `--stdio` |
-| `mdkg fix plan` | `--family <value>`, `--target <value>`, `--base-ref <value>`, `--json` |
-| `mdkg fix apply` | `--family <value>`, `--target <value>`, `--base-ref <value>`, `--json` |
-| `mdkg fix ids` | `--target <value>`, `--base-ref <value>`, `--apply`, `--json` |
-| `mdkg format` | `--headings`, `--dry-run`, `--apply`, `--summary`, `--limit <integer>`, `--json` |
-| `mdkg doctor` | `--strict`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg workspace ls` | `--json` |
-| `mdkg workspace add` | `--mdkg-dir <value>`, `--visibility <value>`, `--json` |
-| `mdkg workspace rm` | `--json` |
-| `mdkg workspace enable` | `--json` |
-| `mdkg workspace disable` | `--json` |
-| `mdkg db index rebuild` | `--tolerant`, `--json` |
-| `mdkg db index status` | `--tolerant`, `--json` |
-| `mdkg db index verify` | `--tolerant`, `--json` |
-| `mdkg db init` | `--json` |
-| `mdkg db migrate` | `--json` |
-| `mdkg db verify` | `--json` |
-| `mdkg db stats` | `--json` |
-| `mdkg db queue create` | `--paused`, `--reason <value>`, `--json` |
-| `mdkg db queue contract` | `--json` |
-| `mdkg db queue pause` | `--reason <value>`, `--json` |
-| `mdkg db queue resume` | `--json` |
-| `mdkg db queue enqueue` | `--payload-json <value>`, `--payload-file <value>`, `--dedupe-key <value>`, `--available-at-ms <integer>`, `--max-attempts <integer>`, `--json` |
-| `mdkg db queue claim` | `--lease-owner <value>`, `--lease-ms <integer>`, `--json` |
-| `mdkg db queue ack` | `--lease-owner <value>`, `--json` |
-| `mdkg db queue fail` | `--lease-owner <value>`, `--error <value>`, `--retry-after-ms <integer>`, `--json` |
-| `mdkg db queue dead-letter` | `--lease-owner <value>`, `--error <value>`, `--json` |
-| `mdkg db queue release-expired` | `--json` |
-| `mdkg db queue stats` | `--json` |
-| `mdkg db queue list` | `--status <value>`, `--limit <integer>`, `--json` |
-| `mdkg db queue show` | `--json` |
-| `mdkg db snapshot seal` | `--queue-policy <value>`, `--json` |
-| `mdkg db snapshot verify` | `--json` |
-| `mdkg db snapshot status` | `--json` |
-| `mdkg db snapshot dump` | `--snapshot <value>`, `--out <value>`, `--json` |
-| `mdkg db snapshot diff` | `--json` |
-| `mdkg capability list` | `--kind <value>`, `--visibility <value>`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg capability search` | `--kind <value>`, `--visibility <value>`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg capability show` | `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg capability resolve` | `--kind <value>`, `--visibility <value>`, `--requires <value>`, `--fresh-only`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg manifest list` | `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg manifest show` | `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg manifest validate` | `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg spec list` | `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg spec show` | `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg spec validate` | `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg archive add` | `--id <value>`, `--ws <value>`, `--kind <value>`, `--title <value>`, `--refs <value>`, `--relates <value>`, `--visibility <value>`, `--json` |
-| `mdkg archive list` | `--ws <value>`, `--kind <value>`, `--visibility <value>`, `--json` |
-| `mdkg archive show` | `--ws <value>`, `--json` |
-| `mdkg archive verify` | `--ws <value>`, `--json` |
-| `mdkg archive compress` | `--all`, `--ws <value>`, `--json` |
-| `mdkg bundle create` | `--pack-profile <value>`, `--ws <value>`, `--out <value>`, `--json` |
-| `mdkg bundle list` | `--json` |
-| `mdkg bundle show` | `--json` |
-| `mdkg bundle verify` | `--json` |
-| `mdkg graph migrate` | `--graph-id <value>`, `--origin <value>`, `--ancestor <value>`, `--decisions <value>`, `--apply`, `--plan-hash <value>`, `--json` |
-| `mdkg graph reconcile` | `--ancestor <value>`, `--incoming <value>`, `--target <value>`, `--decisions <value>`, `--apply`, `--plan-hash <value>`, `--json` |
-| `mdkg graph recover` | `--resume`, `--rollback`, `--lock-evidence <value>`, `--confirm-quiescent`, `--json` |
-| `mdkg graph clone` | `--target <value>`, `--json` |
-| `mdkg graph fork` | `--target <value>`, `--start-goal <value>`, `--json` |
-| `mdkg graph import-template` | `--start-goal <value>`, `--id-prefix <value>`, `--dry-run`, `--apply`, `--select-goal`, `--json` |
-| `mdkg graph refs` | `--ws <value>`, `--json` |
-| `mdkg git inspect` | `--json` |
-| `mdkg subgraph add` | `--visibility <value>`, `--pack-profile <value>`, `--source-path <value>`, `--source-repo <value>`, `--max-stale-seconds <integer>`, `--json` |
-| `mdkg subgraph list` | `--json` |
-| `mdkg subgraph show` | `--json` |
-| `mdkg subgraph rm` | `--json` |
-| `mdkg subgraph remove` | `--json` |
-| `mdkg subgraph enable` | `--json` |
-| `mdkg subgraph disable` | `--json` |
-| `mdkg subgraph verify` | `--all`, `--json` |
-| `mdkg subgraph refresh` | `--all`, `--json` |
-| `mdkg subgraph audit` | `--all`, `--target <value>`, `--json` |
-| `mdkg subgraph upgrade-plan` | `--all`, `--json` |
-| `mdkg subgraph sync` | `--all`, `--dry-run`, `--allow-dirty`, `--json` |
-| `mdkg subgraph materialize` | `--all`, `--target <value>`, `--clean`, `--gitignore`, `--json` |
-| `mdkg work trigger` | `--id <value>`, `--title <value>`, `--requester <value>`, `--enqueue <value>`, `--ws <value>`, `--json` |
-| `mdkg work validate` | `--type <value>`, `--ws <value>`, `--json` |
-| `mdkg work contract new` | `--id <value>`, `--agent-id <value>`, `--kind <value>`, `--inputs <value>`, `--outputs <value>`, `--required-capabilities <value>`, `--contract-profile <value>`, `--ws <value>`, `--json` |
-| `mdkg work order new` | `--id <value>`, `--work-id <value>`, `--requester <value>`, `--request-ref <value>`, `--trigger-ref <value>`, `--payload-hash <value>`, `--input-refs <value>`, `--queue-refs <value>`, `--requested-outputs <value>`, `--constraint-refs <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--ws <value>`, `--json` |
-| `mdkg work order update` | `--status <value>`, `--add-input-refs <value>`, `--add-queue-refs <value>`, `--add-artifacts <value>`, `--ws <value>`, `--json` |
-| `mdkg work order status` | `--ws <value>`, `--json` |
-| `mdkg work receipt new` | `--id <value>`, `--work-order-id <value>`, `--outcome <value>`, `--receipt-status <value>`, `--cost-ref <value>`, `--redaction-policy <value>`, `--artifacts <value>`, `--proof-refs <value>`, `--attestation-refs <value>`, `--evidence-hashes <value>`, `--input-hashes <value>`, `--output-hashes <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--receipt-kind <value>`, `--redaction-class <value>`, `--ws <value>`, `--json` |
-| `mdkg work receipt update` | `--receipt-status <value>`, `--add-artifacts <value>`, `--add-proof-refs <value>`, `--add-attestation-refs <value>`, `--add-evidence-hashes <value>`, `--ws <value>`, `--json` |
-| `mdkg work receipt verify` | `--ws <value>`, `--json` |
-| `mdkg work artifact add` | `--id <value>`, `--kind <value>`, `--ws <value>`, `--json` |
-| `mdkg skill new` | `--description <value>`, `--tags <value>`, `--authors <value>`, `--links <value>`, `--with-scripts`, `--force`, `--run-id <value>`, `--json` |
-| `mdkg skill list` | `--tags <value>`, `--tags-mode <value>`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
-| `mdkg skill search` | `--tags <value>`, `--tags-mode <value>`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
-| `mdkg skill show` | `--meta`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
-| `mdkg skill validate` | `--json` |
-| `mdkg skill sync` | `--force`, `--json` |
-| `mdkg loop list` | `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg loop show` | `--meta`, `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg loop fork` | `--scope <value>`, `--title <value>`, `--materialization <value>`, `--planning-only`, `--no-children`, `--dry-run`, `--run-id <value>`, `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg loop plan` | `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg loop next` | `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg loop runs` | `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
-| `mdkg goal show` | `--ws <value>`, `--json` |
-| `mdkg goal select` | `--ws <value>`, `--json` |
-| `mdkg goal activate` | `--ws <value>`, `--json` |
-| `mdkg goal current` | `--ws <value>`, `--json` |
-| `mdkg goal clear` | `--json` |
-| `mdkg goal next` | `--ws <value>`, `--json` |
-| `mdkg goal claim` | `--ws <value>`, `--json` |
-| `mdkg goal evaluate` | `--ws <value>`, `--json` |
-| `mdkg goal pause` | `--ws <value>`, `--json` |
-| `mdkg goal resume` | `--ws <value>`, `--json` |
-| `mdkg goal done` | `--ws <value>`, `--json` |
-| `mdkg goal archive` | `--ws <value>`, `--json` |
-| `mdkg task start` | `--ws <value>`, `--json`, `--run-id <value>`, `--note <value>` |
-| `mdkg task update` | `--status <value>`, `--priority <integer>`, `--add-artifacts <value>`, `--add-links <value>`, `--add-refs <value>`, `--add-skills <value>`, `--add-tags <value>`, `--add-blocked-by <value>`, `--clear-blocked-by`, `--ws <value>`, `--json`, `--run-id <value>`, `--note <value>` |
-| `mdkg task done` | `--add-artifacts <value>`, `--add-links <value>`, `--add-refs <value>`, `--checkpoint <value>`, `--checkpoint-kind <value>`, `--ws <value>`, `--json`, `--run-id <value>`, `--note <value>` |
-| `mdkg event enable` | `--ws <value>`, `--json` |
-| `mdkg event append` | `--kind <value>`, `--status <value>`, `--refs <value>`, `--artifacts <value>`, `--notes <value>`, `--run-id <value>`, `--agent <value>`, `--skill <value>`, `--tool <value>`, `--ws <value>`, `--json` |
-| `mdkg new rule` | `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new prd` | `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new edd` | `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new dec` | `--ws <value>`, `--status <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--supersedes <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new prop` | `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new goal` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new loop` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new epic` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new feat` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new task` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new bug` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new spike` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new checkpoint` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new test` | `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--cases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new manifest` | `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new spec` | `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new work` | `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new work_order` | `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new receipt` | `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--receipt-kind <value>`, `--redaction-class <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new feedback` | `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new dispute` | `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
-| `mdkg new proposal` | `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg working init` | `--graph <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working add` | `--graph <value>`, `--file <value>`, `--owner <value>`, `--work-ref <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working adopt` | `--graph <value>`, `--file <value>`, `--owner <value>`, `--work-ref <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working retain` | `--graph <value>`, `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working release` | `--graph <value>`, `--owner <value>`, `--confirm-stopped`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working pin` | `--graph <value>`, `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working unpin` | `--graph <value>`, `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working promote` | `--graph <value>`, `--owner <value>`, `--summary-file <value>`, `--archive-id <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working gc` | `--graph <value>`, `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working recover` | `--graph <value>`, `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working purge` | `--graph <value>`, `--owner <value>`, `--confirm-loss`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working resume` | `--graph <value>`, `--owner <value>`, `--confirm-stopped`, `--apply`, `--plan-hash <value>`, `--lock-evidence <value>`, `--confirm-quiescent`, `--json` |
+| `mdkg working list` | `--graph <value>`, `--json` |
+| `mdkg working show` | `--graph <value>`, `--json` |
+| `mdkg working search` | `--graph <value>`, `--json` |
+| `mdkg working verify` | `--graph <value>`, `--json` |
+| `mdkg init` | `--graph <value>`, `--force`, `--agent`, `--graph-only`, `--no-update-ignores`, `--update-gitignore`, `--update-npmignore`, `--update-dockerignore` |
+| `mdkg upgrade` | `--graph <value>`, `--dry-run`, `--apply`, `--resume`, `--recover`, `--plan-hash <value>`, `--only <value>`, `--json` |
+| `mdkg guide` | `--graph <value>` |
+| `mdkg index` | `--graph <value>`, `--tolerant` |
+| `mdkg new` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--cases <value>`, `--tags <value>`, `--owners <value>`, `--supersedes <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--receipt-kind <value>`, `--redaction-class <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg show` | `--graph <value>`, `--ws <value>`, `--meta`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
+| `mdkg list` | `--graph <value>`, `--ws <value>`, `--type <value>`, `--status <value>`, `--epic <value>`, `--priority <integer>`, `--blocked`, `--tags <value>`, `--tags-mode <value>`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
+| `mdkg search` | `--graph <value>`, `--ws <value>`, `--type <value>`, `--status <value>`, `--tags <value>`, `--tags-mode <value>`, `--limit <integer>`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
+| `mdkg pack` | `--graph <value>`, `--ws <value>`, `--depth <integer>`, `--edges <value>`, `--verbose`, `--concise`, `--strip-code`, `--format <value>`, `--pack-profile <value>`, `--max-code-lines <integer>`, `--max-chars <integer>`, `--max-lines <integer>`, `--max-tokens <integer>`, `--skills <value>`, `--skills-depth <value>`, `--visibility <value>`, `--dry-run`, `--stats`, `--stats-out <value>`, `--truncation-report <value>`, `--out <value>`, `--list-profiles`, `--no-cache`, `--no-reindex` |
+| `mdkg handoff create` | `--graph <value>`, `--ws <value>`, `--out <value>`, `--depth <integer>`, `--json` |
+| `mdkg next` | `--graph <value>`, `--ws <value>`, `--no-cache`, `--no-reindex` |
+| `mdkg checkpoint new` | `--graph <value>`, `--ws <value>`, `--json`, `--run-id <value>`, `--note <value>`, `--relates <value>`, `--scope <value>`, `--kind <value>`, `--status <value>`, `--priority <integer>`, `--template <value>` |
+| `mdkg validate` | `--graph <value>`, `--out <value>`, `--json-out <value>`, `--quiet`, `--changed-only`, `--summary`, `--limit <integer>`, `--json` |
+| `mdkg status` | `--graph <value>`, `--json` |
+| `mdkg mcp serve` | `--graph <value>`, `--stdio` |
+| `mdkg fix plan` | `--graph <value>`, `--family <value>`, `--target <value>`, `--base-ref <value>`, `--json` |
+| `mdkg fix apply` | `--graph <value>`, `--family <value>`, `--target <value>`, `--base-ref <value>`, `--json` |
+| `mdkg fix ids` | `--graph <value>`, `--target <value>`, `--base-ref <value>`, `--apply`, `--json` |
+| `mdkg format` | `--graph <value>`, `--headings`, `--dry-run`, `--apply`, `--summary`, `--limit <integer>`, `--json` |
+| `mdkg doctor` | `--graph <value>`, `--strict`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg workspace ls` | `--graph <value>`, `--json` |
+| `mdkg workspace add` | `--graph <value>`, `--mdkg-dir <value>`, `--visibility <value>`, `--json` |
+| `mdkg workspace rm` | `--graph <value>`, `--json` |
+| `mdkg workspace enable` | `--graph <value>`, `--json` |
+| `mdkg workspace disable` | `--graph <value>`, `--json` |
+| `mdkg db index rebuild` | `--graph <value>`, `--tolerant`, `--json` |
+| `mdkg db index status` | `--graph <value>`, `--tolerant`, `--json` |
+| `mdkg db index verify` | `--graph <value>`, `--tolerant`, `--json` |
+| `mdkg db init` | `--graph <value>`, `--json` |
+| `mdkg db migrate` | `--graph <value>`, `--json` |
+| `mdkg db verify` | `--graph <value>`, `--json` |
+| `mdkg db stats` | `--graph <value>`, `--json` |
+| `mdkg db queue create` | `--graph <value>`, `--paused`, `--reason <value>`, `--json` |
+| `mdkg db queue contract` | `--graph <value>`, `--json` |
+| `mdkg db queue pause` | `--graph <value>`, `--reason <value>`, `--json` |
+| `mdkg db queue resume` | `--graph <value>`, `--json` |
+| `mdkg db queue enqueue` | `--graph <value>`, `--payload-json <value>`, `--payload-file <value>`, `--dedupe-key <value>`, `--available-at-ms <integer>`, `--max-attempts <integer>`, `--json` |
+| `mdkg db queue claim` | `--graph <value>`, `--lease-owner <value>`, `--lease-ms <integer>`, `--json` |
+| `mdkg db queue ack` | `--graph <value>`, `--lease-owner <value>`, `--json` |
+| `mdkg db queue fail` | `--graph <value>`, `--lease-owner <value>`, `--error <value>`, `--retry-after-ms <integer>`, `--json` |
+| `mdkg db queue dead-letter` | `--graph <value>`, `--lease-owner <value>`, `--error <value>`, `--json` |
+| `mdkg db queue release-expired` | `--graph <value>`, `--json` |
+| `mdkg db queue stats` | `--graph <value>`, `--json` |
+| `mdkg db queue list` | `--graph <value>`, `--status <value>`, `--limit <integer>`, `--json` |
+| `mdkg db queue show` | `--graph <value>`, `--json` |
+| `mdkg db snapshot seal` | `--graph <value>`, `--queue-policy <value>`, `--json` |
+| `mdkg db snapshot verify` | `--graph <value>`, `--json` |
+| `mdkg db snapshot status` | `--graph <value>`, `--json` |
+| `mdkg db snapshot dump` | `--graph <value>`, `--snapshot <value>`, `--out <value>`, `--json` |
+| `mdkg db snapshot diff` | `--graph <value>`, `--json` |
+| `mdkg capability list` | `--graph <value>`, `--kind <value>`, `--visibility <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg capability search` | `--graph <value>`, `--kind <value>`, `--visibility <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg capability show` | `--graph <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg capability resolve` | `--graph <value>`, `--kind <value>`, `--visibility <value>`, `--requires <value>`, `--fresh-only`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg manifest list` | `--graph <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg manifest show` | `--graph <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg manifest validate` | `--graph <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg spec list` | `--graph <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg spec show` | `--graph <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg spec validate` | `--graph <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg archive add` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--kind <value>`, `--title <value>`, `--refs <value>`, `--relates <value>`, `--visibility <value>`, `--json` |
+| `mdkg archive list` | `--graph <value>`, `--ws <value>`, `--kind <value>`, `--visibility <value>`, `--json` |
+| `mdkg archive show` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg archive verify` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg archive compress` | `--graph <value>`, `--all`, `--ws <value>`, `--json` |
+| `mdkg bundle create` | `--graph <value>`, `--pack-profile <value>`, `--ws <value>`, `--out <value>`, `--json` |
+| `mdkg bundle list` | `--graph <value>`, `--json` |
+| `mdkg bundle show` | `--graph <value>`, `--json` |
+| `mdkg bundle verify` | `--graph <value>`, `--json` |
+| `mdkg graph migrate` | `--graph <value>`, `--graph-id <value>`, `--origin <value>`, `--ancestor <value>`, `--decisions <value>`, `--apply`, `--plan-hash <value>`, `--json` |
+| `mdkg graph reconcile` | `--graph <value>`, `--ancestor <value>`, `--incoming <value>`, `--target <value>`, `--decisions <value>`, `--apply`, `--plan-hash <value>`, `--json` |
+| `mdkg graph recover` | `--graph <value>`, `--resume`, `--rollback`, `--lock-evidence <value>`, `--confirm-quiescent`, `--json` |
+| `mdkg graph register` | `--target <value>`, `--visibility <value>`, `--apply`, `--plan-hash <value>`, `--json` |
+| `mdkg graph unregister` | `--apply`, `--plan-hash <value>`, `--json` |
+| `mdkg graph registrations` | `--json` |
+| `mdkg graph clone` | `--graph <value>`, `--target <value>`, `--json` |
+| `mdkg graph fork` | `--graph <value>`, `--target <value>`, `--start-goal <value>`, `--json` |
+| `mdkg graph import-template` | `--graph <value>`, `--start-goal <value>`, `--id-prefix <value>`, `--dry-run`, `--apply`, `--select-goal`, `--json` |
+| `mdkg graph refs` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg git inspect` | `--graph <value>`, `--json` |
+| `mdkg subgraph add` | `--graph <value>`, `--visibility <value>`, `--pack-profile <value>`, `--source-path <value>`, `--source-repo <value>`, `--max-stale-seconds <integer>`, `--json` |
+| `mdkg subgraph list` | `--graph <value>`, `--json` |
+| `mdkg subgraph show` | `--graph <value>`, `--json` |
+| `mdkg subgraph rm` | `--graph <value>`, `--json` |
+| `mdkg subgraph remove` | `--graph <value>`, `--json` |
+| `mdkg subgraph enable` | `--graph <value>`, `--json` |
+| `mdkg subgraph disable` | `--graph <value>`, `--json` |
+| `mdkg subgraph verify` | `--graph <value>`, `--all`, `--json` |
+| `mdkg subgraph refresh` | `--graph <value>`, `--all`, `--json` |
+| `mdkg subgraph audit` | `--graph <value>`, `--all`, `--target <value>`, `--json` |
+| `mdkg subgraph upgrade-plan` | `--graph <value>`, `--all`, `--json` |
+| `mdkg subgraph sync` | `--graph <value>`, `--all`, `--dry-run`, `--allow-dirty`, `--json` |
+| `mdkg subgraph materialize` | `--graph <value>`, `--all`, `--target <value>`, `--clean`, `--gitignore`, `--json` |
+| `mdkg work trigger` | `--graph <value>`, `--id <value>`, `--title <value>`, `--requester <value>`, `--enqueue <value>`, `--ws <value>`, `--json` |
+| `mdkg work validate` | `--graph <value>`, `--type <value>`, `--ws <value>`, `--json` |
+| `mdkg work contract new` | `--graph <value>`, `--id <value>`, `--agent-id <value>`, `--kind <value>`, `--inputs <value>`, `--outputs <value>`, `--required-capabilities <value>`, `--contract-profile <value>`, `--ws <value>`, `--json` |
+| `mdkg work order new` | `--graph <value>`, `--id <value>`, `--work-id <value>`, `--requester <value>`, `--request-ref <value>`, `--trigger-ref <value>`, `--payload-hash <value>`, `--input-refs <value>`, `--queue-refs <value>`, `--requested-outputs <value>`, `--constraint-refs <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--ws <value>`, `--json` |
+| `mdkg work order update` | `--graph <value>`, `--status <value>`, `--add-input-refs <value>`, `--add-queue-refs <value>`, `--add-artifacts <value>`, `--ws <value>`, `--json` |
+| `mdkg work order status` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg work receipt new` | `--graph <value>`, `--id <value>`, `--work-order-id <value>`, `--outcome <value>`, `--receipt-status <value>`, `--cost-ref <value>`, `--redaction-policy <value>`, `--artifacts <value>`, `--proof-refs <value>`, `--attestation-refs <value>`, `--evidence-hashes <value>`, `--input-hashes <value>`, `--output-hashes <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--receipt-kind <value>`, `--redaction-class <value>`, `--ws <value>`, `--json` |
+| `mdkg work receipt update` | `--graph <value>`, `--receipt-status <value>`, `--add-artifacts <value>`, `--add-proof-refs <value>`, `--add-attestation-refs <value>`, `--add-evidence-hashes <value>`, `--ws <value>`, `--json` |
+| `mdkg work receipt verify` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg work artifact add` | `--graph <value>`, `--id <value>`, `--kind <value>`, `--ws <value>`, `--json` |
+| `mdkg skill new` | `--graph <value>`, `--description <value>`, `--tags <value>`, `--authors <value>`, `--links <value>`, `--with-scripts`, `--force`, `--run-id <value>`, `--json` |
+| `mdkg skill list` | `--graph <value>`, `--tags <value>`, `--tags-mode <value>`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
+| `mdkg skill search` | `--graph <value>`, `--tags <value>`, `--tags-mode <value>`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
+| `mdkg skill show` | `--graph <value>`, `--meta`, `--json`, `--xml`, `--toon`, `--md`, `--no-cache`, `--no-reindex` |
+| `mdkg skill validate` | `--graph <value>`, `--json` |
+| `mdkg skill sync` | `--graph <value>`, `--force`, `--json` |
+| `mdkg loop list` | `--graph <value>`, `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg loop show` | `--graph <value>`, `--meta`, `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg loop fork` | `--graph <value>`, `--scope <value>`, `--title <value>`, `--materialization <value>`, `--planning-only`, `--no-children`, `--dry-run`, `--run-id <value>`, `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg loop plan` | `--graph <value>`, `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg loop next` | `--graph <value>`, `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg loop runs` | `--graph <value>`, `--ws <value>`, `--json`, `--no-cache`, `--no-reindex` |
+| `mdkg goal show` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal select` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal activate` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal current` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal clear` | `--graph <value>`, `--json` |
+| `mdkg goal next` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal claim` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal evaluate` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal pause` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal resume` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal done` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg goal archive` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg task start` | `--graph <value>`, `--ws <value>`, `--json`, `--run-id <value>`, `--note <value>` |
+| `mdkg task update` | `--graph <value>`, `--status <value>`, `--priority <integer>`, `--add-artifacts <value>`, `--add-links <value>`, `--add-refs <value>`, `--add-skills <value>`, `--add-tags <value>`, `--add-blocked-by <value>`, `--clear-blocked-by`, `--ws <value>`, `--json`, `--run-id <value>`, `--note <value>` |
+| `mdkg task done` | `--graph <value>`, `--add-artifacts <value>`, `--add-links <value>`, `--add-refs <value>`, `--checkpoint <value>`, `--checkpoint-kind <value>`, `--ws <value>`, `--json`, `--run-id <value>`, `--note <value>` |
+| `mdkg event enable` | `--graph <value>`, `--ws <value>`, `--json` |
+| `mdkg event append` | `--graph <value>`, `--kind <value>`, `--status <value>`, `--refs <value>`, `--artifacts <value>`, `--notes <value>`, `--run-id <value>`, `--agent <value>`, `--skill <value>`, `--tool <value>`, `--ws <value>`, `--json` |
+| `mdkg new rule` | `--graph <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new prd` | `--graph <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new edd` | `--graph <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new dec` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--supersedes <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new prop` | `--graph <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new goal` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new loop` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new epic` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new feat` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new task` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new bug` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new spike` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new checkpoint` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new test` | `--graph <value>`, `--ws <value>`, `--status <value>`, `--priority <integer>`, `--epic <value>`, `--parent <value>`, `--prev <value>`, `--next <value>`, `--relates <value>`, `--blocked-by <value>`, `--blocks <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--skills <value>`, `--cases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new manifest` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new spec` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new work` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new work_order` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new receipt` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--contract-profile <value>`, `--validation-policy-ref <value>`, `--evidence-policy-ref <value>`, `--receipt-kind <value>`, `--redaction-class <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new feedback` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new dispute` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
+| `mdkg new proposal` | `--graph <value>`, `--id <value>`, `--ws <value>`, `--relates <value>`, `--links <value>`, `--artifacts <value>`, `--refs <value>`, `--aliases <value>`, `--tags <value>`, `--owners <value>`, `--template <value>`, `--no-cache`, `--no-reindex`, `--run-id <value>`, `--json` |
 
 ## archive
 
@@ -264,17 +267,18 @@ mdkg archive show <id-or-archive-uri> [--json]
 ### Common flags
 
 - `--all`: mdkg archive compress <id-or-archive-uri-or-qid|--all> [--ws <local-alias>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--id <archive.id>`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]
 - `--json`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]
 - `--kind source|artifact`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]
-- `--refs <value>`: archive add: --id <value> --ws <value> --kind <value> --title <value> --refs <value> --relates <value> --visibility <value> --json
-- `--relates <value>`: archive add: --id <value> --ws <value> --kind <value> --title <value> --refs <value> --relates <value> --visibility <value> --json
+- `--refs <value>`: archive add: --graph <value> --id <value> --ws <value> --kind <value> --title <value> --refs <value> --relates <value> --visibility <value> --json
+- `--relates <value>`: archive add: --graph <value> --id <value> --ws <value> --kind <value> --title <value> --refs <value> --relates <value> --visibility <value> --json
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
-- `--title <value>`: archive add: --id <value> --ws <value> --kind <value> --title <value> --refs <value> --relates <value> --visibility <value> --json
+- `--title <value>`: archive add: --graph <value> --id <value> --ws <value> --kind <value> --title <value> --refs <value> --relates <value> --visibility <value> --json
 - `--version`: --version, -V       Show version
 - `--visibility private|internal|public`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]
-- `--ws <local-alias>`: mdkg archive compress <id-or-archive-uri-or-qid|--all> [--ws <local-alias>] [--json]
+- 1 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -320,6 +324,7 @@ mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibili
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--id <archive.id>`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
 - `--json`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
@@ -330,7 +335,7 @@ mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibili
 - `--title <title>`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
 - `--version`: --version, -V       Show version
 - `--visibility private|internal|public`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
-- `--ws <value>`: archive add: --id <value> --ws <value> --kind <value> --title <value> --refs <value> --relates <value> --visibility <value> --json
+- `--ws <value>`: archive add: --graph <value> --id <value> --ws <value> --kind <value> --title <value> --refs <value> --relates <value> --visibility <value> --json
 
 ### Output and safety
 
@@ -379,6 +384,7 @@ mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]
 ### Common flags
 
 - `--all`: mdkg archive compress --all [--ws <local-alias>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -429,6 +435,7 @@ mdkg archive list [--kind source|artifact] [--visibility private|internal|public
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]
 - `--kind source|artifact`: mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]
@@ -481,6 +488,7 @@ mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -531,6 +539,7 @@ mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -586,6 +595,7 @@ mdkg bundle verify [bundle-path] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
 - `--out <path>`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
@@ -638,6 +648,7 @@ mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
 - `--out <path>`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
@@ -738,6 +749,7 @@ mdkg bundle list [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg bundle list [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -787,6 +799,7 @@ mdkg bundle show <bundle-path> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg bundle show <bundle-path> [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -836,6 +849,7 @@ mdkg bundle verify [bundle-path] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg bundle verify [bundle-path] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -891,11 +905,12 @@ mdkg capability show <id-or-qid-or-slug> [--json]
 ### Common flags
 
 - `--fresh-only`: mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
 - `--kind <kind>`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
-- `--no-cache`: capability list: --kind <value> --visibility <value> --json --no-cache --no-reindex
-- `--no-reindex`: capability list: --kind <value> --visibility <value> --json --no-cache --no-reindex
+- `--no-cache`: capability list: --graph <value> --kind <value> --visibility <value> --json --no-cache --no-reindex
+- `--no-reindex`: capability list: --graph <value> --kind <value> --visibility <value> --json --no-cache --no-reindex
 - `--requires <capability>`: mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
@@ -945,11 +960,12 @@ mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
 - `--kind <kind>`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
-- `--no-cache`: capability list: --kind <value> --visibility <value> --json --no-cache --no-reindex
-- `--no-reindex`: capability list: --kind <value> --visibility <value> --json --no-cache --no-reindex
+- `--no-cache`: capability list: --graph <value> --kind <value> --visibility <value> --json --no-cache --no-reindex
+- `--no-reindex`: capability list: --graph <value> --kind <value> --visibility <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 - `--visibility <level>`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
@@ -998,11 +1014,12 @@ mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]
 - `--kind <kind>`: mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]
-- `--no-cache`: capability search: --kind <value> --visibility <value> --json --no-cache --no-reindex
-- `--no-reindex`: capability search: --kind <value> --visibility <value> --json --no-cache --no-reindex
+- `--no-cache`: capability search: --graph <value> --kind <value> --visibility <value> --json --no-cache --no-reindex
+- `--no-reindex`: capability search: --graph <value> --kind <value> --visibility <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 - `--visibility <level>`: mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]
@@ -1051,10 +1068,11 @@ mdkg capability show <id-or-qid-or-slug> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg capability show <id-or-qid-or-slug> [--json]
-- `--no-cache`: capability show: --json --no-cache --no-reindex
-- `--no-reindex`: capability show: --json --no-cache --no-reindex
+- `--no-cache`: capability show: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: capability show: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -1102,19 +1120,19 @@ mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audi
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]
 - `--kind implementation|test-proof|goal-closeout|audit|handoff`: mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]
 - `--note "<text>"`: [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]
-- `--priority <integer>`: checkpoint new: --ws <value> --json --run-id <value> --note <value> --relates <value> --scope <value> --kind <value> --status <value> --priority <integer> --template <value>
+- `--priority <integer>`: checkpoint new: --graph <value> --ws <value> --json --run-id <value> --note <value> --relates <value> --scope <value> --kind <value> --status <value> --priority <integer> --template <value>
 - `--relates <id,id,...>`: [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--run-id <id>`: [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]
 - `--scope <id,id,...>`: [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]
-- `--status <value>`: checkpoint new: --ws <value> --json --run-id <value> --note <value> --relates <value> --scope <value> --kind <value> --status <value> --priority <integer> --template <value>
-- `--template <value>`: checkpoint new: --ws <value> --json --run-id <value> --note <value> --relates <value> --scope <value> --kind <value> --status <value> --priority <integer> --template <value>
-- `--version`: --version, -V       Show version
-- 1 additional flags omitted from this generated summary.
+- `--status <value>`: checkpoint new: --graph <value> --ws <value> --json --run-id <value> --note <value> --relates <value> --scope <value> --kind <value> --status <value> --priority <integer> --template <value>
+- `--template <value>`: checkpoint new: --graph <value> --ws <value> --json --run-id <value> --note <value> --relates <value> --scope <value> --kind <value> --status <value> --priority <integer> --template <value>
+- 2 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -1180,19 +1198,19 @@ mdkg db index verify [--json]
 
 ### Common flags
 
-- `--available-at-ms <integer>`: db queue enqueue: --payload-json <value> --payload-file <value> --dedupe-key <value> --available-at-ms <integer> --max-attempts <integer> --json
-- `--dedupe-key <value>`: db queue enqueue: --payload-json <value> --payload-file <value> --dedupe-key <value> --available-at-ms <integer> --max-attempts <integer> --json
-- `--error <value>`: db queue fail: --lease-owner <value> --error <value> --retry-after-ms <integer> --json
+- `--available-at-ms <integer>`: db queue enqueue: --graph <value> --payload-json <value> --payload-file <value> --dedupe-key <value> --available-at-ms <integer> --max-attempts <integer> --json
+- `--dedupe-key <value>`: db queue enqueue: --graph <value> --payload-json <value> --payload-file <value> --dedupe-key <value> --available-at-ms <integer> --max-attempts <integer> --json
+- `--error <value>`: db queue fail: --graph <value> --lease-owner <value> --error <value> --retry-after-ms <integer> --json
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg db index rebuild [--tolerant] [--json]
 - `--lease-ms <ms>`: mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]
 - `--lease-owner <owner>`: mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]
-- `--limit <integer>`: db queue list: --status <value> --limit <integer> --json
-- `--max-attempts <integer>`: db queue enqueue: --payload-json <value> --payload-file <value> --dedupe-key <value> --available-at-ms <integer> --max-attempts <integer> --json
+- `--limit <integer>`: db queue list: --graph <value> --status <value> --limit <integer> --json
+- `--max-attempts <integer>`: db queue enqueue: --graph <value> --payload-json <value> --payload-file <value> --dedupe-key <value> --available-at-ms <integer> --max-attempts <integer> --json
 - `--out <path>`: mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]
 - `--paused`: mdkg db queue create <queue> [--paused] [--reason <text>] [--json]
-- `--payload-file <path>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--json]
-- 9 additional flags omitted from this generated summary.
+- 10 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -1242,6 +1260,7 @@ mdkg db index verify [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg db index rebuild [--tolerant] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -1309,6 +1328,7 @@ mdkg db queue resume <queue> [--json]
 - `--available-at-ms <ms>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
 - `--dedupe-key <key>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
 - `--error <text>`: mdkg db queue fail <queue> <message-id> --lease-owner <owner> --error <text> [--retry-after-ms <ms>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg db queue create <queue> [--paused] [--reason <text>] [--json]
 - `--lease-ms <ms>`: mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]
@@ -1317,8 +1337,7 @@ mdkg db queue resume <queue> [--json]
 - `--max-attempts <n>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
 - `--paused`: mdkg db queue create <queue> [--paused] [--reason <text>] [--json]
 - `--payload-file <path>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
-- `--payload-json <json>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
-- 5 additional flags omitted from this generated summary.
+- 6 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -1370,6 +1389,7 @@ mdkg db snapshot verify [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg db snapshot seal [--queue-policy drain|paused] [--json]
 - `--out <path>`: mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]
@@ -1422,10 +1442,11 @@ mdkg doctor [--strict] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg doctor [--strict] [--json]
-- `--no-cache`: doctor: --strict --json --no-cache --no-reindex
-- `--no-reindex`: doctor: --strict --json --no-cache --no-reindex
+- `--no-cache`: doctor: --graph <value> --strict --json --no-cache --no-reindex
+- `--no-reindex`: doctor: --graph <value> --strict --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--strict`: mdkg doctor [--strict] [--json]
 - `--version`: --version, -V       Show version
@@ -1476,19 +1497,19 @@ mdkg event enable [--ws <alias>] [--json]
 
 ### Common flags
 
-- `--agent <value>`: event append: --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
-- `--artifacts <value>`: event append: --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
+- `--agent <value>`: event append: --graph <value> --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
+- `--artifacts <value>`: event append: --graph <value> --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg event enable [--ws <alias>] [--json]
 - `--kind <kind>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]
-- `--notes <value>`: event append: --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
+- `--notes <value>`: event append: --graph <value> --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
 - `--refs <id,...>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
-- `--run-id <value>`: event append: --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
-- `--skill <value>`: event append: --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
+- `--run-id <value>`: event append: --graph <value> --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
+- `--skill <value>`: event append: --graph <value> --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
 - `--status <ok|error|retry|skipped>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]
-- `--tool <value>`: event append: --kind <value> --status <value> --refs <value> --artifacts <value> --notes <value> --run-id <value> --agent <value> --skill <value> --tool <value> --ws <value> --json
-- 2 additional flags omitted from this generated summary.
+- 3 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -1536,6 +1557,7 @@ mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...
 
 - `--agent <name>`: [--agent <name>] [--skill <slug>] [--tool <id>]
 - `--artifacts <a,...>`: [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>] [--json]
 - `--kind <kind>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...>
@@ -1545,8 +1567,7 @@ mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...
 - `--run-id <id>`: [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>] [--json]
 - `--skill <slug>`: [--agent <name>] [--skill <slug>] [--tool <id>]
 - `--status <ok|error|retry|skipped>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...>
-- `--tool <id>`: [--agent <name>] [--skill <slug>] [--tool <id>]
-- 2 additional flags omitted from this generated summary.
+- 3 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -1592,6 +1613,7 @@ mdkg event enable [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg event enable [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -1649,6 +1671,7 @@ mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <
 - `--apply`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 - `--base-ref <ref>`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--family index|refs|ids|all`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -1701,6 +1724,7 @@ mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 
 - `--base-ref <ref>`: mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--family ids`: mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -1753,6 +1777,7 @@ mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 
 - `--apply`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 - `--base-ref <ref>`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -1805,6 +1830,7 @@ mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <
 
 - `--base-ref <ref>`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--family index|refs|ids|all`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -1858,7 +1884,8 @@ mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
 ### Common flags
 
 - `--apply`: --headings adds missing recommended body headings; it defaults to dry-run and requires --apply to write files.
-- `--dry-run`: format: --headings --dry-run --apply --summary --limit <integer> --json
+- `--dry-run`: format: --graph <value> --headings --dry-run --apply --summary --limit <integer> --json
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--headings`: mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
 - `--help`: --help, -h          Show help
 - `--json`: mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
@@ -1911,6 +1938,7 @@ mdkg git inspect [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg git inspect [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -1960,6 +1988,7 @@ mdkg git inspect [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg git inspect [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2067,11 +2096,12 @@ mdkg goal show <goal-id-or-qid> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal show <goal-id-or-qid> [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
-- `--ws <value>`: goal show: --ws <value> --json
+- `--ws <value>`: goal show: --graph <value> --ws <value> --json
 
 ### Output and safety
 
@@ -2117,6 +2147,7 @@ mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2167,6 +2198,7 @@ mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2219,6 +2251,7 @@ mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2269,6 +2302,7 @@ mdkg goal clear [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal clear [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2318,6 +2352,7 @@ mdkg goal current [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal current [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2368,6 +2403,7 @@ mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2418,6 +2454,7 @@ mdkg goal evaluate <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal evaluate <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2468,6 +2505,7 @@ mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2518,6 +2556,7 @@ mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2568,6 +2607,7 @@ mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2618,6 +2658,7 @@ mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2668,6 +2709,7 @@ mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2723,19 +2765,19 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 
 ### Common flags
 
-- `--ancestor <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
+- `--ancestor <value>`: graph migrate: --graph <value> --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
 - `--apply`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
-- `--confirm-quiescent`: graph recover: --resume --rollback --lock-evidence <value> --confirm-quiescent --json
-- `--decisions <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
+- `--confirm-quiescent`: graph recover: --graph <value> --resume --rollback --lock-evidence <value> --confirm-quiescent --json
+- `--decisions <value>`: graph migrate: --graph <value> --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
 - `--dry-run`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
-- `--graph-id <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
+- `--graph-id <value>`: graph migrate: --graph <value> --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
 - `--help`: --help, -h          Show help
 - `--id-prefix <prefix>`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
-- `--incoming <value>`: graph reconcile: --ancestor <value> --incoming <value> --target <value> --decisions <value> --apply --plan-hash <value> --json
+- `--incoming <value>`: graph reconcile: --graph <value> --ancestor <value> --incoming <value> --target <value> --decisions <value> --apply --plan-hash <value> --json
 - `--json`: mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
-- `--lock-evidence <value>`: graph recover: --resume --rollback --lock-evidence <value> --confirm-quiescent --json
-- `--origin <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
-- 9 additional flags omitted from this generated summary.
+- `--lock-evidence <value>`: graph recover: --graph <value> --resume --rollback --lock-evidence <value> --confirm-quiescent --json
+- 11 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -2743,10 +2785,10 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 - Dry run: {"supported":false}
 - Side effects: read-or-write-graph-transport-identity-and-reconciliation-state
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/graph.json, .mdkg/identity/**, .mdkg/index/**, .mdkg/state/**, .mdkg/work/events/events.jsonl, <--target>/**, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
-- Lock policy: operation-specific; target-index-lock-for-clone-fork; mutation-lock-for-apply
+- Write paths: .gitignore, .mdkg-graphs.local.json, .mdkg-graphs.lock, .mdkg/**/*.md, .mdkg/graph.json, .mdkg/identity/**, .mdkg/index/**, .mdkg/state/**, .mdkg/work/events/events.jsonl, <--target>/**, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
+- Lock policy: operation-specific; host-registry-writer-lock-for-registration; target-index-lock-for-clone-fork; mutation-lock-for-apply
 - Atomic write policy: operation-specific-exclusive-create-or-journaled-atomic-writes
-- Receipts: graph-receipt
+- Receipts: graph-receipt, graph.registry
 
 ### Related commands
 
@@ -2781,6 +2823,7 @@ mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2831,6 +2874,7 @@ mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -2884,6 +2928,7 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 
 - `--apply`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
 - `--dry-run`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--id-prefix <prefix>`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
 - `--json`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
@@ -2939,6 +2984,7 @@ mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decis
 - `--ancestor <ref>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 - `--apply`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 - `--decisions <path>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--graph-id <uuid>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 - `--help`: --help, -h          Show help
 - `--json`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
@@ -2994,6 +3040,7 @@ mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--
 - `--ancestor <ref>`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 - `--apply`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 - `--decisions <path>`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--incoming <ref>`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 - `--json`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
@@ -3047,6 +3094,7 @@ mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] 
 ### Common flags
 
 - `--confirm-quiescent`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
 - `--lock-evidence <sha256>`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
@@ -3099,6 +3147,7 @@ mdkg graph refs <id-or-qid> [--ws <alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg graph refs <id-or-qid> [--ws <alias>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -3115,6 +3164,159 @@ mdkg graph refs <id-or-qid> [--ws <alias>] [--json]
 - Lock policy: none-read-only
 - Atomic write policy: none-read-only
 - Receipts: graph-refs-receipt
+
+### Related commands
+
+`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph migrate`
+
+## graph register
+
+mdkg graph register command
+
+- Command: `mdkg graph register`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: mixed
+
+### When to use
+
+Use for graph references, clone/fork/import, and graph movement workflows.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]
+- `--plan-hash <sha256>`: mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--target <relative-project-root>`: mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]
+- `--version`: --version, -V       Show version
+- `--visibility private|internal|public`: mdkg graph register <name> --target <relative-project-root> [--visibility private|internal|public] [--apply --plan-hash <sha256>] [--json]
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true}
+- Side effects: explicit-local-registry-metadata, reviewed-gitignore-update
+- Read paths: .gitignore, .mdkg-graphs.local.json, .mdkg/config.json, .mdkg/graph.json, .mdkg/working-host.json, <local-git-index>, <selected-root>/.mdkg/config.json, <selected-root>/.mdkg/graph.json, <selected-root>/.mdkg/working-host.json
+- Write paths: .gitignore, .mdkg-graphs.local.json, .mdkg-graphs.lock
+- Lock policy: host-registry-writer-lock
+- Atomic write policy: ignore-first-atomic-registry-replacement
+- Receipts: graph.register, graph.registry
+
+### Related commands
+
+`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph migrate`
+
+## graph registrations
+
+mdkg graph registrations command
+
+- Command: `mdkg graph registrations`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use for graph references, clone/fork/import, and graph movement workflows.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg graph registrations [--json]
+```
+
+### Examples
+
+```bash
+mdkg graph registrations [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--json`: mdkg graph registrations [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg-graphs.local.json
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: graph.registrations
+
+### Related commands
+
+`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph migrate`
+
+## graph unregister
+
+mdkg graph unregister command
+
+- Command: `mdkg graph unregister`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: mixed
+
+### When to use
+
+Use for graph references, clone/fork/import, and graph movement workflows.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg graph unregister <name> [--apply --plan-hash <sha256>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg graph unregister <name> [--apply --plan-hash <sha256>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg graph unregister <name> [--apply --plan-hash <sha256>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg graph unregister <name> [--apply --plan-hash <sha256>] [--json]
+- `--plan-hash <sha256>`: mdkg graph unregister <name> [--apply --plan-hash <sha256>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true}
+- Side effects: explicit-local-registry-metadata
+- Read paths: .gitignore, .mdkg-graphs.local.json, .mdkg/config.json, .mdkg/graph.json, .mdkg/working-host.json, <local-git-index>
+- Write paths: .gitignore, .mdkg-graphs.local.json, .mdkg-graphs.lock
+- Lock policy: host-registry-writer-lock
+- Atomic write policy: ignore-first-atomic-registry-replacement
+- Receipts: graph.registry, graph.unregister
 
 ### Related commands
 
@@ -3149,6 +3351,7 @@ mdkg guide
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
@@ -3198,6 +3401,7 @@ mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--j
 ### Common flags
 
 - `--depth <n>`: mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]
 - `--out <path>`: mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]
@@ -3249,6 +3453,7 @@ mdkg index [--tolerant]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--tolerant`: mdkg index [--tolerant]
@@ -3300,6 +3505,7 @@ mdkg init [options]
 
 - `--agent`: --agent               Compatibility alias for compact agent setup (default)
 - `--force`: --force               Overwrite existing mdkg files
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--graph-only`: --graph-only          Create graph scaffold without agent setup
 - `--help`: --help, -h          Show help
 - `--no-update-ignores`: --no-update-ignores   Skip default .gitignore/.npmignore updates
@@ -3355,17 +3561,17 @@ mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
 
 - `--blocked`: [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]
 - `--epic <id>`: mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: [--json|--xml|--toon|--md]
 - `--md`: [--json|--xml|--toon|--md]
-- `--no-cache`: list: --ws <value> --type <value> --status <value> --epic <value> --priority <integer> --blocked --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
-- `--no-reindex`: list: --ws <value> --type <value> --status <value> --epic <value> --priority <integer> --blocked --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
+- `--no-cache`: list: --graph <value> --ws <value> --type <value> --status <value> --epic <value> --priority <integer> --blocked --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
+- `--no-reindex`: list: --graph <value> --ws <value> --type <value> --status <value> --epic <value> --priority <integer> --blocked --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
 - `--priority <n>`: [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--status <status>`: mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
 - `--tags <tag,tag,...>`: [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]
-- `--tags-mode any|all`: [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]
-- 5 additional flags omitted from this generated summary.
+- 6 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -3419,6 +3625,7 @@ mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--json]
 ### Common flags
 
 - `--dry-run`: Accepted boolean option; see the concrete command admission contract.
+- `--graph <value>`: Accepted value option; see the concrete command admission contract.
 - `--help`: Accepted boolean option; see the concrete command admission contract.
 - `--json`: Emit deterministic JSON instead of text.
 - `--materialization <value>`: Accepted value option; see the concrete command admission contract.
@@ -3429,8 +3636,7 @@ mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--json]
 - `--planning-only`: Accepted boolean option; see the concrete command admission contract.
 - `--root <path>`: Run against a specific repository root; -r is the short alias.
 - `--run-id <id>`: Attach an optional run id to the fork event when event logging is enabled.
-- `--scope <value>`: Accepted value option; see the concrete command admission contract.
-- 3 additional flags omitted from this generated summary.
+- 4 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -3477,6 +3683,7 @@ mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization <
 ### Common flags
 
 - `--dry-run`: Plan the fork without writing loop or child nodes.
+- `--graph <value>`: Accepted value option; see the concrete command admission contract.
 - `--help`: Accepted boolean option; see the concrete command admission contract.
 - `--json`: Emit deterministic JSON instead of text.
 - `--materialization <mode>`: Child materialization mode: default_children, planning_only, or manual.
@@ -3487,8 +3694,7 @@ mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization <
 - `--root <path>`: Run against a specific repository root; -r is the short alias.
 - `--run-id <id>`: Attach an optional run id to the fork event when event logging is enabled.
 - `--scope <scope>`: Scope ref, qid, URI, path, or description for the scoped loop.
-- `--title <title>`: Override the generated scoped loop title.
-- 2 additional flags omitted from this generated summary.
+- 3 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -3534,6 +3740,7 @@ mdkg loop list [--ws <alias>] [--no-cache] [--no-reindex] [--json]
 
 ### Common flags
 
+- `--graph <value>`: Accepted value option; see the concrete command admission contract.
 - `--help`: Accepted boolean option; see the concrete command admission contract.
 - `--json`: Emit deterministic JSON instead of text.
 - `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
@@ -3586,6 +3793,7 @@ mdkg loop next <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
 
 ### Common flags
 
+- `--graph <value>`: Accepted value option; see the concrete command admission contract.
 - `--help`: Accepted boolean option; see the concrete command admission contract.
 - `--json`: Emit deterministic JSON instead of text.
 - `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
@@ -3638,6 +3846,7 @@ mdkg loop plan <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
 
 ### Common flags
 
+- `--graph <value>`: Accepted value option; see the concrete command admission contract.
 - `--help`: Accepted boolean option; see the concrete command admission contract.
 - `--json`: Emit deterministic JSON instead of text.
 - `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
@@ -3690,6 +3899,7 @@ mdkg loop runs <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
 
 ### Common flags
 
+- `--graph <value>`: Accepted value option; see the concrete command admission contract.
 - `--help`: Accepted boolean option; see the concrete command admission contract.
 - `--json`: Emit deterministic JSON instead of text.
 - `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
@@ -3742,6 +3952,7 @@ mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--no-cache] [--no-rei
 
 ### Common flags
 
+- `--graph <value>`: Accepted value option; see the concrete command admission contract.
 - `--help`: Accepted boolean option; see the concrete command admission contract.
 - `--json`: Emit deterministic JSON instead of text.
 - `--meta`: Show metadata without the full body.
@@ -3799,10 +4010,11 @@ mdkg manifest validate [<id-or-qid-or-alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg manifest list [--json]
-- `--no-cache`: manifest list: --json --no-cache --no-reindex
-- `--no-reindex`: manifest list: --json --no-cache --no-reindex
+- `--no-cache`: manifest list: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: manifest list: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -3850,10 +4062,11 @@ mdkg manifest list [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg manifest list [--json]
-- `--no-cache`: manifest list: --json --no-cache --no-reindex
-- `--no-reindex`: manifest list: --json --no-cache --no-reindex
+- `--no-cache`: manifest list: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: manifest list: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -3901,10 +4114,11 @@ mdkg manifest show <id-or-qid-or-alias> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg manifest show <id-or-qid-or-alias> [--json]
-- `--no-cache`: manifest show: --json --no-cache --no-reindex
-- `--no-reindex`: manifest show: --json --no-cache --no-reindex
+- `--no-cache`: manifest show: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: manifest show: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -3952,10 +4166,11 @@ mdkg manifest validate [<id-or-qid-or-alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg manifest validate [<id-or-qid-or-alias>] [--json]
-- `--no-cache`: manifest validate: --json --no-cache --no-reindex
-- `--no-reindex`: manifest validate: --json --no-cache --no-reindex
+- `--no-cache`: manifest validate: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: manifest validate: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4003,6 +4218,7 @@ mdkg mcp serve --stdio
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--root <path>`: - use --root <path> to select the mdkg graph explicitly
 - `--stdio`: mdkg mcp serve --stdio
@@ -4052,6 +4268,7 @@ mdkg mcp serve --stdio
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--root <value>`: - starts one local Model Context Protocol server bound to the selected --root
 - `--stdio`: mdkg mcp serve --stdio
@@ -4109,11 +4326,11 @@ mdkg new <type> "<title>" [options] [--json]
 - `--contract-profile <name>`: --contract-profile <name>  Optional MANIFEST/WORK/WORK_ORDER/RECEIPT validation profile metadata
 - `--epic <id>`: --epic <id>                Epic id
 - `--evidence-policy-ref <ref>`: --evidence-policy-ref <ref> Optional MANIFEST/WORK_ORDER/RECEIPT evidence policy ref
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--id <portable-id>`: Use --id <portable-id> with these types for semantic ids like agent.image-worker.
 - `--json`: mdkg new <type> "<title>" [options] [--json]
-- `--links <value>`: --links --artifacts --refs --aliases --owners --cases --supersedes
-- 21 additional flags omitted from this generated summary.
+- 22 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -4159,9 +4376,10 @@ mdkg next [<id-or-qid>] [--ws <alias>]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
-- `--no-cache`: next: --ws <value> --no-cache --no-reindex
-- `--no-reindex`: next: --ws <value> --no-cache --no-reindex
+- `--no-cache`: next: --graph <value> --ws <value> --no-cache --no-reindex
+- `--no-reindex`: next: --graph <value> --ws <value> --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 - `--ws <alias>`: mdkg next [<id-or-qid>] [--ws <alias>]
@@ -4212,19 +4430,19 @@ mdkg pack <id-or-qid> [options]
 
 ### Common flags
 
-- `--concise`: pack: --ws <value> --depth <integer> --edges <value> --verbose --concise --strip-code --format <value> --pack-profile <value> --max-code-lines <integer> --max-chars <integer> --max-lines <integer> --max-tokens <integer> --skills <value> --skills-depth <value> --visibility <value> --dry-run --stats --stats-out <value> --truncation-report <value> --out <value> --list-profiles --no-cache --no-reindex
+- `--concise`: pack: --graph <value> --ws <value> --depth <integer> --edges <value> --verbose --concise --strip-code --format <value> --pack-profile <value> --max-code-lines <integer> --max-chars <integer> --max-lines <integer> --max-tokens <integer> --skills <value> --skills-depth <value> --visibility <value> --dry-run --stats --stats-out <value> --truncation-report <value> --out <value> --list-profiles --no-cache --no-reindex
 - `--depth <integer>`: --depth --edges --strip-code --max-code-lines --max-chars --max-lines --max-tokens
 - `--dry-run`: --dry-run                Preview selection/order/stats without writing files
 - `--edges <value>`: --depth --edges --strip-code --max-code-lines --max-chars --max-lines --max-tokens
 - `--format <fmt>`: -f, --format <fmt>           Output format: md|json|toon|xml (default md)
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--list-profiles`: mdkg pack --list-profiles
 - `--max-chars <integer>`: --depth --edges --strip-code --max-code-lines --max-chars --max-lines --max-tokens
 - `--max-code-lines <integer>`: --depth --edges --strip-code --max-code-lines --max-chars --max-lines --max-tokens
 - `--max-lines <integer>`: --depth --edges --strip-code --max-code-lines --max-chars --max-lines --max-tokens
 - `--max-tokens <integer>`: --depth --edges --strip-code --max-code-lines --max-chars --max-lines --max-tokens
-- `--no-cache`: pack: --ws <value> --depth <integer> --edges <value> --verbose --concise --strip-code --format <value> --pack-profile <value> --max-code-lines <integer> --max-chars <integer> --max-lines <integer> --max-tokens <integer> --skills <value> --skills-depth <value> --visibility <value> --dry-run --stats --stats-out <value> --truncation-report <value> --out <value> --list-profiles --no-cache --no-reindex
-- 14 additional flags omitted from this generated summary.
+- 15 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -4270,19 +4488,19 @@ mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
 - `--limit <n>`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
 - `--md`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
-- `--no-cache`: search: --ws <value> --type <value> --status <value> --tags <value> --tags-mode <value> --limit <integer> --json --xml --toon --md --no-cache --no-reindex
-- `--no-reindex`: search: --ws <value> --type <value> --status <value> --tags <value> --tags-mode <value> --limit <integer> --json --xml --toon --md --no-cache --no-reindex
+- `--no-cache`: search: --graph <value> --ws <value> --type <value> --status <value> --tags <value> --tags-mode <value> --limit <integer> --json --xml --toon --md --no-cache --no-reindex
+- `--no-reindex`: search: --graph <value> --ws <value> --type <value> --status <value> --tags <value> --tags-mode <value> --limit <integer> --json --xml --toon --md --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--status <status>`: mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]
 - `--tags <tag,tag,...>`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
 - `--tags-mode any|all`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
 - `--toon`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
-- `--type <type>`: mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]
-- 3 additional flags omitted from this generated summary.
+- 4 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -4328,12 +4546,13 @@ mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
 - `--md`: mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
 - `--meta`: mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
-- `--no-cache`: show: --ws <value> --meta --json --xml --toon --md --no-cache --no-reindex
-- `--no-reindex`: show: --ws <value> --meta --json --xml --toon --md --no-cache --no-reindex
+- `--no-cache`: show: --graph <value> --ws <value> --meta --json --xml --toon --md --no-cache --no-reindex
+- `--no-reindex`: show: --graph <value> --ws <value> --meta --json --xml --toon --md --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--toon`: mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
 - `--version`: --version, -V       Show version
@@ -4391,19 +4610,19 @@ mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 
 ### Common flags
 
-- `--authors <value>`: skill new: --description <value> --tags <value> --authors <value> --links <value> --with-scripts --force --run-id <value> --json
+- `--authors <value>`: skill new: --graph <value> --description <value> --tags <value> --authors <value> --links <value> --with-scripts --force --run-id <value> --json
 - `--description "<description>"`: mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
 - `--force`: mdkg skill sync [--force] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
-- `--links <value>`: skill new: --description <value> --tags <value> --authors <value> --links <value> --with-scripts --force --run-id <value> --json
+- `--links <value>`: skill new: --graph <value> --description <value> --tags <value> --authors <value> --links <value> --with-scripts --force --run-id <value> --json
 - `--md`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--meta`: mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
-- `--no-cache`: skill list: --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
-- `--no-reindex`: skill list: --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
+- `--no-cache`: skill list: --graph <value> --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
+- `--no-reindex`: skill list: --graph <value> --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
-- `--run-id <value>`: skill new: --description <value> --tags <value> --authors <value> --links <value> --with-scripts --force --run-id <value> --json
-- 6 additional flags omitted from this generated summary.
+- 7 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -4449,11 +4668,12 @@ mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--too
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--md`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
-- `--no-cache`: skill list: --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
-- `--no-reindex`: skill list: --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
+- `--no-cache`: skill list: --graph <value> --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
+- `--no-reindex`: skill list: --graph <value> --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--tags <tag,tag,...>`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--tags-mode any|all`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
@@ -4508,6 +4728,7 @@ mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
 - `--authors <name,name,...>`: --authors <name,name,...>    Optional authors list
 - `--description "<description>"`: mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
 - `--force`: --force                      Overwrite existing SKILL.md
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
 - `--links <url,url,...>`: --links <url,url,...>        Optional links list
@@ -4561,11 +4782,12 @@ mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--md`: mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
-- `--no-cache`: skill search: --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
-- `--no-reindex`: skill search: --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
+- `--no-cache`: skill search: --graph <value> --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
+- `--no-reindex`: skill search: --graph <value> --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--tags <tag,tag,...>`: mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--tags-mode any|all`: mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
@@ -4617,12 +4839,13 @@ mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 - `--md`: mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 - `--meta`: mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
-- `--no-cache`: skill show: --meta --json --xml --toon --md --no-cache --no-reindex
-- `--no-reindex`: skill show: --meta --json --xml --toon --md --no-cache --no-reindex
+- `--no-cache`: skill show: --graph <value> --meta --json --xml --toon --md --no-cache --no-reindex
+- `--no-reindex`: skill show: --graph <value> --meta --json --xml --toon --md --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--toon`: mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 - `--version`: --version, -V       Show version
@@ -4673,6 +4896,7 @@ mdkg skill sync [--force] [--json]
 ### Common flags
 
 - `--force`: mdkg skill sync [--force] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg skill sync [--force] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -4722,6 +4946,7 @@ mdkg skill validate [<slug>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg skill validate [<slug>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -4775,10 +5000,11 @@ mdkg spec validate [<id-or-qid-or-alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg spec list [--json]
-- `--no-cache`: spec list: --json --no-cache --no-reindex
-- `--no-reindex`: spec list: --json --no-cache --no-reindex
+- `--no-cache`: spec list: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: spec list: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4826,10 +5052,11 @@ mdkg spec list [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg spec list [--json]
-- `--no-cache`: spec list: --json --no-cache --no-reindex
-- `--no-reindex`: spec list: --json --no-cache --no-reindex
+- `--no-cache`: spec list: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: spec list: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4877,10 +5104,11 @@ mdkg spec show <id-or-qid-or-alias> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg spec show <id-or-qid-or-alias> [--json]
-- `--no-cache`: spec show: --json --no-cache --no-reindex
-- `--no-reindex`: spec show: --json --no-cache --no-reindex
+- `--no-cache`: spec show: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: spec show: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4928,10 +5156,11 @@ mdkg spec validate [<id-or-qid-or-alias>] [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg spec validate [<id-or-qid-or-alias>] [--json]
-- `--no-cache`: spec validate: --json --no-cache --no-reindex
-- `--no-reindex`: spec validate: --json --no-cache --no-reindex
+- `--no-cache`: spec validate: --graph <value> --json --no-cache --no-reindex
+- `--no-reindex`: spec validate: --graph <value> --json --no-cache --no-reindex
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4979,6 +5208,7 @@ mdkg status [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg status [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5046,14 +5276,14 @@ mdkg subgraph show <alias> [--json]
 - `--clean`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
 - `--dry-run`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 - `--gitignore`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
 - `--max-stale-seconds <seconds>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
 - `--pack-profile private|public`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--source-path <path>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
-- `--source-repo <ref>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
-- 3 additional flags omitted from this generated summary.
+- 4 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -5099,6 +5329,7 @@ mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
 - `--max-stale-seconds <seconds>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
@@ -5153,6 +5384,7 @@ mdkg subgraph disable <alias> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph disable <alias> [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5202,6 +5434,7 @@ mdkg subgraph enable <alias> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph enable <alias> [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5251,6 +5484,7 @@ mdkg subgraph list [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph list [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5303,6 +5537,7 @@ mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] 
 - `--all`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
 - `--clean`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
 - `--gitignore`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5354,6 +5589,7 @@ mdkg subgraph refresh [alias|--all] [--json]
 ### Common flags
 
 - `--all`: mdkg subgraph refresh [alias|--all] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph refresh [alias|--all] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5403,6 +5639,7 @@ mdkg subgraph rm <alias> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph rm <alias> [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5452,6 +5689,7 @@ mdkg subgraph show <alias> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph show <alias> [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5504,6 +5742,7 @@ mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 - `--all`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 - `--allow-dirty`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 - `--dry-run`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5554,6 +5793,7 @@ mdkg subgraph verify [alias|--all] [--json]
 ### Common flags
 
 - `--all`: mdkg subgraph verify [alias|--all] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg subgraph verify [alias|--all] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
@@ -5607,19 +5847,19 @@ mdkg task update <id-or-qid> [options] [--json]
 
 ### Common flags
 
-- `--add-artifacts <value>`: task update: --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
-- `--add-blocked-by <value>`: task update: --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
-- `--add-links <value>`: task update: --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
-- `--add-refs <value>`: task update: --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
-- `--add-skills <value>`: task update: --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
-- `--add-tags <value>`: task update: --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
+- `--add-artifacts <value>`: task update: --graph <value> --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
+- `--add-blocked-by <value>`: task update: --graph <value> --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
+- `--add-links <value>`: task update: --graph <value> --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
+- `--add-refs <value>`: task update: --graph <value> --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
+- `--add-skills <value>`: task update: --graph <value> --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
+- `--add-tags <value>`: task update: --graph <value> --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
 - `--checkpoint "<title>"`: mdkg task done <id-or-qid> [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [options] [--json]
 - `--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff`: mdkg task done <id-or-qid> [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [options] [--json]
-- `--clear-blocked-by`: task update: --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
+- `--clear-blocked-by`: task update: --graph <value> --status <value> --priority <integer> --add-artifacts <value> --add-links <value> --add-refs <value> --add-skills <value> --add-tags <value> --add-blocked-by <value> --clear-blocked-by --ws <value> --json --run-id <value> --note <value>
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
-- `--note "<text>"`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
-- 6 additional flags omitted from this generated summary.
+- 7 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -5670,13 +5910,14 @@ mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links
 - `--add-refs <id,...>`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
 - `--checkpoint "<title>"`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
 - `--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
 - `--note "<text>"`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--run-id <id>`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
 - `--version`: --version, -V       Show version
-- `--ws <alias>`: mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]
+- 1 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -5722,6 +5963,7 @@ mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
 - `--note "<text>"`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
@@ -5781,12 +6023,12 @@ mdkg task update <id-or-qid> [--ws <alias>] [--status <status>] [--priority <n>]
 - `--add-skills <slug,...>`: [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]
 - `--add-tags <tag,...>`: [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]
 - `--clear-blocked-by`: [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]
 - `--note "<text>"`: [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]
 - `--priority <n>`: mdkg task update <id-or-qid> [--ws <alias>] [--status <status>] [--priority <n>]
-- `--root <value>`: --root, -r <path>   Run against a specific repo root
-- 4 additional flags omitted from this generated summary.
+- 5 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -5834,6 +6076,7 @@ mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>]
 
 - `--apply`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
 - `--dry-run`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
 - `--only <paths>`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
@@ -5888,6 +6131,7 @@ mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--s
 ### Common flags
 
 - `--changed-only`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]
 - `--json-out <path>`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]
@@ -5949,19 +6193,19 @@ mdkg work trigger <work-or-capability-ref> ...
 
 ### Common flags
 
-- `--add-artifacts <value>`: work order update: --status <value> --add-input-refs <value> --add-queue-refs <value> --add-artifacts <value> --ws <value> --json
-- `--add-attestation-refs <value>`: work receipt update: --receipt-status <value> --add-artifacts <value> --add-proof-refs <value> --add-attestation-refs <value> --add-evidence-hashes <value> --ws <value> --json
-- `--add-evidence-hashes <value>`: work receipt update: --receipt-status <value> --add-artifacts <value> --add-proof-refs <value> --add-attestation-refs <value> --add-evidence-hashes <value> --ws <value> --json
-- `--add-input-refs <value>`: work order update: --status <value> --add-input-refs <value> --add-queue-refs <value> --add-artifacts <value> --ws <value> --json
-- `--add-proof-refs <value>`: work receipt update: --receipt-status <value> --add-artifacts <value> --add-proof-refs <value> --add-attestation-refs <value> --add-evidence-hashes <value> --ws <value> --json
-- `--add-queue-refs <value>`: work order update: --status <value> --add-input-refs <value> --add-queue-refs <value> --add-artifacts <value> --ws <value> --json
-- `--agent-id <value>`: work contract new: --id <value> --agent-id <value> --kind <value> --inputs <value> --outputs <value> --required-capabilities <value> --contract-profile <value> --ws <value> --json
-- `--artifacts <value>`: work receipt new: --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
-- `--attestation-refs <value>`: work receipt new: --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
-- `--constraint-refs <value>`: work order new: --id <value> --work-id <value> --requester <value> --request-ref <value> --trigger-ref <value> --payload-hash <value> --input-refs <value> --queue-refs <value> --requested-outputs <value> --constraint-refs <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --ws <value> --json
-- `--contract-profile <value>`: work contract new: --id <value> --agent-id <value> --kind <value> --inputs <value> --outputs <value> --required-capabilities <value> --contract-profile <value> --ws <value> --json
-- `--cost-ref <value>`: work receipt new: --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
-- 34 additional flags omitted from this generated summary.
+- `--add-artifacts <value>`: work order update: --graph <value> --status <value> --add-input-refs <value> --add-queue-refs <value> --add-artifacts <value> --ws <value> --json
+- `--add-attestation-refs <value>`: work receipt update: --graph <value> --receipt-status <value> --add-artifacts <value> --add-proof-refs <value> --add-attestation-refs <value> --add-evidence-hashes <value> --ws <value> --json
+- `--add-evidence-hashes <value>`: work receipt update: --graph <value> --receipt-status <value> --add-artifacts <value> --add-proof-refs <value> --add-attestation-refs <value> --add-evidence-hashes <value> --ws <value> --json
+- `--add-input-refs <value>`: work order update: --graph <value> --status <value> --add-input-refs <value> --add-queue-refs <value> --add-artifacts <value> --ws <value> --json
+- `--add-proof-refs <value>`: work receipt update: --graph <value> --receipt-status <value> --add-artifacts <value> --add-proof-refs <value> --add-attestation-refs <value> --add-evidence-hashes <value> --ws <value> --json
+- `--add-queue-refs <value>`: work order update: --graph <value> --status <value> --add-input-refs <value> --add-queue-refs <value> --add-artifacts <value> --ws <value> --json
+- `--agent-id <value>`: work contract new: --graph <value> --id <value> --agent-id <value> --kind <value> --inputs <value> --outputs <value> --required-capabilities <value> --contract-profile <value> --ws <value> --json
+- `--artifacts <value>`: work receipt new: --graph <value> --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
+- `--attestation-refs <value>`: work receipt new: --graph <value> --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
+- `--constraint-refs <value>`: work order new: --graph <value> --id <value> --work-id <value> --requester <value> --request-ref <value> --trigger-ref <value> --payload-hash <value> --input-refs <value> --queue-refs <value> --requested-outputs <value> --constraint-refs <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --ws <value> --json
+- `--contract-profile <value>`: work contract new: --graph <value> --id <value> --agent-id <value> --kind <value> --inputs <value> --outputs <value> --required-capabilities <value> --contract-profile <value> --ws <value> --json
+- `--cost-ref <value>`: work receipt new: --graph <value> --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
+- 35 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -6007,13 +6251,14 @@ mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--id <archive.id>`: mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]
 - `--json`: mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]
 - `--kind source|artifact`: mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
-- `--ws <value>`: work artifact add: --id <value> --kind <value> --ws <value> --json
+- `--ws <value>`: work artifact add: --graph <value> --id <value> --kind <value> --ws <value> --json
 
 ### Output and safety
 
@@ -6061,6 +6306,7 @@ mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <ki
 
 - `--agent-id <agent.id>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--json]
 - `--contract-profile <name>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--id <work.id>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--json]
 - `--inputs <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--json]
@@ -6070,7 +6316,7 @@ mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <ki
 - `--required-capabilities <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
-- `--ws <value>`: work contract new: --id <value> --agent-id <value> --kind <value> --inputs <value> --outputs <value> --required-capabilities <value> --contract-profile <value> --ws <value> --json
+- 1 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -6123,16 +6369,16 @@ mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] 
 - `--add-artifacts <...>`: mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]
 - `--add-input-refs <...>`: mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]
 - `--add-queue-refs <...>`: mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]
-- `--constraint-refs <value>`: work order new: --id <value> --work-id <value> --requester <value> --request-ref <value> --trigger-ref <value> --payload-hash <value> --input-refs <value> --queue-refs <value> --requested-outputs <value> --constraint-refs <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --ws <value> --json
+- `--constraint-refs <value>`: work order new: --graph <value> --id <value> --work-id <value> --requester <value> --request-ref <value> --trigger-ref <value> --payload-hash <value> --input-refs <value> --queue-refs <value> --requested-outputs <value> --constraint-refs <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --ws <value> --json
 - `--contract-profile <name>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 - `--evidence-policy-ref <ref>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--id <order.id>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 - `--input-refs <...>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 - `--json`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 - `--payload-hash <sha256:...>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
-- `--queue-refs <...>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
-- 10 additional flags omitted from this generated summary.
+- 11 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -6186,15 +6432,15 @@ mdkg work receipt verify <id-or-qid> [--json]
 - `--add-attestation-refs <...>`: mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
 - `--add-evidence-hashes <sha256:...>`: mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
 - `--add-proof-refs <...>`: mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
-- `--artifacts <value>`: work receipt new: --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
-- `--attestation-refs <value>`: work receipt new: --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
+- `--artifacts <value>`: work receipt new: --graph <value> --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
+- `--attestation-refs <value>`: work receipt new: --graph <value> --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
 - `--contract-profile <name>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
-- `--cost-ref <value>`: work receipt new: --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
+- `--cost-ref <value>`: work receipt new: --graph <value> --id <value> --work-order-id <value> --outcome <value> --receipt-status <value> --cost-ref <value> --redaction-policy <value> --artifacts <value> --proof-refs <value> --attestation-refs <value> --evidence-hashes <value> --input-hashes <value> --output-hashes <value> --contract-profile <value> --validation-policy-ref <value> --evidence-policy-ref <value> --receipt-kind <value> --redaction-class <value> --ws <value> --json
 - `--evidence-hashes <sha256:...>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
 - `--evidence-policy-ref <ref>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
-- `--id <receipt.id>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
-- 14 additional flags omitted from this generated summary.
+- 15 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -6241,6 +6487,7 @@ mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"]
 ### Common flags
 
 - `--enqueue <queue>`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--id <order.id>`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
 - `--json`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
@@ -6248,7 +6495,7 @@ mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--title "<title>"`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
 - `--version`: --version, -V       Show version
-- `--ws <value>`: work trigger: --id <value> --title <value> --requester <value> --enqueue <value> --ws <value> --json
+- `--ws <value>`: work trigger: --graph <value> --id <value> --title <value> --requester <value> --enqueue <value> --ws <value> --json
 
 ### Output and safety
 
@@ -6294,12 +6541,13 @@ mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|f
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal`: mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]
 - `--version`: --version, -V       Show version
-- `--ws <value>`: work validate: --type <value> --ws <value> --json
+- `--ws <value>`: work validate: --graph <value> --type <value> --ws <value> --json
 
 ### Output and safety
 
@@ -6334,47 +6582,47 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-mdkg working list [--json]
-mdkg working show <id...> [--json]
-mdkg working search <query> [--json]
-mdkg working verify [--json]
+mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+mdkg working list [--graph <value>] [--json]
+mdkg working show <id...> [--graph <value>] [--json]
+mdkg working search <query> [--graph <value>] [--json]
+mdkg working verify [--graph <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--archive-id <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--confirm-loss`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--confirm-quiescent`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-- `--confirm-stopped`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--file <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--archive-id <value>`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--confirm-loss`: mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--confirm-quiescent`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--confirm-stopped`: mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--file <value>`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--lock-evidence <value>`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-- `--owner <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- 4 additional flags omitted from this generated summary.
+- `--json`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--lock-evidence <value>`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--owner <value>`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- 5 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -6409,27 +6657,28 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--file <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--file <value>`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
-- `--work-ref <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--work-ref <value>`: mdkg working add [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 
 ### Output and safety
 
@@ -6464,27 +6713,28 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--file <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--file <value>`: mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
-- `--work-ref <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--work-ref <value>`: mdkg working adopt [--graph <value>] [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 
 ### Output and safety
 
@@ -6519,23 +6769,24 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working gc <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -6572,22 +6823,23 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working init [--graph <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -6624,19 +6876,20 @@ Beginner safety: Safe for initial grounding. It should not change repository fil
 ### Usage
 
 ```text
-mdkg working list [--json]
+mdkg working list [--graph <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working list [--json]
+mdkg working list [--graph <value>] [--json]
 ```
 
 ### Common flags
 
+- `--graph <value>`: mdkg working list [--graph <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working list [--json]
+- `--json`: mdkg working list [--graph <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -6673,23 +6926,24 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working pin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -6726,26 +6980,27 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--archive-id <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--archive-id <value>`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
-- `--summary-file <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--summary-file <value>`: mdkg working promote <id...> [--graph <value>] [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -6781,24 +7036,25 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--confirm-loss`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--confirm-loss`: mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working purge <id...> [--graph <value>] [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -6835,23 +7091,24 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working recover <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -6888,24 +7145,25 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--confirm-stopped`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--confirm-stopped`: mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working release <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -6942,25 +7200,26 @@ Beginner safety: Run read-only grounding commands first, then use this only when
 ### Usage
 
 ```text
-mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-- `--confirm-quiescent`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-- `--confirm-stopped`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--apply`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--confirm-quiescent`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--confirm-stopped`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--graph <value>`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-- `--lock-evidence <value>`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-- `--owner <value>`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
-- `--plan-hash <value>`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--json`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--lock-evidence <value>`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--owner <value>`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--plan-hash <value>`: mdkg working resume <id...> [--graph <value>] [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -6997,23 +7256,24 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working retain <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -7050,19 +7310,20 @@ Beginner safety: Safe for initial grounding. It should not change repository fil
 ### Usage
 
 ```text
-mdkg working search <query> [--json]
+mdkg working search <query> [--graph <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working search <query> [--json]
+mdkg working search <query> [--graph <value>] [--json]
 ```
 
 ### Common flags
 
+- `--graph <value>`: mdkg working search <query> [--graph <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working search <query> [--json]
+- `--json`: mdkg working search <query> [--graph <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -7099,19 +7360,20 @@ Beginner safety: Safe for initial grounding. It should not change repository fil
 ### Usage
 
 ```text
-mdkg working show <id...> [--json]
+mdkg working show <id...> [--graph <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working show <id...> [--json]
+mdkg working show <id...> [--graph <value>] [--json]
 ```
 
 ### Common flags
 
+- `--graph <value>`: mdkg working show <id...> [--graph <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working show <id...> [--json]
+- `--json`: mdkg working show <id...> [--graph <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -7148,23 +7410,24 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--apply`: mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--graph <value>`: mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--owner <value>`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan <value>`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
-- `--plan-hash <value>`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--json`: mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working unpin <id...> [--graph <value>] [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -7201,19 +7464,20 @@ Beginner safety: Safe for initial grounding. It should not change repository fil
 ### Usage
 
 ```text
-mdkg working verify [--json]
+mdkg working verify [--graph <value>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg working verify [--json]
+mdkg working verify [--graph <value>] [--json]
 ```
 
 ### Common flags
 
+- `--graph <value>`: mdkg working verify [--graph <value>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg working verify [--json]
+- `--json`: mdkg working verify [--graph <value>] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -7267,6 +7531,7 @@ mdkg workspace rm <alias> [--json]
 
 ### Common flags
 
+- `--graph <name>`: --graph <name>      Select an explicitly registered independent project root
 - `--help`: --help, -h          Show help
 - `--json`: mdkg workspace ls [--json]
 - `--mdkg-dir <dir>`: mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--visibility <level>] [--json]

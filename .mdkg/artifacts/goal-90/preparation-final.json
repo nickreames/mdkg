@@ -1,0 +1,51 @@
+[
+  {
+    "name": "build-final",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 18.586
+  },
+  {
+    "name": "build-test",
+    "command": [
+      "npm",
+      "run",
+      "build:test"
+    ],
+    "exit": 0,
+    "seconds": 4.097
+  },
+  {
+    "name": "cli-snapshot-final",
+    "command": [
+      "node",
+      "scripts/cli_help_snapshot.js"
+    ],
+    "exit": 0,
+    "seconds": 14.621
+  },
+  {
+    "name": "docs-reference-final",
+    "command": [
+      "node",
+      "scripts/generate-docs-reference.js",
+      "--write"
+    ],
+    "exit": 0,
+    "seconds": 0.064
+  },
+  {
+    "name": "release-data-final",
+    "command": [
+      "node",
+      "scripts/generate-release-notes-data.js",
+      "--write"
+    ],
+    "exit": 0,
+    "seconds": 0.065
+  }
+]

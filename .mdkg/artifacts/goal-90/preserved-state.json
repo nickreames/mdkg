@@ -1,0 +1,30 @@
+{
+  "files": {
+    ".mdkg/archive/archive.goal36-browser-chrome-production-evidence-2026-06-24/mdkg-goal36-browser-chrome-production-evidence.zip.md": "68813790bb1834d1461cc6b6231c172498512534031d59e73cc49336c53c52af",
+    ".mdkg/archive/archive.goal36-browser-chrome-production-evidence-2026-06-24/mdkg-goal36-browser-chrome-production-evidence.zip.zip": "71dd8216e2622b5f7043d721b4a257552d258c076c56cec6e1d4cb330f5b3ace",
+    ".mdkg/archive/archive.mdkg-dev-browser-e2e-goal26-2026-06-22/mdkg-dev-browser-e2e.2026-06-22-goal26.zip.md": "e40cbf98c6b0334260683004df064daa9cd386685053e2841a9e72cf03edd624",
+    ".mdkg/archive/archive.mdkg-dev-browser-e2e-goal26-2026-06-22/mdkg-dev-browser-e2e.2026-06-22-goal26.zip.zip": "cc21029968a75e5034222f5623b4ef8dad54bf67bb407a7861d4e15ceb60f808",
+    ".mdkg/archive/archive.mdkg-dev-feedback-user-stories-2026-06-23/mdkg_dev_feedback_user_stories.zip.md": "0a2f13a45dfcd1eb0742c780ee42e7866d05a977f00dcb83f37bda146bb28959",
+    ".mdkg/archive/archive.mdkg-dev-feedback-user-stories-2026-06-23/mdkg_dev_feedback_user_stories.zip.zip": "0468a8faaed784842657652f6f398ccde7e120e5b0395f65e1fbecce60af6378",
+    ".mdkg/archive/archive.mdkg-dev-pass4-browser-chrome-e2e-2026-06-24/mdkg-goal34-browser-chrome-e2e.zip.md": "ceb063da84fa3473ead4652ddf9bca08de53a47633d645223337e333f1479616",
+    ".mdkg/archive/archive.mdkg-dev-pass4-browser-chrome-e2e-2026-06-24/mdkg-goal34-browser-chrome-e2e.zip.zip": "df8d80fb881bb685db0ae54d4f690bba4baf62ef23437a8c51148b9d1a765936",
+    ".mdkg/archive/archive.mdkg-dev-pass4-design-audit-screenshots-2026-06-24/mdkg-goal34-design-audit-pass4.zip.md": "ef60048e72c36c808cf9737e862c4250436e33d112ca56c210a61c84723c06f7",
+    ".mdkg/archive/archive.mdkg-dev-pass4-design-audit-screenshots-2026-06-24/mdkg-goal34-design-audit-pass4.zip.zip": "3df7761ecd253aceaf594cca700e2f1cba5c9965bea23d4206186485692ff836",
+    ".mdkg/archive/archive.mdkg-dev-pass4-hosted-preview-e2e-2026-06-24/mdkg-goal34-hosted-preview-e2e.zip.md": "67e57be81fd8f3fdeab0663dcff0464d9eaa0120190640d6028fd22462e6cd38",
+    ".mdkg/archive/archive.mdkg-dev-pass4-hosted-preview-e2e-2026-06-24/mdkg-goal34-hosted-preview-e2e.zip.zip": "577678cebde359959671b9b28fef88554f64ea11343cde97a2e2869a670a547a",
+    ".mdkg/archive/archive.mdkg-dev-planning-docs-2026-06-22/mdkg_planning_docs.zip.md": "d01f0e48906d2674c6dfc16d7ff82740608df57078622c13b27a26e4687f3586",
+    ".mdkg/archive/archive.mdkg-dev-planning-docs-2026-06-22/mdkg_planning_docs.zip.zip": "26e1084f31b92e61d257d8452317dc10e236d1d85c680b5793488b4b85981da3",
+    ".mdkg/archive/archive.mdkg-dev-polish-pass-3-2026-06-24/pasted-text.txt.md": "75eb54f5af8eb9be7b1cce158993e11897ac9fd850ee1dce7fa87adc66392e59",
+    ".mdkg/archive/archive.mdkg-dev-polish-pass-3-2026-06-24/pasted-text.txt.zip": "6a0fcdecedfa3315cf26bfe1c84b82eba1251feb2c0033779d67026752c5effd",
+    ".mdkg/archive/archive.mdkg-dev-preview-audit-pass-4-2026-06-24/pasted-text.txt.md": "e7986375a60940599da49df0e9cd0232eea817080b92682bc9687cd1128a6812",
+    ".mdkg/archive/archive.mdkg-dev-preview-audit-pass-4-2026-06-24/pasted-text.txt.zip": "10573f7962d5b8af4f41e6eeaed8d1670fef1141e236040b092dd6a723e642ba",
+    ".mdkg/archive/archive.mdkg-dev-preview-audit-pass-5-2026-06-24/pasted-text.txt.md": "388de7fa446632bf2526dc4537024bce744f9d7fb294da1d8d0f974036c1f2bc",
+    ".mdkg/archive/archive.mdkg-dev-preview-audit-pass-5-2026-06-24/pasted-text.txt.zip": "f7cbef1c7694f06adfe663e4c69772be79da1721169036f58aa9b26691c006e3",
+    ".mdkg/archive/archive.mdkg-dev-preview-polish-pass-2-2026-06-24/mdkg_preview_polish_pass2_docs.zip.md": "3fa6194bec928653b6a43b11ee0b2d006a094fbea039ea749cf9799bf013b232",
+    ".mdkg/archive/archive.mdkg-dev-preview-polish-pass-2-2026-06-24/mdkg_preview_polish_pass2_docs.zip.zip": "a81a479b9c8a47825e608441f6bc44246b03d5651343ee40d0ceaf5b11d321bd",
+    ".mdkg/bundles/private/examples/demo-agentic-coding.mdkg.zip": "2220a6cc50860ca1b9db71fc4b66a834b75c7cc4e426e3a5432ab80a3e77a1f3",
+    ".mdkg/bundles/private/examples/template-mdkg-dev.mdkg.zip": "271a75dd0f5392685409ed684cefffc5be9d938068cc2f1f1378aa093faef498",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "before_after_equal": true
+}

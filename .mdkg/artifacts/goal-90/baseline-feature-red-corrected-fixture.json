@@ -1,0 +1,19 @@
+{
+  "kind": "new-feature controls after fixing owned fixture Git setup",
+  "base_head": "1e5b5981611b019c4ab0d14ec9d0bcccf3c171ef",
+  "command": [
+    "python3",
+    "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+    "node",
+    "--test",
+    "tests/independent-graphs.test.mjs"
+  ],
+  "exit": 1,
+  "seconds": 5.282,
+  "log_sha256": "57b460382736a80bd24b0b10606fd9bc5c347e04eac5a29eda48aaa9cc1c6b59",
+  "prior_setup_failure": "baseline-feature-red.log is harness setup failure, not feature evidence",
+  "tests": 12,
+  "pass": 1,
+  "fail": 11,
+  "skipped": 0
+}

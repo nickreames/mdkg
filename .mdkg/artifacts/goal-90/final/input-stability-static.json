@@ -1,0 +1,10 @@
+{
+  "final_product_equal": true,
+  "built_equal": true,
+  "installed_equal": true,
+  "original_product_delta": [
+    "release/public-release.json"
+  ],
+  "corrected_at": "2026-10-03T11:42:14.532589+00:00",
+  "artifact_sha256": "3d6a0f9973749ebf2d3c8b5d19204bc03bf0fb517f79be6515854b6ac414473a"
+}

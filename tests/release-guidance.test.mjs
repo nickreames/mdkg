@@ -65,10 +65,10 @@ test("active event guidance does not imply removed Git materialization validates
 test("command example checks reject wrong-command options without executing commands", () => {
   const { matchMdkgCommand, contractIndex } = require("../scripts/check-doc-command-examples.js");
   const commands = contractIndex();
-  for (const command of ["mdkg capability list --xml", "mdkg validate --profile omni-room", "mdkg index --json", "mdkg --help --unsupported", "mdkg show task-1 --root", "mdkg pack task-1 --format"]) {
+  for (const command of ["mdkg capability list --xml", "mdkg validate --profile omni-room", "mdkg index --json", "mdkg --help --unsupported", "mdkg show task-1 --root", "mdkg pack task-1 --format", "mdkg --graph ../private show task-1", "mdkg --graph personal --graph other show task-1", "mdkg graph register personal --graph default"]) {
     assert.equal(matchMdkgCommand(command, commands).ok, false, command);
   }
-  for (const command of ["mdkg capability list --json", "mdkg show task-1 --xml", "mdkg pack task-1 --format json", 'mdkg task done task-1 --checkpoint "closed unit"']) {
+  for (const command of ["mdkg capability list --json", "mdkg show task-1 --xml", "mdkg pack task-1 --format json", 'mdkg task done task-1 --checkpoint "closed unit"', 'mdkg --graph personal search "draft" --json', 'mdkg --root memory/personal show task-1 --json', 'mdkg --graph personal --version']) {
     assert.equal(matchMdkgCommand(command, commands).ok, true, command);
   }
 });
