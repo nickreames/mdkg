@@ -136,10 +136,6 @@
       "sha256": "f88ad3e1b608bc355fe467475bf9d3c990ae09120c9957530e13af0de0f97ac2",
       "bytes": 243282
     },
-    "coverage-manifest.json": {
-      "sha256": "379a94d7ae0c2bd22587fdf67081988d456084f8e71b0b7146142f3a70e509ab",
-      "bytes": 2556081
-    },
     "coverage-summary.json": {
       "sha256": "552aba0b048430bb45769d17610b4cf052bca6ce4b6e84ba3f9240169ec731e9",
       "bytes": 4288
@@ -283,6 +279,11 @@
     "hosted-111111404739.log.gz": {
       "sha256": "dc3534366b494e22a47bc1b34a9e678d73bc18917478a87e9280cb11b1fef4a6",
       "bytes": 5656
+    },
+    "coverage-manifest.json.gz": {
+      "bytes": 677551,
+      "sha256": "a568f0bc32634b4024da2a7ecf7b0414adef4756295f32b5676fd19239b1289d",
+      "decompressed_sha256": "379a94d7ae0c2bd22587fdf67081988d456084f8e71b0b7146142f3a70e509ab"
     }
   }
 }
