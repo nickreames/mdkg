@@ -19,9 +19,9 @@ Find the smallest useful context, perform scoped work, and retain verified memor
 
 # Scope
 
-Run commands from the project root. Compact agent setups route AGENTS.md and
-CLAUDE.md through .mdkg/AGENT_START.md. Graph-only setups can use this guide
-without those adapters or default skills.
+Run commands from the project root. Compact agent setups route AGENTS.md through
+.mdkg/AGENT_START.md. Existing legacy CLAUDE.md instructions are preserved.
+Graph-only setups can use this guide without the adapter or default skills.
 
 # Requirements
 

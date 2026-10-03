@@ -1,0 +1,20 @@
+{
+  "version": "0.6.0",
+  "dist": {
+    "shasum": "beaccd9e1a295519c25828d3944ff62019a02281",
+    "tarball": "https://registry.npmjs.org/mdkg/-/mdkg-0.6.0.tgz",
+    "fileCount": 237,
+    "integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+    "signatures": [
+      {
+        "sig": "MEUCIQD9smzVTZ04EKJWcTXacBqJOnd1fl0B1iU/oDBWRy9zcQIgO1XdBiELLr/NkLdksj3d6ii1dUiNTd9oYXlQxnVNNVc=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+        "sig": "MEUCIQDb/eKVewKZ5v3/9FHiaWv+wDKwyZVUSOU5k++fTJifVAIgE66r9sKdWJEk0/Gu9k8vGzn0UZUa85n15Q3c3hVtgD8="
+      }
+    ],
+    "unpackedSize": 3011632
+  }
+}

@@ -12,6 +12,7 @@ const proxyPath = path.join(repoRoot, "scripts", "npm-smoke-proxy.js");
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const packageJson = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8"));
 const ladder = require(path.join(repoRoot, "scripts", "release-ladder.js")) as {
+  failureEvidence(result: { status: number | null; stdout?: string; stderr?: string; signal?: string; error?: { code: string } }, limit?: number): any;
   validateManifest(manifest: unknown, packageJson: unknown): void;
   canonicalEntries(
     manifest: unknown,
@@ -41,6 +42,29 @@ function writeJson(filePath: string, value: unknown) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
+
+test("failed gate evidence preserves exact outcome and full-stream hashes with bounded readable tails", () => {
+  const stdout = "prefix must stay in full log\n".repeat(1000) + "failed: retained regression case\n";
+  const input = Object.freeze({ status: 1, stdout, stderr: "coverage floor failed\n" });
+  const evidence = ladder.failureEvidence(input);
+  assert.equal(evidence.status, 1);
+  assert.equal(evidence.stdout.sha256, crypto.createHash("sha256").update(stdout).digest("hex"));
+  assert.equal(evidence.stdout.bytes, Buffer.byteLength(stdout));
+  assert.equal(evidence.stdout.truncated, true);
+  assert.ok(Buffer.byteLength(evidence.stdout.tail_utf8) <= 8192);
+  assert.match(evidence.stdout.tail_utf8, /failed: retained regression case/);
+  assert.equal(evidence.stderr.tail_utf8, input.stderr);
+  assert.equal(evidence.stderr.truncated, false);
+  assert.equal(input.stdout, stdout);
+});
+
+test("failure excerpt retains timeout/signal identity, handles absent output and does not split UTF8", () => {
+  const evidence = ladder.failureEvidence({ status: null, signal: "SIGTERM", error: { code: "ETIMEDOUT" }, stdout: "😀😀😀😀end" }, 9);
+  assert.equal(evidence.signal, "SIGTERM");assert.equal(evidence.error_code, "ETIMEDOUT");assert.equal(evidence.status, null);
+  assert.equal(evidence.stderr.tail_utf8, "");assert.equal(evidence.stderr.bytes, 0);
+  assert.ok(Buffer.byteLength(evidence.stdout.tail_utf8) <= 9);assert.ok(!evidence.stdout.tail_utf8.includes("\ufffd"));
+  for (const limit of [0, -1, 8193, 1.5]) assert.throws(() => ladder.failureEvidence({ status: 1 }, limit), /1\.\.8192/);
+});
 
 function sha256(filePath: string) {
   return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");

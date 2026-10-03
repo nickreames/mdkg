@@ -1,0 +1,42 @@
+{
+  "action": "validated",
+  "ok": true,
+  "warning_count": 1,
+  "error_count": 0,
+  "warnings": [
+    "SQLite cache may be stale because source graph files or config changed; run mdkg index"
+  ],
+  "warning_diagnostics": [
+    {
+      "id": "cache.index",
+      "category": "cache",
+      "severity": "warning",
+      "message": "SQLite cache may be stale because source graph files or config changed; run mdkg index",
+      "remediation": "Run mdkg index or mdkg db index rebuild when generated cache state should be refreshed."
+    }
+  ],
+  "warning_summary": {
+    "total": 1,
+    "emitted": 1,
+    "truncated": false,
+    "omitted_count": 0,
+    "limit": null,
+    "affected_file_count": 0,
+    "by_id": [
+      {
+        "key": "cache.index",
+        "count": 1
+      }
+    ],
+    "by_category": [
+      {
+        "key": "cache",
+        "count": 1
+      }
+    ],
+    "by_node_type": [],
+    "top_qids": [],
+    "top_paths": []
+  },
+  "errors": []
+}

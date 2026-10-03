@@ -7,6 +7,7 @@ priority: 1
 goal_state: paused
 goal_condition: Fresh init generates only root AGENTS.md; reviewed legacy migration preserves custom instructions; canonical content and both native plus configured additional skill mirrors pass installed local acceptance and exact-candidate prepublication gates.
 scope_refs: [task-844, task-845, task-846, test-494, task-847]
+active_node: test-494
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, verify-close-and-checkpoint]
 required_checks: [npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node dist/cli.js skill validate --json, node dist/cli.js validate --json, git diff --check]
 max_iterations: 25
@@ -34,8 +35,8 @@ Increment goal-81 and goal-41; do not redo delivered compact startup or configur
 # End Condition
 
 Fresh init generates only root AGENTS.md; reviewed legacy migration preserves custom instructions; canonical content and both native plus configured additional skill mirrors pass installed local acceptance and exact-candidate prepublication gates. Planning metadata target: 0.6.1, provisional until rechecked.
-The complete contract and decisions are in edd-83; source version stays
-0.6.0 in this PR. This goal stops at a readiness decision, before publication.
+The complete contract and decisions are in edd-83; this implementation targets
+unpublished0.6.1. This goal stops at a readiness decision, before publication.
 
 # Acceptance Criteria
 
@@ -46,14 +47,19 @@ owns final-byte evidence and retained qualification gaps.
 # Dependencies and Execution Authority
 
 First goal in the three-release sequence.
-Nick must review/merge this planning PR before implementation, then explicitly
-Run the scoped goal. The cloud-only git-gud waiver does not apply to execution.
+The planning PR originally required review/merge before implementation.
+Nick's 2026-10-02 sequential cloud-stack instruction supersedes that gate and
+expressly authorizes this implementation from the unmerged planning branch,
+with the narrow cloud exception to local git-gud. Only Goal88 runs in this turn;
+commit/push and one stacked draft PR are authorized on its new branch. No human
+merge or publication authority is granted. Task844's named design choice remains
+pending at chk672; no acceptance approval is invented.
 Reconcile unpublished Mac/concurrent branch changes without copying or overwrite.
 One writer per checkout; implementations proceed sequentially.
 
 # Non-Goals
 
-No implementation in this PR, other release-goal execution, merge queue/permanent
+No other release-goal execution, merge queue/permanent
 ID integration, implicit federation, company data, graph migration, bundle refresh,
 history rewrite, publication/tag/deploy, production/credential changes or
 professional adoption. Later execution must explicitly scope any needed Git actions.
@@ -80,12 +86,24 @@ Nick separately approves publication and adoption; readiness grants neither.
 
 # Current State
 
-Backlog, paused, unclaimed; no active node. All future implementation tests and
-checkpoints are NOT_RUN. chk-681 records docs-only evidence.
+Paused for independent review and qualification. Task844 is in review;
+task845/846/test494/task847 are progress. Selected-goal state remains none.
+Fresh-init and mirror changes are implemented with all existing legacy
+instructions preserved. No removal policy is inferred. Chk672 design review,
+complete test494 acceptance and chk673/chk674 remain unmet. Chk681 is historical.
 
 # Iteration Log
 
 - 2026-10-02: Cloud planning proposal authored from verified remote main.
+- 2026-10-02: New authorized cloud branch from verified plan head ddafe083;
+  task844 baseline audit/proposal prepared at chk672. 219 focused cases passed;
+  source-built audit found nested/case target admission gaps. Design choice
+  requested; no feature/code/version change or Goal89 continuation.
+
+- 2026-10-02: Parent requested continued authorized Goal88 work. Implemented
+  independent AGENTS-only generation and safe mirrors; preserved every existing
+  CLAUDE file and existing startup compatibility behavior. No retirement policy
+  or local/platform approval inferred. Candidate target0.6.1; checks in progress.
 
 # Skill Improvement Candidates
 
@@ -93,7 +111,10 @@ None implemented. Revisit only under an explicitly owned maintenance task.
 
 # Completion Evidence
 
-NOT_RUN for implementation and prepublication. Planning receipt is context only.
+Preservation-first implementation exists; qualification is in progress and
+Goal88 remains NOT_READY. Actual historical audit is at chk672, with current
+results in docs/cloud-goal88-experiment.md. Planning and baseline passes are not
+inherited as final installed-artifact acceptance.
 
 # Required Checks
 
@@ -102,3 +123,36 @@ Run the required_checks commands plus the goal-specific installed acceptance and
 # Stop Conditions
 
 Stop for writer/identity collisions, unowned paths, failed or stale evidence, unmet predecessor, missing local/platform/security qualification or authority outside the accepted scope.
+
+# Continued Cloud Qualification
+
+Actual installed acceptance:18synthetic cases/51CLIinvocations passed on the
+retained0.6.1 artifact, including real official0.6.0 upgrades and mirror/path
+controls. Package definitions:37executed,36passed/1failed. The demo failure
+reproduces with identical103semantic rows on pristine planning base and candidate;
+its required gate remains failed. Full coverage/ladder, site/platform matrix
+and independent local owner review remain unmet. No task/checkpoint is completed
+or approved from these results. Goal88 staysNOT_READY; Goal89/90 not started.
+See .mdkg/artifacts/goal-88/qualification-2/checks.json and CONTINUATION.md.
+
+# Independent Review Correction — NOT_READY
+
+The parent reported two P2 findings againstc13/17fe: stale authored CLAUDE
+routing assertions (two cases) and a positive changelog fixture pinned to0.6.0.
+Cloud reproduced23pass/3fail of26, then corrected only the two test files.
+Exact CLAUDE preservation, repeated-init byte inventory and positive/negative
+runtime-version changelog controls now pass. Runtime/package source is unchanged.
+Affected45/45 on24.19.0 and26/26 on24.18.0 passed. Complete unchanged thresholded
+coverage ran185files:2403pass/0fail/1skip, exit0 in548470ms; coverage
+92.59/84.27/97.58 exceeds89/77/96. Frozen input/custody checks passed.
+
+Cloud package36/37 and site8/9 retain their inherited demo mode and public-command
+assertion failures. The parent's local37/37 package and27 installed results are
+separate reported evidence. Hostedc13 raw coverage remains unclassified after
+archive transfer was blocked by CONNECT proxy403. Required complete ladder,
+platform/portable-filesystem proof, corrected-candidate independent review and
+prepublication acceptance remain pending. This note closes no goal/task/checkpoint
+and infers no approval. Goal89 remains paused for parent review.
+
+Evidence: .mdkg/artifacts/goal-88/qualification-4/COMPARISON.md and checks.json;
+qualification-3/checks.json records sites/minimum runtime and hosted access gap.

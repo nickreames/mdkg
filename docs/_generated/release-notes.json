@@ -1,12 +1,33 @@
 {
   "generated_from": "CHANGELOG.md",
-  "package_version": "0.6.0",
-  "latest_release": "0.6.0",
+  "package_version": "0.6.1",
+  "latest_release": "0.6.1",
   "unreleased": {
     "sections": {},
     "item_count": 0
   },
   "releases": [
+    {
+      "version": "0.6.1",
+      "date": "2026-10-02",
+      "legacy": false,
+      "sections": {
+        "Qualification status": [
+          "Draft candidate, not published or ready for professional adoption. Full coverage/release/security/platform gates and local owner review remain required. Legacy instruction retirement is deferred pending its explicit migration review."
+        ],
+        "Changed": [
+          "Fresh default and explicit agent initialization generate only root AGENTS.md, routing to canonical guidance under `.mdkg`. Existing CLAUDE.md and authored legacy instructions remain preserved; upgrade does not recreate CLAUDE.md.",
+          "Both native skill mirrors remain defaults, with configurable extra destinations. Canonical overlaps, nested targets and portable case aliases refuse before effects. Mirror sync preflights all same-slug ownership conflicts before writes.",
+          "Upgrade preserves custom target policy and reports missing native defaults for explicit review instead of silently changing the user's target list."
+        ]
+      },
+      "item_count": 4,
+      "highlights": [
+        "Draft candidate, not published or ready for professional adoption. Full coverage/release/security/platform gates and local owner review remain required. Legacy instruction retirement is deferred pending its explicit migration review.",
+        "Fresh default and explicit agent initialization generate only root AGENTS.md, routing to canonical guidance under `.mdkg`. Existing CLAUDE.md and authored legacy instructions remain preserved; upgrade does not recreate CLAUDE.md.",
+        "Both native skill mirrors remain defaults, with configurable extra destinations. Canonical overlaps, nested targets and portable case aliases refuse before effects. Mirror sync preflights all same-slug ownership conflicts before writes."
+      ]
+    },
     {
       "version": "0.6.0",
       "date": "2026-09-17",

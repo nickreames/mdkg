@@ -2,10 +2,10 @@
 id: task-845
 type: task
 title: Implement AGENTS-only fresh init and reviewed legacy migration
-status: backlog
+status: progress
 priority: 1
 parent: goal-88
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -35,8 +35,10 @@ No assertion about Anthropic support policy; no publication or broad adoption.
 # Implementation Notes
 
 Owned by goal-88; follow edd-83. Depends on chk-672.
-This record is a future task, not execution authorization in this PR. Resolve
-the design decisions at the named design checkpoint before changing behavior.
+Nick expressly authorized the sequential cloud implementation before PR10 merge.
+The follow-up asks continued Goal88 work. Only the preservation-first slice is
+implemented: no new legacy retirement, compatibility expiry or approval is inferred.
+The named design checkpoint remains for review of any removal policy.
 
 # Acceptance Criteria
 
@@ -48,7 +50,10 @@ gates apply. No unrelated project/graph writes or publication authority.
 
 # Current State
 
-Backlog, unclaimed. Implementation and acceptance: NOT_RUN.
+Progress. Fresh init and missing-wrapper upgrade generate AGENTS.md only. All
+existing CLAUDE.md bytes remain untouched, including malformed markers. Existing
+verified startup redirects and recovery machinery are retained. Retirement and
+compatibility expiry are deferred to design review; full acceptance is pending.
 
 # Files Affected
 

@@ -2,12 +2,12 @@
 id: chk-672
 type: checkpoint
 title: Reviewed minimal init design boundary
-status: backlog
+status: review
 priority: 1
 tags: [cloud-planning, design-only]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-88/design-proposal.md, .mdkg/artifacts/goal-88/baseline-init.json, .mdkg/artifacts/goal-88/checks.json, docs/cloud-goal88-experiment.md]
 relates: []
 blocked_by: [task-844]
 blocks: []
@@ -24,9 +24,10 @@ checkpoint_kind: review
 
 # Summary
 
-FUTURE CHECKPOINT — NOT_RUN. Expected milestone: Approved exact contracts, migration boundaries, open decisions and synthetic test plan.
-This placeholder must remain backlog until its actual milestone has evidence;
-authoring the planning node does not satisfy it.
+Task844's actual baseline audit and concrete migration proposal are available
+for review. Design acceptance remains PENDING_NICK_REVIEW. The required
+compatibility/removal choice has not been supplied; this record does not claim
+approval or unblock task845.
 
 # Scope Covered
 
@@ -35,23 +36,53 @@ Depends on task-844. Implementations remain sequential and separately authorized
 
 # Decisions Captured
 
-Nick reviews unresolved names/grammar/compatibility/persistence policy, exact owned paths and accepted tests before feature work.
-Do not attach invented results or copy earlier candidate passes onto changed bytes.
+See .mdkg/artifacts/goal-88/design-proposal.md for the exact path inventory,
+preservation/refusal and retained-original backup proposal, bounded mirror
+admission gaps, owned implementation paths, and future installed acceptance.
+The proposal retains verified startup redirects throughout 0.6.x and retires
+only exact generated CLAUDE after trusted release proof and safe references.
+The alternative keeps all existing legacy instructions in 0.6.1. Neither choice
+is claimed accepted. Nick's new instruction authorizes the sequential cloud
+implementation stack before PR10 merge; renewed Run/merge permission is not
+needed to implement once this design choice is resolved.
 
 # Known Issues / Follow-ups
 
-Original implementation/git-gud gates and cloud/Mac reconciliation remain.
+The current instruction supersedes the plan-merge gate and provides the narrow
+cloud implementation exception to local git-gud. The local prerequisite and
+unknown Mac/concurrent aliases remain integration concerns; no new IDs were
+allocated and no Mac access or history rewrite occurred.
 goal-87 deferred filesystem limits and epic-257 hosted qualification remain
 separate honest gaps. This checkpoint currently provides no implementation pass.
 
 # Implementation Summary
 
-No feature implementation or future acceptance was performed by this planning PR.
+Audit task844 has begun; source/tests/init assets/package metadata remain
+unchanged from ddafe0836fdc790cd36ba203afbcfc1878bbddd8. This checkpoint is
+not an implemented 0.6.1 candidate. Task845/846/test494/task847 and chk673/674
+remain unmet. Goal88 is open and NOT_READY.
 
 # Verification / Testing
 
-NOT_RUN; attach actual milestone commands, input identities, results and retained gaps before completion.
+PASS: supported build and test compilation; 219 focused baseline cases in ten
+families (zero failures/skips); 32 audited source-built synthetic invocations;
+CLI matrix/contract, workflow drift, docs499examples/0failures, graph0errors,
+and 8-skill validation. Nested/case mirror target admission gaps are observations,
+not passing future acceptance. Exact commands and input/log hashes are retained
+in checks.json. Full candidate tests/coverage, installed0.6.1 acceptance and
+release/platform/security qualification are NOT_RUN. Prior full-CI failures and
+unclassified causes remain unresolved; no coverage/timeouts were weakened.
 
 # Links / Artifacts
 
-edd-83; docs/cloud-planning-experiment.md. Future artifact references must be added after they exist.
+edd-83; docs/cloud-planning-experiment.md (historical); the actual current
+artifacts listed above and docs/cloud-goal88-experiment.md.
+
+# Continued Implementation Boundary
+
+Following the parent's request to continue while Nick sleeps, the independent
+preservation-first slice is implemented. All existing CLAUDE.md files survive
+byte-for-byte; no legacy retirement or new compatibility expiry is selected.
+Fresh generation/missing-file repair is AGENTS-only and mirror admission is
+hardened. This checkpoint remains review, with no accepted design decision or
+local owner approval claimed. Historical baseline receipts above stay unchanged.

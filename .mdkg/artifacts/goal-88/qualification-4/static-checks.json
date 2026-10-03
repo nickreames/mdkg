@@ -1,0 +1,45 @@
+{
+  "kind": "supporting-static-checks",
+  "source_head_before_fix": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+  "qualification_inputs_sha256": "525f55ac988953a836d5e855d998b15a4a2d65e219e0365475a012d330ff35c6",
+  "runtime": "Node24.19.0/npm11.9.0 native Linux x86_64",
+  "commands": [
+    {
+      "command": "npm run cli:check:built",
+      "exit": 0
+    },
+    {
+      "command": "npm run cli:contract:built",
+      "exit": 0
+    },
+    {
+      "command": "npm run docs:check:built",
+      "exit": 0
+    },
+    {
+      "command": "npm run ci:workflow:check",
+      "exit": 0
+    },
+    {
+      "command": "npm run security:verify",
+      "exit": 0
+    },
+    {
+      "command": "node scripts/assert-publish-ready.js",
+      "exit": 0
+    }
+  ],
+  "docs_examples": {
+    "checked": 499,
+    "failed": 0
+  },
+  "security_matrix": {
+    "total": 51,
+    "high": 5,
+    "medium": 28,
+    "low": 18
+  },
+  "contract_sha256": "c99d532a800fc3d409c8678e2a2d5671928a2246f90c32f9c4981032a2e54519",
+  "duration": "not separately instrumented; combined native command completed exit0",
+  "readiness": "static publish readiness only; qualification receipts and publication authority still required"
+}

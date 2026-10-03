@@ -1,0 +1,96 @@
+{
+  "parent": "bb850f5be80562269064122aef2f59e356a5e7b4",
+  "utc": "2026-10-03T04:56:27.344553+00:00",
+  "frozen_inputs": {
+    "package": "4949339295dc81d59355253d9f4de7b0149ddc0c27dac7e89935b45f2e86453d",
+    "qualification": "b384733836cffae67b2d70ff010ffcf5b3643ddab1f0eb97dff0c83446ce90e2"
+  },
+  "drift": false,
+  "runs": [
+    {
+      "label": "current",
+      "runtime": "v24.19.0",
+      "status": 0,
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "tests/ci-evidence.test.mjs",
+        "tests/qualification-output.test.mjs",
+        "tests/qualification-smoke.test.mjs",
+        "tests/test-execution-environment.test.mjs",
+        "dist/tests/coverage-contract.test.js",
+        "dist/tests/ci-topology.test.js",
+        "dist/tests/release-ladder.test.js",
+        "dist/tests/test-built.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 94",
+        "\u2139 pass 94",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 1953.298808",
+        "cloud runner: reaped 2 owned descendant(s); command exit 0"
+      ],
+      "log_sha256": "406b8bd8058621f7ae62eba22c2de0a9b7362c9c6bdbe6ee10447e61d31ccad0"
+    },
+    {
+      "label": "minimum",
+      "runtime": "v24.18.0",
+      "status": 0,
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+        "--test",
+        "tests/ci-evidence.test.mjs",
+        "tests/qualification-output.test.mjs",
+        "tests/qualification-smoke.test.mjs",
+        "tests/test-execution-environment.test.mjs",
+        "dist/tests/coverage-contract.test.js",
+        "dist/tests/ci-topology.test.js",
+        "dist/tests/release-ladder.test.js",
+        "dist/tests/test-built.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 94",
+        "\u2139 pass 94",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 1507.459752",
+        "cloud runner: reaped 2 owned descendant(s); command exit 0"
+      ],
+      "log_sha256": "637f3874fd555828673265d2dcf2aa4f4e4dd6bab248e2417a2927cc0628a57d"
+    },
+    {
+      "label": "floating",
+      "runtime": "v24.21.0",
+      "status": 0,
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+        "--test",
+        "tests/ci-evidence.test.mjs",
+        "tests/qualification-output.test.mjs",
+        "tests/qualification-smoke.test.mjs",
+        "tests/test-execution-environment.test.mjs",
+        "dist/tests/coverage-contract.test.js",
+        "dist/tests/ci-topology.test.js",
+        "dist/tests/release-ladder.test.js",
+        "dist/tests/test-built.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 94",
+        "\u2139 pass 94",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 1514.375559",
+        "cloud runner: reaped 2 owned descendant(s); command exit 0"
+      ],
+      "log_sha256": "156f00b84bbccecde6a1a3f4e0b0260e2b07b4a40c5f76a7dff0295d9898a6f1"
+    }
+  ],
+  "scope": "CIreporter/collector/coverage-contract/output/smoke/topology/ladder/testworker controls; no full suite/build"
+}

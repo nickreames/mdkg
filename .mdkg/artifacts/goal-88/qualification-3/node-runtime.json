@@ -1,0 +1,10 @@
+{
+  "version": "24.18.0",
+  "platform": "linux",
+  "architecture": "x64",
+  "url": "https://nodejs.org/dist/v24.18.0/node-v24.18.0-linux-x64.tar.xz",
+  "sha256": "55aa7153f9d88f28d765fcdad5ae6945b5c0f98a36881703817e4c450fa76742",
+  "bytes": 31511588,
+  "verification": "exact official HTTPS SHASUMS256.txt; bounded download, data-filter extraction to owned cache",
+  "initial_setup_refusal": "top-level directory lacks trailing slash; prefix guard corrected without relaxing traversal or extraction safety"
+}

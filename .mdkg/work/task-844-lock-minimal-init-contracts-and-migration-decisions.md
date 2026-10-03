@@ -2,13 +2,13 @@
 id: task-844
 type: task
 title: Lock minimal init contracts and migration decisions
-status: backlog
+status: review
 priority: 1
 parent: goal-88
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-88/design-proposal.md, .mdkg/artifacts/goal-88/baseline-init.json, .mdkg/artifacts/goal-88/checks.json, docs/cloud-goal88-experiment.md]
 relates: []
 blocked_by: []
 blocks: []
@@ -34,9 +34,11 @@ duration and preservation behavior before the subsequent feature tasks.
 
 # Implementation Notes
 
-Owned by goal-88; follow edd-83. Depends on Nick reviewing and merging this planning PR.
-This record is a future task, not execution authorization in this PR. Resolve
-the design decisions at the named design checkpoint before changing behavior.
+Owned by goal-88; follow edd-83's bounded technical scope. Nick's current
+instruction expressly authorizes the sequential cloud implementation stack
+before PR10 merge, superseding the original merge/git-gud execution gate for
+this cloud experiment. The compatibility/preservation choice remains a named
+design decision at chk672 before behavior changes; no approval is inferred.
 
 # Acceptance Criteria
 
@@ -48,7 +50,11 @@ gates apply. No unrelated project/graph writes or publication authority.
 
 # Current State
 
-Backlog, unclaimed. Implementation and acceptance: NOT_RUN.
+Claimed root:task-844 by mdkg-project-agent; review. Source-built baseline audit
+and concrete path/migration proposal are present at chk672. The removal/compatibility choice remains pending; task is not done. Following
+the request to continue Goal88, the independent fresh-init and mirror changes
+preserve all existing legacy instructions. Candidate qualification is in progress.
+See the experiment log for the explicit boundary and retained baseline.
 
 # Files Affected
 
@@ -60,4 +66,5 @@ Behavior cases are defined by test-494; prepublication evidence by chk-674. All 
 
 # Links / Artifacts
 
-edd-83 contains the reviewed proposal; future evidence must be attached explicitly.
+edd-83 is historical planning context. The current source-grounded proposal and
+baseline evidence are attached in artifacts and summarized by chk672.

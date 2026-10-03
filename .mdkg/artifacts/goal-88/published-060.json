@@ -1,0 +1,9 @@
+{
+  "version": "0.6.0",
+  "url": "https://registry.npmjs.org/mdkg/-/mdkg-0.6.0.tgz",
+  "integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+  "sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+  "bytes": 545431,
+  "source": "one authorized HTTPS download via configured cloud proxy; verified against supplied sealed SHA256 and official metadata integrity",
+  "verified_at": "2026-10-02T06:14:27.330Z"
+}

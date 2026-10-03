@@ -89,7 +89,7 @@ function assertFocusedDiscovery(root, skills, expectedCanonical) {
     assert.ok(fs.existsSync(file), `broken discovery link: ${target}`);
     localLinks++;
   };
-  for (const relative of ["AGENTS.md", "CLAUDE.md", ".mdkg/AGENT_START.md", ".mdkg/llms.txt", ".mdkg/README.md"]) {
+  for (const relative of ["AGENTS.md", ".mdkg/AGENT_START.md", ".mdkg/llms.txt", ".mdkg/README.md", ...(fs.existsSync(path.join(root, "CLAUDE.md")) ? ["CLAUDE.md"] : [])]) {
     const content = fs.readFileSync(path.join(root, relative), "utf8");
     // Seeded inline Markdown links only; this is not a general Markdown parser.
     for (const match of content.matchAll(/\]\(([^)#]+)(?:#[^)]*)?\)/g)) {
@@ -128,8 +128,8 @@ function exerciseCustomizedDiscovery(binPath, tempRoot) {
   for (const file of ["AGENTS.md", "CLAUDE.md"]) {
     const text = fs.readFileSync(path.join(root, file), "utf8");
     assert.ok(text.startsWith(user + file + "\r\n"));
-    assert.equal(text.split("<!-- mdkg:instructions:start -->").length, 2);
-    assert.equal(text.split("<!-- mdkg:instructions:end -->").length, 2);
+    assert.equal(text.split("<!-- mdkg:instructions:start -->").length, file === "AGENTS.md" ? 2 : 1);
+    assert.equal(text.split("<!-- mdkg:instructions:end -->").length, file === "AGENTS.md" ? 2 : 1);
     assert.equal(text.replaceAll("\r\n", "").includes("\n"), false, "root CRLF convention preserved");
     fs.appendFileSync(path.join(root, file), "\r\n# User suffix\r\nNever discard this.\r\n");
   }
@@ -446,7 +446,6 @@ function exerciseAgentInit(binPath, tempRoot, explicitAgent = false) {
   for (const relativePath of [
     ".mdkg/AGENT_START.md",
     "AGENTS.md",
-    "CLAUDE.md",
     ".mdkg/llms.txt",
     ".mdkg/CLI_COMMAND_MATRIX.md",
     ".mdkg/skills/author-mdkg-skill/SKILL.md",
@@ -462,7 +461,7 @@ function exerciseAgentInit(binPath, tempRoot, explicitAgent = false) {
     assertExists(path.join(root, relativePath));
   }
   assertNoRemovedInitGuidance(root);
-  for (const file of ["AGENT_START.md", "CLI_COMMAND_MATRIX.md", "README.md", "LICENSE", "llms.txt"]) assertNotExists(path.join(root, file));
+  for (const file of ["CLAUDE.md", "AGENT_START.md", "CLI_COMMAND_MATRIX.md", "README.md", "LICENSE", "llms.txt"]) assertNotExists(path.join(root, file));
   assertFocusedDiscovery(root, parseJson(mdkg(binPath, ["skill", "list", "--json"], root).stdout).items);
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assertIncludes(gitignore, ".mdkg/archive/**/source/", ".gitignore");

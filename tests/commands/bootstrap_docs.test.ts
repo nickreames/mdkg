@@ -25,8 +25,9 @@ test("maintained upgrade instructions require a reviewed plan hash", () => {
 
 test("focused agent discovery uses compact router and documents the concise profile alias", () => {
   const quickstart = read("docs/src/content/docs/start-here/quickstart.md");
-  assert.match(quickstart, /mdkg pack WORK_ID --pack-profile concise/);
-  assert.match(quickstart, /--profile concise` is an equivalent alias/);
+  assert.match(quickstart, /mdkg pack WORK_ID --profile concise/);
+  assert.match(quickstart, /--pack-profile` is an equivalent alias/);
+  assert.match(quickstart, /neither\s+option changes traversal depth or node\/byte limits by itself/);
   const workflow = read("docs/src/content/docs/guides/agent-workflow.md");
   assert.match(workflow, /\.mdkg\/AGENT_START\.md/);
   assert.match(workflow, /mdkg skill search/);

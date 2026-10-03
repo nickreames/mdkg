@@ -32,7 +32,7 @@ const LOOP_COMMAND_DESCRIPTOR_BY_KEY = loadLoopCommandDescriptors();
 const READ_WRITE_PATHS = {
   graph: [".mdkg/**/*.md", "<workspace-mdkg>/**/*.md", ".mdkg/index/**", "<configured-index-cache-paths>", ".mdkg/work/events/events.jsonl", "<workspace-mdkg>/work/events/events.jsonl"],
   config: [".mdkg/config.json", ".mdkg/index/**", "<configured-index-cache-paths>"],
-  init: [".mdkg/**", "AGENT_START.md", "AGENTS.md", "CLAUDE.md", "CLI_COMMAND_MATRIX.md", "llms.txt", ".agents/skills/**", ".claude/skills/**", ".gitignore", ".npmignore", ".dockerignore"],
+  init: [".mdkg/**", "AGENT_START.md", "AGENTS.md", "CLI_COMMAND_MATRIX.md", "llms.txt", ".agents/skills/**", ".claude/skills/**", ".gitignore", ".npmignore", ".dockerignore"],
   db: [".mdkg/config.json", ".mdkg/db/**", "<configured-project-db-runtime>", "<configured-project-db-state>", "<--out>", ".mdkg/index/**"],
   archive: [".mdkg/archive/**", "<workspace-mdkg>/archive/**", ".mdkg/index/**", "<configured-index-cache-paths>", "<workspace-mdkg>/work/events/events.jsonl"],
   bundle: [".mdkg/bundles/**", "<configured-bundle-output-dir>/**", "<--out>"],

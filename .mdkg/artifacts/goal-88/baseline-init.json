@@ -1,0 +1,1070 @@
+{
+  "schema_version": 1,
+  "kind": "source-built-baseline-audit",
+  "started_at": "2026-10-02T05:23:39.542Z",
+  "completed_at": "2026-10-02T05:23:44.640Z",
+  "node": "v24.19.0",
+  "platform": "linux",
+  "arch": "x64",
+  "source_commit": "ddafe0836fdc790cd36ba203afbcfc1878bbddd8",
+  "package_version": "0.6.0",
+  "cli_sha256": "f4c29ed5f47d419ea590f92b1674568fd796d5fd3e8be2c8a4a2ad2d826831db",
+  "script_sha256": "9aaa3b72ca625467204d9990f3a706ee887abf280652cd6acb6279f77f53a4a5",
+  "inventory_bases": {
+    "fresh-default": {
+      ".agents/skills/.mdkg-managed.json": "36e7250a8e55bda7bc37a2efe4a53dfe9c970ccbf5c75f04a51d4337b9d5fa3d",
+      ".agents/skills/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+      ".agents/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".agents/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".agents/skills/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+      ".agents/skills/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+      ".agents/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".claude/skills/.mdkg-managed.json": "36e7250a8e55bda7bc37a2efe4a53dfe9c970ccbf5c75f04a51d4337b9d5fa3d",
+      ".claude/skills/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+      ".claude/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".claude/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".claude/skills/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+      ".claude/skills/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+      ".claude/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".gitignore": "b712e8e66857e638e5bea6d42a0cdbe9bcef45f8bc2103bc6d9287fab3d2201a",
+      ".mdkg/AGENT_START.md": "dc248fcb3e466cff15d21f6634fea99a362458ac9fc5b04a64a526acb79b61d3",
+      ".mdkg/CLI_COMMAND_MATRIX.md": "a273d0b02f9b00775b7a6fbafc3ba09497a7bcdb927168da3a9e0b8739f83e0f",
+      ".mdkg/config.json": "3d0ed0f8d65a33fe54a3855b3314a6762ad6dd1eaf6efcdce3e551a493433dc3",
+      ".mdkg/core/COLLABORATION.md": "f047064bd3b226be8b43461e740b2698226a90ad90366e04e6cb24f190065c33",
+      ".mdkg/core/core.md": "af69bfda0e39acb6d2546dd21bddce0644af0ec5fbf183ea3bcb53e6a12276c0",
+      ".mdkg/core/guide.md": "d61baf21254be6283bd18bd505c87bed83a27a607b76011e5d6a6d5bc1e24ca1",
+      ".mdkg/core/HUMAN.md": "6d13b14e15d2e5bd32b8c7e33b241ab25d142a13ba57de67ed141e37ec28a1cf",
+      ".mdkg/core/rule-1-mdkg-conventions.md": "9cf912380532de20bab0e658bfdefdce177f2ec3733b2f94196eb0cca072c31c",
+      ".mdkg/core/rule-2-context-pack-rules.md": "3214954d5ed0eb8620b175a9a50b3429fa718ea17f2eb74c0ad146b627d5e8ca",
+      ".mdkg/core/rule-3-cli-contract.md": "864baaf1edc8bdafb5195c7c1c9847960a18358eaffdf07a8555636f2b10610b",
+      ".mdkg/core/rule-4-repo-safety-and-ignores.md": "b821c48482bd67066a0224a2ad102e027c326ff0b956454d18bfedeb14555746",
+      ".mdkg/core/rule-5-release-and-versioning.md": "59b87afc83eccf34d7c324c006ba97a0a676e77379378f240d0e03aea1d936a7",
+      ".mdkg/core/rule-6-templates-and-schemas.md": "7ab6849b86460c051496df97cb4070ff263711d92b34cf2e00d478b576343bb3",
+      ".mdkg/core/SOUL.md": "83c337cf97fea35f848ea484794ee0d9fcc941c09621c43ba4d2d005a572a9f5",
+      ".mdkg/init-manifest.json": "255d62829ca5006d5c7d311e60dc2ac9ccb983a70059392db5252e943a94593d",
+      ".mdkg/llms.txt": "8b00eb116ad7818dcff7d4b3d0cb1d2022129f9e4ad0b19cfe942b633a811758",
+      ".mdkg/README.md": "2cb4064b12a3c3c89445ddcd56a60e04c8879cb2bbfa3e7930249863461652a9",
+      ".mdkg/skills/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+      ".mdkg/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+      ".mdkg/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+      ".mdkg/skills/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+      ".mdkg/skills/registry.md": "b60ed1de200e1f6ebb6808ffd94ce1de1b9697cd6f0eb971e9145fef342ba62d",
+      ".mdkg/skills/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+      ".mdkg/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+      ".mdkg/templates/default/archive.md": "d442523bbecd91a3c4a436043919117da00c145b368612311e98e628fe30d69b",
+      ".mdkg/templates/default/bug.md": "27ed977c67030befccfc469d9db257fadc9ad5331963e259c489ba03754194cb",
+      ".mdkg/templates/default/chk.md": "9e32f46665fc7cc582c4695772f5d99799f574229e740fa8892c7b9e75324de9",
+      ".mdkg/templates/default/dec.md": "a2f7098fea538c153ac290f2e2edb2e755ca9dd07d17c2a127fb23959517ece9",
+      ".mdkg/templates/default/dispute.md": "b1c5330fd4a1e3f03dbb4ac8907bd728e55537e053dcf43ebcbdc835ff1d0579",
+      ".mdkg/templates/default/edd.md": "44828719927cfd31389b9d55b57fc4fa9bc640f3e2475baefe585e4043740f5e",
+      ".mdkg/templates/default/epic.md": "0f515c046064771e3f9abaa3689634bfae3ffcf2ffe9825e8e3b7dc15c24fc50",
+      ".mdkg/templates/default/feat.md": "25c04ce41d8cf519d5c3009219eeed48f76c23600c6b7999264831aa92cefc4b",
+      ".mdkg/templates/default/feedback.md": "61ad7b8b717d17736ba505f814fa6e4f9ec61f7fe4ae6622359304620a99d649",
+      ".mdkg/templates/default/goal.md": "8f984580aefd02b34639fa7f5d2a834662656bbf2e12f14a285f5ae31aff74ce",
+      ".mdkg/templates/default/loop.md": "6e8f280c3375b9ec18e09fdb263665b2e3da45ca09b2547378fdd4c9bc015d89",
+      ".mdkg/templates/default/manifest.md": "a7d758cbe2a51c4889fef39bf91d67f67895f55bcd851d1e02e52f8b2a5a6f2c",
+      ".mdkg/templates/default/prd.md": "afee167576a4f881ab191867e118864b7b5629e14b9c4a61359c8fbd7ececeee",
+      ".mdkg/templates/default/prop.md": "839b976a8ddc0d6abddfbe6114dfb87f64471958ae807c011538777b758aa1f0",
+      ".mdkg/templates/default/proposal.md": "16bfa81b6e665064e93e0d1b625dccc518b9885f87a32a15e5ba5441c2c27ea8",
+      ".mdkg/templates/default/receipt.md": "5ffbba7d9ad11193bf65830e4be5b3c04c0fe3aa81a4e473a849cd321644a383",
+      ".mdkg/templates/default/rule.md": "6321abf72af61a6513d7bfaa2d3122b2aa3bd2b95b662a52d569fb2bf819fda1",
+      ".mdkg/templates/default/spec.md": "2f00af67cf357f6a15a97bf175e6422d8c84d1fcf0e21977b1134e898378677e",
+      ".mdkg/templates/default/spike.md": "56e881fad20bd4fda8ae53cc78ce6f30f4dacd083f4eda40f9f2ba3723d52e0e",
+      ".mdkg/templates/default/task.md": "2db6e56298b22e9da9121e2ac31f2fd68e370211218c5bcaae1014a9e63b7cde",
+      ".mdkg/templates/default/test.md": "59484d4cf397707d738ccbc2f788c08eab58d3d73f37591f7bde8f1533b828ce",
+      ".mdkg/templates/default/work_order.md": "d42460ae996f5f309d8666019c24d7b236947bc8a64cff6d4eff61b1d6e46216",
+      ".mdkg/templates/default/work.md": "1a2d22b922b37a208a1e51ad0fc51d8914dea6acb0ece4d9c6e19cdf907cd426",
+      ".mdkg/templates/loops/backend-api-cli-bloat-audit.loop.md": "e61083901ae2dcd315eba81ebf9aa90b9cbe7fb3ba923dd6834feb5502fd03b3",
+      ".mdkg/templates/loops/design-frontend-ux-audit.loop.md": "2da3ad70d71e52545006883452b5fc2673761ecd0875a00746a5468c25eee241",
+      ".mdkg/templates/loops/duplicate-code-and-linting-audit.loop.md": "36cbe0957883b5d75ebae6705f24eeb77f616202553c428386eeba9821aeaccc",
+      ".mdkg/templates/loops/security-audit.loop.md": "2c26211f628cd62474595191fdc106e051a839bf7232a2336852a1b44e1ca9ba",
+      ".mdkg/templates/loops/tech-stack-best-practices-audit.loop.md": "866c6aae55fa1e1eba9b77c0c92b678c779d96eb39cf293cf51c7a244ea39e54",
+      ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md": "2c8b395e43129681574f5417d00311ed30568a3d86bee7639f3254af5a5caa12",
+      ".mdkg/templates/loops/user-story-audit-and-recommendations.loop.md": "2bc4b328ccdfd5c0959b003956a5b8bff1ba83032514ed23025fc8f3587c323f",
+      ".mdkg/templates/skills/base.SKILL.md": "08a1bd65297173a1dc9df95776775d406337a419d4bc51863593b6f28777ebdb",
+      ".mdkg/templates/specs/agent.MANIFEST.md": "79fb755c95747d3f673e1333ec3f039d08f76488ba268b7fa32f457d8638ee64",
+      ".mdkg/templates/specs/agent.SPEC.md": "dab10c0ed12aa10a752ee3bd61f263065644826eb950c71a9e3458673edb0ca5",
+      ".mdkg/templates/specs/api.MANIFEST.md": "dd342ab2bd331b716e4b7de9f8c7cfa503703422a4cc88c21fe90ff49b11aa83",
+      ".mdkg/templates/specs/api.SPEC.md": "aee86cadcca31a5a015d7e15ad7503c4aa30f2af0079ec03f857b82b3ecbae59",
+      ".mdkg/templates/specs/base.MANIFEST.md": "4d5fe98b388e9183c9577438e49c375e86d58314130c668be4695f124ea8c37c",
+      ".mdkg/templates/specs/base.SPEC.md": "43d8b7726560c6245b2927ed5242dc872c394f16fb3dc9c3e58076766270ff5d",
+      ".mdkg/templates/specs/capability.MANIFEST.md": "0ab2c2f90c6bdcddaafd77ac6cc36422d6ee10cc935942d8f80728f5b184d5cc",
+      ".mdkg/templates/specs/capability.SPEC.md": "68a91e8bbd80d1ff1972e4c31e29f26451d5a1be1d25d414170fdd670010066f",
+      ".mdkg/templates/specs/integration.MANIFEST.md": "7af890bdac5515600661c241dd488c2bc270248ae6fba9afb0307d7a643022a4",
+      ".mdkg/templates/specs/integration.SPEC.md": "e907ce6ebc1fa5a455e31e39036e3f8699dccb3d9e45288c8ea025eaec4ca4a2",
+      ".mdkg/templates/specs/model.MANIFEST.md": "3fe36a424b6eba8542bd08d3e2728ffd7f35d2c72037f2e565757cea15da2e1f",
+      ".mdkg/templates/specs/model.SPEC.md": "56061a241819dfda4d3022c075f744cf6650f5f52c58cd15b0af9d1f613af4f2",
+      ".mdkg/templates/specs/project.MANIFEST.md": "e1f68306a9cff3d73e65a2fea38d52b49dd76921b5d7c7ea9710eb2c23cb6f89",
+      ".mdkg/templates/specs/project.SPEC.md": "386c41852cbb46e7a6ba583a7b0c4126262a56618d8e214aaa601b68d55818b9",
+      ".mdkg/templates/specs/runtime-agent.MANIFEST.md": "4ba2013362597f101fb225bc6a3369a47a0c1cac3de78220efea4e53d42f0393",
+      ".mdkg/templates/specs/runtime-agent.SPEC.md": "53af7c3e172f5ed1297f340aca0be5e53302613d2e6bb9145915067d7b0004c8",
+      ".mdkg/templates/specs/runtime-image.MANIFEST.md": "098debed22f274c9f408defcf330ef27c760e1a3166876f2a6e16cb28cfb4757",
+      ".mdkg/templates/specs/runtime-image.SPEC.md": "37416b045cd7733d1f5e1cc629ac9b6616024d5fa52f2bdcd90110267151e593",
+      ".mdkg/templates/specs/tool.MANIFEST.md": "79e45600a3b83d70e2791cbdff0138b57018a30b7e277d9017b7ba142deccb91",
+      ".mdkg/templates/specs/tool.SPEC.md": "05b827bbce4f721ea25beda62850688aff3db644aec65e71b9cf76cad8e5f46f",
+      ".mdkg/work/events/events.jsonl": "9ec0d04d76e07edb32311c2ff30435577e632a18ffc16df7cbecc4df5ad56396",
+      ".npmignore": "18679789312fd59b70da77a5e078b797bb679e02c1bff47474034c373771b588",
+      "AGENTS.md": "52d9eed4c2d5e5b88952c4b3f117066738aaa90e5f2c22d190a325e1bb7e6e5f",
+      "CLAUDE.md": "45b9ba620ca3962a8808953275c118aaa580fabee7f8bd11510c1b2ac8ff1d33"
+    }
+  },
+  "outputs": {
+    "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901": "mdkg init complete: 77 file(s) created, 0 skipped\nmanaged manifest: .mdkg/init-manifest.json\nignore files updated: .gitignore, .npmignore\nagent bootstrap: AGENTS.md, CLAUDE.md; guidance: .mdkg/AGENT_START.md, .mdkg/llms.txt, .mdkg/CLI_COMMAND_MATRIX.md\nagent core pins: rule-soul, rule-7, rule-human\nagent event log: .mdkg/work/events/events.jsonl\nskill mirrors: 12 sync operation(s) across 2 target(s)\nskill registry: .mdkg/skills/registry.md\nnext:\n  read .mdkg/AGENT_START.md\n  mdkg new task \"...\" --status todo --priority 1\n  mdkg search \"...\"\n  mdkg show <id>\n  mdkg next\n  mdkg pack <id>\n  mdkg validate\n",
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": "",
+    "4e60c99a28e27b63924763688180be59bb734284c48e206ecfd3b4de3bacc7c5": "mdkg init complete: 0 file(s) created, 76 skipped\nmanaged manifest: .mdkg/init-manifest.json\nagent bootstrap: AGENTS.md, CLAUDE.md; guidance: .mdkg/AGENT_START.md, .mdkg/llms.txt, .mdkg/CLI_COMMAND_MATRIX.md\nagent core pins: rule-soul, rule-7, rule-human\nagent event log: .mdkg/work/events/events.jsonl\nskill mirrors: 12 sync operation(s) across 2 target(s)\nskill registry: .mdkg/skills/registry.md\nnext:\n  read .mdkg/AGENT_START.md\n  mdkg new task \"...\" --status todo --priority 1\n  mdkg search \"...\"\n  mdkg show <id>\n  mdkg next\n  mdkg pack <id>\n  mdkg validate\n",
+    "59d6d0f52a1a20cf70882ffffe2e8c52876746c1764694c822e18c8b4ab62e37": "{\n  \"action\": \"upgrade\",\n  \"dry_run\": true,\n  \"version\": \"0.6.0\",\n  \"safe_to_apply\": true,\n  \"summary\": {\n    \"created\": 0,\n    \"updated\": 0,\n    \"migrated\": 0,\n    \"synced\": 0,\n    \"skipped\": 0,\n    \"conflicted\": 0,\n    \"unchanged\": 80\n  },\n  \"will_write_paths\": [],\n  \"preserved_customizations\": [],\n  \"blocking_conflicts\": [],\n  \"apply_side_effects\": [],\n  \"changes\": [],\n  \"plan_hash\": \"bc06ff9ab8b1bbf1c65f6d385df2e01ca0e93ce6668fa9af519c4a7c0e6c1e80\",\n  \"journal_path\": \".mdkg/state/upgrade-journal.json\",\n  \"operation_hashes\": []\n}\n",
+    "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39": "mdkg init complete: 64 file(s) created, 0 skipped\nmanaged manifest: .mdkg/init-manifest.json\nignore files updated: .gitignore, .npmignore\nnext:\n  mdkg new task \"...\" --status todo --priority 1\n  mdkg search \"...\"\n  mdkg show <id>\n  mdkg next\n  mdkg pack <id>\n  mdkg validate\n",
+    "f45529a2da16d85cb96b7b433e42f60890f56fc86cc698b76dacdaef25ac31e5": "mdkg init complete: 0 file(s) created, 64 skipped\nmanaged manifest: .mdkg/init-manifest.json\nnext:\n  mdkg new task \"...\" --status todo --priority 1\n  mdkg search \"...\"\n  mdkg show <id>\n  mdkg next\n  mdkg pack <id>\n  mdkg validate\n",
+    "8fa3e0fbaf1d637b9b3ca9427c23729bcbdc7b7736f544f80dab960309b92e58": "{\n  \"action\": \"upgrade\",\n  \"dry_run\": true,\n  \"version\": \"0.6.0\",\n  \"safe_to_apply\": true,\n  \"summary\": {\n    \"created\": 0,\n    \"updated\": 0,\n    \"migrated\": 0,\n    \"synced\": 0,\n    \"skipped\": 0,\n    \"conflicted\": 0,\n    \"unchanged\": 68\n  },\n  \"will_write_paths\": [],\n  \"preserved_customizations\": [],\n  \"blocking_conflicts\": [],\n  \"apply_side_effects\": [],\n  \"changes\": [],\n  \"plan_hash\": \"fe4927b6e36795606bab7d1474150322dc1a5e39521143edcb4aa1d6da31cf63\",\n  \"journal_path\": \".mdkg/state/upgrade-journal.json\",\n  \"operation_hashes\": []\n}\n",
+    "1a275814ec37cb1863640732e938bf09edde943d6669695c9454f687c3e26cf4": "Usage:\n  mdkg init [options]\n\nOptions:\n  --force               Overwrite existing mdkg files\n  --agent               Compatibility alias for compact agent setup (default)\n  --graph-only          Create graph scaffold without agent setup\n  --no-update-ignores   Skip default .gitignore/.npmignore updates\n  --update-gitignore    Append mdkg ignore entries\n  --update-npmignore    Append mdkg ignore entries\n  --update-dockerignore Append mdkg ignore entries\n\nGlobal options:\n  --root, -r <path>   Run against a specific repo root\n  --help, -h          Show help\n  --version, -V       Show version\n\nAccepted command options (plus global options above):\n  init: --force --agent --graph-only --no-update-ignores --update-gitignore --update-npmignore --update-dockerignore\nBoolean values use =true or =false; value options accept =value or a separate value.\nCompatibility: init --agent also accepts a separate true or false value; event --agent takes an agent name.\n",
+    "be8b4cc98c33d6266e0bffcf25cce05660f6cb6ad2e9a64fb6119d4e686a4a9e": "--graph-only and --agent cannot be combined\n",
+    "7bc2339b93c50497bcba596f63fe3f167976146eae543ba73ae50517f61d9a91": "mdkg init complete: 75 file(s) created, 2 skipped\nmanaged manifest: .mdkg/init-manifest.json\nagent bootstrap: AGENTS.md, CLAUDE.md; guidance: .mdkg/AGENT_START.md, .mdkg/llms.txt, .mdkg/CLI_COMMAND_MATRIX.md\nagent core pins: rule-soul, rule-7, rule-human\nagent event log: .mdkg/work/events/events.jsonl\nskill mirrors: 12 sync operation(s) across 2 target(s)\nskill registry: .mdkg/skills/registry.md\nnext:\n  read .mdkg/AGENT_START.md\n  mdkg new task \"...\" --status todo --priority 1\n  mdkg search \"...\"\n  mdkg show <id>\n  mdkg next\n  mdkg pack <id>\n  mdkg validate\n",
+    "6b5409cf9e13e9298ec63d4c814e915e6008b28a4bac65c0ddd04b8bc357bbe6": "skill mirror sync ok: 24 synced, 0 pruned across 4 targets\n",
+    "9632f25c0d8a99c12ea1edc4a30908af98b0eda94c56820c984e9c2d8738f4d0": "malformed or duplicate mdkg instruction markers; preserve content and repair explicitly\n",
+    "da4a2824427e0c666714bc253e01a20124521b4631fa5cfb6a2092b4d62f8ebe": "config validation failed:\ncustomization.skill_mirrors.targets[0] cannot contain parent-directory components\n",
+    "fb1dee3c595d1268e06a5435b353a10cca3099b281d6768435314b77cc70feff": "config validation failed:\ncustomization.skill_mirrors.targets[0] must be relative\n",
+    "58939c0f16c90cdf88a33528fe47626505de02589b08d2f5d7efca443747e7b1": "config validation failed:\ncustomization.skill_mirrors.targets must not contain duplicate path \".agents/skills\"\n",
+    "ca0e341d94d7d796cceed3b959bf07274d9f418ed02024cc7bb791d680aca442": "Usage:\n  mdkg skill new <slug> \"<name>\" --description \"<description>\" [options] [--json]\n  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]\n  mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]\n  mdkg skill search \"<query>\" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]\n  mdkg skill validate [<slug>] [--json]\n  mdkg skill sync [--force] [--json]\n\nNotes:\n  Skills are first-class under `mdkg skill ...`.\n  Use stage tags like `stage:plan`, `stage:execute`, and `stage:review` with --tags.\n\nGlobal options:\n  --root, -r <path>   Run against a specific repo root\n  --help, -h          Show help\n  --version, -V       Show version\n\nAccepted command options (plus global options above):\n  skill new: --description <value> --tags <value> --authors <value> --links <value> --with-scripts --force --run-id <value> --json\n  skill list: --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex\n  skill search: --tags <value> --tags-mode <value> --json --xml --toon --md --no-cache --no-reindex\n  skill show: --meta --json --xml --toon --md --no-cache --no-reindex\n  skill validate: --json\n  skill sync: --force --json\nBoolean values use =true or =false; value options accept =value or a separate value.\n",
+    "9b66f6094a6ff9d68268f3dba07ab834cfd14625120462ec6c1c2c16f5569b26": ".mdkg/skills/author-mdkg-skill already exists and is not mdkg-managed; rerun `mdkg skill sync --force` to replace it\n",
+    "a399a9504fa18706c908bc907da5de8b2dc6c68a80794595b12f12cd66e59849": "skill mirror sync ok: 12 synced, 0 pruned across 2 targets\n",
+    "6deab36bbf791fdeecb13eb7954e8cb6f07bf19cb4d16e9939687bbd6904f43b": "destination overlaps native Git metadata: .git/skills\n",
+    "8f5b4eaedef0dd070603aea436dab084d8ce04ec07ee34aecc6adc8a3e9c5b7a": "skill mirror sync ok: 6 synced, 0 pruned across 1 target\n"
+  },
+  "cases": [
+    {
+      "case": "default",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 248,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {},
+        "removed": []
+      }
+    },
+    {
+      "case": "default",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 205,
+      "stdout_sha256": "4e60c99a28e27b63924763688180be59bb734284c48e206ecfd3b4de3bacc7c5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {},
+        "removed": []
+      }
+    },
+    {
+      "case": "default",
+      "args": [
+        "upgrade",
+        "--json"
+      ],
+      "status": 0,
+      "duration_ms": 158,
+      "stdout_sha256": "59d6d0f52a1a20cf70882ffffe2e8c52876746c1764694c822e18c8b4ab62e37",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {},
+        "removed": []
+      }
+    },
+    {
+      "case": "agent",
+      "args": [
+        "init",
+        "--agent"
+      ],
+      "status": 0,
+      "duration_ms": 200,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "8256fb6a078685a3c4369ed89bb442f12bcfd1f405ed3027446b611acc837280"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "agent",
+      "args": [
+        "init",
+        "--agent"
+      ],
+      "status": 0,
+      "duration_ms": 190,
+      "stdout_sha256": "4e60c99a28e27b63924763688180be59bb734284c48e206ecfd3b4de3bacc7c5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "8256fb6a078685a3c4369ed89bb442f12bcfd1f405ed3027446b611acc837280"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "agent",
+      "args": [
+        "upgrade",
+        "--json"
+      ],
+      "status": 0,
+      "duration_ms": 149,
+      "stdout_sha256": "59d6d0f52a1a20cf70882ffffe2e8c52876746c1764694c822e18c8b4ab62e37",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "8256fb6a078685a3c4369ed89bb442f12bcfd1f405ed3027446b611acc837280"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "graph-only",
+      "args": [
+        "init",
+        "--graph-only"
+      ],
+      "status": 0,
+      "duration_ms": 133,
+      "stdout_sha256": "7c48ba169e86c1c88a008c666a35b7809440539dbaeb3068882e5a9623d21f39",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/init-manifest.json": "15a715cd38a934f531abdb5447f00de33f6b57f30d0ed9b9cf95bb49eacc2840"
+        },
+        "removed": [
+          ".agents/skills/.mdkg-managed.json",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/.mdkg-managed.json",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/llms.txt",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/registry.md",
+          ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/work/events/events.jsonl",
+          "AGENTS.md",
+          "CLAUDE.md"
+        ]
+      }
+    },
+    {
+      "case": "graph-only",
+      "args": [
+        "init",
+        "--graph-only"
+      ],
+      "status": 0,
+      "duration_ms": 119,
+      "stdout_sha256": "f45529a2da16d85cb96b7b433e42f60890f56fc86cc698b76dacdaef25ac31e5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/init-manifest.json": "15a715cd38a934f531abdb5447f00de33f6b57f30d0ed9b9cf95bb49eacc2840"
+        },
+        "removed": [
+          ".agents/skills/.mdkg-managed.json",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/.mdkg-managed.json",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/llms.txt",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/registry.md",
+          ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/work/events/events.jsonl",
+          "AGENTS.md",
+          "CLAUDE.md"
+        ]
+      }
+    },
+    {
+      "case": "graph-only",
+      "args": [
+        "upgrade",
+        "--json"
+      ],
+      "status": 0,
+      "duration_ms": 124,
+      "stdout_sha256": "8fa3e0fbaf1d637b9b3ca9427c23729bcbdc7b7736f544f80dab960309b92e58",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/init-manifest.json": "15a715cd38a934f531abdb5447f00de33f6b57f30d0ed9b9cf95bb49eacc2840"
+        },
+        "removed": [
+          ".agents/skills/.mdkg-managed.json",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/.mdkg-managed.json",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/llms.txt",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/registry.md",
+          ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/work/events/events.jsonl",
+          "AGENTS.md",
+          "CLAUDE.md"
+        ]
+      }
+    },
+    {
+      "case": "invalid-combination",
+      "args": [
+        "init",
+        "--agent",
+        "--graph-only"
+      ],
+      "status": 1,
+      "duration_ms": 86,
+      "stdout_sha256": "1a275814ec37cb1863640732e938bf09edde943d6669695c9454f687c3e26cf4",
+      "stderr_sha256": "be8b4cc98c33d6266e0bffcf25cce05660f6cb6ad2e9a64fb6119d4e686a4a9e",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {},
+        "removed": [
+          ".agents/skills/.mdkg-managed.json",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/.mdkg-managed.json",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".gitignore",
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/config.json",
+          ".mdkg/core/COLLABORATION.md",
+          ".mdkg/core/core.md",
+          ".mdkg/core/guide.md",
+          ".mdkg/core/HUMAN.md",
+          ".mdkg/core/rule-1-mdkg-conventions.md",
+          ".mdkg/core/rule-2-context-pack-rules.md",
+          ".mdkg/core/rule-3-cli-contract.md",
+          ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+          ".mdkg/core/rule-5-release-and-versioning.md",
+          ".mdkg/core/rule-6-templates-and-schemas.md",
+          ".mdkg/core/SOUL.md",
+          ".mdkg/init-manifest.json",
+          ".mdkg/llms.txt",
+          ".mdkg/README.md",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/registry.md",
+          ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/templates/default/archive.md",
+          ".mdkg/templates/default/bug.md",
+          ".mdkg/templates/default/chk.md",
+          ".mdkg/templates/default/dec.md",
+          ".mdkg/templates/default/dispute.md",
+          ".mdkg/templates/default/edd.md",
+          ".mdkg/templates/default/epic.md",
+          ".mdkg/templates/default/feat.md",
+          ".mdkg/templates/default/feedback.md",
+          ".mdkg/templates/default/goal.md",
+          ".mdkg/templates/default/loop.md",
+          ".mdkg/templates/default/manifest.md",
+          ".mdkg/templates/default/prd.md",
+          ".mdkg/templates/default/prop.md",
+          ".mdkg/templates/default/proposal.md",
+          ".mdkg/templates/default/receipt.md",
+          ".mdkg/templates/default/rule.md",
+          ".mdkg/templates/default/spec.md",
+          ".mdkg/templates/default/spike.md",
+          ".mdkg/templates/default/task.md",
+          ".mdkg/templates/default/test.md",
+          ".mdkg/templates/default/work_order.md",
+          ".mdkg/templates/default/work.md",
+          ".mdkg/templates/loops/backend-api-cli-bloat-audit.loop.md",
+          ".mdkg/templates/loops/design-frontend-ux-audit.loop.md",
+          ".mdkg/templates/loops/duplicate-code-and-linting-audit.loop.md",
+          ".mdkg/templates/loops/security-audit.loop.md",
+          ".mdkg/templates/loops/tech-stack-best-practices-audit.loop.md",
+          ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          ".mdkg/templates/loops/user-story-audit-and-recommendations.loop.md",
+          ".mdkg/templates/skills/base.SKILL.md",
+          ".mdkg/templates/specs/agent.MANIFEST.md",
+          ".mdkg/templates/specs/agent.SPEC.md",
+          ".mdkg/templates/specs/api.MANIFEST.md",
+          ".mdkg/templates/specs/api.SPEC.md",
+          ".mdkg/templates/specs/base.MANIFEST.md",
+          ".mdkg/templates/specs/base.SPEC.md",
+          ".mdkg/templates/specs/capability.MANIFEST.md",
+          ".mdkg/templates/specs/capability.SPEC.md",
+          ".mdkg/templates/specs/integration.MANIFEST.md",
+          ".mdkg/templates/specs/integration.SPEC.md",
+          ".mdkg/templates/specs/model.MANIFEST.md",
+          ".mdkg/templates/specs/model.SPEC.md",
+          ".mdkg/templates/specs/project.MANIFEST.md",
+          ".mdkg/templates/specs/project.SPEC.md",
+          ".mdkg/templates/specs/runtime-agent.MANIFEST.md",
+          ".mdkg/templates/specs/runtime-agent.SPEC.md",
+          ".mdkg/templates/specs/runtime-image.MANIFEST.md",
+          ".mdkg/templates/specs/runtime-image.SPEC.md",
+          ".mdkg/templates/specs/tool.MANIFEST.md",
+          ".mdkg/templates/specs/tool.SPEC.md",
+          ".mdkg/work/events/events.jsonl",
+          ".npmignore",
+          "AGENTS.md",
+          "CLAUDE.md"
+        ]
+      }
+    },
+    {
+      "case": "custom-instructions",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 206,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/init-manifest.json": "f36de4bc7186968e45b2e1929e33728cafdaf5431e44129df1e4cb56d7ad30ba",
+          ".mdkg/work/events/events.jsonl": "5e56a6a97331876328ae7ff2de6f7c5119fb4ff96e8594f29ada5e771624bbe4",
+          "AGENT_START.md": "294f72f90c2b74300957f435234e2e79576df48fb03c227ea30cfe0b8df0c170",
+          "AGENTS.md": "ab663672f15330e42ff2ddba8b0581478ada93938aa05797a4be90e291f0f7b6",
+          "CLAUDE.md": "a2c3bd6c8d5b0ac9f1ed439d0f52bac75f7c016c4b1e9a635b36c73934b9d7da"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "custom-instructions",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 177,
+      "stdout_sha256": "4e60c99a28e27b63924763688180be59bb734284c48e206ecfd3b4de3bacc7c5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/init-manifest.json": "f36de4bc7186968e45b2e1929e33728cafdaf5431e44129df1e4cb56d7ad30ba",
+          ".mdkg/work/events/events.jsonl": "5e56a6a97331876328ae7ff2de6f7c5119fb4ff96e8594f29ada5e771624bbe4",
+          "AGENT_START.md": "294f72f90c2b74300957f435234e2e79576df48fb03c227ea30cfe0b8df0c170",
+          "AGENTS.md": "ab663672f15330e42ff2ddba8b0581478ada93938aa05797a4be90e291f0f7b6",
+          "CLAUDE.md": "a2c3bd6c8d5b0ac9f1ed439d0f52bac75f7c016c4b1e9a635b36c73934b9d7da"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "custom-instructions",
+      "args": [
+        "init",
+        "--force"
+      ],
+      "status": 0,
+      "duration_ms": 189,
+      "stdout_sha256": "7bc2339b93c50497bcba596f63fe3f167976146eae543ba73ae50517f61d9a91",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/init-manifest.json": "f36de4bc7186968e45b2e1929e33728cafdaf5431e44129df1e4cb56d7ad30ba",
+          ".mdkg/work/events/events.jsonl": "12ac0af60c5e58ea4f0a780cc7d6368f68798838f93c62d7603343f7031bf4bf",
+          "AGENT_START.md": "294f72f90c2b74300957f435234e2e79576df48fb03c227ea30cfe0b8df0c170",
+          "AGENTS.md": "ab663672f15330e42ff2ddba8b0581478ada93938aa05797a4be90e291f0f7b6",
+          "CLAUDE.md": "a2c3bd6c8d5b0ac9f1ed439d0f52bac75f7c016c4b1e9a635b36c73934b9d7da"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "extra-mirrors",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 206,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "7c28012ff2849f1452f2c7b164a15b7b0f42fa3bb30f6ec17dc25de831414307"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "extra-mirrors",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 0,
+      "duration_ms": 140,
+      "stdout_sha256": "6b5409cf9e13e9298ec63d4c814e915e6008b28a4bac65c0ddd04b8bc357bbe6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/config.json": "dde48ee9e352e013532718a2814fe31ba460662fedf166ec8e816def40204ec9",
+          ".mdkg/work/events/events.jsonl": "7c28012ff2849f1452f2c7b164a15b7b0f42fa3bb30f6ec17dc25de831414307",
+          ".synthetic-a/skills/.mdkg-managed.json": "36e7250a8e55bda7bc37a2efe4a53dfe9c970ccbf5c75f04a51d4337b9d5fa3d",
+          ".synthetic-a/skills/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+          ".synthetic-a/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+          ".synthetic-a/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+          ".synthetic-a/skills/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+          ".synthetic-a/skills/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+          ".synthetic-a/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+          ".synthetic-b/skills/.mdkg-managed.json": "36e7250a8e55bda7bc37a2efe4a53dfe9c970ccbf5c75f04a51d4337b9d5fa3d",
+          ".synthetic-b/skills/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+          ".synthetic-b/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+          ".synthetic-b/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+          ".synthetic-b/skills/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+          ".synthetic-b/skills/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+          ".synthetic-b/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "malformed-markers",
+      "args": [
+        "init"
+      ],
+      "status": 1,
+      "duration_ms": 95,
+      "stdout_sha256": "1a275814ec37cb1863640732e938bf09edde943d6669695c9454f687c3e26cf4",
+      "stderr_sha256": "9632f25c0d8a99c12ea1edc4a30908af98b0eda94c56820c984e9c2d8738f4d0",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          "AGENTS.md": "09c2e43349a4dcd45d29638ad738d23a3d6aa7499f18d1c9f52568f277964f77"
+        },
+        "removed": [
+          ".agents/skills/.mdkg-managed.json",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/.mdkg-managed.json",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".gitignore",
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/config.json",
+          ".mdkg/core/COLLABORATION.md",
+          ".mdkg/core/core.md",
+          ".mdkg/core/guide.md",
+          ".mdkg/core/HUMAN.md",
+          ".mdkg/core/rule-1-mdkg-conventions.md",
+          ".mdkg/core/rule-2-context-pack-rules.md",
+          ".mdkg/core/rule-3-cli-contract.md",
+          ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+          ".mdkg/core/rule-5-release-and-versioning.md",
+          ".mdkg/core/rule-6-templates-and-schemas.md",
+          ".mdkg/core/SOUL.md",
+          ".mdkg/init-manifest.json",
+          ".mdkg/llms.txt",
+          ".mdkg/README.md",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/registry.md",
+          ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/templates/default/archive.md",
+          ".mdkg/templates/default/bug.md",
+          ".mdkg/templates/default/chk.md",
+          ".mdkg/templates/default/dec.md",
+          ".mdkg/templates/default/dispute.md",
+          ".mdkg/templates/default/edd.md",
+          ".mdkg/templates/default/epic.md",
+          ".mdkg/templates/default/feat.md",
+          ".mdkg/templates/default/feedback.md",
+          ".mdkg/templates/default/goal.md",
+          ".mdkg/templates/default/loop.md",
+          ".mdkg/templates/default/manifest.md",
+          ".mdkg/templates/default/prd.md",
+          ".mdkg/templates/default/prop.md",
+          ".mdkg/templates/default/proposal.md",
+          ".mdkg/templates/default/receipt.md",
+          ".mdkg/templates/default/rule.md",
+          ".mdkg/templates/default/spec.md",
+          ".mdkg/templates/default/spike.md",
+          ".mdkg/templates/default/task.md",
+          ".mdkg/templates/default/test.md",
+          ".mdkg/templates/default/work_order.md",
+          ".mdkg/templates/default/work.md",
+          ".mdkg/templates/loops/backend-api-cli-bloat-audit.loop.md",
+          ".mdkg/templates/loops/design-frontend-ux-audit.loop.md",
+          ".mdkg/templates/loops/duplicate-code-and-linting-audit.loop.md",
+          ".mdkg/templates/loops/security-audit.loop.md",
+          ".mdkg/templates/loops/tech-stack-best-practices-audit.loop.md",
+          ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          ".mdkg/templates/loops/user-story-audit-and-recommendations.loop.md",
+          ".mdkg/templates/skills/base.SKILL.md",
+          ".mdkg/templates/specs/agent.MANIFEST.md",
+          ".mdkg/templates/specs/agent.SPEC.md",
+          ".mdkg/templates/specs/api.MANIFEST.md",
+          ".mdkg/templates/specs/api.SPEC.md",
+          ".mdkg/templates/specs/base.MANIFEST.md",
+          ".mdkg/templates/specs/base.SPEC.md",
+          ".mdkg/templates/specs/capability.MANIFEST.md",
+          ".mdkg/templates/specs/capability.SPEC.md",
+          ".mdkg/templates/specs/integration.MANIFEST.md",
+          ".mdkg/templates/specs/integration.SPEC.md",
+          ".mdkg/templates/specs/model.MANIFEST.md",
+          ".mdkg/templates/specs/model.SPEC.md",
+          ".mdkg/templates/specs/project.MANIFEST.md",
+          ".mdkg/templates/specs/project.SPEC.md",
+          ".mdkg/templates/specs/runtime-agent.MANIFEST.md",
+          ".mdkg/templates/specs/runtime-agent.SPEC.md",
+          ".mdkg/templates/specs/runtime-image.MANIFEST.md",
+          ".mdkg/templates/specs/runtime-image.SPEC.md",
+          ".mdkg/templates/specs/tool.MANIFEST.md",
+          ".mdkg/templates/specs/tool.SPEC.md",
+          ".mdkg/work/events/events.jsonl",
+          ".npmignore",
+          "CLAUDE.md"
+        ]
+      }
+    },
+    {
+      "case": "mirror-traversal",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 180,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "44658026ea9c44c8233b9450da21ebdb857e1b83b9fc82c83b7cbe7deed991af"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-traversal",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 4,
+      "duration_ms": 82,
+      "boundary_observation": {
+        "targets": [
+          "../escape/skills"
+        ],
+        "admitted": false
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "da4a2824427e0c666714bc253e01a20124521b4631fa5cfb6a2092b4d62f8ebe",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/config.json": "93f746cb916d602f8a9c9fe442eaa95dadd093bef4d390a5f9f9d8db92c0d66e",
+          ".mdkg/work/events/events.jsonl": "44658026ea9c44c8233b9450da21ebdb857e1b83b9fc82c83b7cbe7deed991af"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-absolute",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 202,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "081d377fe7e3f44ff07b350d93d85d099894d0540d73f7fbcb9b8d10c3294acf"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-absolute",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 4,
+      "duration_ms": 112,
+      "boundary_observation": {
+        "targets": [
+          "/tmp/escape/skills"
+        ],
+        "admitted": false
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "fb1dee3c595d1268e06a5435b353a10cca3099b281d6768435314b77cc70feff",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/config.json": "5afc07ddc523b23f7e6aabcc21c45ecd55ea763cc967518b4242edf7beae09cb",
+          ".mdkg/work/events/events.jsonl": "081d377fe7e3f44ff07b350d93d85d099894d0540d73f7fbcb9b8d10c3294acf"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-duplicate",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 182,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "68a2f24065c7c0ae52dc3be3b716fbc5235d892d251a61fa0ce373953e42ca63"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-duplicate",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 4,
+      "duration_ms": 84,
+      "boundary_observation": {
+        "targets": [
+          ".agents/skills",
+          ".agents/skills"
+        ],
+        "admitted": false
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "58939c0f16c90cdf88a33528fe47626505de02589b08d2f5d7efca443747e7b1",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/config.json": "71821323cb6200359e614eb7dd9aa8710174a4ce79200e89d24683e6e3ab3021",
+          ".mdkg/work/events/events.jsonl": "68a2f24065c7c0ae52dc3be3b716fbc5235d892d251a61fa0ce373953e42ca63"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-canonical",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 182,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "40ffb17c2ff4b03bede07182f9770f7e21aee6459556e973cbdc9a5729ee713c"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-canonical",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 1,
+      "duration_ms": 124,
+      "boundary_observation": {
+        "targets": [
+          ".mdkg/skills"
+        ],
+        "admitted": false
+      },
+      "stdout_sha256": "ca0e341d94d7d796cceed3b959bf07274d9f418ed02024cc7bb791d680aca442",
+      "stderr_sha256": "9b66f6094a6ff9d68268f3dba07ab834cfd14625120462ec6c1c2c16f5569b26",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/config.json": "33fbed1638e7f25d71b9f5ecd79cd89821f170b75c69ee212ebc0fc627668824",
+          ".mdkg/work/events/events.jsonl": "40ffb17c2ff4b03bede07182f9770f7e21aee6459556e973cbdc9a5729ee713c"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-nested",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 186,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "40265e825ff25d398d56be9c0f7f42398694f72def815ba0462bd09dbe2ea8a4"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-nested",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 0,
+      "duration_ms": 135,
+      "boundary_observation": {
+        "targets": [
+          ".agents/skills",
+          ".agents/skills/nested"
+        ],
+        "admitted": true
+      },
+      "stdout_sha256": "a399a9504fa18706c908bc907da5de8b2dc6c68a80794595b12f12cd66e59849",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".agents/skills/nested/.mdkg-managed.json": "36e7250a8e55bda7bc37a2efe4a53dfe9c970ccbf5c75f04a51d4337b9d5fa3d",
+          ".agents/skills/nested/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+          ".agents/skills/nested/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+          ".agents/skills/nested/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+          ".agents/skills/nested/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+          ".agents/skills/nested/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+          ".agents/skills/nested/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+          ".mdkg/config.json": "1688f6683f1ecb921dda2f15cf441366821caae832be272d7e74c1fba169602d",
+          ".mdkg/work/events/events.jsonl": "40265e825ff25d398d56be9c0f7f42398694f72def815ba0462bd09dbe2ea8a4"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-case-alias",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 188,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "f9ae5726f9bae096762c7e319ecd64a69408cf4de01ed5eff41d7e5ac0f92e16"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-case-alias",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 0,
+      "duration_ms": 126,
+      "boundary_observation": {
+        "targets": [
+          ".agents/skills",
+          ".AGENTS/skills"
+        ],
+        "admitted": true
+      },
+      "stdout_sha256": "a399a9504fa18706c908bc907da5de8b2dc6c68a80794595b12f12cd66e59849",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".AGENTS/skills/.mdkg-managed.json": "36e7250a8e55bda7bc37a2efe4a53dfe9c970ccbf5c75f04a51d4337b9d5fa3d",
+          ".AGENTS/skills/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+          ".AGENTS/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+          ".AGENTS/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+          ".AGENTS/skills/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+          ".AGENTS/skills/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+          ".AGENTS/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1",
+          ".mdkg/config.json": "ee7c09303928cc24bb902cd4ea773bbad23c14f543b977fd7001022c9c3e58ec",
+          ".mdkg/work/events/events.jsonl": "f9ae5726f9bae096762c7e319ecd64a69408cf4de01ed5eff41d7e5ac0f92e16"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-git",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 175,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "d726659b49495a764502f59b3105d6ac99b551b854f79b6961c83b403101e488"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-git",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 1,
+      "duration_ms": 93,
+      "boundary_observation": {
+        "targets": [
+          ".git/skills"
+        ],
+        "admitted": false
+      },
+      "stdout_sha256": "ca0e341d94d7d796cceed3b959bf07274d9f418ed02024cc7bb791d680aca442",
+      "stderr_sha256": "6deab36bbf791fdeecb13eb7954e8cb6f07bf19cb4d16e9939687bbd6904f43b",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/config.json": "0f19fa64cb79198099e9a4d25efe72969c1626b98aabbe49652a80e6d371f67d",
+          ".mdkg/work/events/events.jsonl": "d726659b49495a764502f59b3105d6ac99b551b854f79b6961c83b403101e488"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-custom-only",
+      "args": [
+        "init"
+      ],
+      "status": 0,
+      "duration_ms": 180,
+      "stdout_sha256": "78576a9ccd813c583f93b5110b85891b9585a06bd28dc50bac2e9526b010b901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/work/events/events.jsonl": "6792d0777089290027f3051f761b07e9bcb1be64225ae4b68825b683ebb1cc6e"
+        },
+        "removed": []
+      }
+    },
+    {
+      "case": "mirror-custom-only",
+      "args": [
+        "skill",
+        "sync"
+      ],
+      "status": 0,
+      "duration_ms": 124,
+      "boundary_observation": {
+        "targets": [
+          ".synthetic-only/skills"
+        ],
+        "admitted": true
+      },
+      "stdout_sha256": "8f5b4eaedef0dd070603aea436dab084d8ce04ec07ee34aecc6adc8a3e9c5b7a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inventory": {
+        "base": "fresh-default",
+        "set": {
+          ".mdkg/config.json": "c9ca4cea31d818aa424f82ad868c1237ebfcccc3cba0543f0450b393f59d6f0c",
+          ".mdkg/work/events/events.jsonl": "6792d0777089290027f3051f761b07e9bcb1be64225ae4b68825b683ebb1cc6e",
+          ".synthetic-only/skills/.mdkg-managed.json": "36e7250a8e55bda7bc37a2efe4a53dfe9c970ccbf5c75f04a51d4337b9d5fa3d",
+          ".synthetic-only/skills/author-mdkg-skill/SKILL.md": "3132866d99d220efcd254bb61fac85a61a1806872121dc17041a133dd5b666b3",
+          ".synthetic-only/skills/build-pack-and-execute-task/SKILL.md": "df1572cf54ae81cd7c9197bf52c30842044a41ef20ad0393846a5b00dfd28c62",
+          ".synthetic-only/skills/pursue-mdkg-goal/SKILL.md": "1806688721b6c1e0e484fed84bae65bd5e510dcb9c07bc9fc218e07383c15e9a",
+          ".synthetic-only/skills/pursue-mdkg-loop/SKILL.md": "f47f241a2ead52b1153f143ec965a2ae8ff707876c27db1b348ea82e66b99992",
+          ".synthetic-only/skills/select-work-and-ground-context/SKILL.md": "d29e5c6843dfc41dd780b0dcc545d7beaa14812053ef55dbc4adaa83a7faf18a",
+          ".synthetic-only/skills/verify-close-and-checkpoint/SKILL.md": "fb3380e8b9ea80e09a6876708a894dd3c1f23684687b3876c62783d3de03dfd1"
+        },
+        "removed": []
+      }
+    }
+  ]
+}

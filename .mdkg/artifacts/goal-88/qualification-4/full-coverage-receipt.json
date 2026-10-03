@@ -1,0 +1,106 @@
+{
+  "kind": "bounded-full-thresholded-coverage",
+  "source_head": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+  "source_diff_sha256": "5625c07b6cd5d77750878b862df9ea31c2dd0d8f694225f98024649b7da69d65",
+  "runtime": "v24.19.0",
+  "platform": "linux",
+  "arch": "x64",
+  "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+  "qualification_inputs_sha256": "525f55ac988953a836d5e855d998b15a4a2d65e219e0365475a012d330ff35c6",
+  "artifact_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+  "driver_sha256": "195e51de93e873915c10dad5b937f2e331c530af715f26f144f5561551c567bf",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "scripts/coverage-contract.js",
+    "run"
+  ],
+  "outer_bound_seconds": 900,
+  "coverage_policy": "unchanged thresholds89/77/96; unchanged complete discovered test files; ordinary full tests included under coverage",
+  "exit": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 548470,
+  "frozen_inputs": true,
+  "tracked_boundary": {
+    "ok": true,
+    "checks": {
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "status_unchanged": true,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true
+    },
+    "changed_tracked_paths": [],
+    "before": {
+      "head": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+      "branch": "cloud/goal88-minimal-init",
+      "status_porcelain_sha256": "9e90acc827f58e78d5f896e9821fe0a6701a102ea34b9e4306fac4cdb75ef70b",
+      "status_entry_count": 2,
+      "tracked_tree_sha256": "6923b81d3d984fdcf86510cb9b2e7af34d3b519f3b993966ba9652832d09befe",
+      "tracked_count": 5258,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    },
+    "after": {
+      "head": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+      "branch": "cloud/goal88-minimal-init",
+      "status_porcelain_sha256": "9e90acc827f58e78d5f896e9821fe0a6701a102ea34b9e4306fac4cdb75ef70b",
+      "status_entry_count": 2,
+      "tracked_tree_sha256": "6923b81d3d984fdcf86510cb9b2e7af34d3b519f3b993966ba9652832d09befe",
+      "tracked_count": 5258,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    }
+  },
+  "admission": {
+    "artifact": {
+      "path": "/workspace/mdkg-cloud-goal88-cache/candidate-2/mdkg-0.6.1.tgz",
+      "sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+      "bytes": 548015,
+      "dev": 27,
+      "ino": 1342067
+    },
+    "inputs": {
+      "path": "/workspace/mdkg-cloud-goal88-cache/candidate-2/inputs.json",
+      "sha256": "d4f71400e9bd7d2e7b93bb20bc6fb47385581082b0594ab5cca899d7434f00ce",
+      "bytes": 88127,
+      "dev": 27,
+      "ino": 1342070
+    },
+    "inputs_sha256": "d4f71400e9bd7d2e7b93bb20bc6fb47385581082b0594ab5cca899d7434f00ce",
+    "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+    "payload_sha256": "229bce4d6e2c1784c109d66c0f6bd4ebc1def9e00504ee14ee45b04ba19bd653",
+    "payload_count": 237,
+    "repacked": false
+  },
+  "evidence_files": [
+    "coverage-event.json",
+    "manifest.json",
+    "raw",
+    "summary.json"
+  ]
+}

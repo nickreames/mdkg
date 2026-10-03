@@ -14,14 +14,14 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.6.0`
+Current package version in source: `0.6.1`
 
-The 0.6.0 source is an **unpublished qualification candidate**, not a registry
+The 0.6.1 source is an **unpublished qualification candidate**, not a registry
 availability claim. Published 0.5.2 has different bootstrap and Git command
 behavior; the install command below selects the registry version, not this
 working tree. Check the installed version and the candidate artifact receipt.
 Final macOS/Linux qualification and security acceptance are still required.
-Windows is explicitly unqualified. See the [0.6.0 change notes](CHANGELOG.md).
+Windows is explicitly unqualified. See the [0.6.1 change notes](CHANGELOG.md).
 
 The candidate uses built-in Node APIs, not an mdkg-owned native addon or
 OS-specific SQLite path. Node 24.18+ within the 24 line is required, including
@@ -104,11 +104,18 @@ mdkg init
 mdkg index
 ```
 
-Compact agent setup is the default in the 0.6.0 candidate. Root `AGENTS.md` and
-`CLAUDE.md` contain bounded mdkg-managed sections pointing to
+Compact agent setup is the default in the 0.6.1 candidate. Root `AGENTS.md`
+contains a bounded mdkg-managed section pointing to
 `.mdkg/AGENT_START.md`. Detailed generated discovery lives in `.mdkg/llms.txt`
 and `.mdkg/CLI_COMMAND_MATRIX.md`; canonical skills live in `.mdkg/skills/`,
 with default native mirrors under `.agents/skills/` and `.claude/skills/`.
+Fresh init generates no root `CLAUDE.md` or `AGENT_START.md`. Existing legacy
+instructions are preserved; upgrade never recreates a missing `CLAUDE.md`.
+Configure extras by retaining both native paths in
+`customization.skill_mirrors.targets` and adding the desired contained paths.
+Existing custom policies survive upgrade, with missing defaults reported for
+explicit review. Canonical graph overlap, nested targets, case aliases, symlinks,
+and Git metadata destinations refuse before mirror writes.
 Core guidance, templates, the skill registry and event history live under
 `.mdkg/`. Existing user instructions outside managed sections, project README,
 LICENSE and public website discovery files are preserved. Init also updates
@@ -844,7 +851,7 @@ This release includes:
 - XML / TOON / Markdown output for node and skill list/search/show
 - agent workflow file types and semantic IDs using the `--id` option on `mdkg new`
 - product-specific skill mirrors for Codex/OpenAI and Claude
-- compact `.mdkg/AGENT_START.md` routing through root `AGENTS.md` / `CLAUDE.md`
+- compact `.mdkg/AGENT_START.md` routing through root `AGENTS.md`, with existing legacy instructions preserved
 - conservative `mdkg upgrade` with mode-aware init manifests
 - archive sidecars with deterministic ZIP caches
 - semantic mirror helpers under `mdkg work ...`, including trigger/order status/receipt verification

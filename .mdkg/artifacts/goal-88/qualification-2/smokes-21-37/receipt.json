@@ -1,0 +1,259 @@
+{
+  "kind": "diagnostic-package-smoke-batch",
+  "final": true,
+  "coverage_gate": "NOT_RUN_BY_THIS_BATCH",
+  "source_head": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+  "from": 21,
+  "to": 37,
+  "declared_package_smokes": 37,
+  "artifact_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+  "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+  "qualification_inputs_sha256": "ce6941464f3beccad986e1b0a5119c162e56cd0d648b36e1085cdabd677a06ba",
+  "driver_sha256": "39c5fe4f1651c9d8fdb1babcee5150cb0c4bc6dfc506bede83727f741332fecb",
+  "runtime": "v24.19.0",
+  "platform": "linux",
+  "arch": "x64",
+  "duration_ms": 118507,
+  "results": [
+    {
+      "id": "smoke:spike",
+      "entrypoint": "scripts/smoke-spike.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 6285,
+      "log": "smoke-spike.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:goal-lifecycle",
+      "entrypoint": "scripts/smoke-goal-lifecycle.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 7881,
+      "log": "smoke-goal-lifecycle.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:semantic-refs",
+      "entrypoint": "scripts/smoke-semantic-refs.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 3309,
+      "log": "smoke-semantic-refs.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:checkpoint-templates",
+      "entrypoint": "scripts/smoke-checkpoint-templates.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 3291,
+      "log": "smoke-checkpoint-templates.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:handoff",
+      "entrypoint": "scripts/smoke-handoff.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 2834,
+      "log": "smoke-handoff.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:warning-ux",
+      "entrypoint": "scripts/smoke-warning-ux.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 2495,
+      "log": "smoke-warning-ux.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:integration-ux",
+      "entrypoint": "scripts/smoke-integration-ux.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 6148,
+      "log": "smoke-integration-ux.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:demo-graph",
+      "entrypoint": "scripts/smoke-demo-graph.js",
+      "exit": 1,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 3885,
+      "log": "smoke-demo-graph.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:bundle",
+      "entrypoint": "scripts/smoke-bundle.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 12065,
+      "log": "smoke-bundle.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:graph-clone",
+      "entrypoint": "scripts/smoke-graph-clone.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 5429,
+      "log": "smoke-graph-clone.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:mcp",
+      "entrypoint": "scripts/smoke-mcp.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 27394,
+      "log": "smoke-mcp.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:subgraph",
+      "entrypoint": "scripts/smoke-subgraph.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 7537,
+      "log": "smoke-subgraph.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:visibility",
+      "entrypoint": "scripts/smoke-visibility.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 4039,
+      "log": "smoke-visibility.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:sqlite",
+      "entrypoint": "scripts/smoke-sqlite.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 2222,
+      "log": "smoke-sqlite.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:parallel",
+      "entrypoint": "scripts/smoke-parallel.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 17360,
+      "log": "smoke-parallel.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    },
+    {
+      "id": "smoke:goal",
+      "entrypoint": "scripts/smoke-goal.js",
+      "exit": 0,
+      "signal": null,
+      "timed_out": false,
+      "duration_ms": 6126,
+      "log": "smoke-goal.log",
+      "artifact": {
+        "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+        "bytes": 548015,
+        "identity_preserved": true
+      }
+    }
+  ]
+}

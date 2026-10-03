@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "status": "NOT_READY",
+  "checkpoint": "installed feature acceptance and complete diagnostic package-smoke execution",
+  "source_head": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+  "base": "ddafe0836fdc790cd36ba203afbcfc1878bbddd8",
+  "branch": "cloud/goal88-minimal-init",
+  "runtime": {
+    "node": "24.19.0",
+    "npm": "11.9.0",
+    "platform": "Linux",
+    "arch": "x86_64",
+    "native": true
+  },
+  "candidate": {
+    "version": "0.6.1",
+    "path": "/workspace/mdkg-cloud-goal88-cache/candidate-2/mdkg-0.6.1.tgz",
+    "sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+    "bytes": 548015,
+    "mode": "0444",
+    "payload_count": 237,
+    "unexpected_payload_paths": [],
+    "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+    "qualification_inputs_sha256": "ce6941464f3beccad986e1b0a5119c162e56cd0d648b36e1085cdabd677a06ba",
+    "inputs_sha256": "d4f71400e9bd7d2e7b93bb20bc6fb47385581082b0594ab5cca899d7434f00ce"
+  },
+  "official_baseline060": {
+    "version": "0.6.0",
+    "url": "https://registry.npmjs.org/mdkg/-/mdkg-0.6.0.tgz",
+    "integrity": "sha512-YUb0dZtA5wMLX29wzUUaGfgFzw8+wBDTKG6hw3mGvTv4RZmZMkGf+0fVnBXdFBHMkHE4u3+3cCKmX0hsxHgr5g==",
+    "sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+    "bytes": 545431,
+    "source": "one authorized HTTPS download via configured cloud proxy; verified against supplied sealed SHA256 and official metadata integrity",
+    "verified_at": "2026-10-02T06:14:27.330Z"
+  },
+  "installed_goal88": {
+    "status": "passed",
+    "cases": 18,
+    "cli_invocations": 51,
+    "receipt": "installed.json",
+    "includes": "real exact/custom0.6.0 upgrades, fresh/repeat profiles, native+2extra mirrors/resources, malformed/custom instructions, path/Git/overlap/case/symlink controls"
+  },
+  "package_smokes": {
+    "status": "failed",
+    "executed": 37,
+    "passed": 36,
+    "failed": 1,
+    "skipped": 0,
+    "duration_ms": 490532,
+    "frozen_boundaries_passed": [
+      true,
+      true,
+      true
+    ],
+    "all_artifact_consumptions_bound": true,
+    "failures": [
+      {
+        "id": "smoke:demo-graph",
+        "exit": 1,
+        "timed_out": false,
+        "classification": "BASELINE_SOURCE_RELEASE_INPUT_DRIFT",
+        "proof": "demo-classification.json",
+        "reason": "Unchanged verifier rejects identical103semantic rows on candidate and pristine planning base. Baseline inventory hash f2b49d2d5d061f15f4145cbdf91d28537a0cf0a844a1e5e908b4b2ac905c2924 differs from sealed dfa6461bf076cf003aa0afbcc06928e9214f7e3f8230cf95fafffb306b817fe8. Do not silently reseal or waive."
+      }
+    ],
+    "limit": "bounded diagnostic execution of all37 unchanged package smoke definitions, not a passing coverage-first release ladder"
+  },
+  "hosted_ci": {
+    "head": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+    "run": 36972314303,
+    "floating": {
+      "job": 110728674611,
+      "node": "24.21.0",
+      "status": "failure at coverage",
+      "exit": 1,
+      "duration_ms": 876713,
+      "timed_out": false,
+      "cause": "UNCLASSIFIED: raw gate logs inside uploaded482625436-byte artifact not downloaded by this bounded checkpoint"
+    },
+    "minimum": {
+      "job": 110728674413,
+      "node": "24.18.0",
+      "status": "cancelled, not accepted"
+    },
+    "full_jobs": "skipped",
+    "log": "github-c13-floating.log.gz"
+  },
+  "regression_classification": {
+    "runtime_code_changed_this_continuation": false,
+    "harness_fix": "unrun installed qualifier had copyVerifiedArtifact argument order corrected before successful execution",
+    "launch_error": "incomplete expected-hash argument refused by preflight before fixture effects; corrected launch passed",
+    "new_smoke_failures_attributed_to_goal88": 0,
+    "limits": "Not proof that the whole suite has no regressions; full coverage failure remains unclassified."
+  },
+  "remaining": [
+    "passing full suite/coverage and existing complete package ladder",
+    "resolve sealed-demo baseline through its owner; no gate waiver",
+    "affected docs/site checks",
+    "required runtime/platform matrix",
+    "independent owner code review and local prepublication acceptance",
+    "retirement/compatibility design review before any removal feature"
+  ],
+  "active_tests": false,
+  "goal89_started": false,
+  "goal90_started": false,
+  "publication_authorized": false
+}

@@ -95,12 +95,18 @@ ${fastMatrix}
         env:
           MDKG_RELEASE_RECEIPT_DIR: \${{ runner.temp }}/mdkg-fast
         run: npm run ci:release
+      - name: Preserve interrupted fixture evidence and report failed cases
+        if: \${{ always() }}
+        run: node scripts/collect-ci-evidence.js "$RUNNER_TEMP/mdkg-fast" "$RUNNER_TEMP/mdkg-fast-fixtures"
       - name: Upload fast evidence
         if: \${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: mdkg-fast-\${{ matrix.id }}-\${{ github.run_id }}
-          path: \${{ runner.temp }}/mdkg-fast
+          path: |
+            \${{ runner.temp }}/mdkg-fast
+            !\${{ runner.temp }}/mdkg-fast/run-*/tmp/**
+            \${{ runner.temp }}/mdkg-fast-fixtures
           retention-days: ${topology.fast.artifact_retention_days}
           if-no-files-found: error
 

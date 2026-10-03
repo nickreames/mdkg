@@ -2,13 +2,13 @@
 id: test-494
 type: test
 title: Qualify minimal init behavior with synthetic installed fixtures
-status: backlog
+status: progress
 priority: 1
 parent: goal-88
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-88/qualification-2/checks.json, .mdkg/artifacts/goal-88/CONTINUATION.md, .mdkg/artifacts/goal-88/qualification-4/checks.json, .mdkg/artifacts/goal-88/qualification-3/installed-minimum.json]
 relates: []
 blocked_by: [task-846]
 blocks: []
@@ -63,8 +63,11 @@ Linux portable qualification; missing proof means NOT_READY.
 
 # Current State
 
-NOT_RUN. This documentation PR creates test requirements, not executable
-feature tests or a passing implementation receipt.
+Progress. Fifteen new Goal88 behavior cases passed in the first focused run.
+Baseline219 cases are retained independently. The first candidate234 run had
+two stale diagnostic assertions, corrected and rechecked in shared callers.
+Installed artifact and final broad qualification are in progress. No complete
+acceptance or required platform proof is claimed.
 
 # Target / Scope
 
@@ -77,3 +80,36 @@ Later accepted implementation, exact installed tarball, supported Node engine an
 # Notes / Follow-ups
 
 Do not claim these future cases passed from documentation or fast CI results.
+
+# Continued Cloud Qualification
+
+Actual installed acceptance:18synthetic cases/51CLIinvocations passed on the
+retained0.6.1 artifact, including real official0.6.0 upgrades and mirror/path
+controls. Package definitions:37executed,36passed/1failed. The demo failure
+reproduces with identical103semantic rows on pristine planning base and candidate;
+its required gate remains failed. Full coverage/ladder, site/platform matrix
+and independent local owner review remain unmet. No task/checkpoint is completed
+or approved from these results. Goal88 staysNOT_READY; Goal89/90 not started.
+See .mdkg/artifacts/goal-88/qualification-2/checks.json and CONTINUATION.md.
+
+# Independent Review Correction — NOT_READY
+
+The parent reported two P2 findings againstc13/17fe: stale authored CLAUDE
+routing assertions (two cases) and a positive changelog fixture pinned to0.6.0.
+Cloud reproduced23pass/3fail of26, then corrected only the two test files.
+Exact CLAUDE preservation, repeated-init byte inventory and positive/negative
+runtime-version changelog controls now pass. Runtime/package source is unchanged.
+Affected45/45 on24.19.0 and26/26 on24.18.0 passed. Complete unchanged thresholded
+coverage ran185files:2403pass/0fail/1skip, exit0 in548470ms; coverage
+92.59/84.27/97.58 exceeds89/77/96. Frozen input/custody checks passed.
+
+Cloud package36/37 and site8/9 retain their inherited demo mode and public-command
+assertion failures. The parent's local37/37 package and27 installed results are
+separate reported evidence. Hostedc13 raw coverage remains unclassified after
+archive transfer was blocked by CONNECT proxy403. Required complete ladder,
+platform/portable-filesystem proof, corrected-candidate independent review and
+prepublication acceptance remain pending. This note closes no goal/task/checkpoint
+and infers no approval. Goal89 remains paused for parent review.
+
+Evidence: .mdkg/artifacts/goal-88/qualification-4/COMPARISON.md and checks.json;
+qualification-3/checks.json records sites/minimum runtime and hosted access gap.

@@ -124,7 +124,7 @@ test("init refuses manifest loss instead of erasing adopted identities", () => {
 test("init resumes missing non-node bootstrap files on an adopted graph", () => {
   const root = fixture();
   const before = bytes(root);
-  for (const file of ["AGENTS.md", "CLAUDE.md", ".mdkg/AGENT_START.md", ".mdkg/CLI_COMMAND_MATRIX.md"]) fs.unlinkSync(path.join(root, file));
+  for (const file of ["AGENTS.md", ".mdkg/AGENT_START.md", ".mdkg/CLI_COMMAND_MATRIX.md"]) fs.unlinkSync(path.join(root, file));
   runInitCommand({ root });
   assert.deepEqual(bytes(root), before);
   validate(root);

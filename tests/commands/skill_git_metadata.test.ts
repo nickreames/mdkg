@@ -52,7 +52,7 @@ function inventory(root: string): Record<string, string> {
   } } walk(root); return result;
 }
 function refuses(f: { root: string; base: string }, run: () => void) {
-  const before = inventory(f.base); assert.throws(run, /Git|git metadata|git directory/i); assert.deepEqual(inventory(f.base), before);
+  const before = inventory(f.base); assert.throws(run, /Git|git metadata|git directory|canonical graph storage/i); assert.deepEqual(inventory(f.base), before);
 }
 for (const force of [false, true]) for (const target of [".git/hooks", ".GIT/hooks", ".git\\hooks", "admin/hooks", "admin", "."]) {
   test(`skill sync refuses ${target} with force=${force} before all effects`, t => {
