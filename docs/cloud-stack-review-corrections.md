@@ -69,3 +69,16 @@ The current hosted portable-filesystem stub and Goal87 gaps remain unqualified.
   branch/worktree from the exact verified remote head without altering history.
 - Added only opt-in checkpoint safety and planning-contract validation in PR10.
   Full working implementation and Goal90 remain excluded.
+- Normal Goal88 synchronization merge242a2e0 preserved both parents and both
+  Chk674 conflict narratives. Chk674 explicitly remains blocked/NOT_READY.
+- Scoped site spelling repair passes original rendered pass5. Full coverage
+  exposed one introduced stale bootstrap assertion; diagnosed ordinary failure,
+  corrected canonical/alias expectations and retained both frozen attempts.
+  Corrected full2413pass/0fail/1skip exceeds unchanged floors with zero byte drift.
+- Fresh retained0.6.1 snapshot and exact installed controls pass on supported
+  current/minimum Node. Its new artifact/input hashes remain separate from old
+  qualification; complete release/platform/owner gates remain NOT_READY.
+- Current plan hosted run37091088780 is terminally cancelled. Both gate outcomes
+  and the distinct minimum upload newline-path error are recorded honestly;
+  timing does not establish cancellation cause. No workflow/floor/time-budget
+  waiver or manual hosted rerun/dispatch is performed.

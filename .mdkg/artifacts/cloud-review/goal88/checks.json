@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "kind": "goal88-stack-review-correction",
+  "state": "NOT_READY",
+  "repo": "nickreames/mdkg",
+  "cloud_cwd": "/workspace/mdkg-cloud-goal88",
+  "branch": "cloud/goal88-minimal-init",
+  "sync_merge": "242a2e081168e4f3f5bc63650b28ba0a874e7d4c",
+  "sync_parents": [
+    "1a3cf4f45621cd67b51aba482966927aeea17419",
+    "eb4daec5bc95c20bacddeb83f0b6eb7f95f0c1c8"
+  ],
+  "tested_head": "242a2e081168e4f3f5bc63650b28ba0a874e7d4c",
+  "tested_patch_sha256": "689b7b3e262d583288ed198d16d04ee445b49760635cbfebc2ffc9e58a90c65e",
+  "frozen_tracked_inputs_sha256": "22737fe0b548de5f1cc11bfb97a58300db54bd2e510c4931d055d09a7b3c6fa6",
+  "frozen_byte_drift": [],
+  "target_version": "0.6.1",
+  "runtime": {
+    "node": "24.19.0",
+    "npm": "11.9.0",
+    "platform": "linux",
+    "arch": "x64",
+    "minimum_node": "24.18.0"
+  },
+  "package_inputs_sha256": "4949339295dc81d59355253d9f4de7b0149ddc0c27dac7e89935b45f2e86453d",
+  "qualification_inputs_sha256": "1b2d7f15c073a2d5892288c071d99a2142f5d5274c775f1ad38d9ad70417a2e9",
+  "artifact": {
+    "path": "/workspace/mdkg-cloud-review-cache/goal88-corrected-artifact/mdkg-0.6.1.tgz",
+    "sha256": "844b5e046834c1c2e1f14767a98349d72331d2525e1aa804c38b03d5b24ca5d2",
+    "bytes": 548576,
+    "payload_files": 238,
+    "packed_with_ignore_scripts": true,
+    "note": "fresh snapshot using already-passed build/security/static checks; not complete prepublish ladder"
+  },
+  "focused_current": {
+    "tests": 81,
+    "passed": 81,
+    "failed": 0,
+    "node": "24.19.0"
+  },
+  "focused_minimum": {
+    "tests": 81,
+    "passed": 81,
+    "failed": 0,
+    "node": "24.18.0"
+  },
+  "site_pass5": "PASS original unchanged smoke including rendered site/docs checks",
+  "full_attempt_1": "FAILED2412pass/1introduced-stale-doc-assertion/1skip; retained, diagnosed and corrected",
+  "full_attempt_2": {
+    "exit": 0,
+    "test_files": 186,
+    "counts": {
+      "tests": 2414,
+      "failed": 0,
+      "passed": 2413,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "topLevel": 2414,
+      "suites": 0
+    },
+    "test_duration_ms": 507238.92229,
+    "metrics": {
+      "lines": {
+        "total": 42082,
+        "covered": 38966,
+        "percent": 92.6
+      },
+      "branches": {
+        "total": 13073,
+        "covered": 11019,
+        "percent": 84.29
+      },
+      "functions": {
+        "total": 3272,
+        "covered": 3193,
+        "percent": 97.59
+      }
+    },
+    "thresholds": {
+      "lines": 89,
+      "branches": 77,
+      "functions": 96
+    },
+    "command": "TMPDIR=<owned-clean-fixture> MDKG_COVERAGE_DIR=<fresh-owned-cache-2> timeout900 python3 <owned-descendant-subreaper> node scripts/coverage-contract.js run"
+  },
+  "installed_current": {
+    "cases": 18,
+    "cli_invocations": 51,
+    "passed": true
+  },
+  "installed_minimum": {
+    "cases": 18,
+    "cli_invocations": 51,
+    "passed": true
+  },
+  "installed_readiness_cli": {
+    "cases": 4,
+    "passed": true
+  },
+  "static_passed": [
+    "build",
+    "build:test",
+    "docs499examples",
+    "plancontract",
+    "CLIparity",
+    "CLIcontract",
+    "workflowdrift",
+    "security",
+    "eight-skills",
+    "graph-zero-errors-one-original-stale-cache-warning",
+    "static-publish-readiness",
+    "git-diff-check"
+  ],
+  "not_run_for_new_candidate": [
+    "complete37-package-smokes",
+    "complete46-repository-smokes",
+    "complete-prepublish-ladder",
+    "required-native-platform-matrix",
+    "independent-local-owner-review-on-new-bytes"
+  ],
+  "retained_failures": [
+    "inherited-demo-mode-seal",
+    "historical-hosted-floating-coverage-unclassified",
+    "corrected-plan-fast-jobs-cancelled",
+    "plan-minimum-evidence-upload-invalid-newline-path"
+  ],
+  "fixture_controls": {
+    "TMPDIR": "owned /dev/shm/mdkg-cloud-review-fixtures per sandbox command",
+    "subreaper_sha256": "acf0d61ef262e11f3d0313b547cef2efe77c0da97f71148eacf20dcd2fa3f531",
+    "owned_descendants_only": true
+  },
+  "recorded_utc": "2026-10-03T03:20:41Z",
+  "evidence_files": {
+    "coverage-coverage-event.json.gz": {
+      "sha256": "f88ad3e1b608bc355fe467475bf9d3c990ae09120c9957530e13af0de0f97ac2",
+      "bytes": 243282
+    },
+    "coverage-manifest.json": {
+      "sha256": "379a94d7ae0c2bd22587fdf67081988d456084f8e71b0b7146142f3a70e509ab",
+      "bytes": 2556081
+    },
+    "coverage-summary.json": {
+      "sha256": "552aba0b048430bb45769d17610b4cf052bca6ce4b6e84ba3f9240169ec731e9",
+      "bytes": 4288
+    },
+    "goal88-bootstrap-before.log.gz": {
+      "sha256": "f914d99e1c1d16e14e3485288a1483d5bd098fc70fcfbf5f468a75f26ea26130",
+      "bytes": 2727
+    },
+    "goal88-build-tests-corrected.log.gz": {
+      "sha256": "3021d4e83fd12d384b45e5e33adfb5facad5553a1264c7c972d57697c9d79e37",
+      "bytes": 218
+    },
+    "goal88-build.log.gz": {
+      "sha256": "c218257868d37fa127d0dbcea31fd56447f95a11a83b2548d785dad5a909656f",
+      "bytes": 397
+    },
+    "goal88-candidate-inputs.json": {
+      "sha256": "e5dbe23dcedb19cc7b614cc6f1e21c5aef0084cb6048d6a1348d0d3292428350",
+      "bytes": 88478
+    },
+    "goal88-cli-contract.log.gz": {
+      "sha256": "013d1a912f20b6ee7f58c79c1fc49741f8a800b5b9cb5370398ee71c0920a10c",
+      "bytes": 98
+    },
+    "goal88-cli-parity.log.gz": {
+      "sha256": "35a1a8c626f8f6bd4b05973eee3d69cbb2d0586942955b9f6af47580821c7046",
+      "bytes": 49
+    },
+    "goal88-corrected-coverage-2.log.gz": {
+      "sha256": "4d216c1c61d324b41d7a96eefeb3e832ab54fc99bf5188db25aae33ec0619c6d",
+      "bytes": 46351
+    },
+    "goal88-corrected-coverage.log.gz": {
+      "sha256": "567fe6bb701c1dcdb77180d6fe84120791959760e8bc7f00902e5d919727b37a",
+      "bytes": 45515
+    },
+    "goal88-corrected-pack.json": {
+      "sha256": "5e78c51e11340bf6427eed4a7acb14c5136534773287eb73add904b0110d4966",
+      "bytes": 26453
+    },
+    "goal88-coverage-attempt1.json": {
+      "sha256": "025f62e2292922d2fb82f6aa36f5b3d1c516ff0800c43302e59b3369d3d42e46",
+      "bytes": 1277
+    },
+    "goal88-docs-examples.log.gz": {
+      "sha256": "01ed0d74c26c1278eb9ae651e51d796f4fbf5320e8ff99ba087738be9cd59547",
+      "bytes": 197
+    },
+    "goal88-focused-corrected-minimum.log.gz": {
+      "sha256": "bf6f516540ac24f0f8eb9ab173d3d8ee5d6417fe3fd517fa3863b06d45be0e51",
+      "bytes": 2859
+    },
+    "goal88-focused-corrected.log.gz": {
+      "sha256": "8f389db160bd9a188320009bbbfda7f2beaca012c62ccd5fb648e3d44313177f",
+      "bytes": 2837
+    },
+    "goal88-frozen-corrected-inputs.json.gz": {
+      "sha256": "6fc36462cc242a4b9fe0b062feb75ae1afcda8534b4eae7cce2a4eff033c60ff",
+      "bytes": 285702
+    },
+    "goal88-frozen-inputs.json.gz": {
+      "sha256": "10443fa3e5ba2f87f966a2bd900764ac0accdc6fe2513d93399d42947e0a99d5",
+      "bytes": 285704
+    },
+    "goal88-graph.json": {
+      "sha256": "249affc9d5b98227807dbcc0a508328d57993017ff025f61bfd4491b2fcf385c",
+      "bytes": 956
+    },
+    "goal88-hosted-diagnosis.json": {
+      "sha256": "f3610aa45b9a86bce153c9f92167ad3a6c63f145bf0f496026e94f743b1adff8",
+      "bytes": 25355
+    },
+    "goal88-installed-corrected-minimum.json": {
+      "sha256": "3497bf194b7ae82940dadd3dccf82fc3bcd433bd71fea3eeb7712a50a5f3a57f",
+      "bytes": 21767
+    },
+    "goal88-installed-corrected-minimum.log.gz": {
+      "sha256": "d0e6373c82fdb4323407ddb0bbd2aa1c91fbebed43bcff17201f810bdc114df0",
+      "bytes": 233
+    },
+    "goal88-installed-corrected.json": {
+      "sha256": "d603bc597353c366230c49cef42e6f0d70697bf404d67e48608671a4856c0103",
+      "bytes": 21774
+    },
+    "goal88-installed-corrected.log.gz": {
+      "sha256": "3b8d4b9d1cbe822c7f599b881436848fb2d00b7a40e9ef947b1919dcbdfec182",
+      "bytes": 228
+    },
+    "goal88-installed-readiness.cjs": {
+      "sha256": "9801514bd078f71fee758919f95097d80ce9405f267db43f8289d0405cb60b44",
+      "bytes": 2844
+    },
+    "goal88-installed-readiness.json": {
+      "sha256": "2a07ed7fa043ddfc3870985f668006de58a78b56591229b6caad3d814c152482",
+      "bytes": 1220
+    },
+    "goal88-installed-readiness.log.gz": {
+      "sha256": "b568bd4978afd4dd3256e1317a1d98114e5b9f10df5b15b8a2c92e46f8ff1049",
+      "bytes": 214
+    },
+    "goal88-plan-contract.log.gz": {
+      "sha256": "cc0a7147cfa2fe8bb1ea7d77d7996bc107d0d9d2ebfbc71796c709540d0d2976",
+      "bytes": 49
+    },
+    "goal88-publish-readiness.log.gz": {
+      "sha256": "f319a305617780e74b886f254792b39dcb56fb2fe2158acf58eb5b922ab9676e",
+      "bytes": 109
+    },
+    "goal88-qualification-inputs.json": {
+      "sha256": "999c0c8c40f80ef97e97185edaa062e498788e966580d770f6d9400b589b018a",
+      "bytes": 59830
+    },
+    "goal88-security.log.gz": {
+      "sha256": "a8a0de556be5f9234581b73ab575ed90d960efc50bbedec6a4316e7f9d41ea07",
+      "bytes": 194
+    },
+    "goal88-site-pass5.log.gz": {
+      "sha256": "378d90d7380ecb5e67791a1692d60610cc5a0f504fd4a85c59ad7b74a22f4e23",
+      "bytes": 102
+    },
+    "goal88-skills.json": {
+      "sha256": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f",
+      "bytes": 140
+    },
+    "goal88-workflow.log.gz": {
+      "sha256": "291679fc21fb2ae3bbddd0afc2703df048210e38ca9142bce187231b3835a51b",
+      "bytes": 73
+    },
+    "hosted-110764673629.log.gz": {
+      "sha256": "ec1393f5153daafdf13cf9558e43e15c19bb3b5d2f2ed31a7a7224943e609ea9",
+      "bytes": 39455
+    },
+    "hosted-110764673778.log.gz": {
+      "sha256": "31388e2e10b01cb86f78d324322fff7e57c910807b7aec86a546cd480a661e5d",
+      "bytes": 7520
+    },
+    "hosted-111111404532.log.gz": {
+      "sha256": "9c4b5b29157ad66f625eab3120e902d8fa2f76130f91e6109b824c9dccb32a53",
+      "bytes": 6271
+    },
+    "hosted-111111404739.log.gz": {
+      "sha256": "dc3534366b494e22a47bc1b34a9e678d73bc18917478a87e9280cb11b1fef4a6",
+      "bytes": 5656
+    }
+  }
+}

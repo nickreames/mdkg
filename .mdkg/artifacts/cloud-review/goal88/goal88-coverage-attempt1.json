@@ -1,0 +1,26 @@
+{
+  "kind": "frozen-full-coverage-attempt-1",
+  "state": "FAILED",
+  "head": "242a2e081168e4f3f5bc63650b28ba0a874e7d4c",
+  "patch_sha256": "4687cd34b5482688e3a4376020b4cd7d1b37997837af0380c387385751e53458",
+  "tracked_inputs_sha256": "2e12e7e54e7478b999ccf6b4be8693b786ef66d5090c946e0b5192dfe03af8bb",
+  "tracked_byte_drift": [],
+  "command": "TMPDIR=<owned-clean-fixture> MDKG_COVERAGE_DIR=<fresh-owned-cache> timeout900 python3 <owned-descendant-subreaper> node scripts/coverage-contract.js run",
+  "exit": 1,
+  "counts": {
+    "tests": 2414,
+    "failed": 1,
+    "passed": 2412,
+    "cancelled": 0,
+    "skipped": 1,
+    "todo": 0,
+    "topLevel": 2414,
+    "suites": 0
+  },
+  "test_duration_ms": 512411.544707,
+  "failure": "focused agent discovery uses compact router and documents the concise profile alias",
+  "classification": "INTRODUCED stale documentation assertion after canonical public spelling repair; reproduced ordinary targeted runner; will correct test expectation and retain this failure",
+  "coverage_receipt": "NOT_PRODUCED because a test failed; no passing coverage claim",
+  "coverage_event_sha256": "709c3661ca1a3e4c1ba3437cf43af7fc33e0551c5bfa1da9251d91e22845d6b5",
+  "log_sha256": "0644dfc6bed5545970ac4150b482fb6ba4c22e859a2e2e19439c1a927b1d053a"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "kind": "installed-readiness-cli-controls",
+  "node": "v24.19.0",
+  "platform": "linux",
+  "arch": "x64",
+  "calls": [
+    {
+      "status": "blocked",
+      "tag": "readiness:not-ready",
+      "expected_ok": true,
+      "exit": 0,
+      "stdout_sha256": "d5cf32c5e04890ebf1600d291ea622d3b3338f49f8dc9ed2296b0c597cdeec5e"
+    },
+    {
+      "status": "done",
+      "tag": "readiness:not-ready",
+      "expected_ok": false,
+      "exit": 2,
+      "stdout_sha256": "3255fc7770d709b73a37156ee32f8b37f24610d8a2e8188865a6127b3303aa1c"
+    },
+    {
+      "status": "done",
+      "tag": "readiness:not-run",
+      "expected_ok": false,
+      "exit": 2,
+      "stdout_sha256": "9988043197c9ceb377470b4cd4a87bf970158ae5f30f1a5f2e8f96f79074370f"
+    },
+    {
+      "status": "done",
+      "tag": "readiness:ready-pending-approval",
+      "expected_ok": true,
+      "exit": 0,
+      "stdout_sha256": "d5cf32c5e04890ebf1600d291ea622d3b3338f49f8dc9ed2296b0c597cdeec5e"
+    }
+  ],
+  "tarball_sha256": "844b5e046834c1c2e1f14767a98349d72331d2525e1aa804c38b03d5b24ca5d2",
+  "cleanup": {
+    "removed": true,
+    "root": "/dev/shm/mdkg-cloud-review-fixtures/mdkg-readiness-installed-a0ofRr"
+  },
+  "duration_ms": 1794
+}

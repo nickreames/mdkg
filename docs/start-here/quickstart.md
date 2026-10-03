@@ -58,8 +58,8 @@ mdkg show WORK_ID
 mdkg pack WORK_ID
 ```
 
-Use `mdkg pack WORK_ID --pack-profile concise` for summary-first node bodies in
-a shorter transfer pack. `--profile concise` is an equivalent alias; neither
+Use `mdkg pack WORK_ID --profile concise` for summary-first node bodies in
+a shorter transfer pack. `--pack-profile` is an equivalent alias; neither
 option changes traversal depth or node/byte limits by itself.
 
 When a human or AI agent does work, record evidence before moving on:
