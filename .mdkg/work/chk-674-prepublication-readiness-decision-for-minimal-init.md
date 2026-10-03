@@ -2,9 +2,9 @@
 id: chk-674
 type: checkpoint
 title: Prepublication readiness decision for minimal init
-status: backlog
+status: blocked
 priority: 1
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, design-only, readiness:not-ready]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -96,3 +96,43 @@ and infers no approval. Goal89 remains paused for parent review.
 
 Evidence: .mdkg/artifacts/goal-88/qualification-4/COMPARISON.md and checks.json;
 qualification-3/checks.json records sites/minimum runtime and hosted access gap.
+
+# Enforced Readiness Dependency
+
+NOT_RUN stays non-done. A completed assessment reporting NOT_READY must remain
+blocked or review, with readiness:not-ready, preserving downstream blockers.
+Only evidenced independent READY_PENDING_APPROVAL acceptance may become done
+with readiness:ready-pending-approval; this grants no publication or adoption.
+Parser/goal-next and the docs plan guard enforce this distinction.
+
+# Current P2 Correction
+
+The independent assessment is NOT_READY; status is now explicitly blocked with
+readiness:not-ready. Both historical qualification narratives and the new
+enforced dependency contract survive the normal stack merge. No approval or
+complete readiness is inferred from recording this decision.
+
+# Current Stack Review Evidence — 2026-10-03
+
+The corrected P2 guard is inherited through normal merge242a2e0, preserving both
+parents. Scoped public quickstart spelling and stale bootstrap assertion are
+corrected; original rendered pass5 smoke passes. Failure diagnostics now retain
+bounded terminal excerpts with exact outcome/full-stream hashes; no gate policy
+changes. Focused81/81 pass on Node24.19 and24.18. Exact new0.6.1 snapshot passes
+18installed scenarios/51CLI calls on both runtimes, plus4installed readiness
+controls. Complete corrected coverage:2413pass/0fail/1skip in186files;
+92.60/84.29/97.59 exceed unchanged89/77/96. Frozen source/test bytes stayed intact.
+The first full run's introduced stale assertion (2412pass/1fail/1skip) is retained
+and diagnosed separately. No historical evidence is rebound to changed bytes.
+
+Remaining current-candidate complete37package/46repository smoke qualification,
+fullprepublish/platform/portable-filesystem and independent owner/review gates
+are not satisfied. Historical floating CI assertions remain unclassified pending
+small extracts; corrected plan CI is cancelled, with minimum evidence upload
+failing on an interrupted synthetic newline-path fixture. Cancellation cause is
+not proven. Inherited demo mode seal remains failed. Status staysblocked with
+readiness:not-ready; this result cannot unlock a successor or grant publication.
+
+Evidence: .mdkg/artifacts/cloud-review/goal88/checks.json and
+docs/cloud-goal88-review-correction.md. The revised Goal89 design is a separate
+explicit owner-authorized review step, not a false completed release dependency.
