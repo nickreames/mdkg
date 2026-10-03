@@ -10,6 +10,18 @@ Optional reusable manifest capability records are accessed through `mdkg manifes
 Repos without MANIFEST/SPEC files remain valid. `mdkg spec ...` remains a
 legacy alias for one compatibility release.
 
+Independent roots can be selected explicitly with `--graph <name>` alongside
+`--root <host-root>`. Without a selector, commands keep using the default `.mdkg`.
+Names map to existing independent project roots containing their own `.mdkg`;
+relative paths, memory, indexes, state, working storage and skill mirrors belong
+to the selected root. Initialize an empty root explicitly, then preview
+`mdkg graph register <name> --target <relative-project-root> --json` and apply
+the exact reviewed `--plan-hash` with `--apply`. Host registry actions do not
+accept `--graph`. Unknown names, overlapping paths or copied identities refuse.
+`graph unregister` removes only a mapping and preserves data/ignore rules.
+Private named selection permits local/private output and refuses public/internal
+scope, public bundles and graph transport. Help/version remain graph-independent.
+
 Primary commands:
 - `mdkg init`
 - `mdkg upgrade [--dry-run | --apply | --resume | --recover] [--only <path,...>] [--plan-hash <sha256>] [--json]`

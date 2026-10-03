@@ -1,0 +1,14 @@
+{
+  "cwd": "/workspace/mdkg-cloud-goal90",
+  "base": "1e5b5981611b019c4ab0d14ec9d0bcccf3c171ef",
+  "branch": "cloud/goal90-independent-siblings",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "arch": "x86_64",
+  "native": true,
+  "node": "v24.19.0",
+  "npm": "11.9.0",
+  "git": "git version 2.52.0",
+  "harness_sha256": "ad94c1f9de50785dd63de9ac8d6e6073a25d8ed8696b40cd005ec6a53f8b98b6",
+  "subreaper_sha256": "acf0d61ef262e11f3d0313b547cef2efe77c0da97f71148eacf20dcd2fa3f531",
+  "transient_failures": 2
+}

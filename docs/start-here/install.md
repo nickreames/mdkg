@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Node.js `>=24.18.0 <25` for the unpublished 0.6.2 candidate
+- Node.js `>=24.18.0 <25` for the unpublished 0.6.3 candidate
 - npm for the primary global install path
 - A Git repository when you want reviewable project memory
 
@@ -47,7 +47,7 @@ mdkg validate
 
 `mdkg index` builds rebuildable access caches. Markdown files remain the durable source of truth.
 
-The 0.6.2 candidate defaults to compact agent setup. Root `AGENTS.md` routes to `.mdkg/AGENT_START.md`; detailed generated guidance stays
+The 0.6.3 candidate defaults to compact agent setup. Root `AGENTS.md` routes to `.mdkg/AGENT_START.md`; detailed generated guidance stays
 under `.mdkg`. Use `mdkg init --graph-only` to omit agent setup, or
 `mdkg init --agent` for its compatibility spelling. Project documentation and
 user content outside mdkg-managed instruction sections remain user-owned.

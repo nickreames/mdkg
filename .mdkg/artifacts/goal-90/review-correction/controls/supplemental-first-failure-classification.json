@@ -1,0 +1,9 @@
+{
+  "event": "published-baseline-fetch-failure",
+  "target": "https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz",
+  "error": "getaddrinfo EAI_AGAIN registry.npmjs.org",
+  "counter_before": 2,
+  "counter_after": 3,
+  "fallback": "Supported MDKG_PUBLISHED_052_TARBALL points to retained pinned artifact; verify SHA256, SHA512 integrity and length before use. No retries of denied actions or source/workflow changes.",
+  "receipt_status_drift": "Producer assembled95 untracked receipt files during supplemental execution; tracked source/head/selection/lockfile hashes unchanged. Preserve failed bookend result; freeze repository state for continuation."
+}

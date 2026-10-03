@@ -1,0 +1,13 @@
+{
+  "command": [
+    "npm",
+    "view",
+    "mdkg",
+    "version",
+    "--json"
+  ],
+  "exit": 0,
+  "stdout": "\"0.6.0\"\n",
+  "stderr": "npm notice\nnpm notice New major version of npm available! 11.9.0 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n",
+  "seconds": 0.418
+}

@@ -10,6 +10,21 @@ This page gives a product-level summary of the public-alpha release line. Use th
 
 The earlier `0.6.0` line introduced compact bootstrap and branch-safe project memory.
 
+## `0.6.3` candidate
+
+Draft, unpublished and awaiting complete qualification and local owner review.
+The current candidate adds explicit [independent graph selection](../guides/independent-graphs.md).
+Names select separate project roots, with their own identity, storage and mirrors.
+No automatic migration, copying or merging occurs. These notes do not authorize
+publication or professional adoption.
+
+## `0.6.2` candidate
+
+Draft, unpublished and awaiting complete qualification and local owner review.
+Persistent working storage remains separate from canonical graph content and
+uses reviewed cleanup. See [working storage](../guides/working-storage.md) and
+the root changelog for behavior and limits.
+
 ## `0.6.1` candidate
 
 Draft, unpublished and awaiting complete qualification and local owner review.

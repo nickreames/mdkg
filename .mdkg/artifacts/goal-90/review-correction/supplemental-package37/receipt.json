@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "kind": "supplemental-package37",
+  "canonical_prepublish": "FAILED",
+  "does_not_waive_coverage": true,
+  "artifact_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+  "harness_sha256": "ea6f224eef21954f7d45bc24e7f114e613a11e0201dc800ea93b3bb42af63947",
+  "node": "v24.19.0",
+  "start": "2026-10-03T14:48:50.301Z",
+  "smokes": [
+    {
+      "id": "smoke:consumer",
+      "entrypoint": "scripts/smoke-consumer.js",
+      "aliases": [
+        "smoke:consumer"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 4.286,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-consumer.log",
+      "log_sha256": "31463df072e7e96775dda8d242515ce36b9db4703ca4b1bd4b56e305bdf9658c"
+    },
+    {
+      "id": "smoke:git-boundary",
+      "entrypoint": "scripts/smoke-git-boundary.js",
+      "aliases": [
+        "smoke:git-boundary"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 112.883,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-git-boundary.log",
+      "log_sha256": "71a7071aba87a004a73af9215cf840ba0536c68230e16d818b2b0bcc2f00389c"
+    },
+    {
+      "id": "smoke:loop",
+      "entrypoint": "scripts/smoke-loop.js",
+      "aliases": [
+        "smoke:loop"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 10.2,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-loop.log",
+      "log_sha256": "954276d94e2d1e6c430afd2179287d6b9fb160d704181562ca0fcf2d014c7139"
+    },
+    {
+      "id": "smoke:matrix",
+      "entrypoint": "scripts/smoke-command-matrix.js",
+      "aliases": [
+        "smoke:matrix"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 55.709,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-matrix.log",
+      "log_sha256": "e084e6ecbc991c170243f6340ca214077676935027b407257dda05dd5aab74e4"
+    },
+    {
+      "id": "smoke:upgrade",
+      "entrypoint": "scripts/smoke-upgrade.js",
+      "aliases": [
+        "smoke:upgrade"
+      ],
+      "exit": 1,
+      "timed_out": false,
+      "seconds": 7.45,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-upgrade.log",
+      "log_sha256": "04e06f44405a586de048a985a49930fa80727fef6ccdbd02429dd5a7c844cfb2"
+    }
+  ],
+  "result": "FAILED",
+  "end": "2026-10-03T14:52:00.833Z",
+  "artifact_final": {
+    "path": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+    "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+    "bytes": 576344,
+    "dev": 27,
+    "ino": 1842047
+  },
+  "git_boundary": {
+    "ok": false,
+    "checks": {
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "status_unchanged": false,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true
+    },
+    "changed_tracked_paths": [],
+    "before": {
+      "head": "650f8258495b4904e113830529ed4ffb7b92cc09",
+      "branch": "cloud/goal90-independent-siblings",
+      "status_porcelain_sha256": "73dab7ae0368a3676e87dee4ba1ee6b589568cb4d051e08bf176f315f88f7f1b",
+      "status_entry_count": 14,
+      "tracked_tree_sha256": "b2219ac9f349b0d8ff8b508189412512b5bd59bfad225d25a92ea0effa2b85e2",
+      "tracked_count": 5771,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:ba7c77c7f6e812ffe2052d5114f7f6d189c2239de6c9306895712d9ce29a8650",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    },
+    "after": {
+      "head": "650f8258495b4904e113830529ed4ffb7b92cc09",
+      "branch": "cloud/goal90-independent-siblings",
+      "status_porcelain_sha256": "167335c641c373611a74bb4dec867f758c2dd981ab86f76f6135f290b9ea80fc",
+      "status_entry_count": 108,
+      "tracked_tree_sha256": "b2219ac9f349b0d8ff8b508189412512b5bd59bfad225d25a92ea0effa2b85e2",
+      "tracked_count": 5771,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:ba7c77c7f6e812ffe2052d5114f7f6d189c2239de6c9306895712d9ce29a8650",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    }
+  },
+  "artifact_usages": [
+    {
+      "schema_version": 1,
+      "smoke": "smoke:consumer",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-consumer-JJUALk/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:git-boundary",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-git-boundary-Zv6VX1/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:loop",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-loop-smoke-1sO75G/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:matrix",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-command-matrix-zadj7s/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:upgrade",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-upgrade-smoke-ws8Z1w/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    }
+  ]
+}

@@ -2,13 +2,13 @@
 id: test-496
 type: test
 title: Qualify independent sibling graphs behavior with synthetic installed fixtures
-status: backlog
+status: review
 priority: 1
 parent: goal-90
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, design-only, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-90/checks.json, docs/cloud-goal90-design.md]
 relates: []
 blocked_by: [task-854]
 blocks: []
@@ -19,7 +19,7 @@ aliases: []
 skills: []
 cases: [fresh-or-selection, preservation-and-isolation, negative-boundaries, interruption-recovery, installed-artifact, persistence-or-export]
 created: 2026-10-02
-updated: 2026-10-02
+updated: 2026-10-03
 ---
 
 # Overview
@@ -59,8 +59,7 @@ isolated consumer fixtures; source imports alone are insufficient.
 
 # Results / Evidence
 
-Use existing supported tests/smokes and add behavior tests only during the later
-implementation. Record case IDs, inputs/digests, exact commands, runtime/OS/arch,
+Current implemented tests retain case IDs, inputs/digests, exact commands, runtime/OS/arch,
 native/emulated host, durations, positive/negative controls and pass/fail/not-run
 counts. Full repository pre-merge checks and final package/platform/security
 gates remain obligations of task-855. Current fast CI is not full
@@ -68,8 +67,11 @@ Linux portable qualification; missing proof means NOT_READY.
 
 # Current State
 
-NOT_RUN. This documentation PR creates test requirements, not executable
-feature tests or a passing implementation receipt.
+Cloud Run cloud-goal90-20261003 implements synthetic source and installed
+controls for this node. See docs/cloud-goal90-checkpoint.md and
+.mdkg/artifacts/goal-90/checks.json for exact final inputs/results. Full repository,
+owner-local/platform and prepublication acceptance remain pending; no goal or
+checkpoint is marked achieved by these bounded results.
 
 # Target / Scope
 
@@ -82,3 +84,18 @@ Later accepted implementation, exact installed tarball, supported Node engine an
 # Notes / Follow-ups
 
 Do not claim these future cases passed from documentation or fast CI results.
+
+# Independent PR13 Review Correction
+
+Independent review returned NO GO at650f8258495b4904e113830529ed4ffb7b92cc09.
+Parent delegated four focused fixes and supplied portable exact reproductions.
+The runtime defects reproduce in rejected source and installed bytes on native
+24.18.0/24.21.0; the loop contract passes base1e and fails650 on both runtimes.
+The active correction preserves private export case normalization, whole-directory
+Git exclusion, prior host bindings on unregister, and the loop global flag set.
+Current producer qualification is recorded separately at
+.mdkg/artifacts/goal-90/review-correction/checks.json and
+docs/cloud-goal90-review-correction.md. Original evidence remains unchanged.
+Required independent exact corrected-patch re-review, owner/local/platform and
+full release acceptance remain pending; no GO, READY or achieved state is inferred.
+No status, selected-goal or dependency edge is changed by this record.

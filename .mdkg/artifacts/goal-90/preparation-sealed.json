@@ -1,0 +1,42 @@
+[
+  {
+    "name": "build-sealed",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 18.288
+  },
+  {
+    "name": "build-test-sealed",
+    "command": [
+      "npm",
+      "run",
+      "build:test"
+    ],
+    "exit": 0,
+    "seconds": 3.886
+  },
+  {
+    "name": "docs-reference-sealed",
+    "command": [
+      "node",
+      "scripts/generate-docs-reference.js",
+      "--write"
+    ],
+    "exit": 0,
+    "seconds": 0.064
+  },
+  {
+    "name": "release-data-sealed",
+    "command": [
+      "node",
+      "scripts/generate-release-notes-data.js",
+      "--write"
+    ],
+    "exit": 0,
+    "seconds": 0.064
+  }
+]

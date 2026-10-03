@@ -1,0 +1,10 @@
+{
+  "files": [
+    ".mdkg/work/task-852-lock-independent-sibling-graphs-contracts-and-migration-decisions.md",
+    ".mdkg/work/task-853-implement-explicit-graph-selection-across-every-command.md",
+    ".mdkg/work/task-854-enforce-independent-graph-storage-and-private-graph-export-boundaries.md",
+    ".mdkg/work/task-855-prepare-exact-candidate-independent-sibling-graphs-prepublication-evidence.md",
+    ".mdkg/work/test-496-qualify-independent-sibling-graphs-behavior-with-synthetic-installed-fixtures.md"
+  ],
+  "scope": "owned Goal90 narrative only; structured lifecycle used supported task CLI"
+}

@@ -1,0 +1,34 @@
+{
+  "observed": "2026-10-03T13:45:14.100157+00:00",
+  "worktrees": [
+    {
+      "cwd": "/workspace/mdkg",
+      "head": "d9b74c3fa172688a99406fd908571c7e3f666395",
+      "expected": "d9b74c3fa172688a99406fd908571c7e3f666395",
+      "status": "",
+      "unchanged": true
+    },
+    {
+      "cwd": "/workspace/mdkg-cloud-plan-review",
+      "head": "eb4daec5bc95c20bacddeb83f0b6eb7f95f0c1c8",
+      "expected": "eb4daec5bc95c20bacddeb83f0b6eb7f95f0c1c8",
+      "status": "",
+      "unchanged": true
+    },
+    {
+      "cwd": "/workspace/mdkg-cloud-goal88",
+      "head": "ce53ea56629af23ecd10d6e58a393db1235fda79",
+      "expected": "ce53ea56629af23ecd10d6e58a393db1235fda79",
+      "status": "",
+      "unchanged": true
+    },
+    {
+      "cwd": "/workspace/mdkg-cloud-goal89",
+      "head": "1e5b5981611b019c4ab0d14ec9d0bcccf3c171ef",
+      "expected": "1e5b5981611b019c4ab0d14ec9d0bcccf3c171ef",
+      "status": "",
+      "unchanged": true
+    }
+  ],
+  "all_unchanged": true
+}

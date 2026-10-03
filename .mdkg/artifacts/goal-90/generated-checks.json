@@ -1,0 +1,31 @@
+[
+  {
+    "label": "cli-snapshot",
+    "command": [
+      "node",
+      "scripts/cli_help_snapshot.js"
+    ],
+    "exit_code": 0,
+    "seconds": 14.277
+  },
+  {
+    "label": "docs-reference",
+    "command": [
+      "node",
+      "scripts/generate-docs-reference.js",
+      "--write"
+    ],
+    "exit_code": 0,
+    "seconds": 0.064
+  },
+  {
+    "label": "release-data",
+    "command": [
+      "node",
+      "scripts/generate-release-notes-data.js",
+      "--write"
+    ],
+    "exit_code": 1,
+    "seconds": 0.033
+  }
+]

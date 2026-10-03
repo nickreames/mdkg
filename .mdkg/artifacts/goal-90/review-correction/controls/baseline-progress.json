@@ -1,0 +1,190 @@
+[
+  {
+    "name": "baseline-runtime-source-24.18.0",
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+      "/workspace/mdkg-cloud-review-cache/goal90/review-correction/reproduce.cjs"
+    ],
+    "cwd": "/workspace/mdkg-cloud-goal90",
+    "environment_overrides": {
+      "MDKG_GRAPHS_PACKAGE": "/workspace/mdkg-cloud-goal90"
+    },
+    "start": "2026-10-03T13:12:23.627481+00:00",
+    "seconds": 5.991,
+    "exit": 0,
+    "expected_exit": 0,
+    "matched_expected": true,
+    "log": "baseline-runtime-source-24.18.0.log",
+    "sha256": "c96d120aee99fe1825ea7a9f98539361df60bf56b583fe08d1823075e5afa849"
+  },
+  {
+    "name": "baseline-runtime-installed-24.18.0",
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+      "/workspace/mdkg-cloud-review-cache/goal90/review-correction/reproduce.cjs"
+    ],
+    "cwd": "/workspace/mdkg-cloud-goal90",
+    "environment_overrides": {
+      "MDKG_GRAPHS_PACKAGE": "/workspace/mdkg-cloud-review-cache/goal90/final/npm-consumer/node_modules/mdkg"
+    },
+    "start": "2026-10-03T13:12:29.619399+00:00",
+    "seconds": 5.894,
+    "exit": 0,
+    "expected_exit": 0,
+    "matched_expected": true,
+    "log": "baseline-runtime-installed-24.18.0.log",
+    "sha256": "1aa1b09244856bdd259e76763be1666131dadce5a6324f4071d71f3c6082087a"
+  },
+  {
+    "name": "baseline-loop-base-24.18.0",
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern",
+      "loop descriptor flags match parser branches and generated help",
+      "dist/tests/commands/command_contract.test.js"
+    ],
+    "cwd": "/workspace/mdkg-cloud-goal89",
+    "environment_overrides": {},
+    "start": "2026-10-03T13:12:35.513511+00:00",
+    "seconds": 0.773,
+    "exit": 0,
+    "expected_exit": 0,
+    "matched_expected": true,
+    "log": "baseline-loop-base-24.18.0.log",
+    "sha256": "4443759a8e58fe2c3b8c663cb42e515ea9fbaef05c0e19c936e7829af78af253",
+    "tests": 1,
+    "pass": 1,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "baseline-loop-head-24.18.0",
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern",
+      "loop descriptor flags match parser branches and generated help",
+      "dist/tests/commands/command_contract.test.js"
+    ],
+    "cwd": "/workspace/mdkg-cloud-goal90",
+    "environment_overrides": {},
+    "start": "2026-10-03T13:12:36.286813+00:00",
+    "seconds": 0.115,
+    "exit": 1,
+    "expected_exit": 1,
+    "matched_expected": true,
+    "log": "baseline-loop-head-24.18.0.log",
+    "sha256": "6463531cdf5159d2f63b277dda2a346e2a1769bbaf864d42e6978096049b7e49",
+    "tests": 1,
+    "pass": 0,
+    "fail": 1,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "baseline-runtime-source-24.21.0",
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+      "/workspace/mdkg-cloud-review-cache/goal90/review-correction/reproduce.cjs"
+    ],
+    "cwd": "/workspace/mdkg-cloud-goal90",
+    "environment_overrides": {
+      "MDKG_GRAPHS_PACKAGE": "/workspace/mdkg-cloud-goal90"
+    },
+    "start": "2026-10-03T13:12:36.408211+00:00",
+    "seconds": 6.037,
+    "exit": 0,
+    "expected_exit": 0,
+    "matched_expected": true,
+    "log": "baseline-runtime-source-24.21.0.log",
+    "sha256": "0458b931ebb0a2fe45cdea7803b4b722e8de3060c9dc9bc74edc9a05735e7fbc"
+  },
+  {
+    "name": "baseline-runtime-installed-24.21.0",
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+      "/workspace/mdkg-cloud-review-cache/goal90/review-correction/reproduce.cjs"
+    ],
+    "cwd": "/workspace/mdkg-cloud-goal90",
+    "environment_overrides": {
+      "MDKG_GRAPHS_PACKAGE": "/workspace/mdkg-cloud-review-cache/goal90/final/npm-consumer/node_modules/mdkg"
+    },
+    "start": "2026-10-03T13:12:42.445652+00:00",
+    "seconds": 6.501,
+    "exit": 0,
+    "expected_exit": 0,
+    "matched_expected": true,
+    "log": "baseline-runtime-installed-24.21.0.log",
+    "sha256": "de279a420b754b55c6272047835851206b1bc370df2c2090be596789785863b7"
+  },
+  {
+    "name": "baseline-loop-base-24.21.0",
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern",
+      "loop descriptor flags match parser branches and generated help",
+      "dist/tests/commands/command_contract.test.js"
+    ],
+    "cwd": "/workspace/mdkg-cloud-goal89",
+    "environment_overrides": {},
+    "start": "2026-10-03T13:12:48.947079+00:00",
+    "seconds": 0.867,
+    "exit": 0,
+    "expected_exit": 0,
+    "matched_expected": true,
+    "log": "baseline-loop-base-24.21.0.log",
+    "sha256": "4b054a08f26d07ad65c905a84c5f83c2d9adf27614a0e405f1caf92d6525e0bc",
+    "tests": 1,
+    "pass": 1,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "baseline-loop-head-24.21.0",
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern",
+      "loop descriptor flags match parser branches and generated help",
+      "dist/tests/commands/command_contract.test.js"
+    ],
+    "cwd": "/workspace/mdkg-cloud-goal90",
+    "environment_overrides": {},
+    "start": "2026-10-03T13:12:49.814430+00:00",
+    "seconds": 0.165,
+    "exit": 1,
+    "expected_exit": 1,
+    "matched_expected": true,
+    "log": "baseline-loop-head-24.21.0.log",
+    "sha256": "9c6163b316e71c3877f0cfe92956e752be4680251143e53dd5436441801926d1",
+    "tests": 1,
+    "pass": 0,
+    "fail": 1,
+    "skipped": 0,
+    "cancelled": 0
+  }
+]

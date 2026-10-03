@@ -1,0 +1,62 @@
+{
+  "qualified_product_files": [
+    {
+      "path": ".mdkg/work/chk-678-reviewed-independent-sibling-graphs-design-boundary.md",
+      "sha256": "e4d593f1bea1622a2a532e72e9ff9f3f39ca8987c62b07f139700e4810ddb626"
+    },
+    {
+      "path": ".mdkg/work/chk-680-prepublication-readiness-decision-for-independent-sibling-graphs.md",
+      "sha256": "6020922e4d77e5a11567577035f9f36da8e575e82611892711a798ac5d6afccb"
+    },
+    {
+      "path": ".mdkg/work/goal-90-independent-sibling-graphs-with-explicit-isolated-selection.md",
+      "sha256": "ecb6a99ab501598a2b92f606b5822d840896f72c60d40908911e80ca6639f58a"
+    },
+    {
+      "path": ".mdkg/work/task-855-prepare-exact-candidate-independent-sibling-graphs-prepublication-evidence.md",
+      "sha256": "90aee411f97c8c85a731879fde130a626385c74f276999190cbc8113bf0dbe56"
+    },
+    {
+      "path": ".mdkg/work/test-496-qualify-independent-sibling-graphs-behavior-with-synthetic-installed-fixtures.md",
+      "sha256": "6f82b30e63da2b892e5b0aebdb83d3a0ca1e6120e3f3d5394d7fc7009da4ec75"
+    },
+    {
+      "path": "docs/cloud-goal90-design.md",
+      "sha256": "2b1faef0d1ad4167474414c7095cd2908e48c6897b8e1363d40d618ff968508f"
+    },
+    {
+      "path": "docs/cloud-goal90-review-correction.md",
+      "sha256": "bf4c2a7ea2c57ac977df7dcc1c634ad6eab5af4aa3e30aa177258be70b594637"
+    },
+    {
+      "path": "docs/guides/independent-graphs.md",
+      "sha256": "08210b87f0ef70d9da6d3d763d972bcef22023431e2e5bfc0db14621f4c99f5b"
+    },
+    {
+      "path": "docs/src/content/docs/guides/independent-graphs.md",
+      "sha256": "018d40a9705a56b6a2097c8c55aaa588c742a21644c37ab7c3725b525a7adfef"
+    },
+    {
+      "path": "src/cli.ts",
+      "sha256": "a82fa1cb41bcbc579dc8645d74addab9e0af78064513966e2f760be68bf30a13"
+    },
+    {
+      "path": "src/core/graph_selection.ts",
+      "sha256": "941018294ccf392df12d1380dc9d706bfa12d1053752a83a63797a68783f7077"
+    },
+    {
+      "path": "tests/commands/command_contract.test.ts",
+      "sha256": "43fc2c453f111514e9761a4565fe3a3d55ae44a003dff5042ea55fdfc5a7961c"
+    },
+    {
+      "path": "tests/independent-graphs-review.test.mjs",
+      "sha256": "fe8eafecb143033a8e1acb8548d57cd3278971d37571ca437bcf1a34c3b82766"
+    }
+  ],
+  "receipt_directory": ".mdkg/artifacts/goal-90/review-correction",
+  "version": "0.6.3 unchanged draft",
+  "source_runtime_files": 2,
+  "new_regressions": 44,
+  "preserved_version_dependencies_workflows_floors_timeouts": true,
+  "scope": "F1\u2013F4 corrections, explanatory docs, body-only NO GO graph notes and qualification receipts; no node status/dependency/ID/selection changes"
+}

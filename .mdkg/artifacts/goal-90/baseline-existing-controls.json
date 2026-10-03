@@ -1,0 +1,26 @@
+{
+  "base_head": "1e5b5981611b019c4ab0d14ec9d0bcccf3c171ef",
+  "command": [
+    "python3",
+    "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+    "node",
+    "--test",
+    "dist/tests/commands/cli_option_admission.test.js",
+    "dist/tests/util/argparse.test.js",
+    "dist/tests/util/mutation_lock.test.js",
+    "dist/tests/core/filesystem_authority.test.js",
+    "dist/tests/commands/git_observation.test.js",
+    "dist/tests/graph/identity.test.js",
+    "tests/working-storage.test.mjs",
+    "tests/cloud-working-host-contract.test.mjs",
+    "tests/release-guidance.test.mjs"
+  ],
+  "exit": 0,
+  "seconds": 104.283,
+  "log_sha256": "52d2be45476897e8576ec8b966713887dc2ef27fa3375ae0fe9abd68abe92a54",
+  "tests": 83,
+  "pass": 83,
+  "fail": 0,
+  "skipped": 0,
+  "cancelled": 0
+}

@@ -1,0 +1,10 @@
+{
+  "exit_code": 1,
+  "seconds": 7.202,
+  "counts": [
+    "# tests 4",
+    "# pass 1",
+    "# fail 3",
+    "# skipped 0"
+  ]
+}

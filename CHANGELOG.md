@@ -8,6 +8,34 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.6.3 - 2026-10-03
+
+### Qualification status
+
+- Unpublished sequential draft candidate. Independent review, owner-local
+  acceptance and full repository/release/platform qualification remain required.
+  No merge, publication or professional-adoption approval.
+
+### Added
+
+- Optional global `--graph <name>` selects an explicitly registered independent
+  project root containing its own `.mdkg`. No selector preserves existing root
+  behavior; unknown, changed or unsafe selection refuses before command effects.
+- Hash-bound preview/apply for ignored host-local graph registration and mapping
+  removal. Registration reuses proven canonical or working-host identity,
+  rejects collisions, and never migrates, copies or deletes graph data.
+- Named roots isolate config, IDs, memory, caches, state, DB/queues, working
+  storage and mirrors. Private selection refuses collaborative/public output
+  and transport. Default commands do not load the registry or private graphs.
+
+### Limits
+
+- Names map to existing standalone project roots; relative paths use the selected
+  root. Initialize roots explicitly before registration. No UUID/positional
+  selector, automatic discovery, federation or import/export platform is added.
+- Git history belongs to the host repository; graph selection does not provide
+  Git access control, separate branches or storage durability guarantees.
+
 ## 0.6.2 - 2026-10-03
 
 ### Qualification status

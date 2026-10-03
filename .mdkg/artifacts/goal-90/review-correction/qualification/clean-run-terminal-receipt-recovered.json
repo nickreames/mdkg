@@ -1,0 +1,103 @@
+{
+  "action": "release-ladder",
+  "ok": false,
+  "mode": "prepublish",
+  "offline": true,
+  "receipt_dir": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/prepublish-clean/run-8pibPl",
+  "duration_ms": 675267,
+  "error": "coverage failed with exit 1",
+  "progress": {
+    "mode": "prepublish",
+    "gates": [
+      {
+        "id": "dependency-preflight",
+        "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /workspace/mdkg-cloud-goal90/scripts/dependency-boundary.js preflight --json",
+        "exit_code": 0,
+        "duration_ms": 34,
+        "timed_out": false
+      },
+      {
+        "id": "coverage",
+        "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm run test:coverage",
+        "exit_code": 1,
+        "duration_ms": 674720,
+        "timed_out": false,
+        "failure_evidence": {
+          "kind": "bounded-failure-output-excerpt",
+          "limit_bytes_per_stream": 8192,
+          "status": 1,
+          "signal": null,
+          "error_code": null,
+          "stdout": {
+            "bytes": 257635,
+            "sha256": "df1471fa14f1f26f6b2a5a3590eddad1fa1a0b3d57beb3e2cc942220eee44c4c",
+            "truncated": true,
+            "tail_utf8": "put.test.mjs\",\"line\":305,\"column\":12}]}],\"truncated\":false}\nFAIL ladder rejects a linked receipt collection before any Git or gate subprocess\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/qualification-output.test.mjs\",\"line\":318,\"column\":1},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"AssertionError\",\"code\":\"ERR_ASSERTION\",\"failure_type\":null,\"operator\":\"strictEqual\",\"actual\":{\"kind\":\"number\"},\"expected\":{\"kind\":\"number\"},\"locations\":[{\"file\":\"tests/qualification-output.test.mjs\",\"line\":327,\"column\":10}]}],\"truncated\":false}\nSUMMARY pass=20 fail=2 total=22\nPASS smoke Git ignores ambient repository/index/executable redirects and preserves a sentinel\nPASS smoke Node uses the selected runtime, filters Git overrides and preserves expected refusal status\nPASS smoke npm JS entrypoints use private configuration and cannot restore ambient Git redirects\nPASS smoke command controller retains explicit fault preloads and supervised refusal semantics\nPASS remaining synchronous callers and their transitive helpers use owned commands without bypasses\nPASS consumer smoke retains native offline package execution under artifact admission\nPASS consumer catches artifact mutation after the first lazy execution before a later restoration\nPASS Git boundary and shared observation fixtures preserve intentional probes under owned supervision\nPASS MCP smoke runs its async server inside one owned worker and retains read parity cases\nPASS MCP worker refuses an installed CLI outside its admitted fixture before writing\nPASS MCP smoke rejects malformed output after its final successful response\nPASS MCP smoke retains protocol and nonzero shutdown failures together\nPASS MCP smoke preserves both exercise and shutdown diagnostics\nPASS remaining release smokes bind their work to owned fixtures\nPASS parallel smoke worker refuses direct and unowned entry before graph writes\nPASS actual installed-smoke entrypoint reports its underlying failure after owned cleanup\nPASS imported init exercises require explicit owned commands before effects\nPASS imported init exercises accept factory and named-export owned controllers\nPASS smoke command setup preserves existing configuration and refuses released custody\nPASS both smoke entrypoints use owned command dispatch without raw Git or subprocess fallbacks\nPASS branch fixture accepts a physical base and rejects an explicit symlink base\nPASS installed Node dispatch preserves fault preloads and ordinary refusals but rejects signals and timeouts\nPASS all installed collaboration and recovery callers retain the supervised Node boundary\nPASS six installed smoke callers preserve owned dispatch and offline installs\nPASS DB/SQLite smoke callers retain installed helpers, guarded Git and exact ignore statuses\nPASS graph workflow smoke callers use owned dispatch and defer installation until artifact admission\nPASS installed smoke returns success only after artifact verification and cleanup\nPASS installed smoke preserves primary and artifact failures and still checks cleanup\nPASS installed smoke cleans failed setup and refuses unsafe base or linked artifact\nPASS standalone installed smoke detects installer mutation with and without install failure\nSUMMARY pass=30 fail=0 total=30\nPASS active homepage advertises observational Git, not retired mutation wrappers or unqualified OS support\nPASS both agent guides reject consumer validation profiles and distinguish receipt evidence\nPASS cache instructions distinguish observational projections from explicit persistent rebuilds\nPASS structured output guidance matches the concrete command admission boundary\nPASS active event guidance does not imply removed Git materialization validates a graph\nPASS command example checks reject wrong-command options without executing commands\nPASS historical command exemption is explicit and confined to the changelog section\nPASS public safety guidance calls the filesystem findings deferred and unresolved, not fixed\nPASS both install guides show compact default init and a reviewed upgrade hash\nPASS published changelog chronology is retained with an explicit candidate boundary\nPASS recovery guidance retains exact evidence and explicit operator confirmation\nSUMMARY pass=11 fail=0 total=11\nPASS canonical security remediation matrix closes the exact 51-finding set\nPASS security remediation verifier rejects missing and duplicate candidates\nPASS security remediation verifier rejects unresolved closure and severity drift\nPASS security remediation verifier rejects absent direct regression evidence\nSUMMARY pass=4 fail=0 total=4\nPASS installed discovery verifier binds local links and complete resource inventories observationally\nPASS installed discovery verifier rejects broken router link\nPASS installed discovery verifier rejects escaping router link\nPASS installed discovery verifier rejects missing skill link\nPASS installed discovery verifier rejects missing native resource\nPASS installed discovery verifier rejects changed native resource\nPASS installed discovery verifier rejects extra native resource\nPASS installed discovery verifier rejects empty discovery\nPASS installed discovery verifier rejects escaping slug\nPASS installed discovery verifier rejects duplicate discovery\nPASS installed discovery verifier detects synchronized canonical and mirror resource delete\nPASS installed discovery verifier detects synchronized canonical and mirror resource change\nSUMMARY pass=12 fail=0 total=12\nPASS test-built.js isolates inherited Git authority at its actual worker boundary\nPASS coverage-contract.js isolates inherited Git authority at its actual worker boundary\nSUMMARY pass=2 fail=0 total=2\nPASS fresh init creates independent host markers; repeat init preserves marker and legacy instructions\nPASS existing legacy adoption previews without effects and never migrates nodes or instructions\nPASS v2 graphs reuse their independently verified canonical identity\nPASS owned storage persists through separate CLI processes; explicit search and original input stay intact\nPASS store copies cannot bootstrap missing or different host identity; same-ID clone retains logical host\nPASS changed/removed/unknown host and independent v2 fork refuse without repair\nPASS stale source, owner, pin and malformed plan refuse before effects\nPASS explicit quarantine/recover/purge preserves unrelated data and completed commands are idempotent\nPASS source adoption copies selected custom bytes; unmanaged store and links never become owned\nPASS private payload is excluded from graph discovery and transport even when deliberately tracked\nPASS legacy registered canonical working paths remain usable and managed adoption refuses the overlap\nPASS ordinary discovery and forged stale caches cannot read managed scratch\nPASS review regression: unmanaged parent cannot pack managed child private payload from poisoned caches\nPASS review regression: repeated init preserves unmanaged legacy canonical workspace Git visibility\nPASS review regression: explicit working adoption handles absent empty and authored Gitignore separately\nPASS explicit init journal cuts resume; a pre-journal killed adoption preserves unknown custody\nPASS sanitized promotion uses verifiable archive evidence and does not export raw scratch\nPASS crash boundaries resume exact journal effects once; purge never claims deleted bytes recoverable\nPASS hardlinks, symlinks, case aliases, traversal, nested Git and unknown store files refuse without mutation\nPASS CLI preview/apply uses saved exact plans; unknown or conflicting options refuse\nPASS actual killed writer retains lock; recovery requires fresh evidence and explicit quiescence\nPASS forged journal, duplicate move and changed parent preserve uncertain data\nPASS local checkout loss loses ignored scratch; selected retained sanitized export restores only selected bytes\nPASS selected paused-goal claims protect done work; malformed selection and newly active work invalidate cleanup\nSUMMARY pass=24 fail=0 total=24\nSUMMARY pass=2877 fail=13 total=2891\n"
+          },
+          "stderr": {
+            "bytes": 217,
+            "sha256": "538022a584aa757e4c982fe8b1ea966b1e7f487ea30f53c91d964d7a89b0de74",
+            "truncated": false,
+            "tail_utf8": "coverage evidence directory: /dev/shm/mdkg-cloud-goal90-review-correction-fixtures/prepublish-clean/run-8pibPl/coverage\ncoverage contract failed: complete coverage test execution did not report a passing test summary\n"
+          }
+        }
+      }
+    ],
+    "smokes": []
+  },
+  "git_boundary": {
+    "ok": true,
+    "checks": {
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "status_unchanged": true,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true
+    },
+    "changed_tracked_paths": [],
+    "before": {
+      "head": "650f8258495b4904e113830529ed4ffb7b92cc09",
+      "branch": "cloud/goal90-independent-siblings",
+      "status_porcelain_sha256": "73dab7ae0368a3676e87dee4ba1ee6b589568cb4d051e08bf176f315f88f7f1b",
+      "status_entry_count": 14,
+      "tracked_tree_sha256": "b2219ac9f349b0d8ff8b508189412512b5bd59bfad225d25a92ea0effa2b85e2",
+      "tracked_count": 5771,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:ba7c77c7f6e812ffe2052d5114f7f6d189c2239de6c9306895712d9ce29a8650",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    },
+    "after": {
+      "head": "650f8258495b4904e113830529ed4ffb7b92cc09",
+      "branch": "cloud/goal90-independent-siblings",
+      "status_porcelain_sha256": "73dab7ae0368a3676e87dee4ba1ee6b589568cb4d051e08bf176f315f88f7f1b",
+      "status_entry_count": 14,
+      "tracked_tree_sha256": "b2219ac9f349b0d8ff8b508189412512b5bd59bfad225d25a92ea0effa2b85e2",
+      "tracked_count": 5771,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:ba7c77c7f6e812ffe2052d5114f7f6d189c2239de6c9306895712d9ce29a8650",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    }
+  }
+}

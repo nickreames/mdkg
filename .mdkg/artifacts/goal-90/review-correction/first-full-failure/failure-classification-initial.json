@@ -1,0 +1,283 @@
+{
+  "recorded": "2026-10-03T14:14:43.343637+00:00",
+  "full_run": "run-18yHTw",
+  "coverage_log_sha256": "95aafdf709a93f58c9db1fb3fc4773d9f5435a4c55a9039f4ed49e36d23f927a",
+  "total_failed_details": 1067,
+  "git_metadata_stack_details": 314,
+  "other_detail_count": 753,
+  "unclassified_sample": [
+    {
+      "schema_version": 1,
+      "policy": "omit-payloads-v1",
+      "location": {
+        "file": "dist/tests/commands/agent_file_types.test.js",
+        "line": 604,
+        "column": 22
+      },
+      "errors": [
+        {
+          "name": "Error",
+          "code": "ERR_TEST_FAILURE",
+          "failure_type": "testCodeFailure",
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": []
+        },
+        {
+          "name": "SyntaxError",
+          "code": null,
+          "failure_type": null,
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": [
+            {
+              "file": "dist/tests/commands/agent_file_types.test.js",
+              "line": 646,
+              "column": 26
+            }
+          ]
+        }
+      ],
+      "truncated": false
+    },
+    {
+      "schema_version": 1,
+      "policy": "omit-payloads-v1",
+      "location": {
+        "file": "dist/tests/commands/agent_file_types.test.js",
+        "line": 716,
+        "column": 22
+      },
+      "errors": [
+        {
+          "name": "Error",
+          "code": "ERR_TEST_FAILURE",
+          "failure_type": "testCodeFailure",
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": []
+        },
+        {
+          "name": "SyntaxError",
+          "code": null,
+          "failure_type": null,
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": [
+            {
+              "file": "dist/tests/commands/agent_file_types.test.js",
+              "line": 723,
+              "column": 26
+            }
+          ]
+        }
+      ],
+      "truncated": false
+    },
+    {
+      "schema_version": 1,
+      "policy": "omit-payloads-v1",
+      "location": {
+        "file": "dist/tests/commands/agent_file_types.test.js",
+        "line": 757,
+        "column": 22
+      },
+      "errors": [
+        {
+          "name": "Error",
+          "code": "ERR_TEST_FAILURE",
+          "failure_type": "testCodeFailure",
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": []
+        },
+        {
+          "name": "SyntaxError",
+          "code": null,
+          "failure_type": null,
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": [
+            {
+              "file": "dist/tests/commands/agent_file_types.test.js",
+              "line": 772,
+              "column": 30
+            }
+          ]
+        }
+      ],
+      "truncated": false
+    },
+    {
+      "schema_version": 1,
+      "policy": "omit-payloads-v1",
+      "location": {
+        "file": "dist/tests/commands/agent_file_types.test.js",
+        "line": 853,
+        "column": 22
+      },
+      "errors": [
+        {
+          "name": "Error",
+          "code": "ERR_TEST_FAILURE",
+          "failure_type": "testCodeFailure",
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": []
+        },
+        {
+          "name": "SyntaxError",
+          "code": null,
+          "failure_type": null,
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": [
+            {
+              "file": "dist/tests/commands/agent_file_types.test.js",
+              "line": 859,
+              "column": 26
+            }
+          ]
+        }
+      ],
+      "truncated": false
+    },
+    {
+      "schema_version": 1,
+      "policy": "omit-payloads-v1",
+      "location": {
+        "file": "dist/tests/commands/agent_file_types.test.js",
+        "line": 871,
+        "column": 22
+      },
+      "errors": [
+        {
+          "name": "Error",
+          "code": "ERR_TEST_FAILURE",
+          "failure_type": "testCodeFailure",
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": []
+        },
+        {
+          "name": "AssertionError",
+          "code": "ERR_ASSERTION",
+          "failure_type": null,
+          "operator": "throws",
+          "actual": {
+            "kind": "object"
+          },
+          "expected": {
+            "kind": "object"
+          },
+          "locations": [
+            {
+              "file": "dist/tests/commands/agent_file_types.test.js",
+              "line": 877,
+              "column": 26
+            }
+          ]
+        }
+      ],
+      "truncated": false
+    },
+    {
+      "schema_version": 1,
+      "policy": "omit-payloads-v1",
+      "location": {
+        "file": "dist/tests/commands/agent_file_types.test.js",
+        "line": 880,
+        "column": 22
+      },
+      "errors": [
+        {
+          "name": "Error",
+          "code": "ERR_TEST_FAILURE",
+          "failure_type": "testCodeFailure",
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": []
+        },
+        {
+          "name": "SyntaxError",
+          "code": null,
+          "failure_type": null,
+          "operator": null,
+          "actual": {
+            "kind": "undefined"
+          },
+          "expected": {
+            "kind": "undefined"
+          },
+          "locations": [
+            {
+              "file": "dist/tests/commands/agent_file_types.test.js",
+              "line": 885,
+              "column": 26
+            }
+          ]
+        }
+      ],
+      "truncated": false
+    }
+  ],
+  "ancestor_metadata": {
+    "path": "/workspace/.git",
+    "kind": "directory",
+    "entries": [],
+    "dev": 39,
+    "ino": 1,
+    "scope": "Read-only environment-owned metadata; never changed."
+  },
+  "classification": "Current invalid empty /workspace/.git ancestor explains an observed shared Git-observation failure mode; baseline/clean controls are required before classification. Other failures remain UNCLASSIFIED."
+}

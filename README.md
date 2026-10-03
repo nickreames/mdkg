@@ -14,13 +14,13 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.6.2`
+Current package version in source: `0.6.3`
 
-The 0.6.2 source is an **unpublished qualification candidate**, not a registry
+The 0.6.3 source is an **unpublished qualification candidate**, not a registry
 availability claim. The install command below selects the registry version; its bootstrap and Git
 behavior may differ from this working tree. Check the installed version and the candidate artifact receipt.
 Final macOS/Linux qualification and security acceptance are still required.
-Windows is explicitly unqualified. See the [0.6.2 change notes](CHANGELOG.md).
+Windows is explicitly unqualified. See the [0.6.3 change notes](CHANGELOG.md).
 
 The candidate uses built-in Node APIs, not an mdkg-owned native addon or
 OS-specific SQLite path. Node 24.18+ within the 24 line is required, including
@@ -93,6 +93,29 @@ mdkg --version
 ```
 
 The npm global install path is the canonical public-alpha path covered by release validation. One-off runners and other package managers may be useful in local tooling, but verify them before documenting them for a team.
+
+## Independent graph selection (0.6.3 candidate)
+
+Optional `--graph <name>` selects an explicitly registered independent project
+root containing its own `.mdkg`. Existing commands without a selector keep their
+current root. Initialize an empty sibling root explicitly, preview registration,
+then apply its exact current hash:
+
+```bash
+mdkg init --root memory/personal
+mdkg graph register personal --target memory/personal --json
+mdkg graph register personal --target memory/personal --apply --plan-hash PLAN_HASH --json
+mdkg --graph personal search "draft" --json
+```
+
+Names, paths and proven existing bindings live in an ignored local registry.
+Relative paths, config, IDs, indexes, state, DB, working storage and mirrors use
+the selected root. Private registrations refuse public/internal output and graph
+transport. Unknown/changed/unsafe selectors refuse before effects. No automatic
+discovery, graph migration/copy/deletion or federation is added. See the
+[independent graph guide](docs/guides/independent-graphs.md) for ownership, privacy,
+legacy binding limits and explicit mapping removal. Owner/full release acceptance
+remains required before publication or professional adoption.
 
 ## Persistent working storage (0.6.2 candidate)
 

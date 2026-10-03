@@ -1,0 +1,62 @@
+[
+  {
+    "name": "build-corrected",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 17.644
+  },
+  {
+    "name": "build-test-corrected",
+    "command": [
+      "npm",
+      "run",
+      "build:test"
+    ],
+    "exit": 0,
+    "seconds": 4.096
+  },
+  {
+    "name": "docs-reference-corrected",
+    "command": [
+      "node",
+      "scripts/generate-docs-reference.js",
+      "--write"
+    ],
+    "exit": 0,
+    "seconds": 0.065
+  },
+  {
+    "name": "release-data-corrected",
+    "command": [
+      "node",
+      "scripts/generate-release-notes-data.js",
+      "--write"
+    ],
+    "exit": 0,
+    "seconds": 0.064
+  },
+  {
+    "name": "cli-precheck-corrected",
+    "command": [
+      "node",
+      "scripts/cli_help_snapshot.js",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 13.171
+  },
+  {
+    "name": "docs-precheck-corrected",
+    "command": [
+      "npm",
+      "run",
+      "docs:check:built"
+    ],
+    "exit": 1,
+    "seconds": 0.365
+  }
+]

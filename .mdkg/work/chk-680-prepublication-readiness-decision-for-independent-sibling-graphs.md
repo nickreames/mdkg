@@ -2,12 +2,12 @@
 id: chk-680
 type: checkpoint
 title: Prepublication readiness decision for independent sibling graphs
-status: backlog
+status: blocked
 priority: 1
-tags: [cloud-planning, design-only, readiness:not-run]
+tags: [cloud-planning, cloud-implementation, readiness:not-ready]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-90/checks.json, docs/cloud-goal90-design.md, docs/cloud-goal90-checkpoint.md]
 relates: []
 blocked_by: [task-855]
 blocks: []
@@ -18,15 +18,17 @@ aliases: []
 skills: []
 scope: [task-852, task-853, task-854, test-496, task-855]
 created: 2026-10-02
-updated: 2026-10-02
+updated: 2026-10-03
 checkpoint_kind: goal
 ---
 
 # Summary
 
-FUTURE CHECKPOINT — NOT_RUN. Expected milestone: Exact-candidate readiness decision with full package gates and retained platform/security gaps.
-This placeholder must remain backlog until its actual milestone has evidence;
-authoring the planning node does not satisfy it.
+Current cloud draft readiness assessment: NOT_READY. Bounded source and exact
+installed controls passed; static/docs checks are being retained in the final
+receipt. Independent/owner/full repository, coverage, package ladder and native
+platform gates remain incomplete. No goal completion, merge, publication, tag,
+deploy or professional-adoption approval is granted.
 
 # Scope Covered
 
@@ -46,15 +48,20 @@ separate honest gaps. This checkpoint currently provides no implementation pass.
 
 # Implementation Summary
 
-No feature implementation or future acceptance was performed by this planning PR.
+The planning PR supplied requirements. This authorized sequential cloud Run
+implements the bounded named-root feature; see docs/cloud-goal90-checkpoint.md.
+Independent/owner/full acceptance remains pending.
 
 # Verification / Testing
 
-NOT_RUN; attach actual milestone commands, input identities, results and retained gaps before completion.
+Exact current cloud checks are retained in .mdkg/artifacts/goal-90/checks.json.
+Required independent and owner/full acceptance is pending. No completed
+checkpoint or blanket CI waiver is inferred from worker results.
 
 # Links / Artifacts
 
-edd-83; docs/cloud-planning-experiment.md. Future artifact references must be added after they exist.
+edd-83; docs/cloud-planning-experiment.md; docs/cloud-goal90-design.md;
+.mdkg/artifacts/goal-90/checks.json; docs/cloud-goal90-checkpoint.md.
 
 # Enforced Readiness Dependency
 
@@ -63,3 +70,18 @@ blocked or review, with readiness:not-ready, preserving downstream blockers.
 Only evidenced independent READY_PENDING_APPROVAL acceptance may become done
 with readiness:ready-pending-approval; this grants no publication or adoption.
 Parser/goal-next and the docs plan guard enforce this distinction.
+
+# Independent PR13 Review Correction
+
+Independent review returned NO GO at650f8258495b4904e113830529ed4ffb7b92cc09.
+Parent delegated four focused fixes and supplied portable exact reproductions.
+The runtime defects reproduce in rejected source and installed bytes on native
+24.18.0/24.21.0; the loop contract passes base1e and fails650 on both runtimes.
+The active correction preserves private export case normalization, whole-directory
+Git exclusion, prior host bindings on unregister, and the loop global flag set.
+Current producer qualification is recorded separately at
+.mdkg/artifacts/goal-90/review-correction/checks.json and
+docs/cloud-goal90-review-correction.md. Original evidence remains unchanged.
+Required independent exact corrected-patch re-review, owner/local/platform and
+full release acceptance remain pending; no GO, READY or achieved state is inferred.
+No status, selected-goal or dependency edge is changed by this record.

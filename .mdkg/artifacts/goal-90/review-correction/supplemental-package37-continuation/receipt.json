@@ -1,0 +1,719 @@
+{
+  "schema_version": 1,
+  "kind": "supplemental-package37-continuation",
+  "previous_passed_ids": [
+    "smoke:consumer",
+    "smoke:git-boundary",
+    "smoke:loop",
+    "smoke:matrix"
+  ],
+  "repeat_reason": "Published baseline fetch DNS EAI_AGAIN; pinned retained local artifact is supported and verified. Reuse prior four passed case records; run remaining33. No canonical prepublish success inferred.",
+  "canonical_prepublish": "FAILED",
+  "does_not_waive_coverage": true,
+  "artifact_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+  "harness_sha256": "ea6f224eef21954f7d45bc24e7f114e613a11e0201dc800ea93b3bb42af63947",
+  "node": "v24.19.0",
+  "start": "2026-10-03T14:54:20.274Z",
+  "smokes": [
+    {
+      "id": "smoke:upgrade",
+      "entrypoint": "scripts/smoke-upgrade.js",
+      "aliases": [
+        "smoke:upgrade"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 24.976,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-upgrade.log",
+      "log_sha256": "84d1c8bb307fd279c5b1adbfbc2b150eaf381860ce993ebd4340a6e0d29530f3"
+    },
+    {
+      "id": "smoke:init",
+      "entrypoint": "scripts/smoke-init.js",
+      "aliases": [
+        "smoke:init"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 12.174,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-init.log",
+      "log_sha256": "0536bc30d27729a706013cabc1f575257fa6a7094dc61776a190ed583bf593cc"
+    },
+    {
+      "id": "smoke:capabilities",
+      "entrypoint": "scripts/smoke-capabilities.js",
+      "aliases": [
+        "smoke:capabilities"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.018,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-capabilities.log",
+      "log_sha256": "608ed1864a2ae25c31e16117a3188f0e3c1bd893266e3cbe1b1821368aabe383"
+    },
+    {
+      "id": "smoke:db",
+      "entrypoint": "scripts/smoke-db.js",
+      "aliases": [
+        "smoke:db"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 4.662,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-db.log",
+      "log_sha256": "f4c74fe6a11a76b8a8b1070f26e5cc8442ccbca6e510b054af7764294b2dbce6"
+    },
+    {
+      "id": "smoke:db-queue",
+      "entrypoint": "scripts/smoke-db-queue.js",
+      "aliases": [
+        "smoke:db-queue"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.111,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-db-queue.log",
+      "log_sha256": "9651848e7e788e95014043e0714f98ce9eb752127dc8be06f45936818f4e2a78"
+    },
+    {
+      "id": "smoke:db-queue-cli",
+      "entrypoint": "scripts/smoke-db-queue-cli.js",
+      "aliases": [
+        "smoke:db-queue-cli"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 6.695,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-db-queue-cli.log",
+      "log_sha256": "e5ec8a11b9643dd02acc4810e485efe2843a37ae141d26fc1a4b72f2a1789c20"
+    },
+    {
+      "id": "smoke:db-events",
+      "entrypoint": "scripts/smoke-db-events.js",
+      "aliases": [
+        "smoke:db-events"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.837,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-db-events.log",
+      "log_sha256": "a8ae644d6871c4a84cf0288c1b2374b073d30fb83724eb12d0f0450006016ed4"
+    },
+    {
+      "id": "smoke:db-materializer",
+      "entrypoint": "scripts/smoke-db-materializer.js",
+      "aliases": [
+        "smoke:db-materializer"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 3.243,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-db-materializer.log",
+      "log_sha256": "b2a7e7f5c1ae152d41c96165d52fecb0e59c99ed098779d76681ba547048e2ac"
+    },
+    {
+      "id": "smoke:db-snapshot",
+      "entrypoint": "scripts/smoke-db-snapshot.js",
+      "aliases": [
+        "smoke:db-snapshot"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.911,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-db-snapshot.log",
+      "log_sha256": "a64db5ab87f82a424dd15160612a4988059e749facfcc36ad29af4507ef5b967"
+    },
+    {
+      "id": "smoke:archive-work",
+      "entrypoint": "scripts/smoke-archive-work.js",
+      "aliases": [
+        "smoke:archive-work"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 26.499,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-archive-work.log",
+      "log_sha256": "1ccbaf05b579ed7d4b2c09af82777b3b27cdc4905b629ff50e3d5afb057a021a"
+    },
+    {
+      "id": "smoke:work-invocation",
+      "entrypoint": "scripts/smoke-work-invocation.js",
+      "aliases": [
+        "smoke:work-invocation"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 28.48,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-work-invocation.log",
+      "log_sha256": "85aa2d8cf6c34f655edf64d0721ad73c87cb2eebad9d3d20ad48d0ff6889fdad"
+    },
+    {
+      "id": "smoke:cli-ux-polish",
+      "entrypoint": "scripts/smoke-cli-ux-polish.js",
+      "aliases": [
+        "smoke:cli-ux-polish"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 5.616,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-cli-ux-polish.log",
+      "log_sha256": "dd8e839e9e9032d38a96d3d407f955f4f8c2bd34b1d2a954dc5af12550163c61"
+    },
+    {
+      "id": "smoke:operator-health",
+      "entrypoint": "scripts/smoke-operator-health.js",
+      "aliases": [
+        "smoke:operator-health"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 5.07,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-operator-health.log",
+      "log_sha256": "4f999d7cd84c2f8be5784bfa03bd2531f3d3ad66b55b7b556072f172a060973b"
+    },
+    {
+      "id": "smoke:fix-plan",
+      "entrypoint": "scripts/smoke-fix-plan.js",
+      "aliases": [
+        "smoke:fix-plan"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.598,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-fix-plan.log",
+      "log_sha256": "f81baeeffcdb8f8f487f16f637b7fec6610bff0484a2576ad66eb9fd6075e3e1"
+    },
+    {
+      "id": "smoke:branch-conflicts",
+      "entrypoint": "scripts/smoke-branch-conflicts.js",
+      "aliases": [
+        "smoke:branch-conflicts"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 94.099,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-branch-conflicts.log",
+      "log_sha256": "fe38504925061859d3932b09a61caac4597fa93e4bb5027be90867262a7d9abe"
+    },
+    {
+      "id": "smoke:id-repair",
+      "entrypoint": "scripts/smoke-id-repair.js",
+      "aliases": [
+        "smoke:id-repair"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 3.12,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-id-repair.log",
+      "log_sha256": "9b31ce69289e6e2bf0627c603b0a6f62e4f0298e575ca74e6c40dfbcdecd7e2c"
+    },
+    {
+      "id": "smoke:command-docs",
+      "entrypoint": "scripts/smoke-command-docs.js",
+      "aliases": [
+        "smoke:command-docs"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 3.026,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-command-docs.log",
+      "log_sha256": "b1d4f4c81238714302e9125f4a0753c959e0543f17816ed89cec95186114bcf8"
+    },
+    {
+      "id": "smoke:spike",
+      "entrypoint": "scripts/smoke-spike.js",
+      "aliases": [
+        "smoke:spike"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 6.45,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-spike.log",
+      "log_sha256": "3ade711fb53a7932985bc6564f9ec09d250cd3b2e9fe05b21de1e7c82b4b1927"
+    },
+    {
+      "id": "smoke:goal-lifecycle",
+      "entrypoint": "scripts/smoke-goal-lifecycle.js",
+      "aliases": [
+        "smoke:goal-lifecycle"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 8.368,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-goal-lifecycle.log",
+      "log_sha256": "35937a3171ae935ea6714f0df33262cc40b6ac963a77922ed7233dfc12f16ca3"
+    },
+    {
+      "id": "smoke:semantic-refs",
+      "entrypoint": "scripts/smoke-semantic-refs.js",
+      "aliases": [
+        "smoke:semantic-refs"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 3.685,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-semantic-refs.log",
+      "log_sha256": "490da4d9cba1930cad270e45a07ecd5433a2de4d6e43d9134ad627b4f1f607f4"
+    },
+    {
+      "id": "smoke:checkpoint-templates",
+      "entrypoint": "scripts/smoke-checkpoint-templates.js",
+      "aliases": [
+        "smoke:checkpoint-templates"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 3.297,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-checkpoint-templates.log",
+      "log_sha256": "4eeff2644779e5ea8387ec65777a980e466f657ea8fe05add4e9b69807461c27"
+    },
+    {
+      "id": "smoke:handoff",
+      "entrypoint": "scripts/smoke-handoff.js",
+      "aliases": [
+        "smoke:handoff"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.742,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-handoff.log",
+      "log_sha256": "35a06f672c4ea684e56cfe2307dfa8ff1d29850d97c1a8020889d9a04620c81e"
+    },
+    {
+      "id": "smoke:warning-ux",
+      "entrypoint": "scripts/smoke-warning-ux.js",
+      "aliases": [
+        "smoke:warning-ux"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.409,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-warning-ux.log",
+      "log_sha256": "38210c48e86d7e834665749a9c58d07a176259d247adcb8552e1fee4af3968be"
+    },
+    {
+      "id": "smoke:integration-ux",
+      "entrypoint": "scripts/smoke-integration-ux.js",
+      "aliases": [
+        "smoke:integration-ux"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 6.144,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-integration-ux.log",
+      "log_sha256": "126533fdebf8f5a2c6a6520832d40861fe4dfc4bc02b3b1dbdc931c04fe2ab1a"
+    },
+    {
+      "id": "smoke:demo-graph",
+      "entrypoint": "scripts/smoke-demo-graph.js",
+      "aliases": [
+        "smoke:demo-graph"
+      ],
+      "exit": 1,
+      "timed_out": false,
+      "seconds": 3.877,
+      "verification": {
+        "before_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "after_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+        "bytes": 576344,
+        "identity_preserved": true
+      },
+      "log": "smoke-demo-graph.log",
+      "log_sha256": "806ac3ca6c55590d0b448d50a6ea7ec811d9321a4d362c0b4342f137d886fd83"
+    }
+  ],
+  "result": "FAILED",
+  "end": "2026-10-03T14:58:47.395Z",
+  "artifact_final": {
+    "path": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+    "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+    "bytes": 576344,
+    "dev": 27,
+    "ino": 1842047
+  },
+  "git_boundary": {
+    "ok": true,
+    "checks": {
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "status_unchanged": true,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true
+    },
+    "changed_tracked_paths": [],
+    "before": {
+      "head": "650f8258495b4904e113830529ed4ffb7b92cc09",
+      "branch": "cloud/goal90-independent-siblings",
+      "status_porcelain_sha256": "70ff7f88be398a02596daaf46820df7eb0c69e3387160c6a019e3c5e90f122a7",
+      "status_entry_count": 108,
+      "tracked_tree_sha256": "b2219ac9f349b0d8ff8b508189412512b5bd59bfad225d25a92ea0effa2b85e2",
+      "tracked_count": 5771,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:ba7c77c7f6e812ffe2052d5114f7f6d189c2239de6c9306895712d9ce29a8650",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    },
+    "after": {
+      "head": "650f8258495b4904e113830529ed4ffb7b92cc09",
+      "branch": "cloud/goal90-independent-siblings",
+      "status_porcelain_sha256": "70ff7f88be398a02596daaf46820df7eb0c69e3387160c6a019e3c5e90f122a7",
+      "status_entry_count": 108,
+      "tracked_tree_sha256": "b2219ac9f349b0d8ff8b508189412512b5bd59bfad225d25a92ea0effa2b85e2",
+      "tracked_count": 5771,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:ba7c77c7f6e812ffe2052d5114f7f6d189c2239de6c9306895712d9ce29a8650",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    }
+  },
+  "artifact_usages": [
+    {
+      "schema_version": 1,
+      "smoke": "smoke:upgrade",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-upgrade-smoke-k3XgGp/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:init",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-init-T3WMLO/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:db",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-db-smoke-3fLBEC/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:db-queue",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-db-queue-smoke-oQkgv1/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:db-queue-cli",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-db-queue-cli-smoke-oqpjqO/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:db-events",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-db-events-smoke-7iLgGJ/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:db-materializer",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-db-materializer-smoke-qNhOq3/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:db-snapshot",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-db-snapshot-smoke-vZWfFo/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:archive-work",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-archive-work-JAenFg/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:work-invocation",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-work-invocation-N4dkkC/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:cli-ux-polish",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-cli-ux-polish-smoke-oBO9Z2/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:operator-health",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-operator-health-smoke-uVaJgB/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:fix-plan",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-fix-plan-smoke-p3K6kn/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:branch-conflicts",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-branch-conflicts-vnUHHM/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:id-repair",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-id-repair-smoke-WK6GsC/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:command-docs",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-command-docs-smoke-yFPqLQ/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:spike",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-spike-dcYLot/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:goal-lifecycle",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-goal-lifecycle-smoke-XHZDew/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:semantic-refs",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-semantic-refs-smoke-l7VFqN/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:checkpoint-templates",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-checkpoint-templates-smoke-9xxUTw/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:handoff",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-handoff-smoke-n9fIAH/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:warning-ux",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-warning-ux-smoke-lvvlg0/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    },
+    {
+      "schema_version": 1,
+      "smoke": "smoke:integration-ux",
+      "canonical_artifact": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/artifact/mdkg-0.6.3.tgz",
+      "provided_path": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/supplemental-package37/mdkg-integration-ux-smoke-yIrtoX/pack/mdkg-0.6.3.tgz",
+      "sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+      "delivery": "independent-verified-copy"
+    }
+  ]
+}
