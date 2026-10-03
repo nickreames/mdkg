@@ -75,3 +75,20 @@
   each selected file exists before claiming existing identity regressions.
   A second ordinary oracle run also passed without clean-TMP controls; neither
   run is a full feature/platform qualification.
+
+## Authorized CI follow-through
+
+- Original eb4/e788/d853 hosted runs are now terminal and separately retained.
+  eb4/d853 cancelled; e788 floating coverage failed one test while minimum
+  cancelled. Available logs do not establish cancellation actor/root cause.
+- Inherited the narrow fast-run fixture-archive/diagnostic repair through normal
+  merge8b930d4, preserving d853df5 and bb850f5. Original files/logs and failed
+  receipts remain; no acceptance, floor, timeout, smoke partition or provider
+  policy is relaxed. Source/version/package remain the inherited0.6.1 candidate.
+- Corrected rationale after inspecting existing identity_migration control flow:
+  accepted ancestor and complete history are conditional on local Git HEAD.
+  A fresh graph without HEAD can preview explicit migration without a first
+  commit. No real graph migration or new migration policy was applied.
+- Explained H1 reuse/cost and H2 independent legacy marker plus separately
+  reviewed fresh v2 bootstrap alternatives. Exact revised proposal remains
+  pending owner review; no response/approval is inferred from CI or elapsed time.

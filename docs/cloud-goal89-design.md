@@ -80,8 +80,9 @@ proposal and needs Nick's review before 0.6.2 implementation.
 This also affects fresh default `mdkg init`: its current command surface creates
 a legacy graph and has no v2-init option. Managed working storage would not be
 available immediately after that default init. The operator must satisfy the
-existing migration prerequisites first; legacy Git migration requires an explicit
-accepted ancestor and complete history. There is no automatic initial commit,
+existing migration prerequisites first. A graph with a local Git HEAD requires
+an explicit accepted ancestor and complete history; a fresh graph without HEAD
+can preview explicit migration without an ancestor or first commit. There is no automatic initial commit,
 ancestor selection or working-specific bootstrap in H1. That usability cost is
 part of the pending compatibility decision, not an already accepted behavior.
 

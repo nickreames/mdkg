@@ -1,0 +1,75 @@
+{
+  "kind": "goal89-ci-followthrough-and-binding-rationale",
+  "state": "PENDING_REVISED_BINDING_REVIEW",
+  "implementation": "NOT_RUN",
+  "target_version": "0.6.2-unreleased; inheritedpackage0.6.1",
+  "source_head": "8b930d4a40c73d85e9244fdb6160ed3f0567c076",
+  "merge_parents": [
+    "d853df5e2909014c3b1dd343c9d1759a31376a52",
+    "bb850f5be80562269064122aef2f59e356a5e7b4"
+  ],
+  "stack_base": "bb850f5be80562269064122aef2f59e356a5e7b4",
+  "original_design_head": "d853df5e2909014c3b1dd343c9d1759a31376a52",
+  "contract_revision": "canonical-v2-host-binding-v1",
+  "contract_sha256": "ea6bb06f571d44cac3891cfdf57b0c00b163f59f58683158e064697d697632d2",
+  "current_inputs": {
+    "docs/cloud-goal89-design.md": "ea6bb06f571d44cac3891cfdf57b0c00b163f59f58683158e064697d697632d2",
+    "docs/cloud-goal89-morning-decision.md": "ff7421b9c2a260a94cb846bea110b95edd5a637115eaeed3d9ce26984bf212ef",
+    "docs/cloud-goal89-interventions.md": "a417c2060214c294a19c9b92cfb9cd309562e3426121140ff5900640adbb0b3c"
+  },
+  "current_controls": {
+    "node24.19": {
+      "passed": 17,
+      "failed": 0
+    },
+    "node24.18": {
+      "passed": 17,
+      "failed": 0
+    },
+    "scope": "4LinuxCIcollector+6topology+7TEST-ONLYbindingcontrols; no storage/migration acceptance"
+  },
+  "product_package_inputs_sha256": "4949339295dc81d59355253d9f4de7b0149ddc0c27dac7e89935b45f2e86453d",
+  "runtime_and_built_payload_unchanged": true,
+  "rationale": "Reuseexistingindependentcanonicalv2identity/reader/stable refs/clone-fork semantics; legacyhostmarkeroutsideworkingispossible but needsseparatelifecycle review; explicitfreshv2bootstrapneedsinit review. V2isareusechoice, notfundamental scratchrequirement.",
+  "migration_prerequisite_correction": "Existing local Git HEAD requires accepted ancestor/completehistory; fresh withoutHEAD can explicitly preview withoutancestor/firstcommit. No realmigrationorpolicyimplementation.",
+  "source_references": {
+    "src/graph/identity_migration.ts": "a483104146c7ebeb5df56846f000465f8254df2874a407429057a1ee3a21d367",
+    "src/graph/identity_snapshot.ts": "d6e670ce8571ff03ce85eab6afef873001ad2d30b6bb059dd64878f36550d90b"
+  },
+  "approval": "PENDING; no Nickcontractdecision",
+  "task848": "review",
+  "chk675": "backlog",
+  "not_run": [
+    "0.6.2runtime/Test495",
+    "newfull local suite",
+    "completeprepublication/platform/owneracceptance"
+  ],
+  "reported_review": "Parent says independent Astra closedPR10P2ateb4 with113tests+parser/plan/routing; cloud did notexecute thatreview. PR11reviewpinnedtoe788; newCIchanges needseparate review.",
+  "recorded_utc": "2026-10-03T04:00:39Z",
+  "evidence_files": {
+    "ci-follow-go89-build-tests.log.gz": {
+      "bytes": 218,
+      "sha256": "3021d4e83fd12d384b45e5e33adfb5facad5553a1264c7c972d57697c9d79e37"
+    },
+    "ci-follow-go89-docs.log.gz": {
+      "bytes": 197,
+      "sha256": "01ed0d74c26c1278eb9ae651e51d796f4fbf5320e8ff99ba087738be9cd59547"
+    },
+    "ci-follow-go89-focused-minimum.log.gz": {
+      "bytes": 1007,
+      "sha256": "3a44fc618bfcad7d1568f6bd217a70ccb768782a0280be07a68774b63e63e38a"
+    },
+    "ci-follow-go89-focused.log.gz": {
+      "bytes": 1013,
+      "sha256": "2515ebce55cc3786de821c19cebc3d251d7a7a9683e50e0f2af3c646d274cb59"
+    },
+    "ci-follow-go89-plan.log.gz": {
+      "bytes": 49,
+      "sha256": "cc0a7147cfa2fe8bb1ea7d77d7996bc107d0d9d2ebfbc71796c709540d0d2976"
+    },
+    "ci-follow-go89-workflow.log.gz": {
+      "bytes": 73,
+      "sha256": "291679fc21fb2ae3bbddd0afc2703df048210e38ca9142bce187231b3835a51b"
+    }
+  }
+}
