@@ -5,10 +5,10 @@ title: Lock persistent working storage contracts and migration decisions
 status: review
 priority: 1
 parent: goal-89
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, design-only, cloud-implementation-draft]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [docs/cloud-goal89-design.md, docs/cloud-goal89-validation-plan.md, docs/cloud-goal89-interventions.md, docs/cloud-goal89-morning-decision.md, .mdkg/artifacts/goal-89/design-audit/checks.json, .mdkg/artifacts/goal-89/design-audit/goal88-hosted-terminal.json]
+artifacts: [docs/cloud-goal89-design.md, docs/cloud-goal89-validation-plan.md, docs/cloud-goal89-interventions.md, docs/cloud-goal89-morning-decision.md, .mdkg/artifacts/goal-89/design-audit/checks.json, .mdkg/artifacts/goal-89/design-audit/goal88-hosted-terminal.json, docs/cloud-goal89-contract-delta.md, .mdkg/artifacts/goal-89/implementation/checks.json]
 relates: []
 blocked_by: [chk-674]
 blocks: []
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-10-02
-updated: 2026-10-02
+updated: 2026-10-03
 ---
 
 # Overview
@@ -102,3 +102,30 @@ compilation, sequential CLI/docs baseline (499 examples, zero failures), graph
 validation and eight-skill validation passed on native Linux x86_64 Node24.19.0.
 Full candidate/installed/release/platform checks are NOT_RUN for Goal89; Goal88
 evidence and inherited limitations remain separately retained.
+
+## Current authorized implementation boundary — 2026-10-03
+
+This section supersedes historical planning-only and mandatory-v2 execution gates
+for this cloud experiment. Nick expressly authorized the sequential implementation
+stack while PR10 stays unmerged, then accepted immediate use after fresh init and
+an explicit safe path for existing legacy graphs. The parent reports independent
+Goal88 ce53 correction review complete for the bounded prerequisite. No release
+or merge authority follows. Contract: working-host-anchor-v1 in
+docs/cloud-goal89-design.md and docs/cloud-goal89-contract-delta.md.
+
+0.6.2 source now implements independent legacy host binding outside ignored
+working, strict canonical v2 reuse, explicit preview/hash-bound apply, owned local
+entries, owner/pin/selected-work guards, indefinite quarantine/recover/confirmed
+purge, exact journal resume and sanitized private archive promotion. Custom bytes
+remain preserved. No implicit node migration, automatic cleanup or store-based
+host bootstrap. A pre-journal killed anchor/lock has no admissible journal and
+refuses automatic takeover; unknown custody remains preserved.
+
+Focused draft source/installed evidence is recorded at
+.mdkg/artifacts/goal-89/implementation/checks.json after actual execution. Old
+design/Goal88 receipts remain historical. This is a reviewable bounded draft,
+not complete pre-merge/prepublication qualification. Chk675 exact current-patch
+review, Chk676 owner/local acceptance and Chk677 release readiness remain pending;
+Goal89 is not achieved and release is NOT_READY. Required full ladder, platform
+and local owner checks are not silently waived. Parent review precedes Goal90.
+Selected-goal state is unchanged; no new numeric IDs or approvals are allocated.

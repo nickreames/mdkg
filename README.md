@@ -14,14 +14,13 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.6.1`
+Current package version in source: `0.6.2`
 
-The 0.6.1 source is an **unpublished qualification candidate**, not a registry
-availability claim. Published 0.5.2 has different bootstrap and Git command
-behavior; the install command below selects the registry version, not this
-working tree. Check the installed version and the candidate artifact receipt.
+The 0.6.2 source is an **unpublished qualification candidate**, not a registry
+availability claim. The install command below selects the registry version; its bootstrap and Git
+behavior may differ from this working tree. Check the installed version and the candidate artifact receipt.
 Final macOS/Linux qualification and security acceptance are still required.
-Windows is explicitly unqualified. See the [0.6.1 change notes](CHANGELOG.md).
+Windows is explicitly unqualified. See the [0.6.2 change notes](CHANGELOG.md).
 
 The candidate uses built-in Node APIs, not an mdkg-owned native addon or
 OS-specific SQLite path. Node 24.18+ within the 24 line is required, including
@@ -95,6 +94,28 @@ mdkg --version
 
 The npm global install path is the canonical public-alpha path covered by release validation. One-off runners and other package managers may be useful in local tooling, but verify them before documenting them for a team.
 
+## Persistent working storage (0.6.2 candidate)
+
+`mdkg working` keeps mutable drafts under ignored `.mdkg/working/`, separate
+from canonical nodes and graph exports. Fresh init creates an independent host
+marker outside that directory. Existing legacy graphs opt in through explicit
+`working init` preview/apply; no node migration is required. V2 graphs reuse their
+canonical graph ID. Custom scratch is preserved and refuses implicit adoption.
+
+Every mutation previews a JSON plan. Save it outside working and apply with its
+exact `plan_hash`. Add/adopt copies selected input and keeps the original;
+list/show/search are explicit working-only reads. Release requires the recorded
+owner and stopped-writer confirmation. GC quarantines only selected inactive,
+unpinned entries unclaimed by active or selected work. Quarantine is indefinite;
+recover and separately confirmed purge are explicit, with no expiry or daemon.
+Promotion copies an explicitly selected sanitized summary to a private archive.
+
+Local persistence is not backup: ignored data can disappear with the checkout.
+Keep host metadata deliberately, and retain reviewed archive/artifact evidence
+for export/restore. See the [working storage guide](docs/src/content/docs/guides/working-storage.md)
+for commands, recovery and custody limits. Independent review and owner/local
+qualification remain pending; this draft grants no publication or adoption.
+
 ## Quickstart
 
 Initialize mdkg in a repo:
@@ -104,7 +125,7 @@ mdkg init
 mdkg index
 ```
 
-Compact agent setup is the default in the 0.6.1 candidate. Root `AGENTS.md`
+Compact agent setup is the default in the 0.6.2 candidate. Root `AGENTS.md`
 contains a bounded mdkg-managed section pointing to
 `.mdkg/AGENT_START.md`. Detailed generated discovery lives in `.mdkg/llms.txt`
 and `.mdkg/CLI_COMMAND_MATRIX.md`; canonical skills live in `.mdkg/skills/`,

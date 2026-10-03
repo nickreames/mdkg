@@ -5,96 +5,57 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
-const { createGraphFormat, readGraphFormat, isIdentityUuid } = require("../dist/graph/identity.js");
+const target = path.resolve(process.env.MDKG_WORKING_PACKAGE ?? new URL("..", import.meta.url).pathname);
+const { createGraphFormat, canonicalJson } = require(path.join(target, "dist/graph/identity.js"));
+const { readWorkingHost, readWorkingMarker, workingMarkerBytes, bootstrapWorkingHost } = require(path.join(target, "dist/core/working_host.js"));
 const { createOwnedFixture } = require("../scripts/qualification-fixture.js");
-
-// DESIGN ORACLE ONLY. There is no working runtime command in this branch.
-// Exercise the real independent canonical reader, then the proposed binding
-// predicate; these controls are not Test495 store/installed acceptance.
-function proposedBinding(root, store) {
-  const host = readGraphFormat(root);
-  if (host.format_version !== 2) throw new Error("managed working storage requires separately adopted canonical v2 identity");
-  if (store?.graph?.format_version !== 2 || !isIdentityUuid(store?.store_id) ||
-      store.graph.graph_id !== host.graph_id) throw new Error("foreign or unbound store; preserve source and host");
-  return host.graph_id;
-}
-const store = (graphId, storeId = crypto.randomUUID()) => ({ schema_version: 1,
-  store_id: storeId, graph: { format_version: 2, graph_id: graphId } });
-function host(fixture, name, graphId) {
-  const root = fixture.resolve(name); fs.mkdirSync(path.join(root, ".mdkg"), { recursive: true });
-  if (graphId) fs.writeFileSync(path.join(root, ".mdkg/graph.json"), JSON.stringify(createGraphFormat(graphId)));
-  fs.writeFileSync(path.join(root, ".mdkg/custom-scratch.txt"), "synthetic retained source\n");
-  return root;
-}
-function inventory(root) {
-  const result = {};
-  function walk(dir) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const p = path.join(dir, entry.name);
-      if (entry.isDirectory()) walk(p);
-      else result[path.relative(root, p)] = { bytes: fs.readFileSync(p).toString("base64"), mode: fs.statSync(p).mode & 0o777 };
-    }
-  }
-  walk(root); return result;
-}
 function fixtureTest(name, run) {
-  test(name, () => { const fixture = createOwnedFixture({ prefix: "mdkg-host-binding-" });
-    try { run(fixture); } finally { fixture.cleanup(); } });
+  test(name, () => { const f = createOwnedFixture({ prefix: "mdkg-host-binding-" });
+    try { const root = f.resolve("host"); fs.mkdirSync(path.join(root, ".mdkg"), { recursive: true }); run(f, root); }
+    finally { f.cleanup(); } });
 }
-
-fixtureTest("design oracle: matching canonical v2 host is required; store UUID stays subordinate", (f) => {
-  const graphId = crypto.randomUUID(); const root = host(f, "a", graphId); const before = inventory(root);
-  assert.equal(proposedBinding(root, store(graphId)), graphId);
-  assert.equal(proposedBinding(root, store(graphId)), graphId); // another store UUID is still the same host
-  assert.throws(() => proposedBinding(root, store(crypto.randomUUID(), graphId)), /foreign or unbound/);
-  assert.deepEqual(inventory(root), before);
+fixtureTest("independent host reader never bootstraps an absent legacy marker from incoming storage", (f, root) => {
+  fs.mkdirSync(path.join(root, ".mdkg/working"));
+  fs.writeFileSync(path.join(root, ".mdkg/working/manifest.json"), JSON.stringify({ host: { kind: "working-host-v1", id: crypto.randomUUID() } }));
+  assert.equal(readWorkingHost(root), undefined); assert.equal(fs.existsSync(path.join(root, ".mdkg/working-host.json")), false);
 });
-fixtureTest("design oracle: foreign copied store cannot alter existing destination host or source", (f) => {
-  const idA = crypto.randomUUID(), idB = crypto.randomUUID(); const a = host(f, "a", idA), b = host(f, "b", idB);
-  fs.mkdirSync(path.join(a, ".mdkg/working"));
-  fs.writeFileSync(path.join(a, ".mdkg/working/manifest.json"), JSON.stringify(store(idA)));
-  fs.writeFileSync(path.join(a, ".mdkg/working/payload.txt"), "synthetic copied private data\n");
-  fs.cpSync(path.join(a, ".mdkg/working"), path.join(b, ".mdkg/working"), { recursive: true });
-  const before = [inventory(a), inventory(b)];
-  const incoming = JSON.parse(fs.readFileSync(path.join(b, ".mdkg/working/manifest.json"), "utf8"));
-  assert.throws(() => proposedBinding(b, incoming), /foreign or unbound/);
-  assert.deepEqual([inventory(a), inventory(b)], before);
+fixtureTest("actual legacy host marker is independent, strictly read and preserved by repeat bootstrap", (f, root) => {
+  assert.equal(bootstrapWorkingHost(root), true);
+  const file = path.join(root, ".mdkg/working-host.json"), before = fs.readFileSync(file);
+  assert.equal(readWorkingHost(root).kind, "working-host-v1");
+  assert.equal(bootstrapWorkingHost(root), false); assert.deepEqual(fs.readFileSync(file), before);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg/graph.json")), false);
 });
-fixtureTest("design oracle: legacy host refuses without implicit migration or incoming identity bootstrap", (f) => {
-  const root = host(f, "legacy"); const before = inventory(root); const id = crypto.randomUUID();
-  for (const incoming of [store(id), { store_id: id, graph: { format_version: 1, namespace: `legacy-working:${id}` } }])
-    assert.throws(() => proposedBinding(root, incoming), /separately adopted canonical v2/);
-  assert.deepEqual(inventory(root), before); assert.equal(fs.existsSync(path.join(root, ".mdkg/graph.json")), false);
-  assert.deepEqual(readGraphFormat(root), { format_version: 1 }); // existing reader compatibility remains
+fixtureTest("canonical v2 graph identity takes precedence without replacing retained legacy marker", (f, root) => {
+  const canonical = crypto.randomUUID(), marker = crypto.randomUUID();
+  fs.writeFileSync(path.join(root, ".mdkg/graph.json"), canonicalJson(createGraphFormat(canonical)));
+  const bytes = workingMarkerBytes(marker); fs.writeFileSync(path.join(root, ".mdkg/working-host.json"), bytes);
+  assert.deepEqual(readWorkingHost(root), { kind: "canonical-v2", id: canonical });
+  assert.equal(fs.readFileSync(path.join(root, ".mdkg/working-host.json"), "utf8"), bytes);
 });
-fixtureTest("design oracle: same-ID clone is same graph; independent new-ID fork rejects copied binding", (f) => {
-  const id = crypto.randomUUID(); const a = host(f, "a", id), clone = host(f, "clone", id), fork = host(f, "fork", crypto.randomUUID());
-  const before = [inventory(a), inventory(clone), inventory(fork)];
-  assert.equal(proposedBinding(a, store(id)), proposedBinding(clone, store(id)));
-  assert.throws(() => proposedBinding(fork, store(id)), /foreign or unbound/);
-  assert.deepEqual([inventory(a), inventory(clone), inventory(fork)], before);
-});
-fixtureTest("design oracle: fresh changed or removed host invalidates previous binding without repairing metadata", (f) => {
-  const id = crypto.randomUUID(); const root = host(f, "a", id), incoming = store(id);
-  assert.equal(proposedBinding(root, incoming), id);
-  const manifest = path.join(root, ".mdkg/graph.json"); fs.writeFileSync(manifest, JSON.stringify(createGraphFormat(crypto.randomUUID())));
-  let before = inventory(root); assert.throws(() => proposedBinding(root, incoming), /foreign or unbound/);
-  assert.deepEqual(inventory(root), before); fs.unlinkSync(manifest); before = inventory(root);
-  assert.throws(() => proposedBinding(root, incoming), /separately adopted canonical v2/); assert.deepEqual(inventory(root), before);
-});
-fixtureTest("design oracle: malformed/unknown canonical host refuses through actual strict reader", (f) => {
-  const id = crypto.randomUUID(), root = host(f, "a", id), manifest = path.join(root, ".mdkg/graph.json");
-  for (const bad of ["{broken", JSON.stringify({ ...createGraphFormat(id), format_version: 99 }),
-    JSON.stringify({ ...createGraphFormat(id), from_working_store: true })]) {
-    fs.writeFileSync(manifest, bad); const before = inventory(root);
-    assert.throws(() => proposedBinding(root, store(id)), /invalid graph format JSON|unsupported/);
-    assert.deepEqual(inventory(root), before);
+fixtureTest("malformed, unknown and oversized legacy markers refuse without repair", (f, root) => {
+  const file = path.join(root, ".mdkg/working-host.json"), valid = JSON.parse(workingMarkerBytes(crypto.randomUUID()));
+  for (const value of ["{broken", JSON.stringify({ ...valid, version: 99 }), JSON.stringify({ ...valid, unknown: true }),
+    JSON.stringify({ ...valid, host_id: "task-1" }), " ".repeat(4097)]) {
+    fs.writeFileSync(file, value); assert.throws(() => readWorkingHost(root)); assert.equal(fs.readFileSync(file, "utf8"), value);
   }
 });
-test("revised design states legacy refusal, independent canonical binding and data-only adoption limits", () => {
+fixtureTest("malformed canonical v2 authority cannot fall back to a valid legacy marker", (f, root) => {
+  bootstrapWorkingHost(root); const file = path.join(root, ".mdkg/graph.json");
+  for (const value of ["{broken", JSON.stringify({ ...createGraphFormat(), format_version: 99 }), JSON.stringify({ ...createGraphFormat(), unknown: true })]) {
+    fs.writeFileSync(file, value); assert.throws(() => readWorkingHost(root)); assert.equal(fs.readFileSync(file, "utf8"), value);
+  }
+});
+fixtureTest("marker hardlink and symlink admission preserves both copies and positive regular-file control", (f, root) => {
+  const file = path.join(root, ".mdkg/working-host.json"), source = path.join(root, "source.json"), bytes = workingMarkerBytes(crypto.randomUUID());
+  fs.writeFileSync(source, bytes); fs.linkSync(source, file); assert.throws(() => readWorkingMarker(root), /hardlinks/);
+  fs.unlinkSync(file); fs.symlinkSync("../source.json", file); assert.throws(() => readWorkingMarker(root));
+  assert.equal(fs.readFileSync(source, "utf8"), bytes); fs.unlinkSync(file); fs.writeFileSync(file, bytes);
+  assert.equal(readWorkingMarker(root), JSON.parse(bytes).host_id);
+});
+test("current contract records accepted bootstrap and pending independent readiness", () => {
   const doc = fs.readFileSync(new URL("../docs/cloud-goal89-design.md", import.meta.url), "utf8");
-  for (const phrase of ["canonical-v2-host-binding-v1", "independently verified canonical format-v2",
-    "store_id", "subordinate store identity", "refuse nonmutatingly", "mdkg graph migrate",
-    "data-only selected copy", "Same-ID v2 clone", "not authentication", "explicit recovery/purge"])
-    assert.ok(doc.includes(phrase), `revised contract must retain ${phrase}`);
+  for (const phrase of ["working-host-anchor-v1", "independent", "store_id", "subordinate store identity", "not authentication",
+    "explicit purge", "No canonical v2 migration is required", "pre-journal", "NOT_READY"])
+    assert.ok(doc.includes(phrase), `current contract must retain ${phrase}`);
 });

@@ -1,0 +1,10 @@
+{
+  "byte_inventories_equal": true,
+  "mode_differences": {
+    "dist/cli.js": {
+      "tar": 384,
+      "npm": 448
+    }
+  },
+  "meaning": "npm bin installation adds owner execution to dist/cli.js; exact tar and installed modes are retained, not normalized or waived."
+}

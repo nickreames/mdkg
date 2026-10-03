@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-10-02
-package_version_in_source: 0.6.1
+as_of: 2026-10-03
+package_version_in_source: 0.6.2
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -1517,3 +1517,30 @@ Current automatic mutation events:
 Additional coverage and hardening beyond the current release are tracked in
 project memory. The node/skill discovery formats listed above are already
 implemented, not deferred functionality.
+
+## Persistent private working storage
+
+The unpublished 0.6.2 candidate uses explicit preview/apply. Save JSON plans outside
+working and apply their exact hash. GC quarantines selected inactive, unpinned,
+unclaimed entries indefinitely; recover/purge are separate explicit operations.
+Local ignored files are not backup. See the working storage guide for custody
+and recovery limits.
+
+```text
+  mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+  mdkg working list [--json]
+  mdkg working show <id...> [--json]
+  mdkg working search <query> [--json]
+  mdkg working verify [--json]
+```

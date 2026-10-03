@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
+import { workingPath, workingStorePresent } from "../core/working_paths";
 import { withContainedPathSink } from "../core/filesystem_authority";
 import { sortIndexNodes } from "../util/sort";
 import { writeCacheFile } from "./cache_output";
@@ -53,11 +54,13 @@ function readIndex(root: string, indexPath: string): Index {
 }
 
 function validateCachedNodePaths(root: string, config: Config, cached: Index): Index {
+  const privateWorking = workingStorePresent(root);
   for (const node of Object.values(cached.nodes)) {
     if (node.qid !== `${node.ws}:${node.id}` || node.source?.imported) throw new Error(`invalid cached node identity: ${node.qid}`);
     const workspace = config.workspaces[node.ws];
     if (!workspace?.enabled) throw new Error(`invalid cached node workspace: ${node.ws}`);
     const normalized = node.path.split(path.sep).join("/");
+    if (privateWorking && workingPath(normalized)) throw new Error("cached node path overlaps private working storage");
     const workspaceRoot = path.resolve(root, workspace.path, workspace.mdkg_dir);
     const absolutePath = path.resolve(root, normalized);
     const relativeWorkspacePath = path.relative(workspaceRoot, absolutePath);

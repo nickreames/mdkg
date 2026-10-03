@@ -92,6 +92,7 @@ export default defineConfig({
             { label: "Agent Workflow", slug: "guides/agent-workflow" },
             { label: "Packs And Handoffs", slug: "guides/packs-and-handoffs" },
             { label: "Research Spikes", slug: "guides/research-spikes" },
+            { label: "Working Storage", slug: "guides/working-storage" },
           ],
         },
         {

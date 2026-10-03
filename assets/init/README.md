@@ -308,3 +308,14 @@ still does not execute work.
 Production orders, receipts, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg. mdkg stores committed semantic mirrors and reviewable evidence. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
 
 Use `artifact://...` for external or runtime-managed artifact identities. Use `archive://...` only for committed mdkg archive sidecars.
+
+## Working drafts
+
+Fresh init retains `.mdkg/working-host.json` outside ignored `.mdkg/working/`.
+Use `mdkg working init --json` to preview an owned empty store, then apply the
+saved plan with its exact hash. Existing legacy graphs opt in explicitly; custom
+scratch is preserved. Working entries stay separate from canonical discovery and
+exports. Cleanup is explicit selected quarantine/recover/purge, with indefinite
+retention and no expiry. Ignored files can be lost with a checkout; they are not
+backup. Use `mdkg help working` for the exact command surface and retain selected
+sanitized archive/artifact evidence deliberately.

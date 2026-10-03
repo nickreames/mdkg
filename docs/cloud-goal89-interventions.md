@@ -92,3 +92,65 @@
 - Explained H1 reuse/cost and H2 independent legacy marker plus separately
   reviewed fresh v2 bootstrap alternatives. Exact revised proposal remains
   pending owner review; no response/approval is inferred from CI or elapsed time.
+
+## Accepted immediate-use implementation — 2026-10-03
+
+- Nick superseded the mandatory-v2 prerequisite with immediate fresh use and an
+  explicit safe legacy path. Retention remains indefinite, with explicit recovery/
+  purge and no automatic deletion. Implemented working-host-anchor-v1 without
+  full canonical node migration or store-based identity bootstrap. Independent
+  exact-patch review stays pending; no further product choice is requested.
+- Parent reports ce53 independent Goal88 correction review complete for the
+  bounded prerequisite, separately from full release gates. PR10 remains open,
+  draft and unmerged; current plan eb4/main d9/Goal88 ce53/Goal89 dbbe remotes
+  verified. Existing history is preserved; no Mac/unrelated repository access.
+- Working source, CLI/options, init, private config/cache/transport guards and
+  synthetic tests were implemented. A forged stale-cache private path exposed a
+  concrete privacy omission and received narrow node/capability admission checks.
+- Kept initial build/test failures in owned cache. Corrected compile narrowing,
+  source/journal data adapter bugs, fixture API assertions and expected SIGKILL
+  handling; the 19-case feature suite passed. Expansion to28 cases initially
+  produced25pass/3fail; a targeted rerun exposed root .gitignore directory admission
+  and two CLI test assumptions. Fixed the actual root-directory bug, used supported
+  pack flags and distinguished explicit query echo from discovered payload. All
+  three targeted cases then passed. These were ordinary test failures, not executor
+  availability failures or reasons to waive acceptance. Frozen final runs follow.
+- The pre-journal killed adoption fixture proves marker/lock preservation and
+  refusal, not universal recoverability. Actual killed post-journal writer recovery
+  requires exact fresh evidence and explicit quiescence; PID absence is no approval.
+- Source/version/docs/release projection now consistently target unpublished0.6.2.
+  No dependencies, coverage floors, workflow budgets or smoke partitions changed.
+  Supported task lifecycle started Task849/850/Test495 under existing owner;
+  generated SQLite is restored, selected state untouched, no new graph IDs.
+- Since the parent's five-transient-failure instruction, executor availability/
+  resumption failures:0of5. No unavailable-session test duplication/recreation.
+  Earlier tool transport interruption predates that rule. Authorization/download
+  denials were not retried or bypassed. Full release qualification remains separate;
+  no blanket CI clearance loop, merge, publish, tag, deploy or Goal90 implementation.
+
+## Frozen qualification and review checkpoint
+
+- Frozen source28pass; shared425pass/1platformskip; release/security28pass; exact
+  npm-installed28pass on each native Node24.18/24.19/24.21. Final565pass0fail.
+  Product/installed input drift zero; tar SHA545e03ec retained with inventory.
+  Each runtime suite includes one repo-doc assertion and27 runtime controls.
+- CLI/docs/graph/skills/security/workflow/static publish checks passed. Site/pack
+  first failed ENOENT in unavailable default /home/agent cache paths; reran only
+  those steps using owned caches. Both sites and exact pack passed. No source
+  patches, broader CI retries or denial bypass were introduced for that setup.
+- Artifact continuation runner had a NameError before installed tests; exact
+  mode comparison next caught npm's bin chmod. Inspected retained successful
+  install/pack; byte inventories match, only dist/cli.js0600→0700 execution bit.
+  Recorded exact modes and reused the installation, then ran remaining tests once.
+- One transient transport disconnect occurred during a read-only status command.
+  Resumed retained qualification session, inspected receipts/SHAs and did not
+  restart tests or writes. Current failure budget1of5; executor remains usable.
+- Public registry/main0.6.0 and engine>=24.18<25 verified;0.6.2 not published.
+  Task849/850/Test495 move to review through CLI, not done. Chk675/676/677 stay
+  pending; final full gates/owner platform proof remain NOT_RUN and releaseNOT_READY.
+  Generated SQLite restored; selected state unchanged. Parent review before0.6.3.
+
+- Staged diff check identified raw tool-log trailing whitespace. Retained exact
+  original output through deterministic lossless gzip, with decompressed/stored
+  hashes documented; no log bytes, assertions or source acceptance were removed
+  or normalized. Product/tarball inputs remain unchanged.

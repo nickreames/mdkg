@@ -6,6 +6,7 @@ import { migrateConfig } from "../core/migrate";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { workspaceDocumentOwner } from "./workspace_ownership";
 import { UsageError } from "../util/errors";
+import { workingPath } from "../core/working_paths";
 import { assertTransportPath } from "./transport_paths";
 
 export type TransportExclusionReason = "checkout-state" | "live-db" | "db-sidecar" | "private-db-payload";
@@ -176,8 +177,16 @@ function transportStateFromLayouts(workspaces: Config["workspaces"], profile: "p
   const policyPaths = [...authorityRoots, ...derivedFiles, ...dbRoots, ...runtimeRoots, ...privateRoots, ...portableFiles, ...unregisteredNested.map(({ base }) => base),
     ...roots.map(({ prefix }) => `${prefix}/archive`),
     ...layouts.flatMap((layout) => [layout.runtime, ...sidecars.map((suffix) => `${layout.runtime}${suffix}`)])];
+  // Explicit legacy canonical workspaces remain canonical until separately reconfigured.
+  const privateWorking = (file: string) => workingPath(file) && !roots.some(({ prefix }) => workingPath(prefix) && within(file, prefix));
   const classify = (file: string): TransportExclusionReason | undefined => {
     assertTransportPath(file);
+    if (privateWorking(file)) {
+      const parts = file.split("/");
+      if (parts.some((p, i) => p.toLowerCase() === ".mdkg" && parts[i + 1]?.toLowerCase() === "working" && (p !== ".mdkg" || parts[i + 1] !== "working")))
+        throw new UsageError("transport path aliases private working storage");
+      return "checkout-state";
+    }
     // Child configuration constrains both export and restore, but never expands
     // the parent's workspace selection. Unknown descendant DB paths cannot be
     // guessed from a graph role or a self-consistent archive hash.
@@ -224,6 +233,7 @@ function transportStateFromLayouts(workspaces: Config["workspaces"], profile: "p
   return Object.assign(classify, {
     assertOwnedPath: (file: string, selected?: string[], declaredOwner?: string) => {
       assertTransportPath(file);
+      if (privateWorking(file)) throw new UsageError("unpromoted working payload is not graph transport");
       for (const { prefix } of roots) {
         if (within(portableKey(file), portableKey(prefix)) && !within(file, prefix)) {
           throw new UsageError(`transport path spelling aliases workspace ownership: ${file}; expected ${prefix}`);

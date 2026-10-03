@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "release_id": "mdkg-v0.6.1-minimal-init",
-  "target_version": "0.6.1",
+  "release_id": "mdkg-v0.6.2-persistent-working",
+  "target_version": "0.6.2",
   "state": "draft",
   "qualifier": "Pre-v1 public alpha"
 }
