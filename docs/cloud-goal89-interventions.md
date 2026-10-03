@@ -45,3 +45,33 @@
   explicit resume/recovery. Clarified that newly chosen retention starts at
   completed quarantine/applied policy, so a delayed apply cannot backdate expiry.
   This is proposed design clarification, not shipped behavior or Nick's decision.
+
+## Revised independent-review correction — 2026-10-03
+
+- Nick now accepts indefinite quarantine with explicit recovery/purge and no
+  automatic deletion as policy direction. The earlier retention choice is
+  recorded as resolved; full identity/compatibility/design approval is pending.
+- Independent P2 found the legacy store UUID was not independent host identity.
+  Superseded that proposal with canonical-v2-host-binding-v1: require existing
+  strictly verified canonical v2 identity for managed storage. Preserve legacy
+  behavior/custom bytes with nonmutating refusal until separate reviewed graph
+  migration. No new local nonce/path/inode scheme is silently introduced.
+- Specified foreign-copy rejection, same-ID clone versus independent fork,
+  data-only selected adoption with retained originals/provenance and unchanged
+  active/stale custody protections. Restore cannot replace destination identity.
+  Local declarations do not authenticate owners or prove per-checkout origin.
+- Added explicitly TEST-ONLY synthetic reader/binding acceptance controls, not
+  working runtime implementation or passing Test495 installed acceptance. All
+  0.6.2 source/versioning and Goal90 feature work remain excluded this turn.
+- Normal stack synchronization preserves original0ff7095 and reviewed Goal88
+  commits; no rebase/amend/force, main merge or GitHub PR merge. Current heads,
+  merge parents, input hashes and checks are retained in the revised receipt.
+- Original design-audit receipts stay immutable/historical. Corrected Goal88
+  evidence and hosted classification are inherited separately; old successes
+  are not rebound to new proposal bytes. Task848 remains review, Chk675 backlog.
+- Initial oracle invocation included a missing compiled identity-test path;
+  Node ignored that selector, so its receipt proves only the seven executed
+  oracle cases. Post-synchronization validation explicitly compiles and checks
+  each selected file exists before claiming existing identity regressions.
+  A second ordinary oracle run also passed without clean-TMP controls; neither
+  run is a full feature/platform qualification.

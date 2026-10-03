@@ -1,0 +1,7 @@
+{
+  "same_package_inputs": true,
+  "same_built_payload": true,
+  "version": "0.6.1",
+  "package_inputs_sha256": "4949339295dc81d59355253d9f4de7b0149ddc0c27dac7e89935b45f2e86453d",
+  "artifact_sha256": "844b5e046834c1c2e1f14767a98349d72331d2525e1aa804c38b03d5b24ca5d2"
+}

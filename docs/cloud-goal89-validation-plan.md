@@ -16,7 +16,7 @@ after implementation, not copied from Goal88.
 | Filesystem sinks | `core/filesystem_authority.ts` | Existing sinks reject visible links and traversal; read/copy/inventory must explicitly reject multi-link/special files and bound traversal. Bind ancestry across operations. Avoid recursive removal of unknown files. |
 | Native Git | `util/git_metadata.ts` | Reuse natural/redirected/worktree/common-dir/object alternate admission for every affected tree, with bounded nested repository/bare-store inventory. Preserve metadata on failure. |
 | Lock/writer | `util/lock.ts`, `lock_evidence.ts`, `writer_admission.ts` | Reuse compatibility admission and one graph lock; no ad hoc PID takeover. Failed journal evidence must survive. Explicit quiescence and exact custody evidence for recovery. |
-| Identity | `graph/identity.ts`, `identity_authoring.ts` | Real format-v2 graph ID; format-v1 store namespace remains visibly distinct. Opaque working IDs do not touch numeric node reservations or migrate graph identity. |
+| Identity | `graph/identity.ts`, `identity_authoring.ts` | Read actual canonical graph.json independently through the strict existing reader. Managed storage requires verified v2 graph_id equality; store_id is subordinate. Legacy refusal preserves existing behavior/data until separate reviewed graph migration. Opaque working IDs never bootstrap host identity. |
 | Goal/work protection | `graph/selected_goal.ts`, `goal_scope.ts`, `commands/goal.ts` | Fresh nonpersisting local index and identity-aware selection. Refuse malformed/ambiguous selection; capture active_node and last_active_node for paused/suspended goals as protection. Never clear selection to permit GC. |
 | Archive promotion | `commands/archive.ts`, `archive_integrity.ts` | Current add command writes raw source, deterministic zip and sidecar in sequence, and logs rather than returning a prepared plan. Extract/reuse a bounded prepared-authoring adapter for preview/journal integration; merely calling the current writer cannot supply previewed identity, exact bytes or crash-safe promotion. Preserve existing archive CLI behavior. |
 | CLI/docs safety | `cli.ts`, `commands/option_contract.ts`, `scripts/cli_help_targets.js`, `generate-command-contract.js` | Register each concrete path and narrowly admitted flags; explicit safety classification, lock/receipt/write-path contract. Reject unknown selection/options before effects. Generate help/contract/matrix/docs consistently. |
@@ -30,10 +30,19 @@ data is used as a fixture.
 
 1. **Store and persistence:** fresh preview makes no files; reviewed apply creates
    ignored private storage; repeated init/list/show/verify survives CLI restart
-   with byte inventories intact. Legacy graph keeps absent graph manifest and
-   numeric IDs untouched; v2 binds verified identity. Copy/init against a foreign
-   graph refuses. Custom/unmanaged working content is preserved and refuses
-   filename-only adoption; explicit selected adoption copies and retains source.
+   with byte inventories intact. Legacy managed storage refuses without writing an
+   absent graph manifest, numeric IDs, selected state or custom bytes; existing
+   legacy CLI remains supported. Separate reviewed canonical migration enables
+   opting in. Host identity is read independently before store metadata, for
+   every operation. Copied store A into existing host B refuses while preserving
+   both inventories; legacy-working UUID/claimed identity cannot bootstrap a
+   missing host. Matching v2 host/store and same-ID clone are positive controls;
+   new-ID fork, removed/changed host, malformed/unknown metadata and stale
+   preview are negative controls. No per-checkout/authentication claim. Custom/unmanaged working content is preserved and refuses
+   filename-only adoption. Data-only selected adoption into an independently
+   identified host copies bytes into new destination store/entry IDs, retains
+   original/provenance and never trusts incoming ownership/approvals/work refs or
+   replaces host metadata. Active/pinned/stale custody remains protected.
 2. **Write interruption:** preview/import source change refuses; interrupted
    manifest/payload publication keeps accepted entries intact; exact journal
    replay finishes once or restores retained before-images. Unknown/truncated
@@ -78,7 +87,9 @@ data is used as a fixture.
    digest and an explicit restore selection. Recreate a disposable checkout from
    tracked canonical input and selected retained evidence; ignored working entries
    are absent after deletion. Restore only selected sanitized evidence with verified
-   hashes; neither cloud-save labels nor Git ignore imply backup. No external
+   hashes and independently verified target identity; different graph restoration
+   requires explicit data-only adoption, never identity replacement. Neither
+   cloud-save labels nor Git ignore imply backup. No external
    provider setup/upload or forced tracking of scratch.
 
 ## Execution and receipt discipline
@@ -128,3 +139,19 @@ required; no merge/publication/adoption is authorized by a draft checkpoint.
 These are planning outputs only. Actual source work, policy/schema adoption,
 cleanup, promotion and qualification of a 0.6.2 candidate wait for the recorded
 human design decision. Goal90 feature implementation remains excluded.
+
+## Revised binding review controls (design only)
+
+`tests/cloud-working-host-contract.test.mjs` checks the actual canonical reader
+with synthetic v1/v2/malformed inputs and a TEST-ONLY equality oracle. Cases
+cover subordinate store UUID, foreign copy preserving both inventories, v1
+nonmutating refusal/no bootstrap, same-ID clone versus new-ID fork, changed or
+removed host and unknown formats. It also checks the reviewed document contract
+keeps these material compatibility limits explicit.
+
+These controls validate the proposal's identity premise, not a shipped working
+command. Full store schema, adoption/ownership, journals, filesystem races,
+installed artifact controls and Test495 groups1–9 remain NOT_RUN. No runtime
+working helper, 0.6.2 version bump, new legacy identity schema or feature approval
+is created by passing this oracle. Original design-audit receipts remain bound
+to 0ff7095 and are superseded only for the rejected identity proposal.

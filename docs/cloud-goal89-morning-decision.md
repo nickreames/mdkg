@@ -1,49 +1,57 @@
-# Goal89: one decision for Nick
+# Goal89: revised host-binding decision for Nick
 
-Status: **PENDING_NICK_REVIEW**. This is a design-only proposal, not feature
-implementation or a passing 0.6.2 candidate.
+Status: **PENDING_REVISED_BINDING_REVIEW**. Contract revision:
+**canonical-v2-host-binding-v1**. This is a design proposal, not implemented
+0.6.2 behavior or a passing release candidate.
 
-The plan reserves this choice for you. Task848 says:
+The 2026-10-03 parent relay says Nick accepted **indefinite quarantine with
+explicit recovery/purge and no automatic deletion** as policy direction. That
+choice is recorded; it is not requested again and does not approve the revised
+identity/compatibility contract. Sequential implementation authority remains
+granted, subject to the named Chk675 design review.
 
-> Choose quarantine, retention, purge/recovery and stale-owner policy with Nick; no default cleanup.
+Independent review found that `legacy-working:<store-uuid>` is self-asserted
+store identity. It cannot detect a foreign store copied into a different legacy
+host. That proposal is superseded; retaining its UUID does not repair the defect.
 
-Chk675 says:
+| Choice for review | Compatibility and identity contract |
+| --- | --- |
+| **H1 — recommended revised contract** | Managed working storage requires the existing independently verified canonical v2 graph identity. Legacy graphs and custom scratch remain supported/preserved; managed storage refuses nonmutatingly until a separate reviewed hash-bound `mdkg graph migrate` adoption. Every operation compares the fresh host graph ID with the store binding. No new implicit identity or migration. |
+| **H2 — request separate legacy binding design** | Keep Goal89 feature work blocked while a new independently retained legacy host anchor, its migration/clone/restore behavior and portable custody limits are designed and reviewed. No nonce/path/inode scheme is silently substituted or treated as approved. |
 
-> Nick reviews unresolved names/grammar/compatibility/persistence policy, exact owned paths and accepted tests before feature work.
+H1 is a material compatibility choice: legacy users need an explicit canonical
+identity migration before managed storage. Existing `graph migrate` requires
+reviewed graph namespace/origin and, for legacy Git graphs, an accepted local
+ancestor with complete local history; this proposal does not waive those gates.
+It creates no numeric IDs or selected-goal changes through working commands.
+Fresh default `mdkg init` currently creates a legacy graph and exposes no v2-init
+option, so H1 also delays managed storage for those fresh users until migration
+prerequisites are met. It does not add an implicit first commit, ancestor selection
+or alternative bootstrap. This usability cost is explicitly part of the review.
 
-**Already instructed:** sequential cloud stack before PR10 merges; persistent
-working storage separate from canonical graph; no silent expiry/deletion;
-previewed, explicit cleanup; active/pinned/goal-work protection; retained
-recovery; honest Git/artifact/cloud-loss boundaries. Implementation run authority
-is already granted. These requirements and release/adoption gates are unchanged.
+Under H1, `store_id` remains subordinate. Copy A into independently identified
+host B refuses without changing either manifest or payload; incoming IDs cannot
+bootstrap the host. Same-ID clones are the same logical graph, while independent
+forks have a new ID and reject the copied binding. This does not authenticate
+owners or prove per-checkout origin; a local editor can rewrite declarations.
 
-**Decision:** accept option A with the proposed working contract, or choose B
-with a different stated retention duration and identify any contract changes?
+Adoption/foreign restore is selected **data-only copy** into an independently
+identified destination with new store/entry IDs, exact preview hashes and
+retained originals/provenance. It never replaces host identity or trusts incoming
+approvals, work references or ownership. Active/pinned/foreign/stale custody
+requires exact prior-owner and stopped-writer review or refuses. Explicit resume,
+recovery and purge retain the accepted no-automatic-action policy and honest
+checkout/host-loss limits. Unknown metadata and journals are preserved.
 
-| Option | Retention and purge eligibility | Recovery |
-| --- | --- | --- |
-| **A — recommended** | Quarantine remains indefinitely by default. You may explicitly choose positive whole hours for selected entries at GC, or later through a separate reviewed policy change. The window begins when quarantine completes or that new policy is applied. Expiry only enables a fresh preview and explicit purge; it never deletes. | No automatic replay. Explicit `resume` finishes an admitted interrupted operation; explicit `recover` restores verified retained entries before deletion. |
-| **B — finite default proposal** | Default quarantine retention is 168 hours (7 days), overridable only through reviewed policy. Completion/application starts the window. The same fresh preview and explicit purge remain mandatory after expiry. Seven days is a proposal, not a duration you already chose. | The same explicit resume/recover contract as A; expiry does not remove recovery. |
+The [exact revised contract](cloud-goal89-design.md) and
+[acceptance plan](cloud-goal89-validation-plan.md) also retain the proposed
+`.mdkg/working` / `working` names, strict schema, promotion and transaction scope.
+Their current content hashes are in
+`../.mdkg/artifacts/goal-89/revised-binding-review/checks.json`; approval must
+identify that revision and any requested changes. Synthetic test-only binding
+controls are proposal evidence, not Test495 installed feature acceptance.
 
-Both preserve exact retained payload bytes while verified custody is intact and
-refuse stale plans, active/pinned/claimed work, unknown journals/files, destination
-conflicts, links/hardlinks and graph/path mismatches. Stale or foreign ownership
-requires exact owner identification and explicit stopped-writer confirmation;
-age or missing PID never releases it. A partial/final purge irreversibly loses
-deleted bytes: mdkg cannot restore them without a separately retained copy and
-must record that loss. Portable filesystem races, checkout deletion and host
-loss remain limits; a cloud save is not a backup guarantee.
-
-**Also genuinely pending in the proposed contract:** `.mdkg/working` / `working`
-names, strict manifest-v1 schema, a distinct `legacy-working:<store-uuid>`
-namespace without graph migration, explicit source-preserving adoption, and
-reviewed private archive promotion of a sanitized summary with source hashes.
-See [the exact contract](cloud-goal89-design.md) and
-[acceptance/source audit](cloud-goal89-validation-plan.md).
-
-Accepting A plus that contract satisfies the human design choice needed to
-implement Task849/850, synthetic Test495 and Task851's qualification work in the
-existing Goal89 stacked draft PR. It does not authorize a merge, publication,
-tag, deployment, professional adoption, external storage provider action,
-Goal90 implementation or a waiver of checks. Chk675 stays backlog until that
-actual decision is recorded; it is not silently approved by this draft.
+Chk675 stays backlog and Task848 stays review until that actual contract decision
+is recorded. Task849/850, 0.6.2 implementation/versioning and Goal90 remain
+excluded from this turn. Accepting the design would not authorize merging,
+publishing, tags, deployments, professional adoption or waiving required checks.

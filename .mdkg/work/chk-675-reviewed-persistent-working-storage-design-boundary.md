@@ -42,6 +42,23 @@ Nick is asleep. docs/cloud-goal89-morning-decision.md presents the exact pending
 choice and distinguishes already supplied instructions. A checked design-only
 draft PR is authorized; publishing it does not satisfy this checkpoint.
 
+## Revised Binding Decision Pending — 2026-10-03
+
+PENDING_REVISED_BINDING_REVIEW for canonical-v2-host-binding-v1. The prior
+legacy-working store UUID is not independent host identity and is superseded.
+The proposed correction requires existing canonical v2 identity for managed
+storage, preserves legacy/custom data with nonmutating refusal, and requires
+separate reviewed canonical migration before opting in. Copies cannot bootstrap
+host identity; data-only adoption preserves source/provenance and never trusts
+incoming owner approvals or replaces destination graph metadata.
+
+Indefinite quarantine with explicit recovery/purge/no automatic deletion is
+accepted policy direction from Nick's parent relay. It does not approve the
+material compatibility change or complete this checkpoint. Chk675 stays backlog;
+Task848 stays review. Test-only reader/equality controls are design evidence;
+actual store schema, ownership/journal/adoption and installed acceptance remain
+NOT_RUN. No 0.6.2 runtime source or version bump is authorized in this turn.
+
 # Scope Covered
 
 task-848 under goal-89 and edd-83.

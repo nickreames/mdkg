@@ -58,12 +58,31 @@ gates apply. No unrelated project/graph writes or publication authority.
 Review, owned by mdkg-project-agent in cloud-goal89-20261002. Audit and concrete
 design are in docs/cloud-goal89-design.md; source/validation obligations are in
 docs/cloud-goal89-validation-plan.md. A review request is pending for the exact
-names/schema/legacy namespace, ownership/release, promotion and retention policy.
+names/schema/host binding, ownership/release, promotion and retention policy.
 No approval is inferred. Task849/850 feature implementation and Test495 acceptance
 remain NOT_RUN. No 0.6.2 package/version claim or draft implementation PR exists.
 The parent subsequently authorized a clearly labelled design-only stacked draft
 PR on this branch after docs/graph checks; it does not resolve the decision gate.
 docs/cloud-goal89-morning-decision.md is the single concise request for Nick.
+
+## Revised Binding Review — 2026-10-03
+
+Independent review identified the legacy store UUID as self-asserted metadata,
+not independent host identity. That namespace proposal is superseded by
+canonical-v2-host-binding-v1 in docs/cloud-goal89-design.md. Managed storage
+would require independently verified canonical v2 graph identity; legacy graphs
+and custom scratch stay supported/preserved, but managed commands refuse until
+separate reviewed graph migration. Foreign copy/adoption/restore and same-ID
+clone limits are explicit. Store UUID never bootstraps or replaces host identity.
+
+Nick accepted indefinite quarantine with explicit recovery/purge and no automatic
+deletion as policy direction. Revised identity/compatibility and the full exact
+contract still require review at Chk675; policy direction is not design approval.
+Task848 stays review. Synthetic TEST-ONLY binding controls exercise the current
+canonical reader and proposal, not working runtime/installed Test495 acceptance.
+Task849/850, 0.6.2 source/versioning and Goal90 remain NOT_RUN/excluded this turn.
+Current evidence: .mdkg/artifacts/goal-89/revised-binding-review/checks.json.
+Original0ff7095 design-audit receipts remain historical and are not rebound.
 
 # Files Affected
 
