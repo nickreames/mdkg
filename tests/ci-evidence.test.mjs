@@ -8,6 +8,7 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const { collect, coverageDiagnostic } = require("../scripts/collect-ci-evidence.js");
 const { createOwnedFixture } = require("../scripts/qualification-fixture.js");
+const { failureDetail, admitFailureDetail, LIMIT } = require("../scripts/test-failure-detail.js");
 const put = (file, bytes) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, bytes); };
 const hash = bytes => crypto.createHash("sha256").update(bytes).digest("hex");
 function fixtureTest(name, exercise) {
@@ -76,4 +77,66 @@ fixtureTest("CI failed-case summary is bounded and cannot claim acceptance when 
   fs.unlinkSync(log); const outside = f.resolve("outside-log"); put(outside, "outside sentinel\n"); fs.symlinkSync(outside, log);
   assert.equal(coverageDiagnostic(run).state, "diagnostic-unavailable");
   assert.equal(fs.readFileSync(outside, "utf8"), "outside sentinel\n");
+});
+fixtureTest("actual coverage reporter retains safe assertion/cause details and keeps failed summaries and exit red", f => {
+  const secret = "synthetic-credential-do-not-export-8FK3", file = f.resolve(`private-${secret}/control.test.cjs`);
+  put(file, `const test=require('node:test');const assert=require('node:assert/strict');
+test('assertion control',()=>assert.equal('${secret}','other-value','password=${secret}'));
+test('nested error control',()=>{throw new Error('Bearer ${secret}',{cause:new TypeError('token=${secret}')})});
+test('passing control',()=>assert.equal(1,1));\n`);
+  const event = f.resolve("coverage-event.json");
+  // This synthetic invocation is a standalone test runner, not an inherited
+  // Node worker. Retain its real failing summary and process exit semantics.
+  const env = { ...process.env, MDKG_COVERAGE_EVENT_PATH: event };
+  delete env.NODE_TEST_CONTEXT;
+  const result = spawnSync(process.execPath, ["--test", "--experimental-test-coverage",
+    `--test-reporter=${path.resolve("scripts/coverage-reporter.js")}`, file], {
+    env, encoding: "utf8", timeout: 15000,
+  });
+  assert.equal(result.status, 1); assert.equal(result.stdout.includes(secret), false, "credential values and private paths must be omitted");
+  assert.equal(result.stdout.includes("other-value"), false);
+  const records = result.stdout.split("\n").filter(line => line.startsWith("FAIL_DETAIL ")).map(line => JSON.parse(line.slice(12)));
+  assert.equal(records.length, 2); assert.ok(records.every(admitFailureDetail));
+  const assertion = records[0].errors.find(error => error.code === "ERR_ASSERTION");
+  assert.equal(assertion.operator, "strictEqual"); assert.deepEqual(assertion.actual, { kind: "string", length: secret.length });
+  assert.equal(records[0].location.file, "[outside-repository]"); assert.ok(records[0].location.line > 0);
+  assert.ok(records[1].errors.some(error => error.name === "TypeError"));
+  const payload = JSON.parse(fs.readFileSync(event, "utf8"));
+  assert.equal(payload.test_summary.success, false); assert.equal(payload.test_summary.counts.failed, 2);
+  assert.equal(payload.test_summary.counts.passed, 1); assert.ok(payload.coverage);
+});
+fixtureTest("failure detail bounds causes/frames, keeps repository assertion locations and does not invoke custom getters", f => {
+  const secret = "synthetic-sensitive-message", error = new assert.AssertionError({
+    actual: secret.repeat(10000), expected: "expected-private-payload", operator: "strictEqual", message: secret,
+  });
+  let reads = 0; Object.defineProperty(error, "cause", { get() { reads++; throw new Error(secret); } });
+  error.stack = `${secret}\n at control (${path.resolve("tests/ci-evidence.test.mjs")}:123:4)\n at outside (${f.resolve(secret)}:5:6)`;
+  const detail = failureDetail({ file: path.resolve("tests/ci-evidence.test.mjs"), line: 123, column: 4, details: { error } });
+  const text = JSON.stringify(detail); assert.ok(Buffer.byteLength(text) <= LIMIT); assert.equal(reads, 0);
+  assert.equal(text.includes(secret), false); assert.equal(text.includes("expected-private-payload"), false);
+  assert.deepEqual(detail.errors[0].locations, [{ file: "tests/ci-evidence.test.mjs", line: 123, column: 4 }]);
+  assert.ok(admitFailureDetail(detail));
+  const chain = new Error(secret); chain.cause = chain;
+  assert.equal(failureDetail({ details: { error: chain } }).truncated, true);
+  const phantom = failureDetail({ file: path.resolve(`tests/${secret}.js`), line: 1, column: 2 });
+  assert.equal(phantom.location.file, "[outside-repository]"); assert.equal(JSON.stringify(phantom).includes(secret), false);
+  const proxy = new Proxy([], { getOwnPropertyDescriptor(target, key) {
+    const descriptor = Object.getOwnPropertyDescriptor(target, key);
+    return key === "length" ? { ...descriptor, value: secret } : descriptor;
+  } });
+  const malformed = new Error(secret); malformed.actual = proxy;
+  assert.equal(JSON.stringify(failureDetail({ details: { error: malformed } })).includes(secret), false);
+});
+fixtureTest("collector relays bounded admitted failure details and rejects forged secret payloads", f => {
+  const run = f.resolve("run"), log = path.join(run, "logs/coverage.log");
+  const detail = failureDetail({ file: path.resolve("tests/ci-evidence.test.mjs"), line: 123, column: 4,
+    details: { error: new assert.AssertionError({ actual: false, expected: true, operator: "==" }) } });
+  const forged = { ...detail, message: "password=synthetic-private-credential" };
+  put(log, "FAIL synthetic control\n" + `FAIL_DETAIL ${JSON.stringify(detail)}\n`.repeat(100) +
+    `FAIL_DETAIL ${JSON.stringify(forged)}\nFAIL_DETAIL invalid-json-token\nSUMMARY pass=0 fail=1 total=1\n`);
+  const diagnostic = coverageDiagnostic(run); assert.equal(diagnostic.failure_count, 1);
+  assert.equal(diagnostic.failure_detail_count, 100); assert.equal(diagnostic.rejected_detail_count, 2);
+  assert.equal(diagnostic.failure_details.truncated, true); assert.ok(Buffer.byteLength(diagnostic.failure_details.tail_utf8) <= 8192);
+  assert.equal(JSON.stringify(diagnostic).includes("synthetic-private-credential"), false);
+  assert.equal(diagnostic.final_summary, "SUMMARY pass=0 fail=1 total=1");
 });
