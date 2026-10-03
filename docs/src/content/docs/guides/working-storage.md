@@ -7,6 +7,10 @@ The unpublished 0.6.2 candidate adds `mdkg working` for local drafts under ignor
 `.mdkg/working/`. Fresh init retains a separate host marker. Existing legacy
 graphs opt in explicitly, without canonical node migration; v2 uses its graph ID.
 Custom scratch and unknown metadata are preserved and refuse implicit adoption.
+Repeated init preserves existing legacy working paths and their Git visibility.
+Explicit working opt-in accepts an absent, empty or authored `.gitignore` and
+previews its exact update. Managed child payload stays private when read through
+a legacy parent's ordinary graph commands.
 
 Every mutation first previews JSON. Save that plan outside working, inspect its
 entries/effects, then use its exact `plan_hash` in place of `PLAN_HASH`:

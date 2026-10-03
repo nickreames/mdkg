@@ -131,3 +131,14 @@ review, Chk676 owner/local acceptance and Chk677 release readiness remain pendin
 Goal89 is not achieved and release is NOT_READY. Required full ladder, platform
 and local owner checks are not silently waived. Parent review precedes Goal90.
 Selected-goal state is unchanged; no new numeric IDs or approvals are allocated.
+
+## Independent review correction — 2026-10-03
+
+Parent's4c55758/base ce53 review was NO-GO for Goal90 on three concrete regressions.
+Corrected managed-child cache/pack boundaries, managed-only repeat-init ignore
+rules and explicit empty-ignore adoption. See docs/cloud-goal89-review-correction.md
+and .mdkg/artifacts/goal-89/review-correction/checks.json for exact current inputs,
+controls,672pass0fail/1skip and retained failures/superseded candidate. Worker tests
+do not clear Chk675 independent review. Goal90 remains held; Chk676 owner/local
+and Chk677 full publication readiness remain pending. Goal89 is not achieved.
+No new approvals, numeric IDs, selected-goal changes or broader CI work.

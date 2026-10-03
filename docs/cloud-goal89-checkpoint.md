@@ -62,3 +62,15 @@ not backup; selected sanitized export/restore rehearsal demonstrates checkout lo
 No main/plan merge, human PR merge, force/history rewrite, release tag, publish,
 deploy, provider/billing/auth, Mac/company/unrelated-repository writes or Goal90
 implementation. Parent independent review precedes the next sequential goal.
+
+## Superseding PR12 correction checkpoint — 2026-10-03
+
+Independent review of4c55758/base ce53 was NO-GO for Goal90: a managed child
+payload leaked through a legacy parent's poisoned cache/full pack; repeated init
+hid legacy canonical working files; zero-byte ignore files blocked explicit opt-in.
+These bounded regressions are corrected, with real0.6.1 fixtures and source/exact
+installed controls. Current evidence and remaining gates are in
+[the correction checkpoint](cloud-goal89-review-correction.md) and
+.mdkg/artifacts/goal-89/review-correction/checks.json. Final672pass0fail/1skip
+does not clear independent review or qualify publication. Original4c receipts
+and a superseded intermediate candidate are retained. Goal90 remains held.

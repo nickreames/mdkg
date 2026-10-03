@@ -20,6 +20,15 @@ pre-journal killed custody refusal, contained filesystem/Git metadata controls,
 force-tracked bundle exclusion and forged stale node/capability cache refusal.
 The host-contract tests exercise actual independent readers and marker admission.
 
+The PR12 review correction adds ordinary full-pack disclosure controls using
+matching generated frontmatter in managed children beneath an unmanaged parent,
+including nested child paths, forged ancestor/capability caches and forbidden
+workspace admission. Legacy canonical working pack/Git visibility remains a
+positive control. Absent/zero-byte/authored ignore files exercise explicit CLI
+preview/apply, stale-input refusal and journal resume. Qualification sets
+`MDKG_WORKING_LEGACY_PACKAGE` to the independently built ce53 0.6.1 initializer;
+standalone tests otherwise model its missing host marker/working ignore rule.
+
 Changed shared adapters need focused existing init/upgrade/mirror, config/options,
 cache/ownership/transport/bundle, archive, identity and lock regressions. Compile
 once, verify every selected test path exists, then run a bounded selection with

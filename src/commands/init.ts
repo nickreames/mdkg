@@ -22,6 +22,7 @@ import { assertNoGraphConflictMarkers, assertNodeFormat, readGraphFormat, readNo
 import { readUpgradeJournal } from "./upgrade_transaction";
 import { withMutationLock } from "../util/lock";
 import { bootstrapWorkingHost, readWorkingMarker, WORKING_HOST_PATH } from "../core/working_host";
+import { workingStorePresent } from "../core/working_paths";
 
 export type InitCommandOptions = {
   root: string;
@@ -689,7 +690,7 @@ function initialize(options: InitCommandOptions, locked: boolean, fresh?: boolea
         ".mdkg/index/*.sqlite-journal",
         ...PROJECT_DB_GITIGNORE_ENTRIES,
         ".mdkg/state/",
-        ".mdkg/working/",
+        ...(workingStorePresent(root) ? [".mdkg/working/"] : []),
         ".mdkg/pack/",
         ".mdkg/subgraphs/",
         ".mdkg/archive/**/source/",

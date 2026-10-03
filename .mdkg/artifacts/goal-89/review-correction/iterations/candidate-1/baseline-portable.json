@@ -1,0 +1,70 @@
+{
+  "head": "4c55758d6dbd1d16f77bcd406f3c995cba76b4d9",
+  "legacy_initializer_head": "ce53ea56629af23ecd10d6e58a393db1235fda79",
+  "records": [
+    {
+      "label": "source-24.19",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-goal89",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "source-24.19-baseline-portable.log",
+      "sha256": "6edc450eb17a6e00bb8f5002fcd0aabe680b95cf764dad83afc0564432521955"
+    },
+    {
+      "label": "installed-24.18",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-review-cache/goal89-qualification/npm-consumer/node_modules/mdkg",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "installed-24.18-baseline-portable.log",
+      "sha256": "c2abe539c5c220155d5c06de0ae8f3a0a77e062db8b11192b48ff6fe56a83b3d"
+    },
+    {
+      "label": "installed-24.21",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-review-cache/goal89-qualification/npm-consumer/node_modules/mdkg",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "installed-24.21-baseline-portable.log",
+      "sha256": "00389c42b83697823e1723eb66ca41d500286a46c53bfc5aa6a081640dd65f69"
+    }
+  ],
+  "tests_sha256": "3f12986b6f0b31eab27c56abc837f3f5347051c4d77c5d84fa235711db0d7834"
+}

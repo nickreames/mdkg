@@ -35,7 +35,13 @@ excluded even when accidentally force-tracked.
 
 Legacy explicitly registered canonical workspaces under a path named working
 remain usable while no managed storage/marker exists. Opting in refuses overlap;
-it never silently removes or reclassifies canonical records. Unregistered scratch
+it never silently removes or reclassifies canonical records.
+Repeated init leaves the unmanaged legacy working Gitignore rule unchanged;
+explicit opt-in handles an absent, empty or authored ignore file distinctly.
+Managed child boundaries are admitted relative to the outer containment root,
+even when its parent is legacy and has no working host. Node/capability cache
+aliases cannot authorize reads inside that child's private storage.
+Unregistered scratch
 is excluded from graph transport. Configured workspace, index, templates,
 capability, skills and mirror paths cannot overlap managed working storage.
 Fresh/default fixed graph discovery excludes it; stale node/capability cache

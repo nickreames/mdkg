@@ -1,0 +1,69 @@
+{
+  "head": "4c55758d6dbd1d16f77bcd406f3c995cba76b4d9",
+  "legacy_initializer_head": "ce53ea56629af23ecd10d6e58a393db1235fda79",
+  "records": [
+    {
+      "label": "source-24.19",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-goal89",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "source-24.19-baseline-owned-fixture.log",
+      "sha256": "6d003c5b1144fe1e0cb6219201105730f1b9ec5e48f16a4a54df5d08b8de3824"
+    },
+    {
+      "label": "installed-24.18",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-review-cache/goal89-qualification/npm-consumer/node_modules/mdkg",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "installed-24.18-baseline-owned-fixture.log",
+      "sha256": "85994c818743594ff7bfd190948c0d00743602764c551772b5c76988d4d92060"
+    },
+    {
+      "label": "installed-24.21",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-review-cache/goal89-qualification/npm-consumer/node_modules/mdkg",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "installed-24.21-baseline-owned-fixture.log",
+      "sha256": "cbae5ea6e575b728de19793c4bd27c97be6935219a757f28cb23016c60b9eb2a"
+    }
+  ]
+}

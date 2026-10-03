@@ -35,6 +35,20 @@ function project(f, name = "project", kind = "fresh") {
   }
   return root;
 }
+function legacyProject(f, name) {
+  const legacy = process.env.MDKG_WORKING_LEGACY_PACKAGE;
+  if (legacy) {
+    const root = f.resolve(name); fs.mkdirSync(root, { recursive: true });
+    const r = f.runNode([path.join(legacy, "dist/cli.js"), "init"], { cwd: root, timeout: 30000 });
+    assert.equal(r.status, 0, r.stderr);
+    assert.equal(fs.existsSync(path.join(root, WORKING_HOST_PATH)), false);
+    return root;
+  }
+  // Standalone test fallback models the pre-working initializer's two differences.
+  const root = project(f, name, "legacy"), ignore = path.join(root, ".gitignore");
+  fs.writeFileSync(ignore, fs.readFileSync(ignore, "utf8").replace(".mdkg/working/\n", ""));
+  return root;
+}
 function inventory(root) {
   const files = {};
   const visit = (dir) => { for (const e of fs.readdirSync(dir, { withFileTypes: true }).sort((a,b) => a.name.localeCompare(b.name))) {
@@ -182,6 +196,11 @@ fixtureTest("legacy registered canonical working paths remain usable and managed
   const node = "---\nid: task-999991\ntype: task\ntitle: Legacy canonical record\nstatus: done\npriority: 1\ntags: []\nowners: []\nlinks: []\nartifacts: []\nrelates: []\nrefs: []\naliases: []\nskills: []\ncreated: 2026-10-03\nupdated: 2026-10-03\n---\nLegacy canonical body.\n";
   fs.writeFileSync(path.join(root, ".mdkg/working/.mdkg/work/task-999991.md"), node);
   const index = buildIndex(root, loadConfig(root)); assert.equal(index.nodes["legacy:task-999991"].title, "Legacy canonical record");
+  writeIndex(root, loadConfig(root).index.global_index_path, index);
+  const packed = f.runNode([path.join(target, "dist/cli.js"), "pack", "legacy:task-999991"], { cwd: root, timeout: 30000 });
+  assert.equal(packed.status, 0, packed.stderr);
+  assert.ok(fs.readdirSync(path.join(root, ".mdkg/pack")).filter(file => file.endsWith(".md")).some(file =>
+    fs.readFileSync(path.join(root, ".mdkg/pack", file), "utf8").includes("Legacy canonical body")));
   const bundle = buildBundle({ root, profile: "private" }); assert.ok(readZipEntries(bundle.zip).some(e => e.data.includes(Buffer.from("Legacy canonical body"))));
   const before = inventory(root); assert.throws(() => previewWorking(root, { action: "init", ids: [] }), /overlaps.*working/); assert.deepEqual(inventory(root), before);
 });
@@ -212,6 +231,102 @@ fixtureTest("ordinary discovery and forged stale caches cannot read managed scra
   }
   const packed = f.runNode([path.join(target, "dist/cli.js"), "pack", Object.values(index.nodes)[0].id, "--dry-run"], { cwd: root, timeout: 30000 });
   assert.equal(packed.status, 0, packed.stderr); assert.equal(packed.stdout.includes("PRIVATE_CACHE_CANARY"), false);
+});
+fixtureTest("review regression: unmanaged parent cannot pack managed child private payload from poisoned caches", f => {
+  for (const [i, childPath] of ["child", ".mdkg/children/child", "child-cafe\u0301"].entries()) {
+    const root = legacyProject(f, `parent-${i}`);
+    const child = path.join(root, childPath); fs.mkdirSync(child, { recursive: true });
+    quiet(() => runInitCommand({ root: child })); run(child, "init");
+    // Matching frontmatter ensures a later node parser cannot accidentally mask the cache-admission defect.
+    const e = entry(child, fs.readFileSync(path.join(child, ".mdkg/core/COLLABORATION.md"), "utf8") + "\nPRIVATE_CHILD_CANARY\n");
+    const raw = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/config.json")));
+    raw.workspaces.child = { ...raw.workspaces.root, path: childPath };
+    fs.writeFileSync(path.join(root, ".mdkg/config.json"), JSON.stringify(raw));
+    const cfg = loadConfig(root), index = buildIndex(root, cfg);
+    writeIndex(root, cfg.index.global_index_path, index);
+    assert.ok(loadIndex({ root, config: cfg, allowReindex: false, persistReindex: false }).index.nodes["child:rule-7"]);
+    const good = f.runNode([path.join(target, "dist/cli.js"), "pack", "child:rule-7"], { cwd: root, timeout: 30000 });
+    assert.equal(good.status, 0, good.stderr);
+    const packDir = path.join(root, ".mdkg/pack");
+    const packs = () => fs.readdirSync(packDir).filter(file => file.endsWith(".md")).map(file => fs.readFileSync(path.join(packDir, file), "utf8"));
+    assert.ok(packs().length); assert.equal(packs().some(text => text.includes("PRIVATE_CHILD_CANARY")), false);
+    index.nodes["child:rule-7"].path = `${childPath}/.mdkg/working/entries/${e.id}.bin`;
+    writeIndex(root, cfg.index.global_index_path, index);
+    const before = inventory(child);
+    const poisoned = f.runNode([path.join(target, "dist/cli.js"), "pack", "child:rule-7"], { cwd: root, timeout: 30000 });
+    if (poisoned.status === 0) assert.ok(packs().some(text => text.includes("PRIVATE_CHILD_CANARY")), "baseline must reproduce a real disclosure");
+    assert.notEqual(poisoned.status, 0, "ordinary pack must refuse a managed child's private cache path");
+    assert.match(poisoned.stderr, /private working/);
+    assert.equal(packs().some(text => text.includes("PRIVATE_CHILD_CANARY")), false);
+    assert.throws(() => loadIndex({ root, config: cfg, allowReindex: false, persistReindex: false }), /private working/);
+    // A forged ancestor identity must not confer authority over the same managed child boundary.
+    const ancestor = Object.values(index.nodes).find(n => n.ws === "root");
+    ancestor.path = index.nodes["child:rule-7"].path;
+    delete index.nodes["child:rule-7"]; writeIndex(root, cfg.index.global_index_path, index);
+    assert.throws(() => loadIndex({ root, config: cfg, allowReindex: false, persistReindex: false }), /private working/);
+    const caps = buildCapabilitiesIndex(root, cfg);
+    writeCapabilitiesIndex(root, resolveCapabilitiesIndexPath(root, cfg), caps);
+    assert.ok(loadCapabilitiesIndex({ root, config: cfg, allowReindex: false }).index.records.length);
+    caps.records[0].path = ancestor.path;
+    writeCapabilitiesIndex(root, resolveCapabilitiesIndexPath(root, cfg), caps);
+    assert.throws(() => loadCapabilitiesIndex({ root, config: cfg, allowReindex: false, persistReindex: false }), /private working/);
+    assert.deepEqual(inventory(child), before);
+    raw.workspaces.forbidden = { ...raw.workspaces.root, path: `${childPath}/.mdkg/working` };
+    fs.writeFileSync(path.join(root, ".mdkg/config.json"), JSON.stringify(raw));
+    assert.throws(() => buildIndex(root, loadConfig(root)), /private working/);
+    assert.deepEqual(inventory(child), before);
+  }
+});
+fixtureTest("review regression: repeated init preserves unmanaged legacy canonical workspace Git visibility", f => {
+  const root = legacyProject(f, "legacy-ignore"), raw = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/config.json")));
+  raw.workspaces.legacy = { ...raw.workspaces.root, path: ".mdkg/working" };
+  fs.writeFileSync(path.join(root, ".mdkg/config.json"), JSON.stringify(raw));
+  fs.mkdirSync(path.join(root, ".mdkg/working/.mdkg/work"), { recursive: true });
+  const node = id => `---\nid: task-${id}\ntype: task\ntitle: Legacy canonical record\nstatus: done\npriority: 1\ntags: []\nowners: []\nlinks: []\nartifacts: []\nrelates: []\nrefs: []\naliases: []\nskills: []\ncreated: 2026-10-03\nupdated: 2026-10-03\n---\nLegacy canonical body.\n`;
+  const tracked = ".mdkg/working/.mdkg/work/task-999991.md", untracked = ".mdkg/working/.mdkg/work/task-999992.md";
+  fs.writeFileSync(path.join(root, tracked), node(999991)); fs.writeFileSync(path.join(root, untracked), node(999992));
+  const git = args => spawnSync("git", ["-C", root, ...args], { encoding: "utf8" });
+  assert.equal(git(["-c", "init.defaultBranch=fixture", "init"]).status, 0);
+  assert.equal(git(["add", tracked]).status, 0);
+  const before = inventory(root), ignore = fs.readFileSync(path.join(root, ".gitignore"));
+  const manifestBefore = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/init-manifest.json")));
+  const visible = () => { assert.equal(git(["check-ignore", "--no-index", "-v", untracked]).status, 1); assert.ok(git(["status", "--porcelain", "--untracked-files=all"]).stdout.includes(untracked)); };
+  visible(); assert.ok(buildIndex(root, loadConfig(root)).nodes["legacy:task-999991"]);
+  quiet(() => runInitCommand({ root }));
+  assert.deepEqual(fs.readFileSync(path.join(root, ".gitignore")), ignore); visible();
+  const after = inventory(root);
+  // The initializer legitimately updates its package-version receipt across releases.
+  const manifestAfter = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/init-manifest.json")));
+  assert.equal(manifestAfter.mdkg_version, JSON.parse(fs.readFileSync(path.join(target, "package.json"))).version);
+  assert.deepEqual({ ...manifestAfter, mdkg_version: manifestBefore.mdkg_version }, manifestBefore);
+  delete before[".mdkg/init-manifest.json"];
+  const preserved = { ...after }; delete preserved[".mdkg/init-manifest.json"];
+  assert.deepEqual(preserved, before); assert.equal(fs.existsSync(path.join(root, WORKING_HOST_PATH)), false);
+  quiet(() => runInitCommand({ root })); assert.deepEqual(inventory(root), after); visible();
+  assert.ok(buildIndex(root, loadConfig(root)).nodes["legacy:task-999992"]);
+});
+fixtureTest("review regression: explicit working adoption handles absent empty and authored Gitignore separately", f => {
+  for (const [label, content] of [["absent", null], ["empty", ""], ["authored", "# authored ignore\n"]]) {
+    const root = legacyProject(f, `ignore-${label}`), ignore = path.join(root, ".gitignore");
+    if (content === null) fs.unlinkSync(ignore); else fs.writeFileSync(ignore, content);
+    const before = inventory(root), p = cli(f, root, ["working", "init", "--json"]);
+    assert.deepEqual(inventory(root), before);
+    assert.equal(p.effects.find(e => e.path === ".gitignore").before, content === null ? null : identityHash(content));
+    fs.writeFileSync(path.join(root, "plan.json"), JSON.stringify(p));
+    cli(f, root, ["working", "init", "--apply", "--plan", "plan.json", "--plan-hash", p.plan_hash, "--json"]);
+    assert.equal(inspectWorking(root, "verify").ok, true);
+    assert.equal(fs.readFileSync(ignore, "utf8"), (content ?? "") + ".mdkg/working/\n");
+    const after = inventory(root); applyWorking(root, p, p.plan_hash); assert.deepEqual(inventory(root), after);
+  }
+  const root = legacyProject(f, "ignore-empty-resume"), ignore = path.join(root, ".gitignore");
+  fs.writeFileSync(ignore, ""); const stale = previewWorking(root, { action: "init", ids: [] });
+  fs.writeFileSync(ignore, "# changed after preview\n"); const before = inventory(root);
+  assert.throws(() => applyWorking(root, stale, stale.plan_hash), /changed|stale/); assert.deepEqual(inventory(root), before);
+  fs.writeFileSync(ignore, ""); const p = previewWorking(root, { action: "init", ids: [] });
+  const cut = `effect:${p.effects.findIndex(e => e.path === ".gitignore")}`;
+  assert.throws(() => applyWorking(root, p, p.plan_hash, step => { if (step === cut) throw new Error("synthetic empty-ignore interruption"); }), /synthetic empty-ignore interruption/);
+  resumeWorking(root, p.operation_id, p.plan_hash); assert.equal(inspectWorking(root, "verify").ok, true);
+  assert.equal(fs.readFileSync(ignore, "utf8"), ".mdkg/working/\n");
 });
 fixtureTest("explicit init journal cuts resume; a pre-journal killed adoption preserves unknown custody", f => {
   for (const cut of ["journal", "effect:1", "effect:2", "completed"]) {

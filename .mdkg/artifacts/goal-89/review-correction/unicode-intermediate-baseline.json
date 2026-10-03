@@ -1,0 +1,16 @@
+{
+  "artifact_sha256": "d130c0d86161da667c6dabdaee714d6be8c2a481270ce137d9b28ba3632fdb9d",
+  "command": [
+    "python3",
+    "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+    "node",
+    "--test",
+    "--test-name-pattern",
+    "review regression: unmanaged parent",
+    "tests/working-storage.test.mjs"
+  ],
+  "target": "/workspace/mdkg-cloud-review-cache/goal89-review-correction/npm-consumer/node_modules/mdkg",
+  "exit": 1,
+  "result": "expected regression failure on intermediate normalized helper",
+  "log_sha256": "d97169512ec6d0dfb97e87fafff377ce2188895c05a10e2c4d7076c4a8395ee0"
+}

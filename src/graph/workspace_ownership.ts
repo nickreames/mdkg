@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { workingPath, workingStorePresent } from "../core/working_paths";
+import { privateWorkingPath } from "../core/working_paths";
 import type { Config } from "../core/config";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { forEachContainedDirectoryEntry } from "../core/filesystem_authority";
@@ -10,7 +10,7 @@ import { forEachContainedDirectoryEntry } from "../core/filesystem_authority";
 // than silently assigning that entry to a different owner. Only inspect parent
 // directory metadata: do not descend into a disabled root or follow links.
 export function assertWorkspaceDocumentRootSpellings(root: string, config: Config): void {
-  if (workingStorePresent(root) && Object.values(config.workspaces).some(w => workingPath(workspaceDocumentRelativePath(w.path, w.mdkg_dir))))
+  if (Object.values(config.workspaces).some(w => privateWorkingPath(root, workspaceDocumentRelativePath(w.path, w.mdkg_dir))))
     throw new Error("workspace overlaps private working storage");
   const parents = new Map<string, fs.Dirent[]>();
   for (const [alias, workspace] of Object.entries(config.workspaces)) {

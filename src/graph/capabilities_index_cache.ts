@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
-import { workingPath, workingStorePresent } from "../core/working_paths";
+import { privateWorkingPath } from "../core/working_paths";
 import { ContainedPathError } from "../core/filesystem_authority";
 import { UsageError } from "../util/errors";
 import { configPath } from "../core/paths";
@@ -87,7 +87,7 @@ function readCapabilitiesIndex(root: string, config: Config, indexPath: string, 
   try {
     const raw = readJsonCacheText(root, indexPath);
     const index = JSON.parse(raw) as CapabilitiesIndex;
-    if (workingStorePresent(root) && index.records.some(record => workingPath(record.path))) {
+    if (index.records.some(record => privateWorkingPath(root, record.path))) {
       throw new UsageError("cached capability path overlaps private working storage");
     }
     try {

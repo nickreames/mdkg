@@ -1,0 +1,42 @@
+{
+  "action": "validated",
+  "ok": true,
+  "warning_count": 1,
+  "error_count": 0,
+  "warnings": [
+    "subgraph ai_native_sdlc_demo: bundle age 88366s exceeds max_stale_seconds 86400"
+  ],
+  "warning_diagnostics": [
+    {
+      "id": "subgraph.warning",
+      "category": "subgraph",
+      "severity": "warning",
+      "message": "subgraph ai_native_sdlc_demo: bundle age 88366s exceeds max_stale_seconds 86400",
+      "remediation": "Run mdkg subgraph verify or refresh the source bundle after reviewing child graph freshness."
+    }
+  ],
+  "warning_summary": {
+    "total": 1,
+    "emitted": 1,
+    "truncated": false,
+    "omitted_count": 0,
+    "limit": null,
+    "affected_file_count": 0,
+    "by_id": [
+      {
+        "key": "subgraph.warning",
+        "count": 1
+      }
+    ],
+    "by_category": [
+      {
+        "key": "subgraph",
+        "count": 1
+      }
+    ],
+    "by_node_type": [],
+    "top_qids": [],
+    "top_paths": []
+  },
+  "errors": []
+}

@@ -154,3 +154,37 @@
   original output through deterministic lossless gzip, with decompressed/stored
   hashes documented; no log bytes, assertions or source acceptance were removed
   or normalized. Product/tarball inputs remain unchanged.
+
+## Independent PR12 NO-GO correction — 2026-10-03
+
+- Parent relayed three portable synthetic reproductions for4c55758/base ce53;
+  cloud worker did not access reviewer Mac files. Verified live remotes/custody,
+  real ce53 initializer and source/exact installed4c artifact before writes.
+  All three reported failures reproduced on source24.19 and installed24.18/24.21.
+- Initial harness runs lacked a freshly created per-command fixture namespace,
+  then used unsupported apply/no-reindex assumptions. Original outputs retained;
+  corrected fixtures/CLI usage exposed the exact failures. No product acceptance
+  was weakened. The repeated-init control permits only the legitimate manifest
+  mdkg_version update; canonical/ignore/instruction bytes remain checked.
+- Minimal fixes use actual child-path host/manifest boundaries anchored at the
+  outer root, managed-only repeat-init ignore rules and exact absent/empty hashes.
+  Existing legacy canonical working paths remain usable and managed opt-in
+  still refuses overlap. Extra cases cover nested/forged-ancestor/capability/
+  workspace paths, full pack, CLI preview/apply, stale input and journal resume.
+- Self-review found Unicode normalization in the new helper missed decomposed
+  physical child spelling. The first freeze completed unchanged; its672pass/1skip
+  and d130c0d8 artifact are SUPERSEDED. A full installed pack proved disclosure.
+  Removed that normalization and added an exact-spelling control, then separately
+  froze/requalified source and a new exact tarball. No historical passes rebound.
+- Final672pass0fail/1skip:31feature/host on source and exact installed per each
+  native Node24.18/24.19/24.21,458shared,28release/security. Product/built/legacy/
+  installed drift zero. New tar1ad72ba3 inventory sealed; all installed bytes
+  match, expected npm CLI execution bit retained. Static checks/docs build pass.
+- No workflow/reporter/coverage-floor/timeout/CI overhaul or hosted rerun. Prior
+ 4c hosted run37105547354 ended cancelled; both collectors failed and test
+  outcome/cancellation cause remain unresolved, separately recorded.
+- Executor transient failure counter stays1of5, recovered/usable; no new transient
+  failure. Test/setup/control failures do not consume that availability budget.
+  Normal stack commit/nonforce push and draft metadata update are authorized;
+  exact corrected-patch independent review is still pending and Goal90 is held.
+  Chk676 local-owner and Chk677 complete prepublication obligations remain open.

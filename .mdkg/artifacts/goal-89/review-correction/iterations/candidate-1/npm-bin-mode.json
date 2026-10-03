@@ -1,0 +1,9 @@
+{
+  "byte_inventories_equal": true,
+  "mode_differences": {
+    "dist/cli.js": {
+      "tar": 384,
+      "npm": 448
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "status": "SUPERSEDED",
+  "reason": "Self-review synthetic decomposed-Unicode probe found the new helper normalized physical directory spelling; passing 672 executions did not cover this case. Product freeze/drift stayed intact. No results rebound to final candidate.",
+  "artifact_sha256": "d130c0d86161da667c6dabdaee714d6be8c2a481270ce137d9b28ba3632fdb9d"
+}

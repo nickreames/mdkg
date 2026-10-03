@@ -226,8 +226,9 @@ function prepare(root: string, input: WorkingRequest, identity?: { id: string; d
     if (!override && directories(root).length) fail("custom/nonempty working store; preserve it before explicit adoption");
     binding ??= { kind: "working-host-v1", id: deriveIdentityUuid(op, "working-host", [c.hash]) };
     if (readWorkingMarker(root) === undefined || override?.marker) write(WORKING_HOST_PATH, workingMarkerBytes(binding.id));
-    const ignore = override ? (override.ignore ?? "") : (exists(root, ".gitignore") ? readFile(root, ".gitignore").toString("utf8") : "");
-    if (!ignore.split(/\r?\n/).includes(".mdkg/working/")) write(".gitignore", ignore + (ignore && !ignore.endsWith("\n") ? "\n" : "") + ".mdkg/working/\n", ignore ? hash(ignore) : null);
+    const ignoreBefore = override ? override.ignore : (exists(root, ".gitignore") ? readFile(root, ".gitignore").toString("utf8") : null);
+    const ignore = ignoreBefore ?? "";
+    if (!ignore.split(/\r?\n/).includes(".mdkg/working/")) write(".gitignore", ignore + (ignore && !ignore.endsWith("\n") ? "\n" : "") + ".mdkg/working/\n", ignoreBefore === null ? null : hash(ignoreBefore));
   } else if (!before || !binding) fail("working store is not initialized; preview mdkg working init");
   const m: Manifest = before ? structuredClone(before) : { format: "mdkg-working", version: 1, host: binding!, store_id: deriveIdentityUuid(op, "working-store", [binding!.id]), entries: [] };
   if (before) verifyHost(root, before.host);

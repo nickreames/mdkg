@@ -32,6 +32,13 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
   stays out of ordinary discovery, caches, packs, bundles and package output.
   Local ignored storage is not backup; selected export/restore is explicit.
 
+### Fixed
+
+- Legacy parents refuse cached node/capability paths inside managed child working
+  storage, including forged ancestor aliases. Repeated init preserves unmanaged
+  legacy working paths' Git visibility. Explicit working opt-in distinguishes
+  existing empty ignore files from absent files and supports journal resume.
+
 ## 0.6.1 - 2026-10-02
 
 ### Qualification status

@@ -1,0 +1,371 @@
+{
+  "format": "lossless gzip; mtime0; raw SHA matches qualification log_sha256",
+  "logs": [
+    {
+      "path": "cli-matrix.log.gz",
+      "stored_sha256": "35a1a8c626f8f6bd4b05973eee3d69cbb2d0586942955b9f6af47580821c7046",
+      "raw_sha256": "f1daadeda328f9c9b6b7390a2078e37944112f0e9ce5b96312bc63d090ceaf87",
+      "raw_bytes": 29
+    },
+    {
+      "path": "release-contracts.log.gz",
+      "stored_sha256": "ed6d356b951e0baddd3656c8c9c3e7c69a5172a91038f706672e4a318fbfbfb5",
+      "raw_sha256": "4e72f8c5bb84fb7647eae33d9472cbe80d436d4b16cb2c2fe87ab35ef5f04b35",
+      "raw_bytes": 2507
+    },
+    {
+      "path": "pack.log.gz",
+      "stored_sha256": "aa6674f1464c96907b5955d51f3bdfe0649669c62288c38444b165d44ceccbe0",
+      "raw_sha256": "168f196f37744774183e65728ae20614f6307c253cd81fc9e93cae17ab04cc18",
+      "raw_bytes": 26766
+    },
+    {
+      "path": "security.log.gz",
+      "stored_sha256": "c694b5631c5b1263b3976e570638fd742e309d7a06dc6e178f46d78b890b9e77",
+      "raw_sha256": "f5a944e6efc3d6a6cd6de6650b89f0a65710bb150780b9bdc23073428c30c90c",
+      "raw_bytes": 442
+    },
+    {
+      "path": "installed-24.19.0.log.gz",
+      "stored_sha256": "3e4e43d0bf3030386073f46e4ca18a070c2797c196d2f119b14c2fe4d0cfd6f9",
+      "raw_sha256": "e85dfc5dfe4595541a79c7a48181b055a1a6b9c8be558576fa6275f0d3bc6e7a",
+      "raw_bytes": 3515
+    },
+    {
+      "path": "installed-24.18.0.log.gz",
+      "stored_sha256": "9c92da33ee7066dfe82e1154291266400b0a14f762c5c9b524babcd3e7a6b109",
+      "raw_sha256": "fefb8fa45878faece920a8a2652d4187a1460352cc69d58fa5c88598ed6b4032",
+      "raw_bytes": 3514
+    },
+    {
+      "path": "docs.log.gz",
+      "stored_sha256": "e5851da984d0954b8291dcc4421631381f7c52d36a4520376e05fbdf350ad2ff",
+      "raw_sha256": "63290a144b4b440685fa8dca07c3ec12770555b8b03971bd174b3f9dc98d5051",
+      "raw_bytes": 1203
+    },
+    {
+      "path": "docs-site.log.gz",
+      "stored_sha256": "b841a4d114a3aeb8e98c2b0ad7b75d9969d5a69973ee1aabb1593bbcaaf8ec4c",
+      "raw_sha256": "1e5b87518e04a8423243e714aff883f5213b42502e0d1d4ed086f5d9bff00da8",
+      "raw_bytes": 2898
+    },
+    {
+      "path": "diff.log.gz",
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0
+    },
+    {
+      "path": "build-test.log.gz",
+      "stored_sha256": "c6d2a9b20ab947d042a36e681f3e57452e9f2cb2b113bea334d480480c024917",
+      "raw_sha256": "4e2af64abe79833d31dd9b0cccd9147eafe6ff292631f984f9491c01a3d539a1",
+      "raw_bytes": 306
+    },
+    {
+      "path": "build.log.gz",
+      "stored_sha256": "f608baed68182ad2280dd9161ff898d726c98c0a8fb566d8a55610796995c114",
+      "raw_sha256": "b9fab3c423eb6b94e8210370f338255aac9161e24c43d261e523578e7ba139f0",
+      "raw_bytes": 686
+    },
+    {
+      "path": "npm-install-exact.log.gz",
+      "stored_sha256": "080af3de44c2c2111626a1c4a736e4e07708c3ac0a1e60b7f3c0718149bbcb9b",
+      "raw_sha256": "d8ec9368443e8bac0208fec7940652a2f01896b66dcf47ec8c93675594ca780e",
+      "raw_bytes": 26
+    },
+    {
+      "path": "publish-static.log.gz",
+      "stored_sha256": "f319a305617780e74b886f254792b39dcb56fb2fe2158acf58eb5b922ab9676e",
+      "raw_sha256": "2b716889649d63876c41afc057225027eedc8202277f9ee4c31cb29c17fa44e3",
+      "raw_bytes": 111
+    },
+    {
+      "path": "workflow.log.gz",
+      "stored_sha256": "291679fc21fb2ae3bbddd0afc2703df048210e38ca9142bce187231b3835a51b",
+      "raw_sha256": "4eb07780201afbf437c77af6cc576bec86bcd5444e2d23731e001006beda14a1",
+      "raw_bytes": 56
+    },
+    {
+      "path": "shared-regressions.log.gz",
+      "stored_sha256": "2b4f77427f8acfb96c742525010e1cf939802a8e53013e2b8a3b15f1bddbe40d",
+      "raw_sha256": "5bd62700522baa4f7a15fcd1a452eea91176528cb51efab80a18ce28c3cb7d77",
+      "raw_bytes": 56543
+    },
+    {
+      "path": "source-24.18.0.log.gz",
+      "stored_sha256": "000553a9775c53c12d00709702360b25ec3aef707604314bdda1cecf71fcba26",
+      "raw_sha256": "8e3264ba2aca51948f39a283e36805badc8c48540d73d9588734217bdd021f6d",
+      "raw_bytes": 3509
+    },
+    {
+      "path": "graph.log.gz",
+      "stored_sha256": "7247634e4a9ccbd081ee79fdb7589ea3a661239949b313e312c37c308ef09e92",
+      "raw_sha256": "7c30a9e0a812e65820bd9c1bc4c5f626b9716662976bf87fbee1c92b5223dd6a",
+      "raw_bytes": 963
+    },
+    {
+      "path": "cli-contract.log.gz",
+      "stored_sha256": "85423619b5f1cc453cc59790801b2ff368ecb0a08b07feb8c563da123d894a62",
+      "raw_sha256": "e2ca59814b3ee9849f944ba29a0bac6008fce2ff0787df129029890c548382a0",
+      "raw_bytes": 92
+    },
+    {
+      "path": "skills.log.gz",
+      "stored_sha256": "3acc167a5fb8b4bdb928ea9f5f5306c4262c25e076dda1222043644b3bca1099",
+      "raw_sha256": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f",
+      "raw_bytes": 140
+    },
+    {
+      "path": "source-24.21.0.log.gz",
+      "stored_sha256": "8f331e7b9fb8be515482ba36faeb052bd0f9476c35c7cf10bfc3123ba9f775b7",
+      "raw_sha256": "d96d54debdeb847ec378ac846c6802f1e9ad5df9a024f9c609dcc5fa2092c1c6",
+      "raw_bytes": 3513
+    },
+    {
+      "path": "unicode-intermediate-baseline.log.gz",
+      "stored_sha256": "e9c9df8aec3ad6ff133083af7e45e799c2a3b5b9d7fd7894c192241735f78f87",
+      "raw_sha256": "d97169512ec6d0dfb97e87fafff377ce2188895c05a10e2c4d7076c4a8395ee0",
+      "raw_bytes": 1166
+    },
+    {
+      "path": "source-24.19.0.log.gz",
+      "stored_sha256": "9fdab80d586c1e78fd3876222d33628091438b560f1099dd89f4575beeef76b1",
+      "raw_sha256": "523b32c83dbf971a26f45e5842dbf917652254f02c1d0d36f10b631add313a91",
+      "raw_bytes": 3512
+    },
+    {
+      "path": "installed-24.21.0.log.gz",
+      "stored_sha256": "d425ac20a67f07a09fc577a7ffeec403f248b998e0aacfd8c714ba86e2397638",
+      "raw_sha256": "02bd74f06081349af64ca6cc3d7b1b870872ae8b22314ba01d6f134c2c3328b0",
+      "raw_bytes": 3514
+    },
+    {
+      "path": "installed-bin-version.log.gz",
+      "stored_sha256": "c45fc29e660a96b54ecb1af30ce32f32293f1a730feeb321b6e5f6f18defbf1d",
+      "raw_sha256": "a466ef209f5c3aee5ff0c702e2e9d5cced4783d2a655e8ab66330f21a5557b3f",
+      "raw_bytes": 6
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.18-baseline.log.gz",
+      "stored_sha256": "a62a4ac0b75d8a25edd09beaacb7539c775d74ea4f3faaadd1a071ba7e1c0778",
+      "raw_sha256": "ac553a9b9138e9ebb728cc8531def65a23484043ab043556de5e4fd17d143084",
+      "raw_bytes": 3420
+    },
+    {
+      "path": "iterations/candidate-1/cli-matrix.log.gz",
+      "stored_sha256": "35a1a8c626f8f6bd4b05973eee3d69cbb2d0586942955b9f6af47580821c7046",
+      "raw_sha256": "f1daadeda328f9c9b6b7390a2078e37944112f0e9ce5b96312bc63d090ceaf87",
+      "raw_bytes": 29
+    },
+    {
+      "path": "iterations/candidate-1/build-iteration.log.gz",
+      "stored_sha256": "f608baed68182ad2280dd9161ff898d726c98c0a8fb566d8a55610796995c114",
+      "raw_sha256": "b9fab3c423eb6b94e8210370f338255aac9161e24c43d261e523578e7ba139f0",
+      "raw_bytes": 686
+    },
+    {
+      "path": "iterations/candidate-1/release-contracts.log.gz",
+      "stored_sha256": "9ba66dfba3b679c19a3d6f72188ea586cb27f7f86ec42970df9120c9fb8ed5be",
+      "raw_sha256": "06bd69f2c0f1d115ab684e69c0008e11901c14cb335d4465d566233e94299563",
+      "raw_bytes": 2507
+    },
+    {
+      "path": "iterations/candidate-1/source-24.19-baseline-portable.log.gz",
+      "stored_sha256": "08aeab6dedc364f18ac7c568aaa9b5d521c17f4cd6452c74a860cba0cb8e32bf",
+      "raw_sha256": "6edc450eb17a6e00bb8f5002fcd0aabe680b95cf764dad83afc0564432521955",
+      "raw_bytes": 4146
+    },
+    {
+      "path": "iterations/candidate-1/source-focused-iteration-2.log.gz",
+      "stored_sha256": "5d8e3d01c660ae01190cc8d7d93ae77b755d8e10719f8f42e77c2cf389f6213f",
+      "raw_sha256": "95dc1c24de586f64c66eb492283221ede929db61d958aef681ee421f39108eaa",
+      "raw_bytes": 644
+    },
+    {
+      "path": "iterations/candidate-1/pack.log.gz",
+      "stored_sha256": "dadec5c6d927c4ac365da0d84d5c7613374379e509eaf817e5b95dc896e6fe26",
+      "raw_sha256": "74072be5537aa2a3e5991379bf22cffa98cc14f6e02db842502f9957272cf1ac",
+      "raw_bytes": 26766
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.18-baseline-owned-fixture.log.gz",
+      "stored_sha256": "02570f3aee2eec933bec027310a8c63741b549aa9e2a6fb4b2b75ff6c3b1c38b",
+      "raw_sha256": "85994c818743594ff7bfd190948c0d00743602764c551772b5c76988d4d92060",
+      "raw_bytes": 4367
+    },
+    {
+      "path": "iterations/candidate-1/security.log.gz",
+      "stored_sha256": "c694b5631c5b1263b3976e570638fd742e309d7a06dc6e178f46d78b890b9e77",
+      "raw_sha256": "f5a944e6efc3d6a6cd6de6650b89f0a65710bb150780b9bdc23073428c30c90c",
+      "raw_bytes": 442
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.19.0.log.gz",
+      "stored_sha256": "f5be5010189ff1738d03fcedac3b3ccdc696e25e32a41278c07af4aee19ac2be",
+      "raw_sha256": "d13a9a6d97ae9ed4fcd867fa1f6028952f1c8045164de3bf60f869eb377d361b",
+      "raw_bytes": 3515
+    },
+    {
+      "path": "iterations/candidate-1/release-notes-final.log.gz",
+      "stored_sha256": "916ed09137d1fbd1566f873b931f774300b7d40d65644e62ec1f586a45e8bdb8",
+      "raw_sha256": "c8a56b1a476cc6f0d7b9f8b8fb7435a82f1e9684535f6e0db4c6dec8dad6e88b",
+      "raw_bytes": 222
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.18.0.log.gz",
+      "stored_sha256": "6775d4ca29496c269b4cb3bd36985be309cf4781df49c50647aa01f383abc6c2",
+      "raw_sha256": "0a888f2d14eb90018a37f95ae344547845cd9d5f7f343a77b2199979a832d6a6",
+      "raw_bytes": 3513
+    },
+    {
+      "path": "iterations/candidate-1/docs.log.gz",
+      "stored_sha256": "e5851da984d0954b8291dcc4421631381f7c52d36a4520376e05fbdf350ad2ff",
+      "raw_sha256": "63290a144b4b440685fa8dca07c3ec12770555b8b03971bd174b3f9dc98d5051",
+      "raw_bytes": 1203
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.21-baseline-portable.log.gz",
+      "stored_sha256": "f24f8403ee04d14445a4a389ca669f64b0e4b6274f34a4e2d22748bc8e099744",
+      "raw_sha256": "00389c42b83697823e1723eb66ca41d500286a46c53bfc5aa6a081640dd65f69",
+      "raw_bytes": 4146
+    },
+    {
+      "path": "iterations/candidate-1/docs-site.log.gz",
+      "stored_sha256": "d0b1da4be68e988bf6117f14d2b4d8280509615999ecb14e16c2c9476c61343d",
+      "raw_sha256": "569de4a82c588708120b9b50b5dc5316d35c283b0d62b3523c46bbdfa8e0af25",
+      "raw_bytes": 2897
+    },
+    {
+      "path": "iterations/candidate-1/diff.log.gz",
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0
+    },
+    {
+      "path": "iterations/candidate-1/source-focused-iteration.log.gz",
+      "stored_sha256": "f841112e2716ce4f6f6a06d70be47b1b6666f2741bb34a528ad87319c1dade81",
+      "raw_sha256": "409112ae35f6bcf94a06b1ffa5f1d58e2a51e35fec95643cb9d63be0beaae909",
+      "raw_bytes": 25101
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.21-baseline.log.gz",
+      "stored_sha256": "31ae6fc3e4571789b1664ca6afc517c05b41e40f521dd94d2f98de2bf958c4ea",
+      "raw_sha256": "73aafa9650af7840a39ee850e302424c135d015b0aca1fd8847de93dae7c2c59",
+      "raw_bytes": 3420
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.21-baseline-owned-fixture.log.gz",
+      "stored_sha256": "33f2da5fbbc8980146c69e29e02fadb09dfe048467ea7f46f1289a80890ab03d",
+      "raw_sha256": "cbae5ea6e575b728de19793c4bd27c97be6935219a757f28cb23016c60b9eb2a",
+      "raw_bytes": 4368
+    },
+    {
+      "path": "iterations/candidate-1/source-24.19-baseline-owned-fixture.log.gz",
+      "stored_sha256": "49d99a53e5d5552b330d158463e54edad68ab84982c36973415690de909f9f44",
+      "raw_sha256": "6d003c5b1144fe1e0cb6219201105730f1b9ec5e48f16a4a54df5d08b8de3824",
+      "raw_bytes": 4368
+    },
+    {
+      "path": "iterations/candidate-1/npm-install-exact.log.gz",
+      "stored_sha256": "86c5fcfcaa90ec27c0402d152996d169f89b456ea2252e9f72a8f3a532dc6fc9",
+      "raw_sha256": "7d906e4917037b9538b3623653e904efad452a0d2bd3ef36bcbea496f7809b93",
+      "raw_bytes": 26
+    },
+    {
+      "path": "iterations/candidate-1/publish-static.log.gz",
+      "stored_sha256": "f319a305617780e74b886f254792b39dcb56fb2fe2158acf58eb5b922ab9676e",
+      "raw_sha256": "2b716889649d63876c41afc057225027eedc8202277f9ee4c31cb29c17fa44e3",
+      "raw_bytes": 111
+    },
+    {
+      "path": "iterations/candidate-1/build-test-final.log.gz",
+      "stored_sha256": "c6d2a9b20ab947d042a36e681f3e57452e9f2cb2b113bea334d480480c024917",
+      "raw_sha256": "4e2af64abe79833d31dd9b0cccd9147eafe6ff292631f984f9491c01a3d539a1",
+      "raw_bytes": 306
+    },
+    {
+      "path": "iterations/candidate-1/workflow.log.gz",
+      "stored_sha256": "291679fc21fb2ae3bbddd0afc2703df048210e38ca9142bce187231b3835a51b",
+      "raw_sha256": "4eb07780201afbf437c77af6cc576bec86bcd5444e2d23731e001006beda14a1",
+      "raw_bytes": 56
+    },
+    {
+      "path": "iterations/candidate-1/unicode-spelling-probe.log.gz",
+      "stored_sha256": "8e00d2dab1825dece1f5809ca4fb03a14b166959426c289df10e58602af47abf",
+      "raw_sha256": "4b68aebf2def3a0805d4ab2f82f00a6563f0451427f89bf457e634aae6866733",
+      "raw_bytes": 153
+    },
+    {
+      "path": "iterations/candidate-1/shared-regressions.log.gz",
+      "stored_sha256": "088f570d7072cc99c12cd4b53d1db692f2d4093974eb6979cbd624b25a9ef2e0",
+      "raw_sha256": "0432b9d83ede59bb8c9aa5073c30701615ccf24e4ed378c7510cc11998d918b0",
+      "raw_bytes": 56551
+    },
+    {
+      "path": "iterations/candidate-1/source-24.18.0.log.gz",
+      "stored_sha256": "487b77f56bc9f268927d2f734b7b29884a7eb2527e910f77d57c9811599e6298",
+      "raw_sha256": "eb1d3d218d49ad768f295945a3b51cedddbf74b5636a454a7742eb7a7caa7c68",
+      "raw_bytes": 3510
+    },
+    {
+      "path": "iterations/candidate-1/graph.log.gz",
+      "stored_sha256": "41986954667725cf925ecc8a494e5ba64277354fb150d6703c74d63559072ee1",
+      "raw_sha256": "c5644ec0d15222588569a2c27773346c41abc6d31a527011d5c152ec300924e7",
+      "raw_bytes": 963
+    },
+    {
+      "path": "iterations/candidate-1/cli-contract.log.gz",
+      "stored_sha256": "85423619b5f1cc453cc59790801b2ff368ecb0a08b07feb8c563da123d894a62",
+      "raw_sha256": "e2ca59814b3ee9849f944ba29a0bac6008fce2ff0787df129029890c548382a0",
+      "raw_bytes": 92
+    },
+    {
+      "path": "iterations/candidate-1/source-24.19-baseline.log.gz",
+      "stored_sha256": "368ed7da1afab92f7120d9e3bc788f6e152b31c42b2265d203a58ceab45845a9",
+      "raw_sha256": "c4c268c3e3b597463fe06091571f6c144c70e4a0e38d08ebd3f6754d5bad9120",
+      "raw_bytes": 3421
+    },
+    {
+      "path": "iterations/candidate-1/skills.log.gz",
+      "stored_sha256": "3acc167a5fb8b4bdb928ea9f5f5306c4262c25e076dda1222043644b3bca1099",
+      "raw_sha256": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f",
+      "raw_bytes": 140
+    },
+    {
+      "path": "iterations/candidate-1/source-24.21.0.log.gz",
+      "stored_sha256": "b5c395824a6a010c6bd835b8fede7e0e5938b211bcfd63556845e480415b8bee",
+      "raw_sha256": "803055275fe1cc5c005032d67a28cd52ce06d473e5c652870bfef5e0af428a22",
+      "raw_bytes": 3513
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.18-baseline-portable.log.gz",
+      "stored_sha256": "9efc056bd01ca37e6b80f0cb97b32d393f807eae001a66a1133c69f7b2120c11",
+      "raw_sha256": "c2abe539c5c220155d5c06de0ae8f3a0a77e062db8b11192b48ff6fe56a83b3d",
+      "raw_bytes": 4142
+    },
+    {
+      "path": "iterations/candidate-1/source-24.19.0.log.gz",
+      "stored_sha256": "34115bf17a84f54b3b076aa01c38355a7b37f5f18dfb68f52419ee5590fcd11c",
+      "raw_sha256": "c3abb071c14545abf01724935ef16828e78266f1ec42a569ec0f52bdbdbb050e",
+      "raw_bytes": 3512
+    },
+    {
+      "path": "iterations/candidate-1/build-final.log.gz",
+      "stored_sha256": "f608baed68182ad2280dd9161ff898d726c98c0a8fb566d8a55610796995c114",
+      "raw_sha256": "b9fab3c423eb6b94e8210370f338255aac9161e24c43d261e523578e7ba139f0",
+      "raw_bytes": 686
+    },
+    {
+      "path": "iterations/candidate-1/installed-24.21.0.log.gz",
+      "stored_sha256": "aa168873514e1bfe56dd277ab1be36f7e4da12338e4aef80d582bfa425e6a515",
+      "raw_sha256": "575e713c45e48587cc4310ad0c4374200fac7d6c4e0582c6619538ecbbe0b934",
+      "raw_bytes": 3511
+    },
+    {
+      "path": "iterations/candidate-1/installed-bin-version.log.gz",
+      "stored_sha256": "c45fc29e660a96b54ecb1af30ce32f32293f1a730feeb321b6e5f6f18defbf1d",
+      "raw_sha256": "a466ef209f5c3aee5ff0c702e2e9d5cced4783d2a655e8ab66330f21a5557b3f",
+      "raw_bytes": 6
+    }
+  ]
+}
