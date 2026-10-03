@@ -21,6 +21,8 @@ import { parseFrontmatter } from "../graph/frontmatter";
 import { assertNoGraphConflictMarkers, assertNodeFormat, readGraphFormat, readNodeIdentity } from "../graph/identity";
 import { readUpgradeJournal } from "./upgrade_transaction";
 import { withMutationLock } from "../util/lock";
+import { bootstrapWorkingHost, readWorkingMarker, WORKING_HOST_PATH } from "../core/working_host";
+import { workingStorePresent } from "../core/working_paths";
 
 export type InitCommandOptions = {
   root: string;
@@ -469,10 +471,12 @@ function ensureCreatedCoreManifestEntry(
   manifest.files.sort((a, b) => a.path.localeCompare(b.path));
 }
 
-function initialize(options: InitCommandOptions, locked: boolean): void {
+function initialize(options: InitCommandOptions, locked: boolean, fresh?: boolean): void {
   if (options.graphOnly && options.agent) throw new UsageError("--graph-only and --agent cannot be combined");
   const agent = !options.graphOnly && options.agent !== false;
   const root = path.resolve(options.root);
+  const freshGraph = fresh ?? !containedPathExists({ root, relativePath: ".mdkg" });
+  readWorkingMarker(root); // Never overwrite an authored/malformed host marker.
   const seedRoot = options.seedRoot ? path.resolve(options.seedRoot) : DEFAULT_SEED_SUBDIR;
   const createAgents = agent;
   const createStartupDocs = agent;
@@ -558,7 +562,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
   // Refuse incompatible input before creating a lock directory. Re-run the
   // complete preflight under the shared writer lock before the first write.
   if (!locked) {
-    return withMutationLock(root, effectiveConfig.index.lock_timeout_ms, () => initialize(options, true));
+    return withMutationLock(root, effectiveConfig.index.lock_timeout_ms, () => initialize(options, true, freshGraph));
   }
 
   const stats: CopyStats = {
@@ -662,6 +666,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
     seedManifest.files = [...installed.values()].sort((a, b) => a.path.localeCompare(b.path));
     writeInitManifest(root, `.mdkg/${INIT_MANIFEST_FILE}`, seedManifest);
     stats.manifestWritten = true;
+    if (freshGraph && bootstrapWorkingHost(root)) recordCreated(root, path.join(root, WORKING_HOST_PATH), stats);
   } catch (err) {
     if (stats.created > 0 || stats.skipped > 0) {
       emitPartialInitFailure(root, stats, err);
@@ -685,6 +690,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
         ".mdkg/index/*.sqlite-journal",
         ...PROJECT_DB_GITIGNORE_ENTRIES,
         ".mdkg/state/",
+        ...(workingStorePresent(root) ? [".mdkg/working/"] : []),
         ".mdkg/pack/",
         ".mdkg/subgraphs/",
         ".mdkg/archive/**/source/",

@@ -1,17 +1,17 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: c99d532a800fc3d409c8678e2a2d5671928a2246f90c32f9c4981032a2e54519 -->
+<!-- contract-hash: 0446ae709d7abf79ab25a09511b6b5830968e6f939ec5c1547a463dbb87baac2 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
 The page is generated from current command metadata in `dist/command-contract.json`, which keeps usage, flags, output formats, and safety notes aligned with the CLI.
 
 - Tool: mdkg
-- Package version: 0.6.1
+- Package version: 0.6.2
 - Schema version: 1
-- Command count: 114
-- Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, git, global, goal, graph, guide, handoff, index, init, list, loop, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
+- Command count: 131
+- Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, git, global, goal, graph, guide, handoff, index, init, list, loop, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, working, workspace
 
 ## Categories
 
@@ -49,6 +49,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - upgrade: 1
 - validate: 1
 - work: 7
+- working: 17
 - workspace: 1
 
 ## Concrete command options
@@ -59,6 +60,22 @@ Boolean values use `=true` or `=false`; `init --agent` also preserves its legacy
 
 | Command | Accepted command options |
 | --- | --- |
+| `mdkg working init` | `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working add` | `--file <value>`, `--owner <value>`, `--work-ref <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working adopt` | `--file <value>`, `--owner <value>`, `--work-ref <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working retain` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working release` | `--owner <value>`, `--confirm-stopped`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working pin` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working unpin` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working promote` | `--owner <value>`, `--summary-file <value>`, `--archive-id <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working gc` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working recover` | `--owner <value>`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working purge` | `--owner <value>`, `--confirm-loss`, `--apply`, `--plan <value>`, `--plan-hash <value>`, `--json` |
+| `mdkg working resume` | `--owner <value>`, `--confirm-stopped`, `--apply`, `--plan-hash <value>`, `--lock-evidence <value>`, `--confirm-quiescent`, `--json` |
+| `mdkg working list` | `--json` |
+| `mdkg working show` | `--json` |
+| `mdkg working search` | `--json` |
+| `mdkg working verify` | `--json` |
 | `mdkg init` | `--force`, `--agent`, `--graph-only`, `--no-update-ignores`, `--update-gitignore`, `--update-npmignore`, `--update-dockerignore` |
 | `mdkg upgrade` | `--dry-run`, `--apply`, `--resume`, `--recover`, `--plan-hash <value>`, `--only <value>`, `--json` |
 | `mdkg guide` | none |
@@ -6298,6 +6315,922 @@ mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|f
 ### Related commands
 
 `mdkg work`, `mdkg work artifact`, `mdkg work contract`, `mdkg work order`, `mdkg work receipt`
+
+## working
+
+mdkg working command
+
+- Command: `mdkg working`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+mdkg working list [--json]
+mdkg working show <id...> [--json]
+mdkg working search <query> [--json]
+mdkg working verify [--json]
+```
+
+### Examples
+
+```bash
+mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--archive-id <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--confirm-loss`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--confirm-quiescent`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--confirm-stopped`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--file <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--lock-evidence <value>`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--owner <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- 4 additional flags omitted from this generated summary.
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`, `mdkg working list`
+
+## working add
+
+mdkg working add command
+
+- Command: `mdkg working add`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--file <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+- `--work-ref <value>`: mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`, `mdkg working list`
+
+## working adopt
+
+mdkg working adopt command
+
+- Command: `mdkg working adopt`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--file <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+- `--work-ref <value>`: mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working gc`, `mdkg working init`, `mdkg working list`
+
+## working gc
+
+mdkg working gc command
+
+- Command: `mdkg working gc`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working init`, `mdkg working list`
+
+## working init
+
+mdkg working init command
+
+- Command: `mdkg working init`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working list`
+
+## working list
+
+mdkg working list command
+
+- Command: `mdkg working list`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg working list [--json]
+```
+
+### Examples
+
+```bash
+mdkg working list [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working list [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: none
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working pin
+
+mdkg working pin command
+
+- Command: `mdkg working pin`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working promote
+
+mdkg working promote command
+
+- Command: `mdkg working promote`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--archive-id <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--summary-file <value>`: mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working purge
+
+mdkg working purge command
+
+- Command: `mdkg working purge`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: destructive
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--confirm-loss`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working recover
+
+mdkg working recover command
+
+- Command: `mdkg working recover`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working release
+
+mdkg working release command
+
+- Command: `mdkg working release`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--confirm-stopped`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working resume
+
+mdkg working resume command
+
+- Command: `mdkg working resume`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
+
+### Usage
+
+```text
+mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--confirm-quiescent`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--confirm-stopped`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--lock-evidence <value>`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--owner <value>`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--plan-hash <value>`: mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false,"default":false,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working retain
+
+mdkg working retain command
+
+- Command: `mdkg working retain`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working search
+
+mdkg working search command
+
+- Command: `mdkg working search`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg working search <query> [--json]
+```
+
+### Examples
+
+```bash
+mdkg working search <query> [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working search <query> [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: none
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working show
+
+mdkg working show command
+
+- Command: `mdkg working show`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg working show <id...> [--json]
+```
+
+### Examples
+
+```bash
+mdkg working show <id...> [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working show <id...> [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: none
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working unpin
+
+mdkg working unpin command
+
+- Command: `mdkg working unpin`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+```
+
+### Common flags
+
+- `--apply`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--owner <value>`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan <value>`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--plan-hash <value>`: mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply"}
+- Side effects: preview-or-apply-selected-working-operation
+- Read paths: .mdkg/**
+- Write paths: .gitignore, .mdkg/archive/**, .mdkg/index/write.lock/**, .mdkg/working-host.json, .mdkg/working/**
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume
+- Receipts: working-operation-receipt, working-plan
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
+
+## working verify
+
+mdkg working verify command
+
+- Command: `mdkg working verify`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg working verify [--json]
+```
+
+### Examples
+
+```bash
+mdkg working verify [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--json`: mdkg working verify [--json]
+- `--root <value>`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: none
+
+### Related commands
+
+`mdkg working`, `mdkg working add`, `mdkg working adopt`, `mdkg working gc`, `mdkg working init`
 
 ## workspace
 

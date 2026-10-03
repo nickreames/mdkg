@@ -8,6 +8,37 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.6.2 - 2026-10-03
+
+### Qualification status
+
+- Unpublished stacked draft candidate. Focused source and installed acceptance
+  are recorded separately; independent review, owner/local/platform qualification
+  and full prepublication gates remain required. No merge or publication approval.
+
+### Added
+
+- Persistent private working entries with explicit JSON preview and hash-bound
+  apply, fresh host binding, selected-file adoption, ownership and pin controls.
+  Fresh legacy init retains an independent host marker; existing legacy users
+  opt in explicitly without canonical node migration. V2 uses its graph ID.
+- Explicit selected GC quarantines inactive, unpinned and unclaimed entries.
+  Quarantine is indefinite; recover and separately confirmed purge are explicit.
+  Age or PID absence never releases custody or triggers deletion.
+- Journaled interruption recovery with exact plan/owner and, for retained locks,
+  fresh custody evidence and explicit quiescence. Unknown/truncated journals and
+  pre-journal lock custody refuse; they are preserved for separate review.
+- Sanitized private archive promotion retains original drafts. Working payload
+  stays out of ordinary discovery, caches, packs, bundles and package output.
+  Local ignored storage is not backup; selected export/restore is explicit.
+
+### Fixed
+
+- Legacy parents refuse cached node/capability paths inside managed child working
+  storage, including forged ancestor aliases. Repeated init preserves unmanaged
+  legacy working paths' Git visibility. Explicit working opt-in distinguishes
+  existing empty ignore files from absent files and supports journal resume.
+
 ## 0.6.1 - 2026-10-02
 
 ### Qualification status

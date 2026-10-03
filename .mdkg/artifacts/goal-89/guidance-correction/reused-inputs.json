@@ -1,0 +1,13 @@
+{
+  "prior_commit": "945ee4434b50b21861e8fff300450cca39769937",
+  "built_manifest_sha256": "88286aab9a5f467d3057eedef76f503f3cd96c4e8c6ed55bbb53cf355fd6a8d6",
+  "installed_manifest_sha256": "7c27cf0c310f3fa17bb833a4d9d5706fa709057587fa0176e374c75e261eaa81",
+  "tar_sha256": "1ad72ba366c93c28f98c3ee2eacbf3368aec8a09b249f3043bf18e37805a4df4",
+  "npm_payload_byte_changes": [],
+  "changed_prior_product_paths": [
+    "docs/src/content/docs/project/changelog.md",
+    "docs/src/content/docs/start-here/install.md"
+  ],
+  "newly_bound_document": "docs/start-here/install.md",
+  "meaning": "Only three repository documentation projections change. Runtime, package payload and installed artifact remain exact; old feature evidence is preserved, not a new full-head qualification claim."
+}

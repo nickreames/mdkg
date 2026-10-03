@@ -376,3 +376,32 @@ Structured formats are command-specific, not global output flags:
   manifest, goal, status, and DB operations, are JSON-only structured surfaces.
 - `pack` selects content with `--format md|json|toon|xml`, not discovery flags.
 - `index` has no structured-output flag; use focused help for exact options.
+
+## Persistent private working storage (0.6.2 candidate)
+
+Fresh init retains an independent `.mdkg/working-host.json`; existing legacy graphs
+opt in explicitly without node migration. V2 uses its canonical graph ID.
+Custom scratch is preserved. Mutation preview emits JSON; save it outside working
+and apply its exact plan hash. GC quarantines selected inactive/unpinned/unclaimed
+entries indefinitely; recover and confirmed purge are explicit. Ignored storage
+is not backup; retain reviewed sanitized archive/artifact evidence separately.
+Use `mdkg help working` for the exact command and flag surface.
+
+```text
+  mdkg working init [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working add [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working adopt [--file <value>] [--owner <value>] [--work-ref <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working retain <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working release <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working pin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working unpin <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working promote <id...> [--owner <value>] [--summary-file <value>] [--archive-id <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working gc <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working recover <id...> [--owner <value>] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working purge <id...> [--owner <value>] [--confirm-loss] [--apply] [--plan <value>] [--plan-hash <value>] [--json]
+  mdkg working resume <id...> [--owner <value>] [--confirm-stopped] [--apply] [--plan-hash <value>] [--lock-evidence <value>] [--confirm-quiescent] [--json]
+  mdkg working list [--json]
+  mdkg working show <id...> [--json]
+  mdkg working search <query> [--json]
+  mdkg working verify [--json]
+```

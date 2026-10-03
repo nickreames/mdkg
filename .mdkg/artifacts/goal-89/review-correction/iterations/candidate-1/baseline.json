@@ -1,0 +1,69 @@
+{
+  "head": "4c55758d6dbd1d16f77bcd406f3c995cba76b4d9",
+  "legacy_initializer_head": "ce53ea56629af23ecd10d6e58a393db1235fda79",
+  "records": [
+    {
+      "label": "source-24.19",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-goal89",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "source-24.19-baseline.log",
+      "sha256": "c4c268c3e3b597463fe06091571f6c144c70e4a0e38d08ebd3f6754d5bad9120"
+    },
+    {
+      "label": "installed-24.18",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-review-cache/goal89-qualification/npm-consumer/node_modules/mdkg",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "installed-24.18-baseline.log",
+      "sha256": "ac553a9b9138e9ebb728cc8531def65a23484043ab043556de5e4fd17d143084"
+    },
+    {
+      "label": "installed-24.21",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+        "--test",
+        "--test-name-pattern",
+        "review regression",
+        "tests/working-storage.test.mjs"
+      ],
+      "target": "/workspace/mdkg-cloud-review-cache/goal89-qualification/npm-consumer/node_modules/mdkg",
+      "exit": 1,
+      "counts": {
+        "tests": 3,
+        "pass": 0,
+        "fail": 3
+      },
+      "log": "installed-24.21-baseline.log",
+      "sha256": "73aafa9650af7840a39ee850e302424c135d015b0aca1fd8847de93dae7c2c59"
+    }
+  ]
+}

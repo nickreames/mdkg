@@ -1,0 +1,27 @@
+[
+  {
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "start": "2026-10-03T06:52:31.702344+00:00",
+    "end": "2026-10-03T06:52:48.368576+00:00",
+    "exit": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+      "node",
+      "--test",
+      "--test-name-pattern",
+      "current contract|ordinary discovery|explicit init journal",
+      "tests/cloud-working-host-contract.test.mjs",
+      "tests/working-storage.test.mjs"
+    ],
+    "start": "2026-10-03T06:52:48.368602+00:00",
+    "end": "2026-10-03T06:52:50.060381+00:00",
+    "exit": 0
+  }
+]

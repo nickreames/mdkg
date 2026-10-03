@@ -1,8 +1,8 @@
 {
   "generated_from": "dist/command-contract.json",
-  "contract_hash": "c99d532a800fc3d409c8678e2a2d5671928a2246f90c32f9c4981032a2e54519",
-  "package_version": "0.6.1",
-  "command_count": 114,
+  "contract_hash": "0446ae709d7abf79ab25a09511b6b5830968e6f939ec5c1547a463dbb87baac2",
+  "package_version": "0.6.2",
+  "command_count": 131,
   "categories": {
     "archive": 6,
     "bundle": 6,
@@ -38,6 +38,7 @@
     "upgrade": 1,
     "validate": 1,
     "work": 7,
+    "working": 17,
     "workspace": 1
   },
   "commands": [
@@ -1562,6 +1563,253 @@
     {
       "key": "work validate",
       "category": "work",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "working",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working add",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working adopt",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working gc",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working init",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working list",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "working pin",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working promote",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working purge",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "destructive",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working recover",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working release",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working resume",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false,
+        "default": false,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working retain",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working search",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "working show",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "working unpin",
+      "category": "working",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply"
+      }
+    },
+    {
+      "key": "working verify",
+      "category": "working",
       "visibility": "public",
       "danger_level": "read-only",
       "output_formats": [

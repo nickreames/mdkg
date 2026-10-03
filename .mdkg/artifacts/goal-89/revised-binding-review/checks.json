@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "kind": "goal89-revised-host-binding-review",
+  "state": "PENDING_REVISED_BINDING_REVIEW",
+  "implementation_state": "NOT_RUN",
+  "target_version": "0.6.2-unreleased; inherited package stays0.6.1",
+  "contract_revision": "canonical-v2-host-binding-v1",
+  "contract_sha256": "65d20d7e588f2fd99908c300d0ce113ff2b40776fde661b8f1f3ed4dcf87f6d8",
+  "repo": "nickreames/mdkg",
+  "cloud_cwd": "/workspace/mdkg-cloud-goal89",
+  "branch": "cloud/goal89-persistent-working",
+  "base_branch": "cloud/goal88-minimal-init",
+  "base_head": "e788c35107e98df075bfe7e08deb9de1498f1444",
+  "synchronization_merge": "b5c7ecc3e94e8d07c0e3c2a72ff93e3f2c6328ca",
+  "merge_parents": [
+    "0ff7095a94a28e02397f16db5c10a66933030f2d",
+    "e788c35107e98df075bfe7e08deb9de1498f1444"
+  ],
+  "original_design_head": "0ff7095a94a28e02397f16db5c10a66933030f2d",
+  "policy_direction": "Nick accepted indefinite quarantine + explicit recovery/purge + no automatic deletion in2026-10-03parentrelay; not full design approval",
+  "pending_choice": "Review H1 canonical v2 prerequisite with separate explicit legacy migration versus H2 separate independent legacy-host-binding design; no implementation before exact revised review",
+  "source_behavior_added_for_goal89": false,
+  "new_prod_working_helper_or_commands": false,
+  "runtime_and_built_payload_parity": {
+    "same_package_inputs": true,
+    "same_built_payload": true,
+    "version": "0.6.1",
+    "package_inputs_sha256": "4949339295dc81d59355253d9f4de7b0149ddc0c27dac7e89935b45f2e86453d",
+    "artifact_sha256": "844b5e046834c1c2e1f14767a98349d72331d2525e1aa804c38b03d5b24ca5d2"
+  },
+  "focused_current": {
+    "passed": 65,
+    "failed": 0,
+    "skipped": 0,
+    "node": "24.19.0"
+  },
+  "focused_minimum": {
+    "passed": 65,
+    "failed": 0,
+    "skipped": 0,
+    "node": "24.18.0"
+  },
+  "oracle_cases": 7,
+  "oracle_scope": "actual independent canonical reader + TEST-ONLY proposed equality/refusal + documented material contract; not store/adoption/ownership/journal/installed acceptance",
+  "selector_correction": "Initial missing compiled identity selector was ignored by Node; initial proof is7oracle cases only. Rebuilt and explicitly checked files before65-case current/minimum final runs.",
+  "static_passed": [
+    "supported-build",
+    "test-compile",
+    "docs499examples",
+    "plancontract",
+    "CLIparity",
+    "CLIcontract",
+    "workflowdrift",
+    "security",
+    "eight-skills",
+    "graph-zero-errors-one-stale-cache-warning",
+    "diffcheck"
+  ],
+  "not_run": [
+    "Test495 actual working feature/source/installed acceptance",
+    "0.6.2 full-candidate/release-ladder/platform qualification",
+    "owner approval of revised contract",
+    "Goal90 implementation"
+  ],
+  "task848": "review",
+  "checkpoint675": "backlog",
+  "checkpoint677": "backlog/readiness:not-run",
+  "selected_state_mutated": false,
+  "canonical_ids_allocated": false,
+  "current_inputs": {
+    "docs/cloud-goal89-design.md": "65d20d7e588f2fd99908c300d0ce113ff2b40776fde661b8f1f3ed4dcf87f6d8",
+    "docs/cloud-goal89-validation-plan.md": "b8ad0a6617360a1dbf206f1fa96999f554404f908821720b44c52b38b8eb82fa",
+    "docs/cloud-goal89-morning-decision.md": "32fc18bb68f829814f1c038960eb9bb64ef60451eb1fbea6da9ac8b1a417f9e4",
+    "docs/cloud-goal89-interventions.md": "60b8f5917daf67bef8fd03218b6605032c87a577141cf95fc76b5b7a58cefeb1",
+    "tests/cloud-working-host-contract.test.mjs": "86e06688b32c07efc1745d43e8924e8ea15122e56c19a9da0b6ad5c591380a1c",
+    ".mdkg/work/task-848-lock-persistent-working-storage-contracts-and-migration-decisions.md": "414492d2555d464682bb3e8164564adfbbd1dfb15a381943b6421250cb429a54",
+    ".mdkg/work/chk-675-reviewed-persistent-working-storage-design-boundary.md": "50bdfa798343a5645d2bc93b6efba63bba569cb6d5049a5640893a8ea6aa26e8"
+  },
+  "recorded_utc": "2026-10-03T03:28:29Z",
+  "evidence_files": {
+    "goal89-binding-initial.log.gz": {
+      "sha256": "61c2e63112e11b7a9e99b716610673ed945c492636185274b334160e40f33d10",
+      "bytes": 514
+    },
+    "goal89-binding-minimum-initial.log.gz": {
+      "sha256": "03b5cf93ca4d79bc446af07f55ea102a7b878631868bec2bf9db5d74e7b525e9",
+      "bytes": 514
+    },
+    "goal89-binding-unsafe-tmp.log.gz": {
+      "sha256": "65fb23c52a2676000ea8229437fcc22a05cd65feee51479d5b9f6e5a6f7a5ea3",
+      "bytes": 482
+    },
+    "goal89-inherited-package-parity.json": {
+      "sha256": "ef4aec23f62b8a5e81ef21b8d9a69a3348b8c3c69d572ffc66bce976a7ac4f13",
+      "bytes": 270
+    },
+    "goal89-sync-build-tests.log.gz": {
+      "sha256": "3021d4e83fd12d384b45e5e33adfb5facad5553a1264c7c972d57697c9d79e37",
+      "bytes": 218
+    },
+    "goal89-sync-build.log.gz": {
+      "sha256": "c218257868d37fa127d0dbcea31fd56447f95a11a83b2548d785dad5a909656f",
+      "bytes": 397
+    },
+    "goal89-sync-cli-contract.log.gz": {
+      "sha256": "013d1a912f20b6ee7f58c79c1fc49741f8a800b5b9cb5370398ee71c0920a10c",
+      "bytes": 98
+    },
+    "goal89-sync-cli-parity.log.gz": {
+      "sha256": "35a1a8c626f8f6bd4b05973eee3d69cbb2d0586942955b9f6af47580821c7046",
+      "bytes": 49
+    },
+    "goal89-sync-docs-examples.log.gz": {
+      "sha256": "01ed0d74c26c1278eb9ae651e51d796f4fbf5320e8ff99ba087738be9cd59547",
+      "bytes": 197
+    },
+    "goal89-sync-docs-reference.log.gz": {
+      "sha256": "ea23b8134d9c0053fc046b43f847fcf6640e65e71e120292c4222af64eec6da3",
+      "bytes": 152
+    },
+    "goal89-sync-focused-minimum.log.gz": {
+      "sha256": "933ef83475bfd5adf4ce84313a31418ea9cc928a1abec655dde43bb4ec782e98",
+      "bytes": 2416
+    },
+    "goal89-sync-focused.log.gz": {
+      "sha256": "eac9c9ffae9d484fd60bdcefc623a9ec1464010840df2b41ca2c45542547c0e4",
+      "bytes": 2413
+    },
+    "goal89-sync-graph.json": {
+      "sha256": "249affc9d5b98227807dbcc0a508328d57993017ff025f61bfd4491b2fcf385c",
+      "bytes": 956
+    },
+    "goal89-sync-plan.log.gz": {
+      "sha256": "cc0a7147cfa2fe8bb1ea7d77d7996bc107d0d9d2ebfbc71796c709540d0d2976",
+      "bytes": 49
+    },
+    "goal89-sync-release-notes.log.gz": {
+      "sha256": "4bdbfd50911df1ce7170d67a47c3b1b7e95f65a5f67bd5e977b7f8a300944f64",
+      "bytes": 123
+    },
+    "goal89-sync-security.log.gz": {
+      "sha256": "a8a0de556be5f9234581b73ab575ed90d960efc50bbedec6a4316e7f9d41ea07",
+      "bytes": 194
+    },
+    "goal89-sync-skills.json": {
+      "sha256": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f",
+      "bytes": 140
+    },
+    "goal89-sync-workflow.log.gz": {
+      "sha256": "291679fc21fb2ae3bbddd0afc2703df048210e38ca9142bce187231b3835a51b",
+      "bytes": 73
+    },
+    "goal89-final-oracle.log.gz": {
+      "sha256": "c603be9cc4ef7e502cd9e04029f9f685c5dae715a3c4c92ca012c3fa4e6d406e",
+      "bytes": 483
+    },
+    "goal89-final-docs.log.gz": {
+      "sha256": "01ed0d74c26c1278eb9ae651e51d796f4fbf5320e8ff99ba087738be9cd59547",
+      "bytes": 197
+    },
+    "goal89-final-plan.log.gz": {
+      "sha256": "cc0a7147cfa2fe8bb1ea7d77d7996bc107d0d9d2ebfbc71796c709540d0d2976",
+      "bytes": 49
+    },
+    "goal89-final-graph.json": {
+      "sha256": "249affc9d5b98227807dbcc0a508328d57993017ff025f61bfd4491b2fcf385c",
+      "bytes": 956
+    }
+  },
+  "compatibility_cost": "H1 also gates fresh default legacy init; no implicit first commit/ancestor or bootstrap. Existing migration prerequisites remain.",
+  "final_doc_oracle_recheck": {
+    "passed": 7,
+    "failed": 0
+  }
+}

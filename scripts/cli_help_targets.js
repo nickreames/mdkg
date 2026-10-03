@@ -21,6 +21,8 @@ const HELP_TARGETS = [
   ["spec", "show"],
   ["spec", "validate"],
   ["archive"],
+  ...["", "init", "add", "adopt", "retain", "release", "pin", "unpin", "promote", "gc", "recover", "purge", "resume", "list", "show", "search", "verify"]
+    .map(sub => sub ? ["working", sub] : ["working"]),
   ["archive", "add"],
   ["archive", "list"],
   ["archive", "show"],

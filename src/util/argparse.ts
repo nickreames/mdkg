@@ -12,6 +12,7 @@ export type ParsedArgs = {
 const NORMALIZE_VALUE_FLAGS = new Set(["--ws", "--type", "--status", "--template", "--epic"]);
 
 const VALUE_FLAGS = new Set([
+  "--plan", "--owner", "--file", "--work-ref", "--summary-file", "--archive-id",
   "--root",
   "--id",
   "--ws",
@@ -168,6 +169,7 @@ const BOOLEAN_FLAGS = new Set([
   "--stdio",
   "--help",
   "--paused", "--planning-only", "--no-children", "--changed-only", "--headings", "--strict",
+  "--confirm-stopped", "--confirm-loss",
 ]);
 
 export const FLAG_ALIASES: Readonly<Record<string, string>> = {

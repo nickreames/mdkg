@@ -45,6 +45,7 @@ const READ_WRITE_PATHS = {
 // Family records conservatively describe every supported invocation; concrete
 // read-only modes remain documented below without granting execution authority.
 const READ_ONLY_TARGETS = new Set([
+  "working list", "working show", "working search", "working verify",
   "global", "show", "list", "search", "next", "guide", "status", "mcp", "mcp serve",
   "capability", "capability list", "capability search", "capability show",
   "manifest", "manifest list", "manifest show", "manifest validate",
@@ -626,6 +627,17 @@ function goalStateMutation(action) {
     dry_run: { supported: false },
     receipts: ["goal-state-receipt"],
     danger_level: "moderate",
+  };
+}
+
+for (const sub of ["", "init", "add", "adopt", "retain", "release", "pin", "unpin", "promote", "gc", "recover", "purge", "resume"]) {
+  SAFETY_OVERRIDES[sub ? `working ${sub}` : "working"] = {
+    side_effects: ["preview-or-apply-selected-working-operation"],
+    write_paths: [".mdkg/working/**", ".mdkg/working-host.json", ".gitignore", ".mdkg/archive/**"],
+    lock_policy: "mutation-lock-required-for-apply",
+    atomic_write_policy: "exclusive-journal; atomic-manifest; admitted-payload-writes-and-renames; explicit-resume",
+    dry_run: { supported: sub !== "resume", default: sub !== "resume", apply_flag: "--apply" },
+    receipts: ["working-plan", "working-operation-receipt"], danger_level: sub === "purge" ? "destructive" : "moderate",
   };
 }
 

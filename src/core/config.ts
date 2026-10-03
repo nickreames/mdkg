@@ -1,4 +1,5 @@
 import { configPath } from "./paths";
+import { workingPath, workingStorePresent } from "./working_paths";
 import { readContainedFileIfPresent } from "./filesystem_authority";
 import { LATEST_SCHEMA_VERSION, migrateConfig } from "./migrate";
 import { EventValidationLimits, normalizeEventConfig } from "./event_limits";
@@ -1186,5 +1187,20 @@ export function loadConfig(root: string): Config {
   }
 
   const migrated = migrateConfig(raw);
-  return validateConfigSchema(migrated.config);
+  const config = validateConfigSchema(migrated.config);
+  if (workingStorePresent(root)) assertWorkingConfigPaths(config);
+  return config;
+}
+
+/** Opting into managed storage cannot repurpose a legacy canonical/cache path.
+ * Legacy configurations remain usable before an actual owned store exists. */
+export function assertWorkingConfigPaths(config: Config): void {
+  const visit = (value: unknown, label: string, pathValue = false): void => {
+    if (pathValue && typeof value === "string" && workingPath(value)) throw new Error(`${label} overlaps reserved private working storage`);
+    else if (Array.isArray(value)) value.forEach((v, i) => visit(v, `${label}[${i}]`, pathValue));
+    else if (value && typeof value === "object") for (const [key, v] of Object.entries(value))
+      visit(v, `${label}.${key}`, /^(?:.+_(?:path|paths|dir)|path|targets)$/.test(key));
+  };
+  for (const [label, value] of Object.entries(config)) if (label !== "workspaces") visit(value, label);
+  for (const [alias, ws] of Object.entries(config.workspaces)) visit(`${ws.path}/${ws.mdkg_dir}`, `workspaces.${alias}`, true);
 }

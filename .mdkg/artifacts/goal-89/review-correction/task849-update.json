@@ -1,0 +1,12 @@
+{
+  "action": "updated",
+  "task": {
+    "workspace": "root",
+    "id": "task-849",
+    "qid": "root:task-849",
+    "path": ".mdkg/work/task-849-implement-persistent-working-artifact-storage-and-explicit-promotion.md",
+    "type": "task",
+    "status": "review",
+    "priority": 1
+  }
+}

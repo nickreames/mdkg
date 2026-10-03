@@ -97,6 +97,7 @@ import {
 } from "./commands/subgraph";
 import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { runInitCommand } from "./commands/init";
+import { runWorkingCommand } from "./commands/working";
 import { runNewCommand } from "./commands/new";
 import { runGuideCommand } from "./commands/guide";
 import { runUpgradeCommand } from "./commands/upgrade";
@@ -205,6 +206,7 @@ function printUsage(log: LogFn): void {
   log("  manifest    List, show, and validate MANIFEST.md/SPEC.md capability records");
   log("  spec        Legacy alias for `mdkg manifest` during the compatibility bridge");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
+  log("  working     Persistent private scratch with explicit preview/apply cleanup");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
   log("  graph       Clone, fork, import, and inspect mdkg graph references");
   log("  git         Inspect local Git state and sanitized revision descriptors");
@@ -1393,6 +1395,21 @@ function printCommandHelpBody(log: LogFn, command?: string, subcommand?: string)
     case "upgrade":
       printUpgradeHelp(log);
       return;
+    case "working": {
+      const commands = optionCommandsForHelp(["working", ...(subcommand ? [subcommand] : [])]);
+      log("Usage:");
+      for (const { command: key, flags } of commands) {
+        const sub = key.split(" ")[1];
+        const selection = ["init", "add", "adopt", "list", "verify"].includes(sub) ? "" : sub === "search" ? " <query>" : " <id...>";
+        log(`  mdkg ${key}${selection} ${flags.filter(f => !["--root", "--help", "--version"].includes(f)).map(f => {
+          const kind = commandOptionKind(key, f); return `[${f}${kind === "value" || kind === "integer" ? " <value>" : ""}]`;
+        }).join(" ")}`);
+      }
+      log("  Preview emits a JSON plan without effects; save it outside working.");
+      log("  Apply reads a saved plan with its exact hash and rechecks inputs.");
+      log("  Ignored working files persist locally; they are not backup.");
+      printGlobalOptions(log); return;
+    }
     case "guide":
       printGuideHelp(log);
       return;
@@ -3074,6 +3091,18 @@ function runEventSubcommand(parsed: ParsedArgs, root: string): ExitCode {
 function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntime): ExitCode {
   const command = (parsed.positionals[0] ?? "").toLowerCase();
   switch (command) {
+    case "working": {
+      const action = parsed.positionals[1];
+      if (!action || !optionCommandsForHelp(["working", action]).some(c => c.command === `working ${action}`)) throw new UsageError("unknown working subcommand");
+      runWorkingCommand({ root, action, ids: parsed.positionals.slice(2),
+        owner: requireFlagValue("--owner", parsed.flags["--owner"]), file: requireFlagValue("--file", parsed.flags["--file"]),
+        workRef: requireFlagValue("--work-ref", parsed.flags["--work-ref"]), summary: requireFlagValue("--summary-file", parsed.flags["--summary-file"]),
+        archiveId: requireFlagValue("--archive-id", parsed.flags["--archive-id"]), plan: requireFlagValue("--plan", parsed.flags["--plan"]),
+        planHash: requireFlagValue("--plan-hash", parsed.flags["--plan-hash"]), apply: parseBooleanFlag("--apply", parsed.flags["--apply"]),
+        confirmStopped: parseBooleanFlag("--confirm-stopped", parsed.flags["--confirm-stopped"]), confirmLoss: parseBooleanFlag("--confirm-loss", parsed.flags["--confirm-loss"]),
+        lockEvidence: requireFlagValue("--lock-evidence", parsed.flags["--lock-evidence"]), confirmQuiescent: parseBooleanFlag("--confirm-quiescent", parsed.flags["--confirm-quiescent"]),
+        json: parseBooleanFlag("--json", parsed.flags["--json"]) }); return 0;
+    }
     case "init": {
       const force = parseBooleanFlag("--force", parsed.flags["--force"]);
       for (const removedFlag of ["--llm", "--agents", "--claude", "--omni"]) {

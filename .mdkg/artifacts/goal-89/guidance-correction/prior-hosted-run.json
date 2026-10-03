@@ -1,0 +1,297 @@
+{
+  "run_id": 37109564106,
+  "head": "945ee4434b50b21861e8fff300450cca39769937",
+  "terminal": {
+    "workflow_runs": [
+      {
+        "id": 37109564106,
+        "name": "Release readiness",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 42,
+        "jobs_url": "https://api.github.com/repos/nickreames/mdkg/actions/runs/37109564106/jobs",
+        "logs_url": "https://api.github.com/repos/nickreames/mdkg/actions/runs/37109564106/logs",
+        "workflow_id": 312312933
+      }
+    ]
+  },
+  "jobs": {
+    "jobs": [
+      {
+        "id": 111164682618,
+        "name": "Fast / minimum / Node 24.18.0",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 37109564106,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Prepare evidence directory",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Bootstrap all dependency owners",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Run manifest-backed fast release gate",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 6
+          },
+          {
+            "name": "Preserve interrupted fixture evidence and report failed cases",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Upload fast evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 15
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          }
+        ]
+      },
+      {
+        "id": 111164682773,
+        "name": "Fast / floating / Node 24.x",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_id": 37109564106,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Prepare evidence directory",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Bootstrap all dependency owners",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Run manifest-backed fast release gate",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "number": 6
+          },
+          {
+            "name": "Preserve interrupted fixture evidence and report failed cases",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 7
+          },
+          {
+            "name": "Upload fast evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 15
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          }
+        ]
+      },
+      {
+        "id": 111164683295,
+        "name": "Full / prepare exact SHA",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_id": 37109564106,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111164683299,
+        "name": "Full / aggregate release authority",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_id": 37109564106,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111164683342,
+        "name": "Full / Linux portable Node / ${{ matrix.id }} (unqualified)",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_id": 37109564106,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111164683390,
+        "name": "Full / ${{ matrix.shard }}",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_id": 37109564106,
+        "logs_url": null,
+        "steps": null
+      }
+    ]
+  },
+  "artifacts": {
+    "artifacts": [
+      {
+        "id": 11270051104,
+        "name": "mdkg-fast-floating-37109564106",
+        "size_in_bytes": 807143624,
+        "url": "https://api.github.com/repos/nickreames/mdkg/actions/artifacts/11270051104",
+        "archive_download_url": "https://api.github.com/repos/nickreames/mdkg/actions/artifacts/11270051104/zip",
+        "expired": false,
+        "created_at": "2026-10-03T08:41:22Z",
+        "expires_at": "2026-10-17T08:40:00Z",
+        "updated_at": "2026-10-03T08:41:22Z",
+        "digest": "sha256:9c0c64081e6e31f6625df4cd022a041f625624eed5eb34f81e252d78b9068dd7",
+        "workflow_run": {
+          "id": 37109564106,
+          "repository_id": 1128648048,
+          "head_repository_id": 1128648048,
+          "head_branch": "cloud/goal89-persistent-working",
+          "head_sha": "945ee4434b50b21861e8fff300450cca39769937"
+        }
+      },
+      {
+        "id": 11269017791,
+        "name": "mdkg-fast-minimum-37109564106",
+        "size_in_bytes": 487706656,
+        "url": "https://api.github.com/repos/nickreames/mdkg/actions/artifacts/11269017791",
+        "archive_download_url": "https://api.github.com/repos/nickreames/mdkg/actions/artifacts/11269017791/zip",
+        "expired": false,
+        "created_at": "2026-10-03T08:36:21Z",
+        "expires_at": "2026-10-17T08:35:29Z",
+        "updated_at": "2026-10-03T08:36:21Z",
+        "digest": "sha256:0066c926d87ea9d54a95ed3ca10ea5cdbdea294e1129cbf02c243976cd26d85a",
+        "workflow_run": {
+          "id": 37109564106,
+          "repository_id": 1128648048,
+          "head_repository_id": 1128648048,
+          "head_branch": "cloud/goal89-persistent-working",
+          "head_sha": "945ee4434b50b21861e8fff300450cca39769937"
+        }
+      }
+    ]
+  },
+  "minimum": {
+    "job_id": 111164682618,
+    "node": "24.18.0",
+    "npm": "11.16.0",
+    "git": "2.55.0",
+    "summary": "SUMMARY pass=2449 fail=2 total=2452",
+    "failures": [
+      {
+        "test": "both install guides show compact default init and a reviewed upgrade hash",
+        "assertion": "tests/release-guidance.test.mjs:104",
+        "paths": [
+          "docs/start-here/install.md",
+          "docs/src/content/docs/start-here/install.md"
+        ],
+        "reason": "Expected unpublished 0.6.2 candidate text; both install guides retain 0.6.1."
+      },
+      {
+        "test": "published changelog chronology is retained with an explicit candidate boundary",
+        "assertion": "tests/release-guidance.test.mjs:110",
+        "path": "docs/src/content/docs/project/changelog.md",
+        "reason": "Expected 0.6.2 candidate heading; docs retain 0.6.1."
+      }
+    ],
+    "working_suite": "24 passed including three corrected regressions",
+    "classification": "Goal89 version/document projections; static input mismatch exists at4c and945, absent atce53. No local test rerun."
+  },
+  "floating": {
+    "job_id": 111164682773,
+    "node": "24.21.0",
+    "npm": "11.19.0",
+    "git": "2.55.0",
+    "gate": "cancelled",
+    "coverage": "log-not-written",
+    "collector": "failure: tar exit2;7116 Cannot-stat lines",
+    "acceptance": "INCONCLUSIVE",
+    "cancellation_cause": "UNRESOLVED"
+  },
+  "custody": {
+    "last_verified_worktrees": "all four clean at watch start; no source/worktree writes during watch",
+    "environment": "409 Conflict environment_offline, Environment is not connected",
+    "confirmed_transient_executor_failures_since_rule": 2,
+    "pending_read_only_probe": "terminated without replay after offline result; no process session was returned",
+    "needed_step": "Reconnect/resume selected saved cloud environment before fresh local custody verification or further cloud work; no environment recreation or machine switch performed",
+    "goal90": "held"
+  }
+}

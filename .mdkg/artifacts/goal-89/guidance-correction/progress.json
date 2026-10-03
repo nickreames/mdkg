@@ -1,0 +1,242 @@
+[
+  {
+    "name": "source-24.19.0",
+    "command": [
+      "node",
+      "--test",
+      "tests/release-guidance.test.mjs"
+    ],
+    "start": "2026-10-03T09:01:03.168617+00:00",
+    "end": "2026-10-03T09:01:03.333212+00:00",
+    "seconds": 0.165,
+    "exit": 0,
+    "log": "source-24.19.0.log",
+    "log_sha256": "33a6c855e41f95f65d798c2035f9d30c7e6dbb734693ab360ed920d0145225e6",
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "installed-guidance-24.19.0",
+    "command": [
+      "node",
+      "/workspace/mdkg-cloud-review-cache/goal89-guidance-correction/installed-guidance.cjs"
+    ],
+    "start": "2026-10-03T09:01:03.333948+00:00",
+    "end": "2026-10-03T09:01:03.498344+00:00",
+    "seconds": 0.164,
+    "exit": 0,
+    "log": "installed-guidance-24.19.0.log",
+    "log_sha256": "05c6e6a7ee559aaf01368f4ad6b64eb0b582af55aa6c4bcfcf11c8bfe1d67a6d",
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "installed-version-24.19.0",
+    "command": [
+      "node",
+      "/workspace/mdkg-cloud-review-cache/goal89-review-correction-final/npm-consumer/node_modules/mdkg/dist/cli.js",
+      "--version"
+    ],
+    "start": "2026-10-03T09:01:03.498721+00:00",
+    "end": "2026-10-03T09:01:03.613086+00:00",
+    "seconds": 0.114,
+    "exit": 0,
+    "log": "installed-version-24.19.0.log",
+    "log_sha256": "a466ef209f5c3aee5ff0c702e2e9d5cced4783d2a655e8ab66330f21a5557b3f"
+  },
+  {
+    "name": "source-24.18.0",
+    "command": [
+      "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+      "--test",
+      "tests/release-guidance.test.mjs"
+    ],
+    "start": "2026-10-03T09:01:03.618181+00:00",
+    "end": "2026-10-03T09:01:03.734599+00:00",
+    "seconds": 0.116,
+    "exit": 0,
+    "log": "source-24.18.0.log",
+    "log_sha256": "2ecee5bb52370ea023a4831376113173c7b4dfcbe7da515d0560d47e2105dc40",
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "installed-guidance-24.18.0",
+    "command": [
+      "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+      "/workspace/mdkg-cloud-review-cache/goal89-guidance-correction/installed-guidance.cjs"
+    ],
+    "start": "2026-10-03T09:01:03.735006+00:00",
+    "end": "2026-10-03T09:01:03.899423+00:00",
+    "seconds": 0.164,
+    "exit": 0,
+    "log": "installed-guidance-24.18.0.log",
+    "log_sha256": "72608184601aea27e0aea70686208d6f1f90da479a4a4e7e90a6a10a93c592ad",
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "installed-version-24.18.0",
+    "command": [
+      "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+      "/workspace/mdkg-cloud-review-cache/goal89-review-correction-final/npm-consumer/node_modules/mdkg/dist/cli.js",
+      "--version"
+    ],
+    "start": "2026-10-03T09:01:03.899845+00:00",
+    "end": "2026-10-03T09:01:04.014279+00:00",
+    "seconds": 0.114,
+    "exit": 0,
+    "log": "installed-version-24.18.0.log",
+    "log_sha256": "a466ef209f5c3aee5ff0c702e2e9d5cced4783d2a655e8ab66330f21a5557b3f"
+  },
+  {
+    "name": "source-24.21.0",
+    "command": [
+      "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+      "--test",
+      "tests/release-guidance.test.mjs"
+    ],
+    "start": "2026-10-03T09:01:04.019674+00:00",
+    "end": "2026-10-03T09:01:04.184285+00:00",
+    "seconds": 0.165,
+    "exit": 0,
+    "log": "source-24.21.0.log",
+    "log_sha256": "6a890236a8513319b24d4a00733fd5de1243175009eac270b954a0d68c13dd5d",
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "installed-guidance-24.21.0",
+    "command": [
+      "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+      "/workspace/mdkg-cloud-review-cache/goal89-guidance-correction/installed-guidance.cjs"
+    ],
+    "start": "2026-10-03T09:01:04.184734+00:00",
+    "end": "2026-10-03T09:01:04.349252+00:00",
+    "seconds": 0.165,
+    "exit": 0,
+    "log": "installed-guidance-24.21.0.log",
+    "log_sha256": "da4ed84173e5789e0577fdb6a3192367560fedcf139ef7a3b49233baf9c7ae0a",
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  {
+    "name": "installed-version-24.21.0",
+    "command": [
+      "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+      "/workspace/mdkg-cloud-review-cache/goal89-review-correction-final/npm-consumer/node_modules/mdkg/dist/cli.js",
+      "--version"
+    ],
+    "start": "2026-10-03T09:01:04.349967+00:00",
+    "end": "2026-10-03T09:01:04.464693+00:00",
+    "seconds": 0.115,
+    "exit": 0,
+    "log": "installed-version-24.21.0.log",
+    "log_sha256": "a466ef209f5c3aee5ff0c702e2e9d5cced4783d2a655e8ab66330f21a5557b3f"
+  },
+  {
+    "name": "docs",
+    "command": [
+      "npm",
+      "run",
+      "docs:check:built"
+    ],
+    "start": "2026-10-03T09:01:04.465223+00:00",
+    "end": "2026-10-03T09:01:04.936919+00:00",
+    "seconds": 0.472,
+    "exit": 0,
+    "log": "docs.log",
+    "log_sha256": "63290a144b4b440685fa8dca07c3ec12770555b8b03971bd174b3f9dc98d5051"
+  },
+  {
+    "name": "cli-matrix",
+    "command": [
+      "node",
+      "scripts/cli_help_snapshot.js",
+      "--check"
+    ],
+    "start": "2026-10-03T09:01:04.937395+00:00",
+    "end": "2026-10-03T09:01:17.996358+00:00",
+    "seconds": 13.059,
+    "exit": 0,
+    "log": "cli-matrix.log",
+    "log_sha256": "f1daadeda328f9c9b6b7390a2078e37944112f0e9ce5b96312bc63d090ceaf87"
+  },
+  {
+    "name": "cli-contract",
+    "command": [
+      "node",
+      "scripts/generate-command-contract.js",
+      "--check"
+    ],
+    "start": "2026-10-03T09:01:17.996861+00:00",
+    "end": "2026-10-03T09:01:31.009800+00:00",
+    "seconds": 13.013,
+    "exit": 0,
+    "log": "cli-contract.log",
+    "log_sha256": "e2ca59814b3ee9849f944ba29a0bac6008fce2ff0787df129029890c548382a0"
+  },
+  {
+    "name": "graph",
+    "command": [
+      "node",
+      "dist/cli.js",
+      "validate",
+      "--json"
+    ],
+    "start": "2026-10-03T09:01:31.010297+00:00",
+    "end": "2026-10-03T09:01:32.484871+00:00",
+    "seconds": 1.475,
+    "exit": 0,
+    "log": "graph.log",
+    "log_sha256": "d0c8077d1703a1b9268aa12da8d5eabb70a7aee3ec57ed84718061d99a57b2e5"
+  },
+  {
+    "name": "docs-site",
+    "command": [
+      "npm",
+      "run",
+      "build",
+      "--prefix",
+      "docs"
+    ],
+    "start": "2026-10-03T09:01:32.485318+00:00",
+    "end": "2026-10-03T09:01:36.678140+00:00",
+    "seconds": 4.193,
+    "exit": 0,
+    "log": "docs-site.log",
+    "log_sha256": "743e0e32eec280cfa6bdfd9970fefae8447bf996d5dd7c0ec337bec01c21ccf3"
+  },
+  {
+    "name": "diff",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "start": "2026-10-03T09:01:36.678623+00:00",
+    "end": "2026-10-03T09:01:36.687891+00:00",
+    "seconds": 0.009,
+    "exit": 0,
+    "log": "diff.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

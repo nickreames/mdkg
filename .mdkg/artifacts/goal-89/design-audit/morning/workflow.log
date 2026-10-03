@@ -1,0 +1,5 @@
+
+> mdkg@0.6.1 ci:workflow:check
+> node scripts/generate-ci-workflow.js --check
+
+release-readiness workflow matches deterministic source

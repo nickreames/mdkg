@@ -1,0 +1,126 @@
+{
+  "kind": "goal88-exact-hosted-terminal-monitor",
+  "observed_run_id": 36978309547,
+  "event": "pull_request",
+  "attempt": 1,
+  "status": "completed",
+  "conclusion": "cancelled",
+  "head_sha": "1a3cf4f45621cd67b51aba482966927aeea17419",
+  "head_branch": "cloud/goal88-minimal-init",
+  "created_at": "2026-10-02T07:23:32Z",
+  "run_started_at": "2026-10-02T07:23:32Z",
+  "updated_at": "2026-10-02T07:40:11Z",
+  "hosted_checkout": {
+    "sha": "d94cb546f69f62f7b7e0993844267b475f5b13ba",
+    "tree": "f76a1b3ef6b88b735cdd858dc25e7c472c85dce9",
+    "parents": [
+      "ddafe0836fdc790cd36ba203afbcfc1878bbddd8",
+      "1a3cf4f45621cd67b51aba482966927aeea17419"
+    ],
+    "reviewed_head_tree": "f76a1b3ef6b88b735cdd858dc25e7c472c85dce9",
+    "identical_tree": true,
+    "kind": "GitHub synthetic PR merge; no human merge performed"
+  },
+  "classification": {
+    "observed": "Both fast jobs and release gate steps cancelled; all setup/bootstrap passed; uploads passed. Operation was canceled at07:38:50UTC; gate elapsed895s floating/893s minimum.",
+    "timed_out": "NOT_ESTABLISHED: API conclusion is cancelled and logs do not explicitly identify timeout. Timing is consistent with configured15minute budget; do not promote this inference to fact.",
+    "tests_failed": "UNKNOWN: no completed coverage summary or raw test failures in small console logs.",
+    "coverage_passed": "NOT_ESTABLISHED for hosted run; no passing hosted coverage receipt obtained.",
+    "full_skips": "EXPECTED: PR run; full jobs require workflow_dispatch tierfull, not caused by fast job failure.",
+    "cancellation_actor_or_root_cause": "UNRESOLVED in approved available small evidence; no cancellation action taken by this worker.",
+    "regression_attribution": "No new source regression established by these cancellation-only logs; do not attribute every failure to environment or call hosted checks passed. Native2403pass/0fail/1skip proof remains separate."
+  },
+  "runtime": {
+    "minimum": {
+      "node": "24.18.0",
+      "npm": "11.16.0"
+    },
+    "floating": {
+      "node": "24.21.0",
+      "npm": "11.19.0"
+    },
+    "runner": "Ubuntu24.04 image20260927.320"
+  },
+  "needed_step": "Owner use existing authorized artifact access to provide small progress/receipt and logs/coverage.log plus available coverage-event/summary/manifest from artifacts11215226293 and11214443187; inspect cancellation annotations/initiator if available. Identify stalled/failed phase before an owner-scoped infrastructure or harness remediation. Do not extend timeout, weaken floors, restructure broad CI or bypass403.",
+  "parent_review_relay": {
+    "goal89_prerequisite": "GO under preservation-first contract",
+    "both_P2_findings": "closed",
+    "reported_native_Mac_ARM64_each_Node24_18_and24_21": {
+      "source_cases_passed": 45,
+      "installed_controls_passed": 26
+    },
+    "evidence_context": "reported by parent; cloud did not access Mac",
+    "release": "NOT_READY; release gates not waived"
+  },
+  "job_log_sha256": {
+    "floating-job.log": "fad4955026dbbe5aa24ea1ac7f86a20252d7f23dcfceb767d80835694b6b5c2e",
+    "minimum-job.log": "173fb148a5717ea4711389e8d4d82253f64b181ee8c771e39fd67e57adfbdb42"
+  },
+  "jobs": [
+    {
+      "id": 110746900143,
+      "name": "Fast / floating / Node 24.x",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-02T07:23:36Z",
+      "completed_at": "2026-10-02T07:40:10Z"
+    },
+    {
+      "id": 110746900270,
+      "name": "Fast / minimum / Node 24.18.0",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-02T07:23:35Z",
+      "completed_at": "2026-10-02T07:40:06Z"
+    },
+    {
+      "id": 110746901547,
+      "name": "Full / prepare exact SHA",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-02T07:23:33Z",
+      "completed_at": "2026-10-02T07:23:32Z"
+    },
+    {
+      "id": 110746901909,
+      "name": "Full / ${{ matrix.shard }}",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-02T07:23:33Z",
+      "completed_at": "2026-10-02T07:23:33Z"
+    },
+    {
+      "id": 110746901931,
+      "name": "Full / Linux portable Node / ${{ matrix.id }} (unqualified)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-02T07:23:33Z",
+      "completed_at": "2026-10-02T07:23:33Z"
+    },
+    {
+      "id": 110746902289,
+      "name": "Full / aggregate release authority",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-02T07:23:33Z",
+      "completed_at": "2026-10-02T07:23:33Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 11215226293,
+      "name": "mdkg-fast-floating-36978309547",
+      "size_in_bytes": 482870322,
+      "digest": "sha256:8cd978da33d147859104a3b9042680f7bc79003e1ff1203117c2ddf3bd5f6a02",
+      "expires_at": "2026-10-16T07:38:53Z"
+    },
+    {
+      "id": 11214443187,
+      "name": "mdkg-fast-minimum-36978309547",
+      "size_in_bytes": 476708106,
+      "digest": "sha256:e3b3b77ea67a76ed12074718756a6ee4be35228726fe69fba7369eb10e91ac31",
+      "expires_at": "2026-10-16T07:38:52Z"
+    }
+  ],
+  "new_scope": "Goal89 audit begun after explicit parent corrected prerequisite GO; source implementation pending independent design review; release remains NOT_READY."
+}

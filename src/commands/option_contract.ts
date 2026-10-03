@@ -13,6 +13,22 @@ const read = `${QUERY} ${CACHE}`;
 // Concrete dispatch paths, not family-wide unions. Parsing a shared options
 // object does not make its unused fields supported by every downstream handler.
 const definitions: Record<string, string> = {
+  "working init": "apply plan plan-hash json",
+  "working add": "file owner work-ref apply plan plan-hash json",
+  "working adopt": "file owner work-ref apply plan plan-hash json",
+  "working retain": "owner apply plan plan-hash json",
+  "working release": "owner confirm-stopped apply plan plan-hash json",
+  "working pin": "owner apply plan plan-hash json",
+  "working unpin": "owner apply plan plan-hash json",
+  "working promote": "owner summary-file archive-id apply plan plan-hash json",
+  "working gc": "owner apply plan plan-hash json",
+  "working recover": "owner apply plan plan-hash json",
+  "working purge": "owner confirm-loss apply plan plan-hash json",
+  "working resume": "owner confirm-stopped apply plan-hash lock-evidence confirm-quiescent json",
+  "working list": "json",
+  "working show": "json",
+  "working search": "json",
+  "working verify": "json",
   init: "force agent graph-only no-update-ignores update-gitignore update-npmignore update-dockerignore",
   upgrade: "dry-run apply resume recover plan-hash only json",
   guide: "",

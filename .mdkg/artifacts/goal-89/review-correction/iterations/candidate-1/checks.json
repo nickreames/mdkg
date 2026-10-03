@@ -1,0 +1,463 @@
+{
+  "created": "2026-10-03T08:14:34.732421+00:00",
+  "parent_head": "4c55758d6dbd1d16f77bcd406f3c995cba76b4d9",
+  "base_head": "ce53ea56629af23ecd10d6e58a393db1235fda79",
+  "cwd": "/workspace/mdkg-cloud-goal89",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "machine": "x86_64",
+  "native": true,
+  "node": "v24.19.0",
+  "npm": "11.9.0",
+  "git": "git version 2.52.0",
+  "checks": [
+    {
+      "name": "source-24.19.0",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "tests/working-storage.test.mjs",
+        "tests/cloud-working-host-contract.test.mjs"
+      ],
+      "start": "2026-10-03T08:11:19.074217+00:00",
+      "end": "2026-10-03T08:11:39.491756+00:00",
+      "seconds": 20.418,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "source-24.19.0.log",
+      "log_sha256": "c3abb071c14545abf01724935ef16828e78266f1ec42a569ec0f52bdbdbb050e",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "name": "source-24.18.0",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+        "--test",
+        "tests/working-storage.test.mjs",
+        "tests/cloud-working-host-contract.test.mjs"
+      ],
+      "start": "2026-10-03T08:11:39.496680+00:00",
+      "end": "2026-10-03T08:12:00.410095+00:00",
+      "seconds": 20.913,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "source-24.18.0.log",
+      "log_sha256": "eb1d3d218d49ad768f295945a3b51cedddbf74b5636a454a7742eb7a7caa7c68",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "name": "source-24.21.0",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+        "--test",
+        "tests/working-storage.test.mjs",
+        "tests/cloud-working-host-contract.test.mjs"
+      ],
+      "start": "2026-10-03T08:12:00.415400+00:00",
+      "end": "2026-10-03T08:12:20.563974+00:00",
+      "seconds": 20.149,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "source-24.21.0.log",
+      "log_sha256": "803055275fe1cc5c005032d67a28cd52ce06d473e5c652870bfef5e0af428a22",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "name": "shared-regressions",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "dist/tests/commands/init.test.js",
+        "dist/tests/commands/init_identity.test.js",
+        "dist/tests/commands/init_manifest_ownership.test.js",
+        "dist/tests/commands/goal88_init.test.js",
+        "dist/tests/commands/cli_option_admission.test.js",
+        "dist/tests/commands/archive_work.test.js",
+        "dist/tests/commands/archive_payload_ownership.test.js",
+        "dist/tests/commands/archive_compress_ownership.test.js",
+        "dist/tests/commands/bundle.test.js",
+        "dist/tests/commands/bundle_ownership.test.js",
+        "dist/tests/commands/bundle_state.test.js",
+        "dist/tests/commands/bundle_admission.test.js",
+        "dist/tests/commands/bundle_archive_visibility.test.js",
+        "dist/tests/core/config.test.js",
+        "dist/tests/core/config_read_admission.test.js",
+        "dist/tests/core/filesystem_authority.test.js",
+        "dist/tests/core/filesystem_nullable_read.test.js",
+        "dist/tests/util/argparse.test.js",
+        "dist/tests/util/mutation_lock.test.js",
+        "dist/tests/graph/cache_containment.test.js",
+        "dist/tests/graph/cache_freshness.test.js",
+        "dist/tests/graph/cache_git_metadata.test.js",
+        "dist/tests/graph/archive_containment.test.js",
+        "dist/tests/graph/identity.test.js",
+        "dist/tests/graph/identity_portable_recovery.test.js",
+        "dist/tests/graph/workspace_containment.test.js",
+        "dist/tests/commands/workspace_indexing.test.js",
+        "dist/tests/commands/workspace_errors.test.js"
+      ],
+      "start": "2026-10-03T08:12:20.564824+00:00",
+      "end": "2026-10-03T08:13:01.353430+00:00",
+      "seconds": 40.789,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "shared-regressions.log",
+      "log_sha256": "0432b9d83ede59bb8c9aa5073c30701615ccf24e4ed378c7510cc11998d918b0",
+      "tests": 459,
+      "pass": 458,
+      "fail": 0,
+      "skipped": 1,
+      "cancelled": 0
+    },
+    {
+      "name": "cli-matrix",
+      "command": [
+        "node",
+        "scripts/cli_help_snapshot.js",
+        "--check"
+      ],
+      "start": "2026-10-03T08:13:01.355393+00:00",
+      "end": "2026-10-03T08:13:13.567811+00:00",
+      "seconds": 12.212,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "cli-matrix.log",
+      "log_sha256": "f1daadeda328f9c9b6b7390a2078e37944112f0e9ce5b96312bc63d090ceaf87"
+    },
+    {
+      "name": "cli-contract",
+      "command": [
+        "node",
+        "scripts/generate-command-contract.js",
+        "--check"
+      ],
+      "start": "2026-10-03T08:13:13.568343+00:00",
+      "end": "2026-10-03T08:13:25.885704+00:00",
+      "seconds": 12.317,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "cli-contract.log",
+      "log_sha256": "e2ca59814b3ee9849f944ba29a0bac6008fce2ff0787df129029890c548382a0"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "npm",
+        "run",
+        "docs:check:built"
+      ],
+      "start": "2026-10-03T08:13:25.886301+00:00",
+      "end": "2026-10-03T08:13:26.301477+00:00",
+      "seconds": 0.415,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "docs.log",
+      "log_sha256": "63290a144b4b440685fa8dca07c3ec12770555b8b03971bd174b3f9dc98d5051"
+    },
+    {
+      "name": "graph",
+      "command": [
+        "node",
+        "dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "start": "2026-10-03T08:13:26.302011+00:00",
+      "end": "2026-10-03T08:13:27.874514+00:00",
+      "seconds": 1.573,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "graph.log",
+      "log_sha256": "c5644ec0d15222588569a2c27773346c41abc6d31a527011d5c152ec300924e7"
+    },
+    {
+      "name": "skills",
+      "command": [
+        "node",
+        "dist/cli.js",
+        "skill",
+        "validate",
+        "--json"
+      ],
+      "start": "2026-10-03T08:13:27.875157+00:00",
+      "end": "2026-10-03T08:13:28.039589+00:00",
+      "seconds": 0.164,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "skills.log",
+      "log_sha256": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f"
+    },
+    {
+      "name": "security",
+      "command": [
+        "npm",
+        "run",
+        "security:verify"
+      ],
+      "start": "2026-10-03T08:13:28.040154+00:00",
+      "end": "2026-10-03T08:13:28.204723+00:00",
+      "seconds": 0.165,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "security.log",
+      "log_sha256": "f5a944e6efc3d6a6cd6de6650b89f0a65710bb150780b9bdc23073428c30c90c"
+    },
+    {
+      "name": "workflow",
+      "command": [
+        "node",
+        "scripts/generate-ci-workflow.js",
+        "--check"
+      ],
+      "start": "2026-10-03T08:13:28.205260+00:00",
+      "end": "2026-10-03T08:13:28.269340+00:00",
+      "seconds": 0.064,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "workflow.log",
+      "log_sha256": "4eb07780201afbf437c77af6cc576bec86bcd5444e2d23731e001006beda14a1"
+    },
+    {
+      "name": "publish-static",
+      "command": [
+        "node",
+        "scripts/assert-publish-ready.js"
+      ],
+      "start": "2026-10-03T08:13:28.269873+00:00",
+      "end": "2026-10-03T08:13:28.384366+00:00",
+      "seconds": 0.115,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "publish-static.log",
+      "log_sha256": "2b716889649d63876c41afc057225027eedc8202277f9ee4c31cb29c17fa44e3"
+    },
+    {
+      "name": "release-contracts",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "tests/public-release.test.mjs",
+        "tests/publish-readiness-goal-contract.test.mjs",
+        "tests/security-remediation.test.mjs"
+      ],
+      "start": "2026-10-03T08:13:28.384991+00:00",
+      "end": "2026-10-03T08:13:28.856322+00:00",
+      "seconds": 0.471,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "release-contracts.log",
+      "log_sha256": "06bd69f2c0f1d115ab684e69c0008e11901c14cb335d4465d566233e94299563",
+      "tests": 28,
+      "pass": 28,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "name": "docs-site",
+      "command": [
+        "npm",
+        "run",
+        "build",
+        "--prefix",
+        "docs"
+      ],
+      "start": "2026-10-03T08:13:28.856972+00:00",
+      "end": "2026-10-03T08:13:33.143922+00:00",
+      "seconds": 4.287,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "docs-site.log",
+      "log_sha256": "569de4a82c588708120b9b50b5dc5316d35c283b0d62b3523c46bbdfa8e0af25"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-10-03T08:13:33.144577+00:00",
+      "end": "2026-10-03T08:13:33.153944+00:00",
+      "seconds": 0.009,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "diff.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "pack",
+      "command": [
+        "npm",
+        "pack",
+        "--ignore-scripts",
+        "--json",
+        "--pack-destination",
+        "/workspace/mdkg-cloud-review-cache/goal89-review-correction"
+      ],
+      "start": "2026-10-03T08:13:33.154509+00:00",
+      "end": "2026-10-03T08:13:33.820089+00:00",
+      "seconds": 0.666,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "pack.log",
+      "log_sha256": "74072be5537aa2a3e5991379bf22cffa98cc14f6e02db842502f9957272cf1ac"
+    },
+    {
+      "name": "npm-install-exact",
+      "command": [
+        "npm",
+        "install",
+        "--prefix",
+        "/workspace/mdkg-cloud-review-cache/goal89-review-correction/npm-consumer",
+        "--no-audit",
+        "--no-fund",
+        "--offline",
+        "/workspace/mdkg-cloud-review-cache/goal89-review-correction/mdkg-0.6.2.tgz"
+      ],
+      "start": "2026-10-03T08:13:33.891784+00:00",
+      "end": "2026-10-03T08:13:34.459563+00:00",
+      "seconds": 0.568,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "npm-install-exact.log",
+      "log_sha256": "7d906e4917037b9538b3623653e904efad452a0d2bd3ef36bcbea496f7809b93"
+    },
+    {
+      "name": "installed-24.19.0",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "tests/working-storage.test.mjs",
+        "tests/cloud-working-host-contract.test.mjs"
+      ],
+      "start": "2026-10-03T08:13:34.478389+00:00",
+      "end": "2026-10-03T08:13:55.026724+00:00",
+      "seconds": 20.548,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "installed-24.19.0.log",
+      "log_sha256": "d13a9a6d97ae9ed4fcd867fa1f6028952f1c8045164de3bf60f869eb377d361b",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "name": "installed-24.18.0",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+        "--test",
+        "tests/working-storage.test.mjs",
+        "tests/cloud-working-host-contract.test.mjs"
+      ],
+      "start": "2026-10-03T08:13:55.027484+00:00",
+      "end": "2026-10-03T08:14:14.769533+00:00",
+      "seconds": 19.742,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "installed-24.18.0.log",
+      "log_sha256": "0a888f2d14eb90018a37f95ae344547845cd9d5f7f343a77b2199979a832d6a6",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "name": "installed-24.21.0",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+        "--test",
+        "tests/working-storage.test.mjs",
+        "tests/cloud-working-host-contract.test.mjs"
+      ],
+      "start": "2026-10-03T08:14:14.770254+00:00",
+      "end": "2026-10-03T08:14:34.529979+00:00",
+      "seconds": 19.76,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "installed-24.21.0.log",
+      "log_sha256": "575e713c45e48587cc4310ad0c4374200fac7d6c4e0582c6619538ecbbe0b934",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "name": "installed-bin-version",
+      "command": [
+        "/workspace/mdkg-cloud-review-cache/goal89-review-correction/npm-consumer/node_modules/.bin/mdkg",
+        "--version"
+      ],
+      "start": "2026-10-03T08:14:34.530709+00:00",
+      "end": "2026-10-03T08:14:34.644918+00:00",
+      "seconds": 0.114,
+      "exit": 0,
+      "result": "PASSED",
+      "log": "installed-bin-version.log",
+      "log_sha256": "a466ef209f5c3aee5ff0c702e2e9d5cced4783d2a655e8ab66330f21a5557b3f"
+    }
+  ],
+  "input_drift": {
+    "product": false,
+    "built": false,
+    "legacy": false,
+    "installed": false
+  },
+  "harness_sha256": "7e5ed51fefcf8c7a09c26d5d7db29af19999b71ca67166dc775ae4976a0439ad",
+  "product_inputs_sha256": "19782b725115f9cb19963395914a1b158c7397317ae9f6088044a4ef4b02ce4f",
+  "built_inputs_sha256": "c0de8c922907b91e6d9edb0222a5ab6e25d5850566a4993931d2c04966e8b54a",
+  "subreaper_sha256": "acf0d61ef262e11f3d0313b547cef2efe77c0da97f71148eacf20dcd2fa3f531",
+  "artifact": {
+    "sha256": "d130c0d86161da667c6dabdaee714d6be8c2a481270ce137d9b28ba3632fdb9d",
+    "filename": "mdkg-0.6.2.tgz"
+  },
+  "readiness": "NOT_READY",
+  "transient_executor_failures_since_instruction": 1,
+  "scope": "Bounded correction of three reviewed regressions; source/installed 30 runtime controls plus one repository-doc assertion per runtime. Existing 25 shared families retained, three workspace families added. No full coverage/CI remediation.",
+  "pending": [
+    "independent exact corrected-patch review Chk675; Goal90 held",
+    "owner/local acceptance Chk676",
+    "full premerge/thresholded coverage and complete package prepublication ladder Chk677",
+    "native macOS/remaining platform acceptance",
+    "exact corrected-head hosted qualification",
+    "publication/professional-adoption approval"
+  ],
+  "previous_head_hosted": {
+    "run": 37105547354,
+    "head": "4c55758d6dbd1d16f77bcd406f3c995cba76b4d9",
+    "result": "cancelled",
+    "test_outcome": "UNRESOLVED",
+    "collector_results": "both failed; minimum tree-change refusal, floating disappearing coverage-file tar errors"
+  }
+}
