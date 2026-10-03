@@ -1,0 +1,119 @@
+{
+  "kind": "cloud-fast-evidence-repair",
+  "state": "NOT_READY",
+  "repo": "nickreames/mdkg",
+  "branch": "cloud/goal88-minimal-init",
+  "tested_parent": "e788c35107e98df075bfe7e08deb9de1498f1444",
+  "runtime": "Linux-x64 Node24.19.0/npm11.9.0; pinnedNode24.18.0",
+  "focused_current": {
+    "tests": 77,
+    "passed": 77,
+    "failed": 0
+  },
+  "focused_minimum": {
+    "tests": 77,
+    "passed": 77,
+    "failed": 0
+  },
+  "original_terminal_runs": {
+    "eb4daec5": {
+      "run": 37091088780,
+      "result": "cancelled",
+      "minimum_upload": "failed-invalid-newline-path"
+    },
+    "e788c351": {
+      "run": 37092989145,
+      "result": "failure",
+      "floating": "coverage-exit1-not-timeout;2412pass/1fail/1skip;failed-case-unclassified",
+      "minimum": "cancelled"
+    },
+    "d853df5": {
+      "run": 37093406701,
+      "result": "cancelled",
+      "both_fast": "cancelled",
+      "uploads": "passed"
+    }
+  },
+  "policies_unchanged": [
+    "coverage selection and89/77/96floors",
+    "15minute-fast-job-and-ladder-budgets",
+    "13fast/37package/46repositorysmoke-membership",
+    "fulltier-admission-and-platform-stub",
+    "release-and-manual-approval-authority"
+  ],
+  "runtime_source_changed": false,
+  "package_changed": false,
+  "new_full_local_run": "NOT_RUN; affectedCIcontrols only; hostednewheadchecks separate",
+  "scope": "fast evidence packaging/diagnostics only; no Goal89feature or migrationpolicy",
+  "source_files": {
+    "scripts/collect-ci-evidence.js": "81c5c6555cdc539dc565204bd217e0974cc61d9e0bdfbe58bf04ec5f2ea3f6ca",
+    "scripts/generate-ci-workflow.js": "35794e45769e45d227c1c22c4c8c3db45893c08f9b3e880147f69a84f3f43325",
+    ".github/workflows/release-readiness.yml": "14517de9b57c0c644dccb2286a9f133d80643251804a227de4971aef6c524d7e",
+    "tests/ci-evidence.test.mjs": "aee5e446b0be595b71808dd862240b8daf53831f919ed6083f71c05aaaad92ae",
+    "tests/ci-topology.test.ts": "0c7813c0369eec87c147e6754e000db35a02806b23e07c9d414ab206b427e4b9",
+    "docs/cloud-ci-followthrough.md": "2dbc9e4584ae5e5a2ddf90c654b864679ccc9d2f8d8d89beac545b517e46ab9b"
+  },
+  "policy_digests": {
+    "scripts/coverage-contract.json": "0c4c5039f9e37cdd8cf87b8bade3de438aff3e6746d6b488064858a8de8137b1",
+    "scripts/smoke-manifest.json": "ef748ecd1185bb46c3d57717dcd3c6bfafc363abce48351809f8dabe4ee255e2"
+  },
+  "recorded_utc": "2026-10-03T03:56:32Z",
+  "evidence_files": {
+    "ci-follow-build-tests.log.gz": {
+      "bytes": 218,
+      "sha256": "3021d4e83fd12d384b45e5e33adfb5facad5553a1264c7c972d57697c9d79e37"
+    },
+    "ci-follow-docs.log.gz": {
+      "bytes": 197,
+      "sha256": "01ed0d74c26c1278eb9ae651e51d796f4fbf5320e8ff99ba087738be9cd59547"
+    },
+    "ci-follow-focused-final-minimum.log.gz": {
+      "bytes": 3155,
+      "sha256": "a5f53bbcc281f17edba36e4d3d2ec85af530b2cc580e2876afd5269e5262f833"
+    },
+    "ci-follow-focused-final.log.gz": {
+      "bytes": 3141,
+      "sha256": "db6df4b8a51c703f870bf5577faec31e32a67a16a152caae01ef3e10c9ba677a"
+    },
+    "ci-follow-plan.log.gz": {
+      "bytes": 49,
+      "sha256": "cc0a7147cfa2fe8bb1ea7d77d7996bc107d0d9d2ebfbc71796c709540d0d2976"
+    },
+    "ci-follow-workflow-final.log.gz": {
+      "bytes": 73,
+      "sha256": "291679fc21fb2ae3bbddd0afc2703df048210e38ca9142bce187231b3835a51b"
+    },
+    "hosted-111117140678-receipts.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "hosted-111117140678.log.gz": {
+      "bytes": 6545,
+      "sha256": "52167d28754683bb5c3232e1d5ccb661c3dd9733964219b5878a6b0a7c719722"
+    },
+    "hosted-111117140765-receipts.json": {
+      "bytes": 12467,
+      "sha256": "485a320d18ab97dc5602139f9b66fb1df18509a8128d9c4ba5ea633f0432533c"
+    },
+    "hosted-111117140765.log.gz": {
+      "bytes": 10689,
+      "sha256": "a8c7664052c66dcd88e03a088daedf6f835cbba88c2b6ca77420e4483bb1dcda"
+    },
+    "hosted-111118344144-receipts.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "hosted-111118344144.log.gz": {
+      "bytes": 6320,
+      "sha256": "ea3dd13f1291f40336c789e274fec22031bd18b942696ff8ca16583d90532c46"
+    },
+    "hosted-111118344253-receipts.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "hosted-111118344253.log.gz": {
+      "bytes": 6540,
+      "sha256": "8711254bea74af6491bd0a5dfc9584d96f0e8ab001db44441fbcebb6bffa9d37"
+    }
+  }
+}

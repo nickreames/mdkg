@@ -1,0 +1,105 @@
+[
+  {
+    "action": "release-ladder",
+    "ok": false,
+    "mode": "ci",
+    "offline": true,
+    "receipt_dir": "/home/runner/work/_temp/mdkg-fast/run-f4zc58",
+    "duration_ms": 561440,
+    "error": "coverage failed with exit 1",
+    "progress": {
+      "mode": "ci",
+      "gates": [
+        {
+          "id": "dependency-preflight",
+          "command": "/opt/hostedtoolcache/node/24.21.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/dependency-boundary.js preflight --json",
+          "exit_code": 0,
+          "duration_ms": 46,
+          "timed_out": false
+        },
+        {
+          "id": "coverage",
+          "command": "/opt/hostedtoolcache/node/24.21.0/x64/lib/node_modules/npm/bin/npm-cli.js run test:coverage",
+          "exit_code": 1,
+          "duration_ms": 560980,
+          "timed_out": false,
+          "failure_evidence": {
+            "kind": "bounded-failure-output-excerpt",
+            "limit_bytes_per_stream": 8192,
+            "status": 1,
+            "signal": null,
+            "error_code": null,
+            "stdout": {
+              "bytes": 228366,
+              "sha256": "b6bc8a225ccc42d3284bfba95ad2d910d16daf00ecaecee02cd7997a2dc9c172",
+              "truncated": true,
+              "tail_utf8": "\nPASS Git does not discover an ancestor repository for an uninitialized fixture child\nPASS root and gitdir pointer substitution fail before a native mutation\nPASS foreign gitdir/commondir and symlinked Git metadata are rejected before effects\nPASS executable filters, merge drivers, includes and URL rewrites refuse before execution\nPASS authority flags, config file writes and remote protocols are rejected without effects\nPASS ownership changes invalidate a previously accepted fixture root\nPASS hard-linked mutable Git metadata refuses without modifying an outside inode\nPASS native local clone may share immutable objects but not mutable metadata\nPASS fixture identity settings are respected by later native commits\nPASS explicit editor signing diff-helper and recursive options refuse before mutation\nPASS inherited and configured editors cannot execute during a message-free commit\nPASS ambient submodule recursion cannot reach an unadmitted nested Git directory\nPASS inner timeouts kill nested Git descendant writers before owned cleanup\nPASS outer timeouts kill nested Git descendant writers before owned cleanup\nPASS inactive worktree config does not override native repository identity\nSUMMARY pass=31 fail=0 total=31\nPASS coverage refuses a populated configured destination before subprocesses or deletion\nPASS full-context preparation preserves an existing populated destination\nPASS full-context restore refuses different existing dist content without deleting it\nPASS standalone coverage creates distinct runs and preserves earlier loose evidence\nPASS explicit coverage output accepts an empty caller-created directory and keeps the exact layout\nPASS output admission rejects protected roots, ancestors, blank values and non-directories\nPASS output admission refuses leaf, ancestor and dangling symlinks without touching their targets\nPASS output creation preserves siblings and does not treat a prefix as cleanup authority\nPASS full-context preparation supports pre-created empty CI destinations and independent artifact bytes\nPASS context inputs are validated before creating a destination\nPASS context outputs cannot overlap package or build inputs\nPASS context input and restored-build symlinks fail without writing through them\nPASS context restoration is idempotent for matching dist and does not replace its inodes\nPASS context preparation refuses hardlinked or symbolic build inputs\nPASS real synthetic coverage executions retain both default runs and the ladder's exact output layout\nPASS full-context package.tgz symlink refuses before following the leaf\nPASS full-context package.tgz FIFO refuses promptly without a writer\nPASS full-context context.json symlink refuses before following the leaf\nPASS full-context context.json FIFO refuses promptly without a writer\nPASS qualification JSON rejects hardlinks and oversized metadata before reading\nPASS ladder keeps earlier receipts and CI startup evidence in a populated collection directory\nPASS ladder rejects a linked receipt collection before any Git or gate subprocess\nSUMMARY pass=22 fail=0 total=22\nPASS smoke Git ignores ambient repository/index/executable redirects and preserves a sentinel\nPASS smoke Node uses the selected runtime, filters Git overrides and preserves expected refusal status\nPASS smoke npm JS entrypoints use private configuration and cannot restore ambient Git redirects\nPASS smoke command controller retains explicit fault preloads and supervised refusal semantics\nPASS remaining synchronous callers and their transitive helpers use owned commands without bypasses\nPASS consumer smoke retains native offline package execution under artifact admission\nPASS consumer catches artifact mutation after the first lazy execution before a later restoration\nPASS Git boundary and shared observation fixtures preserve intentional probes under owned supervision\nPASS MCP smoke runs its async server inside one owned worker and retains read parity cases\nPASS MCP worker refuses an installed CLI outside its admitted fixture before writing\nPASS MCP smoke rejects malformed output after its final successful response\nPASS MCP smoke retains protocol and nonzero shutdown failures together\nPASS MCP smoke preserves both exercise and shutdown diagnostics\nPASS remaining release smokes bind their work to owned fixtures\nPASS parallel smoke worker refuses direct and unowned entry before graph writes\nPASS actual installed-smoke entrypoint reports its underlying failure after owned cleanup\nPASS imported init exercises require explicit owned commands before effects\nPASS imported init exercises accept factory and named-export owned controllers\nPASS smoke command setup preserves existing configuration and refuses released custody\nPASS both smoke entrypoints use owned command dispatch without raw Git or subprocess fallbacks\nPASS branch fixture accepts a physical base and rejects an explicit symlink base\nPASS installed Node dispatch preserves fault preloads and ordinary refusals but rejects signals and timeouts\nPASS all installed collaboration and recovery callers retain the supervised Node boundary\nPASS six installed smoke callers preserve owned dispatch and offline installs\nPASS DB/SQLite smoke callers retain installed helpers, guarded Git and exact ignore statuses\nPASS graph workflow smoke callers use owned dispatch and defer installation until artifact admission\nPASS installed smoke returns success only after artifact verification and cleanup\nPASS installed smoke preserves primary and artifact failures and still checks cleanup\nPASS installed smoke cleans failed setup and refuses unsafe base or linked artifact\nPASS standalone installed smoke detects installer mutation with and without install failure\nSUMMARY pass=30 fail=0 total=30\nPASS active homepage advertises observational Git, not retired mutation wrappers or unqualified OS support\nPASS both agent guides reject consumer validation profiles and distinguish receipt evidence\nPASS cache instructions distinguish observational projections from explicit persistent rebuilds\nPASS structured output guidance matches the concrete command admission boundary\nPASS active event guidance does not imply removed Git materialization validates a graph\nPASS command example checks reject wrong-command options without executing commands\nPASS historical command exemption is explicit and confined to the changelog section\nPASS public safety guidance calls the filesystem findings deferred and unresolved, not fixed\nPASS both install guides show compact default init and a reviewed upgrade hash\nPASS published changelog chronology is retained with an explicit candidate boundary\nPASS recovery guidance retains exact evidence and explicit operator confirmation\nSUMMARY pass=11 fail=0 total=11\nPASS canonical security remediation matrix closes the exact 51-finding set\nPASS security remediation verifier rejects missing and duplicate candidates\nPASS security remediation verifier rejects unresolved closure and severity drift\nPASS security remediation verifier rejects absent direct regression evidence\nSUMMARY pass=4 fail=0 total=4\nPASS installed discovery verifier binds local links and complete resource inventories observationally\nPASS installed discovery verifier rejects broken router link\nPASS installed discovery verifier rejects escaping router link\nPASS installed discovery verifier rejects missing skill link\nPASS installed discovery verifier rejects missing native resource\nPASS installed discovery verifier rejects changed native resource\nPASS installed discovery verifier rejects extra native resource\nPASS installed discovery verifier rejects empty discovery\nPASS installed discovery verifier rejects escaping slug\nPASS installed discovery verifier rejects duplicate discovery\nPASS installed discovery verifier detects synchronized canonical and mirror resource delete\nPASS installed discovery verifier detects synchronized canonical and mirror resource change\nSUMMARY pass=12 fail=0 total=12\nPASS test-built.js isolates inherited Git authority at its actual worker boundary\nPASS coverage-contract.js isolates inherited Git authority at its actual worker boundary\nSUMMARY pass=2 fail=0 total=2\nSUMMARY pass=2412 fail=1 total=2414\n"
+            },
+            "stderr": {
+              "bytes": 180,
+              "sha256": "4d8f3b424e2b9aae9726e98693757bec348f2466a4566175006667e99c2148ec",
+              "truncated": false,
+              "tail_utf8": "coverage evidence directory: /home/runner/work/_temp/mdkg-fast/run-f4zc58/coverage\ncoverage contract failed: complete coverage test execution did not report a passing test summary\n"
+            }
+          }
+        }
+      ],
+      "smokes": []
+    },
+    "git_boundary": {
+      "ok": true,
+      "checks": {
+        "head_unchanged": true,
+        "branch_unchanged": true,
+        "status_unchanged": true,
+        "tracked_tree_unchanged": true,
+        "selected_goal_unchanged": true,
+        "lockfiles_unchanged": true,
+        "diff_check_clean": true
+      },
+      "changed_tracked_paths": [],
+      "before": {
+        "head": "fbe704d92f909b94534430aa2da79f029a534647",
+        "branch": "",
+        "status_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_entry_count": 0,
+        "tracked_tree_sha256": "4d0ec9d7b9c95d0072335cae51ae8279dbbb506b9d6ddffa2c5745265cfe617e",
+        "tracked_count": 5372,
+        "selected_goal": {
+          "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+          "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+        },
+        "lockfiles": {
+          "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+          "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+          "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+        },
+        "diff_check": {
+          "ok": true,
+          "output": ""
+        }
+      },
+      "after": {
+        "head": "fbe704d92f909b94534430aa2da79f029a534647",
+        "branch": "",
+        "status_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_entry_count": 0,
+        "tracked_tree_sha256": "4d0ec9d7b9c95d0072335cae51ae8279dbbb506b9d6ddffa2c5745265cfe617e",
+        "tracked_count": 5372,
+        "selected_goal": {
+          "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+          "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+        },
+        "lockfiles": {
+          "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+          "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+          "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+        },
+        "diff_check": {
+          "ok": true,
+          "output": ""
+        }
+      }
+    }
+  }
+]
