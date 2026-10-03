@@ -2,6 +2,7 @@ import { Index, IndexNode } from "./indexer";
 import { GOAL_SCOPE_ACTIONABLE_TYPES } from "./goal_scope";
 import { resolveQid } from "../util/qid";
 import { sortNodesForNext } from "../util/sort";
+import { dependencyIsComplete } from "./checkpoint_readiness";
 
 const CONCRETE_GOAL_NEXT_TYPES = new Set(["feat", "task", "bug", "test", "spike"]);
 
@@ -39,7 +40,7 @@ export function isGoalNextCandidate(node: IndexNode, statusRanks: Set<string>): 
 }
 
 function unresolvedBlockerQids(index: Index, node: IndexNode): string[] {
-  return node.edges.blocked_by.filter((qid) => index.nodes[qid]?.status !== "done");
+  return node.edges.blocked_by.filter((qid) => !dependencyIsComplete(index.nodes[qid]));
 }
 
 function blockerWarnings(index: Index, candidates: IndexNode[]): string[] {

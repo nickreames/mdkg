@@ -1,0 +1,11 @@
+{
+  "baseline": "1a3cf4f45621cd67b51aba482966927aeea17419",
+  "checkpoint": {
+    "status": "done",
+    "tags": [
+      "readiness:not-ready"
+    ]
+  },
+  "actual_selected": "root:task-848",
+  "expected": "blocked; defect reproduced without fixture/repo writes"
+}

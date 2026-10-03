@@ -1,0 +1,42 @@
+✔ goal next selector fails closed on a missing blocker (7.225133ms)
+✔ goal next selector skips and warns on a read-only imported blocker (0.266201ms)
+✔ goal next selector falls back to priority for an ambiguous chain (0.756129ms)
+✔ parseNode parses a valid task (3.39915ms)
+✔ parseNode parses spike work frontmatter (0.426933ms)
+✔ parseNode rejects malformed spike work status (0.399352ms)
+✔ parseNode parses loop frontmatter and attributes (1.324735ms)
+✔ parseNode accepts legacy loop frontmatter without readiness metadata (0.302176ms)
+✔ parseNode rejects scalar loop readiness metadata (0.251409ms)
+✔ parseNode rejects malformed loop lane waiver refs (0.301514ms)
+✔ parseNode validates loop readiness binding identities and aggregate refs (3.117646ms)
+✔ parseNode rejects invalid loop mode (0.290187ms)
+✔ parseNode parses goal attributes (0.996651ms)
+✔ parseNode parses semantic context and evidence refs on work nodes (0.435586ms)
+✔ parseNode rejects malformed semantic refs (0.342526ms)
+✔ parseNode accepts archived goal status and state (0.260011ms)
+✔ parseNode rejects invalid goal state (0.287003ms)
+✔ parseNode requires status for work items (0.296987ms)
+✔ parseNode enforces priority bounds (0.175755ms)
+✔ parseNode accepts decision status enum (0.161664ms)
+✔ parseNode rejects unknown keys (0.283397ms)
+✔ parseNode enforces lowercase list entries (0.256256ms)
+✔ parseNode preserves link and artifact casing (0.172911ms)
+✔ parseNode uses config status enum (0.21943ms)
+✔ parseNode keeps archived status goal-only (0.21921ms)
+✔ parseNode accepts reserved rule ids and id references (0.203987ms)
+✔ actual three-release plan keeps verdict markers and next-release blockers (3.856259ms)
+✔ actual node parser rejects done/NOT_READY and preserves legacy ordinary checkpoints (23.998505ms)
+✔ chk-674: recording NOT_READY cannot complete the dependency (0.267874ms)
+✔ chk-677: recording NOT_READY cannot complete the dependency (0.120061ms)
+✔ chk-680: recording NOT_READY cannot complete the dependency (0.117027ms)
+✔ NOT_RUN, missing/unknown/duplicate verdicts and removed downstream blockers refuse (0.3056ms)
+✔ a reviewed READY_PENDING_APPROVAL assessment can complete dependency, never publication authority (0.137447ms)
+✔ goal next preserves blockers even if a cached checkpoint falsely claims done/NOT_READY (0.745824ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 105.522568
