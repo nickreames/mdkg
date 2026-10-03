@@ -1,0 +1,13 @@
+{
+  "created": "2026-10-03T09:04:21.248646+00:00",
+  "authorized_attempt": 3,
+  "result": "connected",
+  "harmless_command": "pwd",
+  "cwd": "/workspace",
+  "exit": 0,
+  "confirmed_transient_failure_count": 2,
+  "native_node": "v24.19.0",
+  "npm": "11.9.0",
+  "git": "git version 2.52.0",
+  "parent_head": "945ee4434b50b21861e8fff300450cca39769937"
+}

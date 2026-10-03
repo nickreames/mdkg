@@ -188,3 +188,24 @@
   Normal stack commit/nonforce push and draft metadata update are authorized;
   exact corrected-patch independent review is still pending and Goal90 is held.
   Chk676 local-owner and Chk677 complete prepublication obligations remain open.
+
+## Authorized cloud resumption3 and release-guidance correction
+
+- Read-only hosted watch reached37109564106 terminal failure: minimum2449pass/
+  2fail, specifically installed-guide/changelog0.6.1 labels against package0.6.2.
+  Floating cancelled with no coverage log, collector tar exit2 and successful
+  upload; its acceptance stays inconclusive. No generic environment attribution.
+- Receipt/final-custody execution encountered409 environment_offline. Confirmed
+  transient counter became2of5; a remaining read-only probe was terminated
+  without replay. Parent explicitly authorized resumption attempt3of5. Selected
+  saved environment reported ready; harmless pwd exit0/workspace. All four
+  clean heads/remotes were refreshed (Goal89945, Goal88ce53, planeb4, maind9).
+- Changed only two current install labels and the docs changelog0.6.2 candidate
+  boundary. Prior0.6.1/published history remains. Unmodified source11 cases and
+  exact installed-metadata/document-overlay2 cases reproduce baseline failures,
+  then pass on each supported native24.18/24.19/24.21:39pass0fail. Docs, CLI and
+  docs-site checks pass. Runtime/build/installed/tar bytes unchanged; reused
+  artifact1ad72ba3 and prior feature evidence are explicit, not blanket readiness.
+- Current receipt/checkpoint: .mdkg/artifacts/goal-89/guidance-correction/checks.json
+  and docs/cloud-goal89-guidance-correction.md. No source/test/CI-policy change,
+  publication, merge, forced history or Goal90. Independent GO remains pending.

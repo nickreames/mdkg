@@ -1,0 +1,118 @@
+{
+  "baseline-installed.log.gz": {
+    "sha256": "39b0d80f6890139705739dff23384ee1d8d7eb776647ba4a719f22b8cac4ce1c",
+    "mode": 384
+  },
+  "baseline-source.log.gz": {
+    "sha256": "5d2e6decbeb15f8ce1437e603539a9c03f06d26d9dac346eae48ef734c284062",
+    "mode": 384
+  },
+  "baseline.json": {
+    "sha256": "7ebbda780359a94703ad6617b87e0e0be8b97f2ed340814074268576a6d5d679",
+    "mode": 384
+  },
+  "changed-files.json": {
+    "sha256": "819895ffebeb945da9d83663d3c730b79fd93b133e443d6c292059d57874e4e4",
+    "mode": 384
+  },
+  "checks.json": {
+    "sha256": "7f26d358a6fc69915413dced3ef3164c0e029da0565dd83cf918cafc0b178ec8",
+    "mode": 384
+  },
+  "cli-contract.log.gz": {
+    "sha256": "85423619b5f1cc453cc59790801b2ff368ecb0a08b07feb8c563da123d894a62",
+    "mode": 384
+  },
+  "cli-matrix.log.gz": {
+    "sha256": "35a1a8c626f8f6bd4b05973eee3d69cbb2d0586942955b9f6af47580821c7046",
+    "mode": 384
+  },
+  "diff.log.gz": {
+    "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+    "mode": 384
+  },
+  "docs-site.log.gz": {
+    "sha256": "dcce50c005b7741388b96c1cac2b2e244cad59b5f6bbf3f24b3978f30245bc00",
+    "mode": 384
+  },
+  "docs.log.gz": {
+    "sha256": "e5851da984d0954b8291dcc4421631381f7c52d36a4520376e05fbdf350ad2ff",
+    "mode": 384
+  },
+  "graph-final.json": {
+    "sha256": "99f6ff5def1bbd4d2075f59faedca53bc51efa89a916e93e014b7ea72612b35a",
+    "mode": 384
+  },
+  "graph.log.gz": {
+    "sha256": "1cad71f7214eaf41ea4472d2ac560248ddcdddc0594cbe0e2db2a9d9db979c0d",
+    "mode": 384
+  },
+  "installed-guidance-24.18.0.log.gz": {
+    "sha256": "68813c0a05351474f7cfa7546b8924550ae8ed93a4306bf78cdbea030113bef8",
+    "mode": 384
+  },
+  "installed-guidance-24.19.0.log.gz": {
+    "sha256": "d997709832cc4ed4407c0a60ff49cf31ad089d6625e78d0909d8fc1198d923a2",
+    "mode": 384
+  },
+  "installed-guidance-24.21.0.log.gz": {
+    "sha256": "1c3b344eaf011b0f09045a47cff2512e4fa26a364d00e3d73fc9445f29f59d94",
+    "mode": 384
+  },
+  "installed-guidance.cjs": {
+    "sha256": "7b9a25664e5bb5f7b976bccd8db988ff6aec13bc2690502ef271080a37621ce9",
+    "mode": 384
+  },
+  "installed-version-24.18.0.log.gz": {
+    "sha256": "c45fc29e660a96b54ecb1af30ce32f32293f1a730feeb321b6e5f6f18defbf1d",
+    "mode": 384
+  },
+  "installed-version-24.19.0.log.gz": {
+    "sha256": "c45fc29e660a96b54ecb1af30ce32f32293f1a730feeb321b6e5f6f18defbf1d",
+    "mode": 384
+  },
+  "installed-version-24.21.0.log.gz": {
+    "sha256": "c45fc29e660a96b54ecb1af30ce32f32293f1a730feeb321b6e5f6f18defbf1d",
+    "mode": 384
+  },
+  "prior-hosted-run.json": {
+    "sha256": "36122a0079d13be05bacbb0cf60e2ed487cd1ddbbed252364f18c37e555b8fc8",
+    "mode": 384
+  },
+  "product-inputs.json": {
+    "sha256": "c4c249fe62cdf3146874af1f10b3506c2c7f24c4d4e8d348a7fd22d65f5c8817",
+    "mode": 384
+  },
+  "progress.json": {
+    "sha256": "af5ac15fbee15da1eb2732c179ccd9e409f0ba5ea97ff80f5a569fc4a2cbe7a3",
+    "mode": 384
+  },
+  "qualify.py": {
+    "sha256": "d9e3177e59af3eb6c219b7d89a47f33090d6f90a1d5f3f2262adf13996f9af09",
+    "mode": 384
+  },
+  "recovery.json": {
+    "sha256": "81942993569ddd72fd0300a77514d192eaf82cd9bb4156afa692b984702cf912",
+    "mode": 384
+  },
+  "reused-inputs.json": {
+    "sha256": "d716a096317ee5271d5c646d5e10701028a88f2f8fb8c38493524ee2322b12a9",
+    "mode": 384
+  },
+  "source-24.18.0.log.gz": {
+    "sha256": "bd33455d0aecaea661a4cae61387c404048b3a974cd76e38d436e85a5bc40991",
+    "mode": 384
+  },
+  "source-24.19.0.log.gz": {
+    "sha256": "06e857f1207db460b46e2fbd2b618ad1db6caf58133f3aa11c56c0242f9246e3",
+    "mode": 384
+  },
+  "source-24.21.0.log.gz": {
+    "sha256": "c889d724869eb29989b2fa71471392b2053e746c49b6f04af04e7178908b261f",
+    "mode": 384
+  },
+  "test495-update.json": {
+    "sha256": "dabf53a951e9a47916c97d86e6e0f4762049e7d3ea7cfe7f11faf58b50a5be8f",
+    "mode": 384
+  }
+}

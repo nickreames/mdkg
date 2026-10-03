@@ -8,7 +8,7 @@ parent: goal-89
 tags: [cloud-planning, design-only, cloud-implementation-draft]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [docs/cloud-goal89-contract-delta.md, .mdkg/artifacts/goal-89/implementation/checks.json, .mdkg/artifacts/goal-89/review-correction/checks.json, docs/cloud-goal89-review-correction.md]
+artifacts: [docs/cloud-goal89-contract-delta.md, .mdkg/artifacts/goal-89/implementation/checks.json, .mdkg/artifacts/goal-89/review-correction/checks.json, docs/cloud-goal89-review-correction.md, .mdkg/artifacts/goal-89/guidance-correction/checks.json, docs/cloud-goal89-guidance-correction.md]
 relates: []
 blocked_by: [task-850]
 blocks: []
@@ -117,3 +117,12 @@ controls,672pass0fail/1skip and retained failures/superseded candidate. Worker t
 do not clear Chk675 independent review. Goal90 remains held; Chk676 owner/local
 and Chk677 full publication readiness remain pending. Goal89 is not achieved.
 No new approvals, numeric IDs, selected-goal changes or broader CI work.
+
+## Release-guidance CI regression correction — 2026-10-03
+
+945 hosted minimum exposed two definite document/version assertions; floating
+was cancelled and inconclusive. Authorized narrow projection correction passes
+39 unchanged source/installed-metadata assertions on24.18/24.19/24.21; runtime
+and exact artifact bytes are unchanged. See docs/cloud-goal89-guidance-correction.md
+and .mdkg/artifacts/goal-89/guidance-correction/checks.json. This does not clear
+independent GO or required owner/full-readiness gates. Goal90 remains held.

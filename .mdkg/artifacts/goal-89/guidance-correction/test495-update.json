@@ -1,0 +1,12 @@
+{
+  "action": "updated",
+  "task": {
+    "workspace": "root",
+    "id": "test-495",
+    "qid": "root:test-495",
+    "path": ".mdkg/work/test-495-qualify-persistent-working-storage-behavior-with-synthetic-installed-fixtures.md",
+    "type": "test",
+    "status": "review",
+    "priority": 1
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "created": "2026-10-03T08:57:50.095007+00:00",
+  "head": "945ee4434b50b21861e8fff300450cca39769937",
+  "checks": [
+    {
+      "name": "baseline-source",
+      "command": [
+        "node",
+        "--test",
+        "tests/release-guidance.test.mjs"
+      ],
+      "exit": 1,
+      "counts": {
+        "tests": 11,
+        "pass": 9,
+        "fail": 2
+      },
+      "log_sha256": "c8063fe96d0e36a6ad0617ead9faf5c21138f960b9c4076e7e3d9e648aa6a4b6"
+    },
+    {
+      "name": "baseline-installed",
+      "command": [
+        "node",
+        "/workspace/mdkg-cloud-review-cache/goal89-guidance-correction/installed-guidance.cjs"
+      ],
+      "exit": 1,
+      "counts": {
+        "tests": 2,
+        "pass": 0,
+        "fail": 2
+      },
+      "log_sha256": "2a990e7613dba74369c82c1f1861011aa21ec4b6c159ca4e149705365ca450d7"
+    }
+  ]
+}

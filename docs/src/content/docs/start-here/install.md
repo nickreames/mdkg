@@ -5,7 +5,7 @@ description: Install mdkg and initialize a git-native project memory graph.
 
 ## Requirements
 
-- Node.js `>=24.18.0 <25` for the unpublished 0.6.1 candidate
+- Node.js `>=24.18.0 <25` for the unpublished 0.6.2 candidate
 - npm for the primary global install path
 - A Git repository when you want reviewable project memory
 
@@ -51,7 +51,7 @@ mdkg validate
 
 `mdkg index` builds rebuildable access caches. Markdown files remain the durable source of truth.
 
-The 0.6.1 candidate defaults to compact agent setup. Root `AGENTS.md` routes to `.mdkg/AGENT_START.md`; generated command discovery lives
+The 0.6.2 candidate defaults to compact agent setup. Root `AGENTS.md` routes to `.mdkg/AGENT_START.md`; generated command discovery lives
 under `.mdkg`. Both native skill mirrors remain defaults; existing `CLAUDE.md`
 contents are preserved and a missing legacy wrapper is not recreated. Use `mdkg init --graph-only` to omit agent setup, or
 `mdkg init --agent` for its compatibility spelling. Published 0.5.2 used an
