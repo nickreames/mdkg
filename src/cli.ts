@@ -3677,11 +3677,13 @@ function assertSelectedOutputPolicy(selected:GraphContext,parsed:ParsedArgs):voi
   }
   if(selected.visibility!=="private")return;
   const [family,operation]=parsed.positionals.map(s=>s.toLowerCase());
-  const visibility=parsed.flags["--visibility"];
+  // Match the downstream visibility/profile normalization before applying the
+  // registration boundary: graph contents cannot widen a private registration.
+  const visibility=String(parsed.flags["--visibility"]??"").toLowerCase();
   if(visibility==="public"||visibility==="internal")throw new UsageError("private graph selection permits local/private output only");
   if(family==="graph"&&["clone","fork","import-template"].includes(operation))throw new UsageError("private graph transport is unsupported; selection grants no export authority");
   if(family==="bundle"&&operation==="create") {
-    const profile=parsed.flags["--pack-profile"]??loadConfig(selected.root).bundles.default_profile;
+    const profile=String(parsed.flags["--pack-profile"]??loadConfig(selected.root).bundles.default_profile).toLowerCase();
     if(profile==="public")throw new UsageError("private graph selection cannot produce a public bundle");
   }
 }

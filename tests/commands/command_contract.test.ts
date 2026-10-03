@@ -240,19 +240,20 @@ test("loop descriptor flags match parser branches and generated help", () => {
   };
 
   // Family help is the union of its concrete leaves; each leaf also admits the
-  // same global help/version controls used by both CLI entrypoints.
+  // same global graph/help/version controls used by both CLI entrypoints.
   expectedFlags.loop = [...new Set(Object.entries(expectedFlags).filter(([key]) => key !== "loop").flatMap(([, flags]) => flags))];
 
   for (const [key, flags] of Object.entries(expectedFlags)) {
     const command = commandByKey(contract, key);
-    assert.deepEqual(command.flags.map((flag) => flag.name).sort(), [...flags, "--help", "--version"].sort(), key);
+    assert.deepEqual(command.flags.map((flag) => flag.name).sort(), [...flags, "--graph", "--help", "--version"].sort(), key);
+    assert.ok(command.flags.some((flag) => flag.name === "--graph" && flag.value === "<value>"), key);
     const helpTarget = key.split(" ");
     const help = spawnSync(process.execPath, [path.join(repoRoot, "dist", "cli.js"), "help", ...helpTarget], {
       cwd: repoRoot,
       encoding: "utf8",
     });
     assert.equal(help.status, 0, help.stderr || key);
-    for (const flag of flags) {
+    for (const flag of [...flags, "--graph"]) {
       assert.match(help.stdout, new RegExp(flag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `${key} ${flag}`);
     }
   }

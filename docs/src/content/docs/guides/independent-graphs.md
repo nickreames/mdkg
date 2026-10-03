@@ -36,7 +36,12 @@ before effects and never fall back.
 
 The local registry `.mdkg-graphs.local.json` and its host lock are ignored and
 untracked. Default commands never load it or scan private graph roots. Private
-registration requires an untracked root and previews its ignore entry. A small
+registration requires an untracked root and previews its ignore entry.
+Private admission verifies an effective positive exclusion of the whole project
+directory. It does not sample only config or accept a child wildcard as proof.
+Later authored exceptions refuse named operations before effects. A registration
+preview can add a final whole-directory exclusion without rewriting those rules;
+review and apply its exact hash to restore the boundary. A small
 tracked team root can explicitly use `--visibility internal` or `public`; the
 existing workspace/bundle visibility gates still apply. Collaborators register
 their local mappings deliberately.
@@ -50,12 +55,15 @@ shared mirrors and stale/busy registry operations refuse.
 
 Private named selection permits local/private output, and refuses public/internal
 scope, public bundles and graph transport. Named outputs stay inside the selected
-root. Registration/ignore rules are operator safeguards, not access control or
+root. Case variants of visibility/profile values follow the same privacy boundary.
+Registration/ignore rules are operator safeguards, not access control or
 backup. Git history/remotes remain shared at the host repository; direct `--root`
 keeps its existing explicit operator semantics.
 
 Unregister previews/applies metadata removal only and preserves all graph files
-and ignore entries:
+and ignore entries. It also preserves the prior host binding. Removing an
+unrelated or unavailable mapping cannot approve a changed host identity for the
+remaining mappings; they stay refused pending explicit registry review.
 
 ```bash
 mdkg graph unregister personal --json

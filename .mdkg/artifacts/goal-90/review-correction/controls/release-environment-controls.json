@@ -1,0 +1,81 @@
+{
+  "controls": [
+    {
+      "source": "base",
+      "cwd": "/workspace/mdkg-cloud-goal89",
+      "variant": "clear-retained-inputs",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "ladder keeps earlier receipts|ladder rejects a linked receipt",
+        "tests/qualification-output.test.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.265,
+      "log": "release-control-base-clear-retained-inputs.log",
+      "log_sha256": "ec12e208c41e10907ba8c616ffa02e938ab79f05e4f31f609eac00727ec1af16"
+    },
+    {
+      "source": "base",
+      "cwd": "/workspace/mdkg-cloud-goal89",
+      "variant": "inherited-retained-inputs",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "ladder keeps earlier receipts|ladder rejects a linked receipt",
+        "tests/qualification-output.test.mjs"
+      ],
+      "exit": 1,
+      "seconds": 0.217,
+      "log": "release-control-base-inherited-retained-inputs.log",
+      "log_sha256": "6b8a9789d090950a96b06a5f0607078210aa361e94b5da4680639da5e6f820bb"
+    },
+    {
+      "source": "candidate",
+      "cwd": "/workspace/mdkg-cloud-goal90",
+      "variant": "clear-retained-inputs",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "ladder keeps earlier receipts|ladder rejects a linked receipt",
+        "tests/qualification-output.test.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.266,
+      "log": "release-control-candidate-clear-retained-inputs.log",
+      "log_sha256": "5dbeb7fa6d1066f086bf8be0ab97d6d92414c3e6f2f1a719af4c1bcc1678dc69"
+    },
+    {
+      "source": "candidate",
+      "cwd": "/workspace/mdkg-cloud-goal90",
+      "variant": "inherited-retained-inputs",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "ladder keeps earlier receipts|ladder rejects a linked receipt",
+        "tests/qualification-output.test.mjs"
+      ],
+      "exit": 1,
+      "seconds": 0.214,
+      "log": "release-control-candidate-inherited-retained-inputs.log",
+      "log_sha256": "e2cf22a15859e0bffdeb505ac958942ddc9efb0a626f8edf37907599d6de072b"
+    }
+  ],
+  "limit": "Only the two failures named in the retained clean-run stdout excerpt. Remaining eleven clean-run failures and missing detailed/raw coverage receipts remain unclassified. Controls do not waive canonical gates."
+}

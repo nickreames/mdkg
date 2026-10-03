@@ -1,0 +1,103 @@
+{
+  "action": "release-ladder",
+  "ok": false,
+  "mode": "prepublish",
+  "offline": true,
+  "receipt_dir": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/final/prepublish/run-18yHTw",
+  "duration_ms": 458654,
+  "error": "coverage failed with exit 1",
+  "progress": {
+    "mode": "prepublish",
+    "gates": [
+      {
+        "id": "dependency-preflight",
+        "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /workspace/mdkg-cloud-goal90/scripts/dependency-boundary.js preflight --json",
+        "exit_code": 0,
+        "duration_ms": 30,
+        "timed_out": false
+      },
+      {
+        "id": "coverage",
+        "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm run test:coverage",
+        "exit_code": 1,
+        "duration_ms": 458038,
+        "timed_out": false,
+        "failure_evidence": {
+          "kind": "bounded-failure-output-excerpt",
+          "limit_bytes_per_stream": 8192,
+          "status": 1,
+          "signal": null,
+          "error_code": null,
+          "stdout": {
+            "bytes": 959699,
+            "sha256": "a036aa7862692f5e8cfb6e356ba2332422146a056e61b596e37f019d4ed17a97",
+            "truncated": true,
+            "tail_utf8": "t-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"AssertionError\",\"code\":\"ERR_ASSERTION\",\"failure_type\":null,\"operator\":\"strictEqual\",\"actual\":{\"kind\":\"number\"},\"expected\":{\"kind\":\"number\"},\"locations\":[{\"file\":\"tests/working-storage.test.mjs\",\"line\":43,\"column\":12},{\"file\":\"tests/working-storage.test.mjs\",\"line\":24,\"column\":11}]}],\"truncated\":false}\nFAIL explicit init journal cuts resume; a pre-journal killed adoption preserves unknown custody\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nFAIL sanitized promotion uses verifiable archive evidence and does not export raw scratch\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nFAIL crash boundaries resume exact journal effects once; purge never claims deleted bytes recoverable\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nFAIL hardlinks, symlinks, case aliases, traversal, nested Git and unknown store files refuse without mutation\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nFAIL CLI preview/apply uses saved exact plans; unknown or conflicting options refuse\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nFAIL actual killed writer retains lock; recovery requires fresh evidence and explicit quiescence\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nFAIL forged journal, duplicate move and changed parent preserve uncertain data\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nFAIL local checkout loss loses ignored scratch; selected retained sanitized export restores only selected bytes\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nFAIL selected paused-goal claims protect done work; malformed selection and newly active work invalidate cleanup\nFAIL_DETAIL {\"schema_version\":1,\"policy\":\"omit-payloads-v1\",\"location\":{\"file\":\"tests/working-storage.test.mjs\",\"line\":23,\"column\":3},\"errors\":[{\"name\":\"Error\",\"code\":\"ERR_TEST_FAILURE\",\"failure_type\":\"testCodeFailure\",\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[]},{\"name\":\"Error\",\"code\":null,\"failure_type\":null,\"operator\":null,\"actual\":{\"kind\":\"undefined\"},\"expected\":{\"kind\":\"undefined\"},\"locations\":[{\"file\":\"dist/util/git_observation.js\",\"line\":23,\"column\":12},{\"file\":\"dist/util/git_observation.js\",\"line\":39,\"column\":15},{\"file\":\"dist/util/git_metadata.js\",\"line\":173,\"column\":58},{\"file\":\"dist/core/working_host.js\",\"line\":45,\"column\":56}]}],\"truncated\":false}\nSUMMARY pass=0 fail=24 total=24\nERROR Error: 82.28% line coverage does not meet threshold of 89%.\nERROR Error: 74.76% branch coverage does not meet threshold of 77%.\nERROR Error: 88.68% function coverage does not meet threshold of 96%.\nSUMMARY pass=1823 fail=1067 total=2891\n"
+          },
+          "stderr": {
+            "bytes": 218,
+            "sha256": "f9b45a53bd1c42d3605c2f299e04c245527300ebe43a56cda31b184e973817f7",
+            "truncated": false,
+            "tail_utf8": "coverage evidence directory: /workspace/mdkg-cloud-review-cache/goal90/review-correction/final/prepublish/run-18yHTw/coverage\ncoverage contract failed: scoped lines coverage 82.28% is below provisional audit floor 89%\n"
+          }
+        }
+      }
+    ],
+    "smokes": []
+  },
+  "git_boundary": {
+    "ok": true,
+    "checks": {
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "status_unchanged": true,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true
+    },
+    "changed_tracked_paths": [],
+    "before": {
+      "head": "650f8258495b4904e113830529ed4ffb7b92cc09",
+      "branch": "cloud/goal90-independent-siblings",
+      "status_porcelain_sha256": "73dab7ae0368a3676e87dee4ba1ee6b589568cb4d051e08bf176f315f88f7f1b",
+      "status_entry_count": 14,
+      "tracked_tree_sha256": "b2219ac9f349b0d8ff8b508189412512b5bd59bfad225d25a92ea0effa2b85e2",
+      "tracked_count": 5771,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:ba7c77c7f6e812ffe2052d5114f7f6d189c2239de6c9306895712d9ce29a8650",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    },
+    "after": {
+      "head": "650f8258495b4904e113830529ed4ffb7b92cc09",
+      "branch": "cloud/goal90-independent-siblings",
+      "status_porcelain_sha256": "73dab7ae0368a3676e87dee4ba1ee6b589568cb4d051e08bf176f315f88f7f1b",
+      "status_entry_count": 14,
+      "tracked_tree_sha256": "b2219ac9f349b0d8ff8b508189412512b5bd59bfad225d25a92ea0effa2b85e2",
+      "tracked_count": 5771,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:ba7c77c7f6e812ffe2052d5114f7f6d189c2239de6c9306895712d9ce29a8650",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "--test-name-pattern",
+    "loop descriptor flags match parser branches and generated help",
+    "dist/tests/commands/command_contract.test.js"
+  ],
+  "exit": 0,
+  "seconds": 0.918,
+  "log": "iteration-2-loop.log",
+  "sha256": "d736c15a7fbd4e82a06bb87dd13d0a14216a5157dd23991812a2d3d8dedb58f3"
+}

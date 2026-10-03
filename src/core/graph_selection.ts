@@ -100,9 +100,17 @@ function tracked(host: string, rel: string): boolean {
 }
 function ignored(host: string, rel: string): boolean {
   if(!gitInside(host))return false;
-  // check-ignore accepts literal filenames, not pathspec magic. Setting
-  // GIT_LITERAL_PATHSPECS=1 makes Git reject even an ordinary filename here.
-  return observeGit(host,["check-ignore","-q","--",rel],{allowedFailures:[1],env:{...registryGitEnvironment(),GIT_LITERAL_PATHSPECS:"0"}}).status===0;
+  // A successful check-ignore can describe a NEGATED rule. Query the exact
+  // directory entry without a trailing slash: "root/" can instead match
+  // "root/*", which permits selectively re-included descendants. A positive
+  // exclusion of the directory itself prevents Git from descending into it.
+  const result=observeGit(host,["check-ignore","--verbose","--non-matching","-z","--stdin"],{
+    input:rel+"\0",allowedFailures:[1],maxBuffer:64*1024,
+    env:{...registryGitEnvironment(),GIT_LITERAL_PATHSPECS:"0"},
+  });
+  const parts=result.stdout.split("\0");
+  if(parts.length!==5||parts[3]!==rel||parts[4]!=="")fail("invalid host Git ignore observation");
+  return result.status===0&&parts[2]!==""&&!parts[2].startsWith("!");
 }
 function registryGitEnvironment():NodeJS.ProcessEnv {
   const env=Object.fromEntries(Object.entries(process.env).filter(([key])=>!key.toUpperCase().startsWith("GIT_")));
@@ -120,7 +128,7 @@ function gitInside(host:string):boolean {
 function requireLocalPolicy(host: string,e: Entry): void {
   if(tracked(host,GRAPH_REGISTRY_PATH)||!ignored(host,GRAPH_REGISTRY_PATH)||!ignored(host,GRAPH_REGISTRY_LOCK+"/owner.json"))
     fail("local graph registry/lock must remain ignored and untracked");
-  if(e.visibility==="private" && (tracked(host,e.root)||!ignored(host,e.root+"/.mdkg/config.json")))
+  if(e.visibility==="private" && (tracked(host,e.root)||!ignored(host,e.root)))
     fail("private graph root must remain ignored and untracked");
 }
 function ownerPaths(host: string): string[] {
@@ -160,6 +168,8 @@ function prepare(hostRoot: string,request: RegistryRequest): {plan:RegistryPlan;
   if(tracked(host,GRAPH_REGISTRY_PATH))fail("local graph registry must not be tracked");
   const defaultBinding=hostBinding(host);
   const before=oldRegistry===null?{format:"mdkg-graph-registry" as const,version:1 as const,default_binding:defaultBinding,graphs:[]}:parseRegistry(oldRegistry);
+  if(request.action==="register"&&!same(defaultBinding,before.default_binding))
+    fail("host namespace binding changed; review the local registry mappings explicitly");
   const existing=before.graphs.find(e=>e.name===request.name);
   let selected:Entry;
   if(request.action==="unregister") {
@@ -178,12 +188,17 @@ function prepare(hostRoot: string,request: RegistryRequest): {plan:RegistryPlan;
   }
   const graphs=before.graphs.filter(e=>e.name!==request.name);
   if(request.action==="register")graphs.push(selected);
-  const registry=JSON.stringify({format:before.format,version:1,default_binding:defaultBinding,graphs:graphs.sort((a,b)=>a.name.localeCompare(b.name))},null,2)+"\n";
+  // Forgetting one mapping never approves a changed host for the remaining
+  // mappings. Preserve the recorded binding even when a root is unavailable.
+  const registry=JSON.stringify({format:before.format,version:1,default_binding:before.default_binding,graphs:graphs.sort((a,b)=>a.name.localeCompare(b.name))},null,2)+"\n";
   parseRegistry(registry); // collision check uses metadata only, never sibling scanning
   let ignore=oldIgnore??"";const additions:string[]=[];
-  for(const p of [ignorePattern(GRAPH_REGISTRY_PATH),ignorePattern(GRAPH_REGISTRY_LOCK)+"/",
-    ...(request.action==="register"&&selected.visibility==="private"?[ignorePattern(selected.root)+"/"]:[])])
-    if(!ignore.split(/\r?\n/).includes(p)){additions.push(p);ignore+=(ignore&&!ignore.endsWith("\n")?"\n":"")+p+"\n";}
+  for(const [p,probe] of [[ignorePattern(GRAPH_REGISTRY_PATH),GRAPH_REGISTRY_PATH],
+    [ignorePattern(GRAPH_REGISTRY_LOCK)+"/",GRAPH_REGISTRY_LOCK+"/owner.json"],
+    ...(request.action==="register"&&selected.visibility==="private"?[[ignorePattern(selected.root)+"/",selected.root]]:[])])
+    // An authored later negation can override an identical earlier line. The
+    // additional final exclusion is an explicit hash-bound preview change.
+    if(!ignore.split(/\r?\n/).includes(p)||!ignored(host,probe)){additions.push(p);ignore+=(ignore&&!ignore.endsWith("\n")?"\n":"")+p+"\n";}
   assertNoGitMetadataDestinations(host,[GRAPH_REGISTRY_PATH,".gitignore",GRAPH_REGISTRY_LOCK+"/owner.json"]);
   const selectedRoot=path.join(host,selected.root);
   const base={action:"graph.registry" as const,host_root:host,request:{...request},

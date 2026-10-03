@@ -1,0 +1,20 @@
+{
+  "name": "canonical-prepublish-clean",
+  "command": [
+    "python3",
+    "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+    "node",
+    "scripts/release-ladder.js",
+    "prepublish"
+  ],
+  "start": "2026-10-03T14:27:28.544555+00:00",
+  "end": "2026-10-03T14:38:43.935066+00:00",
+  "seconds": 675.391,
+  "exit": 1,
+  "log": "canonical-prepublish-clean.log",
+  "log_sha256": "7687b28e8bebf3b433c6217430c848550f06ba0306f63438ddcd91dff1a71200",
+  "collection": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/prepublish-clean",
+  "artifact_sha256": "149e361060246a70753c0191badc4a4d8b8267b0a8ec58b0a3d448bac92e610a",
+  "candidate_inputs_sha256": "27f73da5ddd7adbe1dd4b134d1efe7abee9535e9963f8c14020c0f28fe599255",
+  "reason": "Two failure families reproduce on baseline and candidate with invalid /workspace/.git ancestry, and pass under clean TMPDIR. This controlled repeat changes only receipt/fixture ancestry; source/artifact/gates/floors/timeouts unchanged. First full failed run preserved; other original failure details remain unclassified."
+}

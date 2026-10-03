@@ -1,0 +1,23 @@
+{
+  "observed_at": "2026-10-03T15:03:57.019153+00:00",
+  "kind": "missing-clean-run-detail-evidence",
+  "receipt_dir": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures/prepublish-clean/run-8pibPl",
+  "directory_exists": false,
+  "retained": "canonical-prepublish-clean.log plus exact terminal JSON recovered from its stdout and wrapper record",
+  "missing": [
+    "on-disk progress/receipt originals",
+    "full coverage stdout/log",
+    "raw V8 coverage",
+    "concise coverage summary/metrics"
+  ],
+  "known_result": {
+    "ok": false,
+    "pass": 2877,
+    "fail": 13,
+    "total": 2891,
+    "smokes_executed": 0,
+    "coverage_exit": 1,
+    "timed_out": false
+  },
+  "classification": "Two excerpt-identified qualification-output controls reproduce on base and candidate with retained-release input environment, and pass when those variables are cleared. Remaining eleven failures, loss of detailed output directory, and coverage percentages are unclassified/unavailable. No blanket environment attribution. No third full run or gate waiver."
+}

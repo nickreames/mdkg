@@ -1,0 +1,56 @@
+{
+  "recorded": "2026-10-03T15:03:57.155871+00:00",
+  "preserved": {
+    "original_goal90_receipts": {
+      "files": 126,
+      "sha256_unchanged": true
+    },
+    "original_hosted_receipts": {
+      "files": 27,
+      "sha256_unchanged": true
+    },
+    "owner_state_record": {
+      "files": 25,
+      "sha256_unchanged": true
+    }
+  },
+  "qualified_input_drift": {
+    "product-inputs.json": [],
+    "built-inputs.json": [],
+    "installed-inputs.json": []
+  },
+  "other_worktrees": [
+    {
+      "cwd": "/workspace/mdkg",
+      "head": "d9b74c3fa172688a99406fd908571c7e3f666395",
+      "clean": true
+    },
+    {
+      "cwd": "/workspace/mdkg-cloud-plan-review",
+      "head": "eb4daec5bc95c20bacddeb83f0b6eb7f95f0c1c8",
+      "clean": true
+    },
+    {
+      "cwd": "/workspace/mdkg-cloud-goal88",
+      "head": "ce53ea56629af23ecd10d6e58a393db1235fda79",
+      "clean": true
+    },
+    {
+      "cwd": "/workspace/mdkg-cloud-goal89",
+      "head": "1e5b5981611b019c4ab0d14ec9d0bcccf3c171ef",
+      "clean": true
+    }
+  ],
+  "owned_cache_restored": {
+    "path": "/workspace/mdkg-cloud-goal90/.mdkg/index/mdkg.sqlite",
+    "sha256": "648a2083b786c49e08535bb5e37bcbfa76bed8e817dae591ef445c855f976bc5",
+    "mode": 384,
+    "scope": "Generated cache only; saved before authorized graph validation. Restore after qualification without changing owner selection/artifacts."
+  },
+  "availability": {
+    "confirmed_connection_failures": 3,
+    "budget": 5,
+    "new_failure": "EAI_AGAIN fetching pinned public upgrade baseline; supported verified local copy used"
+  },
+  "no_merge_publication_tags_deployments_history_rewrite": true
+}

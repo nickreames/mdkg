@@ -70,3 +70,18 @@ blocked or review, with readiness:not-ready, preserving downstream blockers.
 Only evidenced independent READY_PENDING_APPROVAL acceptance may become done
 with readiness:ready-pending-approval; this grants no publication or adoption.
 Parser/goal-next and the docs plan guard enforce this distinction.
+
+# Independent PR13 Review Correction
+
+Independent review returned NO GO at650f8258495b4904e113830529ed4ffb7b92cc09.
+Parent delegated four focused fixes and supplied portable exact reproductions.
+The runtime defects reproduce in rejected source and installed bytes on native
+24.18.0/24.21.0; the loop contract passes base1e and fails650 on both runtimes.
+The active correction preserves private export case normalization, whole-directory
+Git exclusion, prior host bindings on unregister, and the loop global flag set.
+Current producer qualification is recorded separately at
+.mdkg/artifacts/goal-90/review-correction/checks.json and
+docs/cloud-goal90-review-correction.md. Original evidence remains unchanged.
+Required independent exact corrected-patch re-review, owner/local/platform and
+full release acceptance remain pending; no GO, READY or achieved state is inferred.
+No status, selected-goal or dependency edge is changed by this record.

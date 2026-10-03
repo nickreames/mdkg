@@ -49,11 +49,20 @@ identity bytes does not create an independent graph: duplicate binding against
 the default or registered entries refuses. Changed or missing bindings never
 fall back or silently rebind. Explicit mapping removal/re-registration is a
 reviewable metadata operation, not migration or working-store repair.
+Unregister preserves the registry's prior default host binding, including when
+the removed root is unavailable. It cannot approve a changed host identity for
+remaining mappings; those remain refused. Registration with a changed host
+binding also refuses pending explicit registry review.
 
-Private registrations require no tracked graph files and an ignored graph root;
+Private registrations require no tracked graph files and an ignored graph root.
+The effective positive Git exclusion must match the directory itself, not a
+sampled config file or a trailing-slash query that can match a child wildcard.
+Selection rechecks this boundary. A later authored exception refuses selected
+operations. Registration can preview an additional final directory exclusion;
+its exact hash-bound apply preserves the existing authored rules.
 All registry mutations require a valid Git work tree so their ignored/untracked
 policy can be verified before any ignore-file or registry mutation.
-the preview includes any needed `.gitignore` additions. Registry metadata and
+The preview includes any needed `.gitignore` additions. Registry metadata and
 its host lock stay ignored for every visibility. Tracked team roots can use
 internal/public registration deliberately. Ignoring is not access control.
 
@@ -96,6 +105,9 @@ is unsupported and refuses before effects. Existing explicit subgraphs stay
 within their selected owning root. npm package whitelist remains unchanged and
 must exclude registry, graph/scratch fixtures and planning evidence. No export
 authorization is inferred from selection or a public field inside private data.
+The registration fence normalizes visibility and bundle-profile case exactly
+as the downstream handlers do. Public/internal case variants cannot bypass a
+private registration; local/private case variants retain their existing support.
 
 ## Test and stop boundary
 

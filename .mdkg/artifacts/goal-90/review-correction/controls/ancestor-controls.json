@@ -1,0 +1,182 @@
+{
+  "recorded": "2026-10-03T14:20:07.207012+00:00",
+  "controls": [
+    {
+      "source": "base",
+      "cwd": "/workspace/mdkg-cloud-goal89",
+      "environment": "workspace-empty-ancestor",
+      "TMPDIR": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/fresh-ancestor-controls",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "fresh init creates independent host markers; repeat init preserves marker and legacy instructions",
+        "tests/working-storage.test.mjs"
+      ],
+      "exit": 1,
+      "expected": 1,
+      "seconds": 0.265,
+      "log": "control-base-workspace-empty-ancestor-working.log",
+      "log_sha256": "718e46d86af926b5a99e74e3fd0594b65711e46f07ab5c3b478b3f119dcd149d",
+      "matched": true
+    },
+    {
+      "source": "base",
+      "cwd": "/workspace/mdkg-cloud-goal89",
+      "environment": "workspace-empty-ancestor",
+      "TMPDIR": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/fresh-ancestor-controls",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "validate and index accept valid Agent workflow file fixtures",
+        "dist/tests/commands/agent_file_types.test.js"
+      ],
+      "exit": 1,
+      "expected": 1,
+      "seconds": 0.265,
+      "log": "control-base-workspace-empty-ancestor-agent.log",
+      "log_sha256": "4fa776979c3fa303aa8e236b0025bf6d5057cfee9ac4a25a95c893478ee679a6",
+      "matched": true
+    },
+    {
+      "source": "base",
+      "cwd": "/workspace/mdkg-cloud-goal89",
+      "environment": "clean-shm",
+      "TMPDIR": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "fresh init creates independent host markers; repeat init preserves marker and legacy instructions",
+        "tests/working-storage.test.mjs"
+      ],
+      "exit": 0,
+      "expected": 0,
+      "seconds": 0.415,
+      "log": "control-base-clean-shm-working.log",
+      "log_sha256": "deb12cac2403f71d3ec31de4d0e709fd5fae4cacb5559baf3e4d88d3f73655de",
+      "matched": true
+    },
+    {
+      "source": "base",
+      "cwd": "/workspace/mdkg-cloud-goal89",
+      "environment": "clean-shm",
+      "TMPDIR": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "validate and index accept valid Agent workflow file fixtures",
+        "dist/tests/commands/agent_file_types.test.js"
+      ],
+      "exit": 0,
+      "expected": 0,
+      "seconds": 0.267,
+      "log": "control-base-clean-shm-agent.log",
+      "log_sha256": "9cfe9f5167ad41a04db945eaf766d82b737dbd66baa0f184d386eb39541ac74d",
+      "matched": true
+    },
+    {
+      "source": "candidate",
+      "cwd": "/workspace/mdkg-cloud-goal90",
+      "environment": "workspace-empty-ancestor",
+      "TMPDIR": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/fresh-ancestor-controls",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "fresh init creates independent host markers; repeat init preserves marker and legacy instructions",
+        "tests/working-storage.test.mjs"
+      ],
+      "exit": 1,
+      "expected": 1,
+      "seconds": 0.215,
+      "log": "control-candidate-workspace-empty-ancestor-working.log",
+      "log_sha256": "c41a70618c35e304cde1b232b577882006360eb9af3dd9390fc7d56ccd1cd3a2",
+      "matched": true
+    },
+    {
+      "source": "candidate",
+      "cwd": "/workspace/mdkg-cloud-goal90",
+      "environment": "workspace-empty-ancestor",
+      "TMPDIR": "/workspace/mdkg-cloud-review-cache/goal90/review-correction/fresh-ancestor-controls",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "validate and index accept valid Agent workflow file fixtures",
+        "dist/tests/commands/agent_file_types.test.js"
+      ],
+      "exit": 1,
+      "expected": 1,
+      "seconds": 0.217,
+      "log": "control-candidate-workspace-empty-ancestor-agent.log",
+      "log_sha256": "d47e6d60aec4e32c4f4c49c1f45afc28c0e1186383f3a6ed9978ccdc1bd14b43",
+      "matched": true
+    },
+    {
+      "source": "candidate",
+      "cwd": "/workspace/mdkg-cloud-goal90",
+      "environment": "clean-shm",
+      "TMPDIR": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "fresh init creates independent host markers; repeat init preserves marker and legacy instructions",
+        "tests/working-storage.test.mjs"
+      ],
+      "exit": 0,
+      "expected": 0,
+      "seconds": 0.365,
+      "log": "control-candidate-clean-shm-working.log",
+      "log_sha256": "ddd11bd9d4ab84467888cfe7929bf73f3ff358c0ee7b637230c4c3cdf402e4f5",
+      "matched": true
+    },
+    {
+      "source": "candidate",
+      "cwd": "/workspace/mdkg-cloud-goal90",
+      "environment": "clean-shm",
+      "TMPDIR": "/dev/shm/mdkg-cloud-goal90-review-correction-fixtures",
+      "command": [
+        "python3",
+        "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern",
+        "validate and index accept valid Agent workflow file fixtures",
+        "dist/tests/commands/agent_file_types.test.js"
+      ],
+      "exit": 0,
+      "expected": 0,
+      "seconds": 0.215,
+      "log": "control-candidate-clean-shm-agent.log",
+      "log_sha256": "6036055d819c52fdf99f3f1fc8843a995d46f94a772ff4214662407eaba52030",
+      "matched": true
+    }
+  ],
+  "limit": "Two representative failures reproduced on baseline/candidate and pass with clean fixture ancestry; remaining full-run failures are not all attributed to this mechanism. No source changes or modifications to /workspace/.git or retained failed-run fixtures."
+}

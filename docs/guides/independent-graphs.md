@@ -34,6 +34,12 @@ team root, explicitly choose `--visibility internal` or `public`; existing bundl
 and workspace visibility rules still apply. Registry names/paths are local
 metadata, so collaborators opt in to their own mappings explicitly.
 
+Private admission verifies an effective positive exclusion of the whole project
+directory. It does not sample only config or accept a child wildcard as proof.
+Later authored exceptions refuse named operations before effects. A registration
+preview can add a final whole-directory exclusion without rewriting those rules;
+review and apply its exact hash to restore the boundary.
+
 All named-command relative paths, config, IDs, indexes, locks, state, events,
 DB/queues, working storage, packs and native skill mirrors belong to the selected
 project root. Named init/upgrade therefore preserve the host's instructions and
@@ -56,7 +62,8 @@ siblings; named admission reads the requested graph plus bounded host ownership
 and ignore/index metadata, without indexing any other graph.
 
 Private named selection permits local/private output. Public/internal pack or
-archive/capability scope, public bundles and graph transport refuse. Named output
+archive/capability scope, public bundles and graph transport refuse. Case variants
+of visibility/profile values follow the same privacy boundary. Named output
 files stay in the selected project root. Ignoring and registration are local
 operator safeguards, not filesystem or Git access control. Git history/remotes
 belong to the host repository; selecting a graph does not create a separate Git
@@ -69,8 +76,11 @@ mdkg graph unregister personal --json
 mdkg graph unregister personal --apply --plan-hash PLAN_HASH --json
 ```
 
-Unregister preserves graph files and ignore rules. Review a changed identity or
-path by removing/re-registering only the mapping; this never repairs foreign
+Unregister preserves graph files and ignore rules, and the prior host binding.
+Removing an unrelated or unavailable mapping cannot approve a changed host
+identity for the remaining mappings; they stay refused pending explicit registry
+review. Review a changed sibling identity or path by removing/re-registering only
+the mapping; this never repairs foreign
 working storage or supplies migration authority. Busy/stale registry writers
 refuse. An interrupted apply may have added reviewed ignore entries before its
 atomic registry replacement; preserve any retained lock, review custody, then
