@@ -7,6 +7,7 @@ const crypto = require("node:crypto");
 const { spawnSync } = require("node:child_process");
 const { assertDirectoryChain, createRunDirectory, within } = require("./qualification-output");
 const { failureEvidence } = require("./release-ladder");
+const { admitFailureDetail } = require("./test-failure-detail");
 const repoRoot = path.resolve(__dirname, "..");
 const hash = bytes => crypto.createHash("sha256").update(bytes).digest("hex");
 
@@ -69,10 +70,17 @@ function coverageDiagnostic(run) {
     } finally { fs.closeSync(fd); }
     const lines = bytes.toString("utf8").split(/\r?\n/);
     const failures = lines.filter(line => line.startsWith("FAIL "));
+    const detailLines = lines.filter(line => line.startsWith("FAIL_DETAIL "));
+    const admittedDetails = detailLines.filter(line => {
+      try { return admitFailureDetail(JSON.parse(line.slice("FAIL_DETAIL ".length))); }
+      catch { return false; }
+    });
     const summaries = lines.filter(line => line.startsWith("SUMMARY "));
     return { state: "log-read", file: "logs/coverage.log", bytes: bytes.length, sha256: hash(bytes),
       failure_count: failures.length,
       failed_cases: failureEvidence({ status: 1, stdout: failures.join("\n") }).stdout,
+      failure_detail_count: admittedDetails.length, rejected_detail_count: detailLines.length - admittedDetails.length,
+      failure_details: failureEvidence({ status: 1, stdout: admittedDetails.join("\n") }).stdout,
       final_summary: summaries.at(-1) ?? null };
   } catch (error) { return { state: "diagnostic-unavailable", error: error.message }; }
 }
