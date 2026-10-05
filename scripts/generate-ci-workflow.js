@@ -81,6 +81,9 @@ ${fastMatrix}
           mkdir -p "$RUNNER_TEMP/mdkg-fast"
           printf '{"status":"started"}\\n' > "$RUNNER_TEMP/mdkg-fast/workflow-start.json"
       - uses: actions/checkout@v4
+        with:
+          ref: \${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: \${{ matrix.node }}
@@ -89,12 +92,30 @@ ${fastMatrix}
             package-lock.json
             docs/package-lock.json
             mdkg-dev/package-lock.json
+      - name: Verify exact unit source SHA
+        env:
+          COMMIT_SHA: \${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/generate-ci-workflow.js --verify-sha "$COMMIT_SHA"
       - name: Bootstrap all dependency owners
         run: npm run deps:bootstrap
       - name: Run manifest-backed fast release gate
         env:
           MDKG_RELEASE_RECEIPT_DIR: \${{ runner.temp }}/mdkg-fast
         run: npm run ci:release
+      - name: Collect complete unit evidence from the existing coverage run
+        if: \${{ always() }}
+        env:
+          COMMIT_SHA: \${{ github.event.pull_request.head.sha || github.sha }}
+          UNIT_RUNTIME_ID: \${{ matrix.id }}
+        run: node scripts/unit-ci-evidence.js collect "$COMMIT_SHA" "$UNIT_RUNTIME_ID" "$RUNNER_TEMP/mdkg-fast" "$RUNNER_TEMP/mdkg-unit"
+      - name: Upload unit evidence
+        if: \${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: mdkg-unit-\${{ matrix.id }}-\${{ github.run_id }}-\${{ github.run_attempt }}
+          path: \${{ runner.temp }}/mdkg-unit
+          retention-days: ${topology.fast.artifact_retention_days}
+          if-no-files-found: error
       - name: Preserve interrupted fixture evidence and report failed cases
         if: \${{ always() }}
         run: node scripts/collect-ci-evidence.js "$RUNNER_TEMP/mdkg-fast" "$RUNNER_TEMP/mdkg-fast-fixtures"
@@ -109,6 +130,34 @@ ${fastMatrix}
             \${{ runner.temp }}/mdkg-fast-fixtures
           retention-days: ${topology.fast.artifact_retention_days}
           if-no-files-found: error
+
+  unit_tests:
+    if: \${{ always() && (github.event_name != 'workflow_dispatch' || inputs.tier == 'fast') }}
+    needs: fast
+    name: unit-tests / mdkg
+    runs-on: ubuntu-latest
+    timeout-minutes: ${topology.full.aggregate_timeout_minutes}
+    steps:
+      - name: Require the complete fast matrix
+        env:
+          FAST_RESULT: \${{ needs.fast.result }}
+        run: test "$FAST_RESULT" = success
+      - uses: actions/checkout@v4
+        with:
+          ref: \${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "${topology.full.runtime}"
+      - name: Download this attempt's complete unit matrix
+        uses: actions/download-artifact@v4
+        with:
+          pattern: mdkg-unit-*-\${{ github.run_id }}-\${{ github.run_attempt }}
+          path: \${{ runner.temp }}/mdkg-unit-matrix
+      - name: Require matching source, complete execution and intact evidence
+        env:
+          COMMIT_SHA: \${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/unit-ci-evidence.js verify "$COMMIT_SHA" "$RUNNER_TEMP/mdkg-unit-matrix"
 
   full_prepare:
     if: \${{ github.event_name == 'workflow_dispatch' && inputs.tier == 'full' }}

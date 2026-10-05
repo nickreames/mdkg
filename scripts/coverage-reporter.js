@@ -8,6 +8,7 @@ module.exports = async function* coverageReporter(source) {
   const outputPath = process.env.MDKG_COVERAGE_EVENT_PATH;
   let coverage;
   let testSummary;
+  const testSkips = [];
 
   try {
     for await (const event of source) {
@@ -17,7 +18,13 @@ module.exports = async function* coverageReporter(source) {
         testSummary = event.data;
       }
       if (event.type === "test:pass") {
-        yield `PASS ${event.data.name}\n`;
+        if (event.data.skip) {
+          const reason = typeof event.data.skip === "string" ? event.data.skip : null;
+          testSkips.push({ name: event.data.name, reason });
+          yield `SKIP ${event.data.name}${reason === null ? "" : ` (${reason})`}\n`;
+        } else {
+          yield `PASS ${event.data.name}\n`;
+        }
       } else if (event.type === "test:fail") {
         yield `FAIL ${event.data.name}\n`;
         yield `FAIL_DETAIL ${JSON.stringify(failureDetail(event.data))}\n`;
@@ -34,7 +41,7 @@ module.exports = async function* coverageReporter(source) {
       fs.mkdirSync(path.dirname(outputPath), { recursive: true });
       fs.writeFileSync(
         outputPath,
-        `${JSON.stringify({ coverage, test_summary: testSummary }, null, 2)}\n`,
+        `${JSON.stringify({ coverage, test_summary: testSummary, test_skips: testSkips }, null, 2)}\n`,
         "utf8",
       );
     }
