@@ -1,0 +1,43 @@
+
+> mdkg@0.6.0 docs:check:built
+> node scripts/generate-docs-reference.js --check && node scripts/generate-release-notes-data.js --check && node scripts/check-doc-command-examples.js && node scripts/check-cloud-release-plan.js
+
+{
+  "ok": true,
+  "action": "docs-check",
+  "outputs": [
+    "/workspace/mdkg-cloud-plan-review/docs/_generated/cli-reference.md",
+    "/workspace/mdkg-cloud-plan-review/docs/_generated/command-contract-summary.json"
+  ]
+}
+{
+  "ok": true,
+  "action": "release-notes-check",
+  "output": "/workspace/mdkg-cloud-plan-review/docs/_generated/release-notes.json"
+}
+{
+  "ok": true,
+  "scanned_files": 66,
+  "checked_examples": 499,
+  "placeholder_examples": 68,
+  "placeholder_context_examples": 37,
+  "placeholder_fence_examples": 37,
+  "placeholder_fence_context_examples": 37,
+  "skipped_illustrative_examples": 59,
+  "skipped_historical_examples": 13,
+  "failed_examples": 0,
+  "by_source": {
+    "fence": 275,
+    "inline": 296
+  },
+  "failures": []
+}
+{
+  "ok": true,
+  "errors": []
+}
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

@@ -1,4 +1,5 @@
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
+import { checkpointReadinessError } from "./checkpoint_readiness";
 import { EdgeMap, extractEdges } from "./edges";
 import { TemplateSchema, TemplateSchemaMap } from "./template_schema";
 import {
@@ -755,6 +756,8 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   }
 
   const tags = requireLowercaseList(optionalList(frontmatter, "tags", filePath), "tags", filePath);
+  const readinessError = checkpointReadinessError({ type, status, tags });
+  if (readinessError) throw formatError(filePath, readinessError);
   const owners = requireLowercaseList(
     optionalList(frontmatter, "owners", filePath),
     "owners",

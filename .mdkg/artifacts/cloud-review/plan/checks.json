@@ -1,0 +1,75 @@
+{
+  "kind": "PR10-P2-correction-focussed-not-release-ready",
+  "base": "ddafe0836fdc790cd36ba203afbcfc1878bbddd8",
+  "host": "native Linux x86_64",
+  "runtimes": [
+    "24.19.0/npm11.9.0",
+    "24.18.0/npm11.16.0 (retained official checked archive)"
+  ],
+  "before": "cached done/NOT_READY selects task848 on unchanged Goal88 source",
+  "after": "34/34 source/parser/goal-routing/plan cases pass on both runtimes",
+  "docs": "499 examples/0failures; plan marker/edge guard passes",
+  "graph": {
+    "action": "validated",
+    "ok": true,
+    "warning_count": 1,
+    "error_count": 0,
+    "warnings": [
+      "SQLite cache may be stale because source graph files or config changed; run mdkg index"
+    ],
+    "warning_diagnostics": [
+      {
+        "id": "cache.index",
+        "category": "cache",
+        "severity": "warning",
+        "message": "SQLite cache may be stale because source graph files or config changed; run mdkg index",
+        "remediation": "Run mdkg index or mdkg db index rebuild when generated cache state should be refreshed."
+      }
+    ],
+    "warning_summary": {
+      "total": 1,
+      "emitted": 1,
+      "truncated": false,
+      "omitted_count": 0,
+      "limit": null,
+      "affected_file_count": 0,
+      "by_id": [
+        {
+          "key": "cache.index",
+          "count": 1
+        }
+      ],
+      "by_category": [
+        {
+          "key": "cache",
+          "count": 1
+        }
+      ],
+      "by_node_type": [],
+      "top_qids": [],
+      "top_paths": []
+    },
+    "errors": []
+  },
+  "skills": {
+    "action": "validated",
+    "ok": true,
+    "checked_count": 8,
+    "warning_count": 0,
+    "error_count": 0,
+    "warnings": [],
+    "errors": []
+  },
+  "other": "build/test compilation, CLI parity, workflow drift, whitespace pass",
+  "full_release_checks": "NOT_RUN for corrected inputs; no pre-merge/release claim",
+  "hashes": {
+    "plan-before-probe.json": "65ca2f2ff1bc2d77ac6887589372ca1e90ca4374f337c0ca7e96744f255725ec",
+    "plan-focused-final.log": "d98a976789382cabf5e87e966e61be93fa81e8f01208a0366c10858b8e75b64c",
+    "plan-focused-minimum.log": "353fa565c66678374e2b8f3d4a7bd958759c7513cefa336541a50561ca422a26",
+    "plan-docs.log": "ccbf73098af583dc3706ecc6df2ffbfa2f20d62bb20cf14bed31c129653977b8",
+    "plan-cli.log": "24907d00175ebb6e21f074d4cc1c99487fcc7c70040bfcd9c356fa26eb9ce199",
+    "plan-graph.json": "249affc9d5b98227807dbcc0a508328d57993017ff025f61bfd4491b2fcf385c",
+    "plan-skills.json": "354f303a92910bc4c6bda7c82e91dada959ff76a1830f6184449268b8540693f",
+    "plan-workflow.log": "4a1db9433c414efae35742fcd2e7df0d7f7af82c7df2064b95001d0b243d7851"
+  }
+}

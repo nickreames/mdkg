@@ -48,7 +48,7 @@
     "docs:release-notes": "node scripts/generate-release-notes-data.js --write",
     "docs:release-notes:check": "node scripts/generate-release-notes-data.js --check",
     "docs:check": "npm run build && npm run docs:check:built",
-    "docs:check:built": "node scripts/generate-docs-reference.js --check && node scripts/generate-release-notes-data.js --check && node scripts/check-doc-command-examples.js",
+    "docs:check:built": "node scripts/generate-docs-reference.js --check && node scripts/generate-release-notes-data.js --check && node scripts/check-doc-command-examples.js && node scripts/check-cloud-release-plan.js",
     "docs:check-commands": "npm run build && npm run docs:check-commands:built",
     "docs:check-commands:built": "node scripts/check-doc-command-examples.js",
     "smoke:mdkg-dev": "npm run build && node scripts/smoke-mdkg-dev.js",
