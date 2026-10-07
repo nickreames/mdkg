@@ -1,0 +1,19 @@
+{
+  "kind": "bounded-full-thresholded-coverage",
+  "source_head": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+  "source_diff_sha256": "5625c07b6cd5d77750878b862df9ea31c2dd0d8f694225f98024649b7da69d65",
+  "runtime": "v24.19.0",
+  "platform": "linux",
+  "arch": "x64",
+  "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+  "qualification_inputs_sha256": "525f55ac988953a836d5e855d998b15a4a2d65e219e0365475a012d330ff35c6",
+  "artifact_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+  "driver_sha256": "195e51de93e873915c10dad5b937f2e331c530af715f26f144f5561551c567bf",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "scripts/coverage-contract.js",
+    "run"
+  ],
+  "outer_bound_seconds": 900,
+  "coverage_policy": "unchanged thresholds89/77/96; unchanged complete discovered test files; ordinary full tests included under coverage"
+}

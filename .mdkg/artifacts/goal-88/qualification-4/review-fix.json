@@ -1,0 +1,55 @@
+{
+  "parent_head": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+  "runtime_source_head": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+  "diff_sha256": "5625c07b6cd5d77750878b862df9ea31c2dd0d8f694225f98024649b7da69d65",
+  "files": [
+    {
+      "path": "tests/commands/cli_onboarding.test.ts",
+      "before_sha256": "75329a60a1cfa0c881cb277c6803711fa707fb79023f26cba4840c35cc2c78c6",
+      "after_sha256": "169631379cc00de6258e9ce80d96ab5780c5678a55f1f4b2a007cb7ccf6b7f12"
+    },
+    {
+      "path": "tests/commands/diagnostic_containment.test.ts",
+      "before_sha256": "c2d0e7ade4f99a472e76a5162535e48c921eefe8ca8eed39fe3fd6100548b6fb",
+      "after_sha256": "a6f96bf7641730c906e00f631a7f1e0995cb4256eb114676b663b952defb54aa"
+    }
+  ],
+  "changes": "tests only: exact authored CLAUDE byte preservation, complete repeat-init inventory, mismatched and current-runtime changelog controls",
+  "before": {
+    "cases": 26,
+    "passed": 23,
+    "failed": 3
+  },
+  "after": {
+    "cases": 45,
+    "passed": 45,
+    "failed": 0
+  },
+  "source_changes": false,
+  "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+  "qualification_inputs_sha256": "525f55ac988953a836d5e855d998b15a4a2d65e219e0365475a012d330ff35c6",
+  "affected_tests": [
+    "dist/tests/commands/cli_onboarding.test.js",
+    "dist/tests/commands/diagnostic_containment.test.js",
+    "dist/tests/commands/goal88_init.test.js",
+    "dist/tests/commands/compact_bootstrap.test.js"
+  ],
+  "broader_required": "one complete unchanged thresholded coverage contract run, currently active",
+  "independent_owner_review_report": {
+    "context": "reported by parent; not cloud execution",
+    "full_suite": {
+      "passed": 2401,
+      "failed": 3
+    },
+    "baseline_controls": {
+      "passed": 26,
+      "failed": 0
+    },
+    "package_smokes": {
+      "passed": 37,
+      "failed": 0
+    },
+    "installed_cases": 27,
+    "verdict": "NOT_READY; two P2 findings; required platforms incomplete"
+  }
+}

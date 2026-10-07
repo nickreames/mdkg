@@ -277,7 +277,7 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
   withContainedPathSink({ root, relativePath: path.relative(root, canonicalPath), operation: "replace", pathSyntax: "native" }, () => undefined);
   prepareSkillsRegistry(root, config, { slug, filePath: canonicalPath, content });
   const maintainMirrors = shouldMaintainSkillMirrors(root, config);
-  if (maintainMirrors) preflightPendingSkillMirrors(root, config, { slug, filePath: canonicalPath, content, withScripts: options.withScripts });
+  if (maintainMirrors) preflightPendingSkillMirrors(root, config, { slug, filePath: canonicalPath, content, withScripts: options.withScripts }, force);
 
   const relativeSkillDir = path.relative(root, skillDir).split(path.sep).join("/");
   ensureContainedDirectory({ root, relativePath: relativeSkillDir });

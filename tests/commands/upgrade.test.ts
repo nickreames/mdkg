@@ -172,7 +172,7 @@ function setupCurrentAndLegacySeeds(): { oldSeed: string; currentSeed: string } 
   const currentSeed = makeTempDir("mdkg-upgrade-current-seed-");
   setupSeed(oldSeed, "old");
   setupSeed(currentSeed, "current");
-  const legacyManifest = createInitManifest(oldSeed, "0.0.9");
+  const legacyManifest = createInitManifest(oldSeed, "0.0.9", { includeAgentDocs: true, includeStartupDocs: true, includeDefaultSkills: true, includeLegacyClaude: true });
   writeInitManifest(currentSeed, "legacy/v0.0.9-init-manifest.json", legacyManifest);
   return { oldSeed, currentSeed };
 }
@@ -628,12 +628,12 @@ test("runUpgradeCommand repairs legacy agent workspaces missing wrapper docs", (
   };
   assert.equal(dryRun.safe_to_apply, true);
   assert.ok(dryRun.changes.some((change) => change.action === "create" && change.path === "AGENTS.md"));
-  assert.ok(dryRun.changes.some((change) => change.action === "create" && change.path === "CLAUDE.md"));
+  assert.equal(dryRun.changes.some((change) => change.path === "CLAUDE.md"), false);
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
 
   captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed }));
   assert.ok(fs.existsSync(path.join(root, "AGENTS.md")));
-  assert.ok(fs.existsSync(path.join(root, "CLAUDE.md")));
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
 });
 
 test("runUpgradeCommand skips ignored event logs and reports safe apply metadata", () => {

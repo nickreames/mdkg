@@ -32,12 +32,14 @@ export type InitManifest = {
 };
 
 const STARTUP_DOCS = ["llms.txt", "AGENT_START.md", "CLI_COMMAND_MATRIX.md"];
-const AGENT_DOCS = ["AGENTS.md", "CLAUDE.md"];
+const AGENT_DOCS = ["AGENTS.md"];
 
 export type CreateInitManifestOptions = {
   includeAgentDocs?: boolean;
   includeStartupDocs?: boolean;
   includeDefaultSkills?: boolean;
+  /** Historical fixture/provenance inventory only; init never generates CLAUDE.md. */
+  includeLegacyClaude?: boolean;
 };
 
 function toPosixPath(value: string): string {
@@ -146,7 +148,7 @@ export function createInitManifest(
   addSeedDir(files, seedRoot, "core", ".mdkg/core", "core");
   addSeedDir(files, seedRoot, "templates", ".mdkg/templates", "template");
   if (includeAgentDocs) {
-    for (const doc of AGENT_DOCS) {
+    for (const doc of [...AGENT_DOCS, ...(options.includeLegacyClaude ? ["CLAUDE.md"] : [])]) {
       addSeedFile(files, seedRoot, doc, doc, "agent_doc");
     }
   }

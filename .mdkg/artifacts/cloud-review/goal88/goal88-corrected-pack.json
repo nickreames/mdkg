@@ -1,0 +1,1206 @@
+[
+  {
+    "id": "mdkg@0.6.1",
+    "name": "mdkg",
+    "version": "0.6.1",
+    "size": 548576,
+    "unpackedSize": 3030484,
+    "shasum": "b9236926bd2015f6832f6b83636ec3c997b975fe",
+    "integrity": "sha512-Yj0LmaF1RbxvIccqp8jU7k2QZnvxBQFlsZYMj7dR53oviXXbpe2BPZdQXYdOYGJn+BcOmey8MUgDjFeIT05HbQ==",
+    "filename": "mdkg-0.6.1.tgz",
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 59175,
+        "mode": 384
+      },
+      {
+        "path": "CLI_COMMAND_MATRIX.md",
+        "size": 74657,
+        "mode": 384
+      },
+      {
+        "path": "CONTRIBUTING.md",
+        "size": 4588,
+        "mode": 384
+      },
+      {
+        "path": "LICENSE",
+        "size": 1068,
+        "mode": 384
+      },
+      {
+        "path": "README.md",
+        "size": 54414,
+        "mode": 384
+      },
+      {
+        "path": "dist/cli.js",
+        "size": 176556,
+        "mode": 384
+      },
+      {
+        "path": "dist/command-contract.json",
+        "size": 631973,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/archive.js",
+        "size": 39062,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/bootstrap_instructions.js",
+        "size": 2526,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/bundle.js",
+        "size": 45727,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/capability.js",
+        "size": 10078,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/checkpoint.js",
+        "size": 11578,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/db.js",
+        "size": 32959,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/doctor.js",
+        "size": 29666,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/event_support.js",
+        "size": 5704,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/event.js",
+        "size": 3182,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/fix.js",
+        "size": 64977,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/format.js",
+        "size": 22928,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/git.js",
+        "size": 4165,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/goal.js",
+        "size": 30555,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/graph_identity.js",
+        "size": 3809,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/graph.js",
+        "size": 44963,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/guide.js",
+        "size": 1137,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/handoff.js",
+        "size": 12656,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/index.js",
+        "size": 1563,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/init_manifest.js",
+        "size": 9384,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/init.js",
+        "size": 32693,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/list.js",
+        "size": 2819,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/loop_descriptors.js",
+        "size": 9496,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/loop.js",
+        "size": 73358,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/mcp.js",
+        "size": 28748,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/new.js",
+        "size": 22801,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/next.js",
+        "size": 3104,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/node_card.js",
+        "size": 665,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/option_contract.js",
+        "size": 12554,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/pack.js",
+        "size": 20642,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/query_output.js",
+        "size": 6009,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/search.js",
+        "size": 3877,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/show.js",
+        "size": 4420,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/skill_mirror.js",
+        "size": 22566,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/skill_support.js",
+        "size": 8262,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/skill.js",
+        "size": 18326,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/spec.js",
+        "size": 6203,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/status.js",
+        "size": 10525,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/subgraph.js",
+        "size": 53097,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/task.js",
+        "size": 18150,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/upgrade_identity.js",
+        "size": 5442,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/upgrade_projections.js",
+        "size": 5707,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/upgrade_transaction.js",
+        "size": 17701,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/upgrade.js",
+        "size": 38791,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/validate.js",
+        "size": 30750,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/work.js",
+        "size": 54810,
+        "mode": 384
+      },
+      {
+        "path": "dist/commands/workspace.js",
+        "size": 9856,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/config.js",
+        "size": 35980,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/event_limits.js",
+        "size": 1809,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/filesystem_authority.js",
+        "size": 19089,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/migrate.js",
+        "size": 2865,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/node_runtime.js",
+        "size": 2020,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/paths.js",
+        "size": 529,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/project_db_events.js",
+        "size": 29415,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/project_db_materializer.js",
+        "size": 18357,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/project_db_migrations.js",
+        "size": 33526,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/project_db_queue_contract.js",
+        "size": 4948,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/project_db_queue.js",
+        "size": 23451,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/project_db_snapshot.js",
+        "size": 31214,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/project_db.js",
+        "size": 4874,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/public_skill_projection.js",
+        "size": 9447,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/sqlite_observation.js",
+        "size": 12177,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/template_path.js",
+        "size": 1144,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/version.js",
+        "size": 1168,
+        "mode": 384
+      },
+      {
+        "path": "dist/core/workspace_path.js",
+        "size": 1949,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/agent_file_types.js",
+        "size": 28449,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/archive_file.js",
+        "size": 5937,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/archive_integrity.js",
+        "size": 3700,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/cache_output.js",
+        "size": 1625,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/cache_sources.js",
+        "size": 2639,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/capabilities_index_cache.js",
+        "size": 6606,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/capabilities_indexer.js",
+        "size": 16255,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/checkpoint_readiness.js",
+        "size": 1470,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/edges.js",
+        "size": 3147,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/events_validation.js",
+        "size": 6201,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/frontmatter.js",
+        "size": 8355,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/goal_next.js",
+        "size": 8184,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/goal_scope.js",
+        "size": 4257,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_acceptance.js",
+        "size": 2796,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_authoring.js",
+        "size": 11287,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_history.js",
+        "size": 12949,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_legacy_lineage.js",
+        "size": 10117,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_migration.js",
+        "size": 16317,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_reconcile.js",
+        "size": 14863,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_reconciliation_plan.js",
+        "size": 13833,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_refs.js",
+        "size": 4520,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_snapshot.js",
+        "size": 17498,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_template.js",
+        "size": 3697,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_transaction.js",
+        "size": 34884,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_transport.js",
+        "size": 6826,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity_validation.js",
+        "size": 22509,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/identity.js",
+        "size": 9134,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/index_cache.js",
+        "size": 5910,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/indexer.js",
+        "size": 11479,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/json_cache_fingerprint.js",
+        "size": 3721,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/loop_bindings.js",
+        "size": 1316,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/node_body.js",
+        "size": 4452,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/node.js",
+        "size": 25992,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/reindex.js",
+        "size": 3501,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/selected_goal.js",
+        "size": 3477,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/skills_index_cache.js",
+        "size": 5262,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/skills_indexer.js",
+        "size": 10776,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/sqlite_index.js",
+        "size": 20167,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/staleness.js",
+        "size": 3743,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/subgraph_bundle.js",
+        "size": 2495,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/subgraphs.js",
+        "size": 33115,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/template_schema.js",
+        "size": 6487,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/transport_paths.js",
+        "size": 2438,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/transport_policy.js",
+        "size": 12533,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/transport_state.js",
+        "size": 16687,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/validate_graph.js",
+        "size": 29922,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/visibility.js",
+        "size": 8658,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/workflow_refs.js",
+        "size": 1328,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/workspace_files.js",
+        "size": 6299,
+        "mode": 384
+      },
+      {
+        "path": "dist/graph/workspace_ownership.js",
+        "size": 3546,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/AGENT_START.md",
+        "size": 2237,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/AGENTS.md",
+        "size": 301,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/CLI_COMMAND_MATRIX.md",
+        "size": 27121,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/config.json",
+        "size": 2237,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/COLLABORATION.md",
+        "size": 1413,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/core.md",
+        "size": 199,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/guide.md",
+        "size": 1364,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/HUMAN.md",
+        "size": 814,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/rule-1-mdkg-conventions.md",
+        "size": 1223,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/rule-2-context-pack-rules.md",
+        "size": 1084,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/rule-3-cli-contract.md",
+        "size": 1240,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/rule-4-repo-safety-and-ignores.md",
+        "size": 1295,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/rule-5-release-and-versioning.md",
+        "size": 1206,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/rule-6-templates-and-schemas.md",
+        "size": 1264,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/core/SOUL.md",
+        "size": 1375,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/init-manifest.json",
+        "size": 13514,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/legacy/0.5.2-before-compact.json",
+        "size": 13550,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/legacy/0.6.0-before-agents-only.json",
+        "size": 13768,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/legacy/v0.0.9-init-manifest.json",
+        "size": 6657,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/llms.txt",
+        "size": 242,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/README.md",
+        "size": 18523,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/skills/default/author-mdkg-skill/SKILL.md",
+        "size": 9659,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/skills/default/build-pack-and-execute-task/SKILL.md",
+        "size": 4886,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/skills/default/pursue-mdkg-goal/SKILL.md",
+        "size": 10346,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/skills/default/pursue-mdkg-loop/SKILL.md",
+        "size": 9329,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/skills/default/select-work-and-ground-context/SKILL.md",
+        "size": 5211,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+        "size": 11000,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/skills/public-seed-policy.json",
+        "size": 924,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/skills/SKILL.md.example",
+        "size": 1116,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/archive.md",
+        "size": 683,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/bug.md",
+        "size": 665,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/chk.md",
+        "size": 878,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/dec.md",
+        "size": 479,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/dispute.md",
+        "size": 438,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/edd.md",
+        "size": 661,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/epic.md",
+        "size": 541,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/feat.md",
+        "size": 487,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/feedback.md",
+        "size": 392,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/goal.md",
+        "size": 1784,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/loop.md",
+        "size": 5109,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/manifest.md",
+        "size": 864,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/prd.md",
+        "size": 578,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/prop.md",
+        "size": 446,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/proposal.md",
+        "size": 539,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/receipt.md",
+        "size": 1554,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/rule.md",
+        "size": 454,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/spec.md",
+        "size": 860,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/spike.md",
+        "size": 1035,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/task.md",
+        "size": 690,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/test.md",
+        "size": 758,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/work_order.md",
+        "size": 1513,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/default/work.md",
+        "size": 1258,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/loops/backend-api-cli-bloat-audit.loop.md",
+        "size": 4956,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/loops/design-frontend-ux-audit.loop.md",
+        "size": 4913,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/loops/duplicate-code-and-linting-audit.loop.md",
+        "size": 4437,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/loops/security-audit.loop.md",
+        "size": 6036,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/loops/tech-stack-best-practices-audit.loop.md",
+        "size": 4750,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+        "size": 5921,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/loops/user-story-audit-and-recommendations.loop.md",
+        "size": 4892,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/skills/base.SKILL.md",
+        "size": 1071,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/agent.MANIFEST.md",
+        "size": 1473,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/agent.SPEC.md",
+        "size": 1469,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/api.MANIFEST.md",
+        "size": 480,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/api.SPEC.md",
+        "size": 476,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/base.MANIFEST.md",
+        "size": 2407,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/base.SPEC.md",
+        "size": 2375,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/capability.MANIFEST.md",
+        "size": 866,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/capability.SPEC.md",
+        "size": 862,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/integration.MANIFEST.md",
+        "size": 423,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/integration.SPEC.md",
+        "size": 419,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/model.MANIFEST.md",
+        "size": 387,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/model.SPEC.md",
+        "size": 383,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/project.MANIFEST.md",
+        "size": 753,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/project.SPEC.md",
+        "size": 749,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/runtime-agent.MANIFEST.md",
+        "size": 1048,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/runtime-agent.SPEC.md",
+        "size": 1044,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/runtime-image.MANIFEST.md",
+        "size": 377,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/runtime-image.SPEC.md",
+        "size": 373,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/tool.MANIFEST.md",
+        "size": 376,
+        "mode": 384
+      },
+      {
+        "path": "dist/init/templates/specs/tool.SPEC.md",
+        "size": 372,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/budget.js",
+        "size": 6418,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/export_json.js",
+        "size": 1626,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/export_md.js",
+        "size": 4828,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/export_toon.js",
+        "size": 236,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/export_xml.js",
+        "size": 5247,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/metrics.js",
+        "size": 2771,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/order.js",
+        "size": 4948,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/pack.js",
+        "size": 13397,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/profile.js",
+        "size": 6706,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/stats.js",
+        "size": 2091,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/types.js",
+        "size": 77,
+        "mode": 384
+      },
+      {
+        "path": "dist/pack/verbose_core.js",
+        "size": 1224,
+        "mode": 384
+      },
+      {
+        "path": "dist/templates/builtin.js",
+        "size": 2045,
+        "mode": 384
+      },
+      {
+        "path": "dist/templates/headings.js",
+        "size": 1061,
+        "mode": 384
+      },
+      {
+        "path": "dist/templates/limits.js",
+        "size": 846,
+        "mode": 384
+      },
+      {
+        "path": "dist/templates/loader.js",
+        "size": 3384,
+        "mode": 384
+      },
+      {
+        "path": "dist/templates/loop_seeds.js",
+        "size": 3460,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/argparse.js",
+        "size": 8808,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/atomic.js",
+        "size": 1666,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/date.js",
+        "size": 336,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/errors.js",
+        "size": 384,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/filter.js",
+        "size": 1486,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/git_metadata.js",
+        "size": 11018,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/git_observation.js",
+        "size": 10774,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/git_remote.js",
+        "size": 3032,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/id.js",
+        "size": 3478,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/legacy_id_rewrite.js",
+        "size": 1493,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/lock_evidence.js",
+        "size": 11169,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/lock.js",
+        "size": 7481,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/output.js",
+        "size": 2271,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/qid.js",
+        "size": 2859,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/refs.js",
+        "size": 1447,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/sort.js",
+        "size": 1400,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/writer_admission.js",
+        "size": 829,
+        "mode": 384
+      },
+      {
+        "path": "dist/util/zip.js",
+        "size": 14934,
+        "mode": 384
+      },
+      {
+        "path": "package.json",
+        "size": 7304,
+        "mode": 384
+      },
+      {
+        "path": "scripts/postinstall.js",
+        "size": 2355,
+        "mode": 384
+      }
+    ],
+    "entryCount": 238,
+    "bundled": []
+  }
+]

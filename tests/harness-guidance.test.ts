@@ -96,7 +96,8 @@ test("legacy startup and compact adapters preserve focused loop discovery withou
     assert.doesNotMatch(source, /If an active loop is known:/, identity);
   }
   assert.equal(fs.existsSync(path.join(freshRoot, "AGENT_START.md")), false);
-  for (const adapter of ["AGENTS.md", "CLAUDE.md"]) {
+  assert.equal(fs.existsSync(path.join(freshRoot, "CLAUDE.md")), false);
+  for (const adapter of ["AGENTS.md"]) {
     const body = fs.readFileSync(path.join(freshRoot, adapter), "utf8");
     assert.match(body, /\[\.mdkg\/AGENT_START\.md\]\(\.mdkg\/AGENT_START\.md\)/);
     assert.doesNotMatch(body, /mdkg loop plan/);

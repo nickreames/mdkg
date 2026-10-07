@@ -1,0 +1,2 @@
+publish readiness failed: README.md current package version does not match package.json 0.6.1
+publish readiness failed: CLI_COMMAND_MATRIX.md package_version_in_source does not match package.json 0.6.1

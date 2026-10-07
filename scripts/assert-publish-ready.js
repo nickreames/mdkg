@@ -528,7 +528,6 @@ function requireInitAssets() {
   for (const startupDoc of [
     "README.md",
     "AGENTS.md",
-    "CLAUDE.md",
     "llms.txt",
     "AGENT_START.md",
     "CLI_COMMAND_MATRIX.md",
@@ -546,13 +545,16 @@ function requireInitAssets() {
       !seededAgentStart.includes("separate approval")) {
     fail("compact startup router must remain bounded with focused discovery and authority boundaries");
   }
-  for (const adapter of ["AGENTS.md", "CLAUDE.md"]) {
+  for (const adapter of ["AGENTS.md"]) {
     const body = requireFile("dist/init/" + adapter);
     if (!body.includes("<!-- mdkg:instructions:start -->") || !body.includes(".mdkg/AGENT_START.md") ||
         !body.includes("<!-- mdkg:instructions:end -->")) fail(adapter + " lacks the compact managed adapter");
   }
   for (const name of ["AGENT_START.md", "CLI_COMMAND_MATRIX.md", "llms.txt"]) {
     if (!initManifest.files.some(file => file.path === ".mdkg/" + name)) fail("manifest lacks compact guidance: " + name);
+  }
+  if (initManifest.files.some(file => file.path === "CLAUDE.md") || fs.existsSync(path.join(root, "dist/init/CLAUDE.md"))) {
+    fail("fresh init payload must generate AGENTS.md as its only root instruction");
   }
   // Detailed domain guidance is still required, but lives behind focused
   // discovery instead of being mandatory startup context.

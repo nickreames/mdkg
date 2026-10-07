@@ -1,0 +1,78 @@
+{
+  "boundary": {
+    "ok": true,
+    "checks": {
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "status_unchanged": true,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true
+    },
+    "changed_tracked_paths": [],
+    "before": {
+      "head": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+      "branch": "cloud/goal88-minimal-init",
+      "status_porcelain_sha256": "5c098d68dcef502efee30a614260e401fbfb52e5ef43f27b05a5a92900a51d6a",
+      "status_entry_count": 2,
+      "tracked_tree_sha256": "512f4a921a42ad11ebc3a4dbe1a310beb45cc96c27fe3f1ec20c34ef26cb47bf",
+      "tracked_count": 5198,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    },
+    "after": {
+      "head": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+      "branch": "cloud/goal88-minimal-init",
+      "status_porcelain_sha256": "5c098d68dcef502efee30a614260e401fbfb52e5ef43f27b05a5a92900a51d6a",
+      "status_entry_count": 2,
+      "tracked_tree_sha256": "512f4a921a42ad11ebc3a4dbe1a310beb45cc96c27fe3f1ec20c34ef26cb47bf",
+      "tracked_count": 5198,
+      "selected_goal": {
+        "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+        "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+      },
+      "lockfiles": {
+        "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+        "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+        "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+      },
+      "diff_check": {
+        "ok": true,
+        "output": ""
+      }
+    }
+  },
+  "admission": {
+    "artifact": {
+      "path": "/workspace/mdkg-cloud-goal88-cache/candidate-2/mdkg-0.6.1.tgz",
+      "sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+      "bytes": 548015,
+      "dev": 27,
+      "ino": 1342067
+    },
+    "inputs": {
+      "path": "/workspace/mdkg-cloud-goal88-cache/candidate-2/inputs.json",
+      "sha256": "d4f71400e9bd7d2e7b93bb20bc6fb47385581082b0594ab5cca899d7434f00ce",
+      "bytes": 88127,
+      "dev": 27,
+      "ino": 1342070
+    },
+    "inputs_sha256": "d4f71400e9bd7d2e7b93bb20bc6fb47385581082b0594ab5cca899d7434f00ce",
+    "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+    "payload_sha256": "229bce4d6e2c1784c109d66c0f6bd4ebc1def9e00504ee14ee45b04ba19bd653",
+    "payload_count": 237,
+    "repacked": false
+  }
+}

@@ -431,11 +431,14 @@ function reportPreservedCustomizationOverlay(root: string, summary: UpgradeSumma
     summary.unchanged += 1;
     return;
   }
+  const missingDefaults = defaultCustomizationConfig().skill_mirrors.targets.filter(target =>
+    !configuredSkillMirrorTargets(config).includes(target));
   record(summary, changes, {
     path: ".mdkg/config.json",
     category: "customization_overlay",
     action: "skip",
-    reason: "operator customization overlay is preserved; upgrade does not replace organization standards, custom core docs, or configured skill mirror targets",
+    reason: "operator customization overlay is preserved; upgrade does not replace organization standards, custom core docs, or configured skill mirror targets" +
+      (missingDefaults.length ? `; native defaults missing: ${missingDefaults.join(", ")}; explicitly review adding them to customization.skill_mirrors.targets before mdkg skill sync` : ""),
   });
 }
 
@@ -767,6 +770,10 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
   }
   if (agentWorkspace) {
     ensureAgentRuntimeFiles(root, plan, summary, changes);
+    if (plan.read("CLAUDE.md")) {
+      record(summary, changes, { path: "CLAUDE.md", category: "legacy_preserved", action: "skip",
+        reason: "existing legacy instructions preserved byte-for-byte; fresh init generates AGENTS.md only; retirement requires a separately reviewed migration" });
+    }
     for (const name of ["AGENT_START.md", "CLI_COMMAND_MATRIX.md", "llms.txt"]) {
       const raw = plan.read(name);
       if (!raw) continue;

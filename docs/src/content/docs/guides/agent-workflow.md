@@ -9,7 +9,7 @@ If you are still choosing between the human and agent first-run paths, start at 
 
 ## Canonical agent path
 
-1. Read root `AGENTS.md` or `CLAUDE.md`; compact installs route to
+1. Read root `AGENTS.md`; fresh installs route to
    `.mdkg/AGENT_START.md`. Legacy installs may retain root `AGENT_START.md`.
 2. Run `mdkg status`.
 3. Inspect the current goal with `mdkg goal current`.
@@ -32,7 +32,8 @@ permission to edit a checkout or execute a selected goal.
 Copy this into an agent session when you want a repo-scoped implementation run. Replace uppercase placeholders with concrete ids from your repo:
 
 ```text
-Start with AGENTS.md or CLAUDE.md and follow its router once.
+Start with AGENTS.md and follow its router once. Existing authored CLAUDE.md
+remains project content; both native skill mirrors remain supported.
 Inspect mdkg goal current as a hint; use the explicitly authorized GOAL_ID.
 Run mdkg goal next GOAL_ID and mdkg show WORK_ID; discover focused skills.
 Preview context with mdkg pack WORK_ID --dry-run before editing.

@@ -80,13 +80,13 @@ function assertOnboardingDocs(root) {
   }
   assertNotExists(path.join(root, "AGENT_PROMPT_SNIPPET.md"));
   assertExists(path.join(root, "AGENTS.md"));
-  assertExists(path.join(root, "CLAUDE.md"));
+  assertNotExists(path.join(root, "CLAUDE.md"));
 
   const agentStart = fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8");
   assertIncludes(agentStart, "Authority and custody", ".mdkg/AGENT_START.md");
   assertIncludes(agentStart, "mdkg pack <qid> --pack-profile concise", ".mdkg/AGENT_START.md");
   assertIncludes(agentStart, "run `mdkg validate` before", ".mdkg/AGENT_START.md");
-  for (const name of ["AGENTS.md", "CLAUDE.md"]) {
+  for (const name of ["AGENTS.md"]) {
     assertIncludes(fs.readFileSync(path.join(root, name), "utf8"), ".mdkg/AGENT_START.md", name);
   }
 

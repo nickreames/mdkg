@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "contract": "publishable-runtime-v1",
+  "decision_ref": "root:dec-88",
+  "ok": true,
+  "output_dir": "/workspace/mdkg-cloud-goal88-cache/qualification-4/coverage",
+  "runtime": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "test_contract": {
+    "typescript_source_count": 171,
+    "compiled_typescript_count": 171,
+    "root_mjs_count": 14,
+    "total_test_files": 185,
+    "typescript_families": [
+      "commands",
+      "core",
+      "graph",
+      "pack",
+      "root",
+      "util"
+    ],
+    "test_count": 2404,
+    "passed": 2403,
+    "failed": 0
+  },
+  "measured_surface": {
+    "file_count": 148,
+    "metrics": {
+      "lines": {
+        "total": 42049,
+        "covered": 38933,
+        "percent": 92.59
+      },
+      "branches": {
+        "total": 13049,
+        "covered": 10996,
+        "percent": 84.27
+      },
+      "functions": {
+        "total": 3269,
+        "covered": 3190,
+        "percent": 97.58
+      }
+    },
+    "surfaces": {
+      "cli": {
+        "file_count": 1,
+        "metrics": {
+          "lines": {
+            "total": 3505,
+            "covered": 3235,
+            "percent": 92.3
+          },
+          "branches": {
+            "total": 468,
+            "covered": 304,
+            "percent": 64.96
+          },
+          "functions": {
+            "total": 88,
+            "covered": 87,
+            "percent": 98.86
+          }
+        }
+      },
+      "commands": {
+        "file_count": 46,
+        "metrics": {
+          "lines": {
+            "total": 20047,
+            "covered": 18119,
+            "percent": 90.38
+          },
+          "branches": {
+            "total": 5730,
+            "covered": 4673,
+            "percent": 81.55
+          },
+          "functions": {
+            "total": 1630,
+            "covered": 1570,
+            "percent": 96.32
+          }
+        }
+      },
+      "core": {
+        "file_count": 18,
+        "metrics": {
+          "lines": {
+            "total": 5215,
+            "covered": 4795,
+            "percent": 91.95
+          },
+          "branches": {
+            "total": 1431,
+            "covered": 1163,
+            "percent": 81.27
+          },
+          "functions": {
+            "total": 401,
+            "covered": 399,
+            "percent": 99.5
+          }
+        }
+      },
+      "graph": {
+        "file_count": 49,
+        "metrics": {
+          "lines": {
+            "total": 9751,
+            "covered": 9393,
+            "percent": 96.33
+          },
+          "branches": {
+            "total": 4119,
+            "covered": 3677,
+            "percent": 89.27
+          },
+          "functions": {
+            "total": 886,
+            "covered": 874,
+            "percent": 98.65
+          }
+        }
+      },
+      "pack": {
+        "file_count": 11,
+        "metrics": {
+          "lines": {
+            "total": 1414,
+            "covered": 1350,
+            "percent": 95.47
+          },
+          "branches": {
+            "total": 431,
+            "covered": 383,
+            "percent": 88.86
+          },
+          "functions": {
+            "total": 82,
+            "covered": 82,
+            "percent": 100
+          }
+        }
+      },
+      "templates": {
+        "file_count": 5,
+        "metrics": {
+          "lines": {
+            "total": 239,
+            "covered": 237,
+            "percent": 99.16
+          },
+          "branches": {
+            "total": 91,
+            "covered": 83,
+            "percent": 91.21
+          },
+          "functions": {
+            "total": 24,
+            "covered": 24,
+            "percent": 100
+          }
+        }
+      },
+      "util": {
+        "file_count": 18,
+        "metrics": {
+          "lines": {
+            "total": 1878,
+            "covered": 1804,
+            "percent": 96.06
+          },
+          "branches": {
+            "total": 779,
+            "covered": 713,
+            "percent": 91.53
+          },
+          "functions": {
+            "total": 158,
+            "covered": 154,
+            "percent": 97.47
+          }
+        }
+      }
+    }
+  },
+  "provisional_audit_floors": {
+    "lines": 89,
+    "branches": 77,
+    "functions": 96
+  },
+  "thresholds": {
+    "lines": 89,
+    "branches": 77,
+    "functions": 96
+  }
+}

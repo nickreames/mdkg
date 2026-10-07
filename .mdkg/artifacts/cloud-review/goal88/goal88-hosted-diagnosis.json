@@ -1,0 +1,727 @@
+{
+  "schema_version": 1,
+  "kind": "hosted-terminal-and-step-evidence",
+  "repo": "nickreames/mdkg",
+  "source_head": "0ff7095a94a28e02397f16db5c10a66933030f2d",
+  "run": 36983980287,
+  "run_terminal": "failure",
+  "run_url": "https://github.com/nickreames/mdkg/actions/runs/36983980287",
+  "minimum": {
+    "job": 110764673629,
+    "job_terminal": "cancelled",
+    "node": "24.18.0",
+    "printed_ladder_ok": true,
+    "ladder_duration_ms": 894950,
+    "coverage": {
+      "schema_version": 1,
+      "contract": "publishable-runtime-v1",
+      "decision_ref": "root:dec-88",
+      "ok": true,
+      "output_dir": "/home/runner/work/_temp/mdkg-fast/run-2yzsV9/coverage",
+      "runtime": {
+        "node": "v24.18.0",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "test_contract": {
+        "typescript_source_count": 171,
+        "compiled_typescript_count": 171,
+        "root_mjs_count": 14,
+        "total_test_files": 185,
+        "typescript_families": [
+          "commands",
+          "core",
+          "graph",
+          "pack",
+          "root",
+          "util"
+        ],
+        "test_count": 2404,
+        "passed": 2403,
+        "failed": 0
+      },
+      "measured_surface": {
+        "file_count": 148,
+        "metrics": {
+          "lines": {
+            "total": 42049,
+            "covered": 38964,
+            "percent": 92.66
+          },
+          "branches": {
+            "total": 13025,
+            "covered": 10996,
+            "percent": 84.42
+          },
+          "functions": {
+            "total": 3269,
+            "covered": 3190,
+            "percent": 97.58
+          }
+        },
+        "surfaces": {
+          "cli": {
+            "file_count": 1,
+            "metrics": {
+              "lines": {
+                "total": 3505,
+                "covered": 3251,
+                "percent": 92.75
+              },
+              "branches": {
+                "total": 459,
+                "covered": 304,
+                "percent": 66.23
+              },
+              "functions": {
+                "total": 88,
+                "covered": 87,
+                "percent": 98.86
+              }
+            }
+          },
+          "commands": {
+            "file_count": 46,
+            "metrics": {
+              "lines": {
+                "total": 20047,
+                "covered": 18129,
+                "percent": 90.43
+              },
+              "branches": {
+                "total": 5718,
+                "covered": 4673,
+                "percent": 81.72
+              },
+              "functions": {
+                "total": 1630,
+                "covered": 1570,
+                "percent": 96.32
+              }
+            }
+          },
+          "core": {
+            "file_count": 18,
+            "metrics": {
+              "lines": {
+                "total": 5215,
+                "covered": 4795,
+                "percent": 91.95
+              },
+              "branches": {
+                "total": 1431,
+                "covered": 1163,
+                "percent": 81.27
+              },
+              "functions": {
+                "total": 401,
+                "covered": 399,
+                "percent": 99.5
+              }
+            }
+          },
+          "graph": {
+            "file_count": 49,
+            "metrics": {
+              "lines": {
+                "total": 9751,
+                "covered": 9398,
+                "percent": 96.38
+              },
+              "branches": {
+                "total": 4115,
+                "covered": 3677,
+                "percent": 89.36
+              },
+              "functions": {
+                "total": 886,
+                "covered": 874,
+                "percent": 98.65
+              }
+            }
+          },
+          "pack": {
+            "file_count": 11,
+            "metrics": {
+              "lines": {
+                "total": 1414,
+                "covered": 1350,
+                "percent": 95.47
+              },
+              "branches": {
+                "total": 431,
+                "covered": 383,
+                "percent": 88.86
+              },
+              "functions": {
+                "total": 82,
+                "covered": 82,
+                "percent": 100
+              }
+            }
+          },
+          "templates": {
+            "file_count": 5,
+            "metrics": {
+              "lines": {
+                "total": 239,
+                "covered": 237,
+                "percent": 99.16
+              },
+              "branches": {
+                "total": 91,
+                "covered": 83,
+                "percent": 91.21
+              },
+              "functions": {
+                "total": 24,
+                "covered": 24,
+                "percent": 100
+              }
+            }
+          },
+          "util": {
+            "file_count": 18,
+            "metrics": {
+              "lines": {
+                "total": 1878,
+                "covered": 1804,
+                "percent": 96.06
+              },
+              "branches": {
+                "total": 780,
+                "covered": 713,
+                "percent": 91.41
+              },
+              "functions": {
+                "total": 158,
+                "covered": 154,
+                "percent": 97.47
+              }
+            }
+          }
+        }
+      },
+      "provisional_audit_floors": {
+        "lines": 89,
+        "branches": 77,
+        "functions": 96
+      },
+      "thresholds": {
+        "lines": 89,
+        "branches": 77,
+        "functions": 96
+      }
+    },
+    "gates": [
+      {
+        "id": "dependency-preflight",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/dependency-boundary.js preflight --json",
+        "exit_code": 0,
+        "duration_ms": 44,
+        "timed_out": false
+      },
+      {
+        "id": "coverage",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/lib/node_modules/npm/bin/npm-cli.js run test:coverage",
+        "exit_code": 0,
+        "duration_ms": 678244,
+        "timed_out": false
+      },
+      {
+        "id": "cli-check",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/lib/node_modules/npm/bin/npm-cli.js run cli:check:built",
+        "exit_code": 0,
+        "duration_ms": 7693,
+        "timed_out": false
+      },
+      {
+        "id": "cli-contract",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/lib/node_modules/npm/bin/npm-cli.js run cli:contract:built",
+        "exit_code": 0,
+        "duration_ms": 7616,
+        "timed_out": false
+      },
+      {
+        "id": "docs-check",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/lib/node_modules/npm/bin/npm-cli.js run docs:check:built",
+        "exit_code": 0,
+        "duration_ms": 169,
+        "timed_out": false
+      },
+      {
+        "id": "graph-validate",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/dist/cli.js validate",
+        "exit_code": 0,
+        "duration_ms": 972,
+        "timed_out": false
+      },
+      {
+        "id": "security-verify",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/lib/node_modules/npm/bin/npm-cli.js run security:verify",
+        "exit_code": 0,
+        "duration_ms": 115,
+        "timed_out": false
+      },
+      {
+        "id": "package-artifact",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/lib/node_modules/npm/bin/npm-cli.js pack --silent --dry-run=false --pack-destination /home/runner/work/_temp/mdkg-fast/run-2yzsV9/artifact",
+        "exit_code": 0,
+        "duration_ms": 11228,
+        "timed_out": false
+      },
+      {
+        "id": "publish-readiness",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/assert-publish-ready.js",
+        "exit_code": 0,
+        "duration_ms": 79,
+        "timed_out": false
+      }
+    ],
+    "smokes": [
+      {
+        "id": "smoke:consumer",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-consumer.js",
+        "exit_code": 0,
+        "duration_ms": 2975,
+        "timed_out": false,
+        "aliases": [
+          "smoke:consumer"
+        ],
+        "entrypoint": "scripts/smoke-consumer.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:git-boundary",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-git-boundary.js",
+        "exit_code": 0,
+        "duration_ms": 102613,
+        "timed_out": false,
+        "aliases": [
+          "smoke:git-boundary"
+        ],
+        "entrypoint": "scripts/smoke-git-boundary.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:loop",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-loop.js",
+        "exit_code": 0,
+        "duration_ms": 8385,
+        "timed_out": false,
+        "aliases": [
+          "smoke:loop"
+        ],
+        "entrypoint": "scripts/smoke-loop.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:upgrade",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-upgrade.js",
+        "exit_code": 0,
+        "duration_ms": 21918,
+        "timed_out": false,
+        "aliases": [
+          "smoke:upgrade"
+        ],
+        "entrypoint": "scripts/smoke-upgrade.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:init",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-init.js",
+        "exit_code": 0,
+        "duration_ms": 8426,
+        "timed_out": false,
+        "aliases": [
+          "smoke:init"
+        ],
+        "entrypoint": "scripts/smoke-init.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:db-queue-cli",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-db-queue-cli.js",
+        "exit_code": 0,
+        "duration_ms": 4692,
+        "timed_out": false,
+        "aliases": [
+          "smoke:db-queue-cli"
+        ],
+        "entrypoint": "scripts/smoke-db-queue-cli.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:db-snapshot",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-db-snapshot.js",
+        "exit_code": 0,
+        "duration_ms": 2109,
+        "timed_out": false,
+        "aliases": [
+          "smoke:db-snapshot"
+        ],
+        "entrypoint": "scripts/smoke-db-snapshot.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:sqlite",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-sqlite.js",
+        "exit_code": 0,
+        "duration_ms": 1986,
+        "timed_out": false,
+        "aliases": [
+          "smoke:sqlite"
+        ],
+        "entrypoint": "scripts/smoke-sqlite.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:bundle",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-bundle.js",
+        "exit_code": 0,
+        "duration_ms": 10245,
+        "timed_out": false,
+        "aliases": [
+          "smoke:bundle"
+        ],
+        "entrypoint": "scripts/smoke-bundle.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:subgraph",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-subgraph.js",
+        "exit_code": 0,
+        "duration_ms": 6405,
+        "timed_out": false,
+        "aliases": [
+          "smoke:bundle-import",
+          "smoke:subgraph"
+        ],
+        "entrypoint": "scripts/smoke-subgraph.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-docs",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-mdkg-dev-docs.js",
+        "exit_code": 0,
+        "duration_ms": 7030,
+        "timed_out": false,
+        "aliases": [
+          "smoke:mdkg-dev-docs"
+        ],
+        "entrypoint": "scripts/smoke-mdkg-dev-docs.js",
+        "artifact_required": false,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-seo",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-mdkg-dev-seo.js",
+        "exit_code": 0,
+        "duration_ms": 5471,
+        "timed_out": false,
+        "aliases": [
+          "smoke:mdkg-dev-seo"
+        ],
+        "entrypoint": "scripts/smoke-mdkg-dev-seo.js",
+        "artifact_required": false,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:goal",
+        "command": "/opt/hostedtoolcache/node/24.18.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/smoke-goal.js",
+        "exit_code": 0,
+        "duration_ms": 5527,
+        "timed_out": false,
+        "aliases": [
+          "smoke:goal"
+        ],
+        "entrypoint": "scripts/smoke-goal.js",
+        "artifact_required": true,
+        "artifact_verification": {
+          "before_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "after_sha256": "8e0121c708785a0f25024a564de45b910dacc0e56c46b4ea8893e4a3d6c07bba",
+          "bytes": 548013,
+          "identity_preserved": true
+        }
+      }
+    ],
+    "git_boundary": {
+      "ok": true,
+      "checks": {
+        "head_unchanged": true,
+        "branch_unchanged": true,
+        "status_unchanged": true,
+        "tracked_tree_unchanged": true,
+        "selected_goal_unchanged": true,
+        "lockfiles_unchanged": true,
+        "diff_check_clean": true
+      },
+      "changed_tracked_paths": [],
+      "before": {
+        "head": "281133a47468cc708a1b10543efcdd7f7b14ae51",
+        "branch": "",
+        "status_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_entry_count": 0,
+        "tracked_tree_sha256": "024275eadd11859c41103aebcdc40b2df27063029a3d8034680e72bab9dc01d6",
+        "tracked_count": 5332,
+        "selected_goal": {
+          "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+          "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+        },
+        "lockfiles": {
+          "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+          "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+          "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+        },
+        "diff_check": {
+          "ok": true,
+          "output": ""
+        }
+      },
+      "after": {
+        "head": "281133a47468cc708a1b10543efcdd7f7b14ae51",
+        "branch": "",
+        "status_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_entry_count": 0,
+        "tracked_tree_sha256": "024275eadd11859c41103aebcdc40b2df27063029a3d8034680e72bab9dc01d6",
+        "tracked_count": 5332,
+        "selected_goal": {
+          "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+          "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+        },
+        "lockfiles": {
+          "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+          "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+          "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+        },
+        "diff_check": {
+          "ok": true,
+          "output": ""
+        }
+      }
+    },
+    "cancellation_cause": "UNCLASSIFIED; printed success is not terminal-job success"
+  },
+  "floating": {
+    "job": 110764673778,
+    "job_terminal": "failure",
+    "node": "24.21.0",
+    "printed_ladder_ok": false,
+    "ladder_duration_ms": 762812,
+    "error": "coverage failed with exit 1",
+    "progress": {
+      "mode": "ci",
+      "gates": [
+        {
+          "id": "dependency-preflight",
+          "command": "/opt/hostedtoolcache/node/24.21.0/x64/bin/node /home/runner/work/mdkg/mdkg/scripts/dependency-boundary.js preflight --json",
+          "exit_code": 0,
+          "duration_ms": 70,
+          "timed_out": false
+        },
+        {
+          "id": "coverage",
+          "command": "/opt/hostedtoolcache/node/24.21.0/x64/lib/node_modules/npm/bin/npm-cli.js run test:coverage",
+          "exit_code": 1,
+          "duration_ms": 761515,
+          "timed_out": false
+        }
+      ],
+      "smokes": []
+    },
+    "git_boundary": {
+      "ok": true,
+      "checks": {
+        "head_unchanged": true,
+        "branch_unchanged": true,
+        "status_unchanged": true,
+        "tracked_tree_unchanged": true,
+        "selected_goal_unchanged": true,
+        "lockfiles_unchanged": true,
+        "diff_check_clean": true
+      },
+      "changed_tracked_paths": [],
+      "before": {
+        "head": "281133a47468cc708a1b10543efcdd7f7b14ae51",
+        "branch": "",
+        "status_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_entry_count": 0,
+        "tracked_tree_sha256": "024275eadd11859c41103aebcdc40b2df27063029a3d8034680e72bab9dc01d6",
+        "tracked_count": 5332,
+        "selected_goal": {
+          "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+          "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+        },
+        "lockfiles": {
+          "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+          "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+          "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+        },
+        "diff_check": {
+          "ok": true,
+          "output": ""
+        }
+      },
+      "after": {
+        "head": "281133a47468cc708a1b10543efcdd7f7b14ae51",
+        "branch": "",
+        "status_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_entry_count": 0,
+        "tracked_tree_sha256": "024275eadd11859c41103aebcdc40b2df27063029a3d8034680e72bab9dc01d6",
+        "tracked_count": 5332,
+        "selected_goal": {
+          "path": ".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md",
+          "sha256": "file:9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926"
+        },
+        "lockfiles": {
+          "package-lock.json": "file:cac44aab9e1db376861b918aaa63b744945a12d69aa9161e11add3948844b71d",
+          "docs/package-lock.json": "file:5b28b767ac1cda7c2ba27473ee49bde6f2241e68de4a7375011eb2705f9e937c",
+          "mdkg-dev/package-lock.json": "file:4988e006ace3eab2b1ce8ef5566fe2d4ae89c3566b1357288d776d4cf28120e5"
+        },
+        "diff_check": {
+          "ok": true,
+          "output": ""
+        }
+      }
+    },
+    "coverage_assertions": "UNCLASSIFIED; absent from console; small artifact extract requested",
+    "artifact_id": 11217680715,
+    "artifact_bytes": 482875154,
+    "artifact_sha256": "b8971d567812e1c7956d515c2ed68a7220d508f8dc9cc4fc9377ddb0a9ab2430"
+  },
+  "prior": {
+    "goal88_1a_run": 36978309547,
+    "terminal": "cancelled",
+    "cause": "UNCLASSIFIED",
+    "goal88_c13_run": 36972314303,
+    "floating_coverage_exit": 1,
+    "floating_timed_out": false,
+    "artifact_id": 11211594942,
+    "assertions": "UNCLASSIFIED"
+  },
+  "required_extracts": [
+    "logs/coverage.log",
+    "progress.json",
+    "coverage/coverage-event.json or summary.json if present"
+  ],
+  "access_limits": "Prior CONNECT proxy403 plus32MiB download limit; no archive retry/bypass in this correction turn",
+  "full_jobs": "Four expected PR-trigger skips; no full-platform pass",
+  "log_evidence": {
+    "hosted-110764673629.log": {
+      "bytes": 174709,
+      "sha256": "fe25725efff3a348e35bef21f70a1d90c6a478af2614b87a63677171b92538e0"
+    },
+    "hosted-110764673629-receipt.json": {
+      "bytes": 87339,
+      "sha256": "b0f87da59dda8cb2f264fe063e91988bbc7781a1224c404fc8ddb5a87cb3a492"
+    },
+    "hosted-110764673778.log": {
+      "bytes": 27443,
+      "sha256": "7401e6e39b4db65ff1f71a90a3c56c3b9d80c27d031b7546c5af9ddba4a4c7d1"
+    },
+    "hosted-110764673778-receipt.json": {
+      "bytes": 3313,
+      "sha256": "4b49ed813f56dd7c59423ff105755986440347b8cf03446536509431966537c4"
+    },
+    "hosted-111111404532.log": {
+      "bytes": 21864,
+      "sha256": "d7d45fd6788da0b6c6cee99a9aa95db4469b192c3d10c5ccb0b6fa9d94389ae0"
+    },
+    "hosted-111111404739.log": {
+      "bytes": 19275,
+      "sha256": "c7fd23ea801facd405cb174dcbbcab0b5be17cf9c23adc85f358f02544630c2d"
+    }
+  },
+  "corrected_plan": {
+    "head": "eb4daec5bc95c20bacddeb83f0b6eb7f95f0c1c8",
+    "run": 37091088780,
+    "run_terminal": "cancelled",
+    "fast_jobs": [
+      {
+        "job": 111111404532,
+        "terminal": "cancelled",
+        "evidence_upload": "success",
+        "printed_ladder_receipt": false
+      },
+      {
+        "job": 111111404739,
+        "terminal": "cancelled",
+        "evidence_upload": "failure",
+        "printed_ladder_receipt": false,
+        "upload_failure": "invalid synthetic fixture path containing line feed, under collected tmp/mdkg-git-boundary-*/consumer/line\\nname"
+      }
+    ],
+    "cancellation_cause": "UNCLASSIFIED; no timing-only timeout attribution",
+    "full_jobs": "four expected PR-trigger skips"
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "kind": "goal88-independent-review-correction-checkpoint",
+  "state": "NOT_READY",
+  "tested_head": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+  "tested_diff_sha256": "5625c07b6cd5d77750878b862df9ea31c2dd0d8f694225f98024649b7da69d65",
+  "runtime_source_head": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+  "runtime_source_changes": false,
+  "changed_test_files": [
+    "tests/commands/cli_onboarding.test.ts",
+    "tests/commands/diagnostic_containment.test.ts"
+  ],
+  "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+  "qualification_inputs_sha256": "525f55ac988953a836d5e855d998b15a4a2d65e219e0365475a012d330ff35c6",
+  "artifact_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+  "repacked": false,
+  "introduced_and_corrected": [
+    {
+      "finding": "stale authored CLAUDE routing assertion",
+      "failed_before": 2,
+      "correction": "Assert exact preservation of authored CLAUDE; keep AGENTS route and authored-prefix check; repeat init must preserve full byte inventory."
+    },
+    {
+      "finding": "hard-coded0.6.0 positive changelog fixture",
+      "failed_before": 1,
+      "correction": "Read actual package_version from missing-changelog diagnostic; mismatched fixture stays false; matching heading must be true and version remains stable."
+    }
+  ],
+  "affected_before": {
+    "passed": 23,
+    "failed": 3,
+    "tests": 26
+  },
+  "affected_after": {
+    "passed": 45,
+    "failed": 0,
+    "tests": 45,
+    "runtime": "24.19.0",
+    "duration_ms": 3715.724185
+  },
+  "affected_minimum": {
+    "passed": 26,
+    "failed": 0,
+    "tests": 26,
+    "runtime": "24.18.0",
+    "duration_ms": 4537.253851
+  },
+  "full_coverage": {
+    "exit": 0,
+    "counts": {
+      "tests": 2404,
+      "failed": 0,
+      "passed": 2403,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "topLevel": 2404,
+      "suites": 0
+    },
+    "test_files": 185,
+    "duration_ms": 548470,
+    "test_duration_ms": 521418.892463,
+    "metrics": {
+      "lines": {
+        "total": 42049,
+        "covered": 38933,
+        "percent": 92.59
+      },
+      "branches": {
+        "total": 13049,
+        "covered": 10996,
+        "percent": 84.27
+      },
+      "functions": {
+        "total": 3269,
+        "covered": 3190,
+        "percent": 97.58
+      }
+    },
+    "thresholds": {
+      "lines": 89,
+      "branches": 77,
+      "functions": 96
+    },
+    "timed_out": false,
+    "frozen_inputs": true,
+    "owned_descendants_reaped": 366,
+    "ordinary_full_tests": "Complete185file discovered suite executed under the thresholded coverage contract; no redundant noncoverage full rerun."
+  },
+  "static_checks": "PASS; static-checks.json",
+  "unchanged_artifact_evidence": {
+    "installed": "q2current/q3minimum18unique cases51CLI each; same retained bytes, no repeat required for test-only edits",
+    "package_smokes": "cloud36pass1inheritedmodefailure of37; independent local owner reported37pass, contexts kept separate",
+    "repository_sites": "cloud8pass1inheritedpredicatefailure of9; q3 completed before test-only correction"
+  },
+  "inherited": [
+    {
+      "check": "smoke:demo-graph",
+      "evidence": "../qualification-2/demo-classification.json and ../qualification-3/demo-mode-diagnostic.json",
+      "cause": "Actual103rows have0600modes; in-memory0644matches unchanged accepted seal; identical base/candidate rows and verifier. No reseal or chmod applied."
+    },
+    {
+      "check": "smoke:mdkg-dev-polish-pass5",
+      "evidence": "../qualification-3/site-pass5-classification.json",
+      "cause": "Quickstart line64 includes --pack-profile concise on both plan/candidate; identical script forbids it. Same failing assertion predicate, not a claimed full baseline site smoke."
+    }
+  ],
+  "unresolved": [
+    {
+      "check": "hostedc13coverage run36972314303",
+      "cause": "Raw archive11211594942 native export blocked proxyCONNECT403 after official connector download reference success. Underlying failures UNCLASSIFIED; passing corrected native run does not retrospectively classify hosted failures.",
+      "needed": "Small approved archive extraction of logs/coverage.log and coverage/coverage-event.json, plus available summary/manifest/receipt/progress."
+    },
+    {
+      "check": "full prepublication ladder",
+      "cause": "NOT_RUN as complete passing ladder; cloud inherited required smoke failures still exist."
+    },
+    {
+      "check": "required platforms/portablefilesystem",
+      "cause": "Native Linux x64 bounded installed checks completed; LinuxARM64/macOSARM64/macOSx64 unavailable NOT_RUN; hosted Test487stub remains unqualified; no Mac access."
+    },
+    {
+      "check": "independent corrected-candidate owner review/local acceptance",
+      "cause": "PENDING; prior review NOT_READY; exact two-test correction now ready for parent re-review."
+    },
+    {
+      "check": "legacy-retirement design",
+      "cause": "PENDING separate design decision; current preservation-first behavior retained."
+    }
+  ],
+  "scope": "Goal88 checkpoint only; no Goal89, merges, publication, release tags, deployment, unrelated repo writes, new graph IDs, history rewrite or CI gate weakening.",
+  "final_graph_validation": {
+    "ok": true,
+    "errors": 0,
+    "warnings": 1,
+    "warning": "known stale SQLite cache; no cache freshness claim"
+  },
+  "final_skills_validation": {
+    "ok": true,
+    "checked": 8,
+    "errors": 0,
+    "warnings": 0
+  },
+  "minimum_bundled_npm": "11.16.0"
+}

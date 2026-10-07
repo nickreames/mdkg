@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "readiness": "NOT_READY",
+  "checkpoint_kind": "baseline-audit-and-design-review",
+  "source_commit": "ddafe0836fdc790cd36ba203afbcfc1878bbddd8",
+  "source_tree_sha256": "8b0a95b6bdbaec25389ba3fe2317db955484d3cfd701b6fe4891775ef767e082",
+  "source_paths": [
+    "src",
+    "tests",
+    "assets/init",
+    "scripts",
+    "package.json",
+    "package-lock.json",
+    "tsconfig.build.json",
+    "tsconfig.test.json"
+  ],
+  "runtime": {
+    "node": "v24.19.0",
+    "npm": "11.9.0",
+    "os": "Linux",
+    "arch": "x86_64",
+    "native": true,
+    "engine": ">=24.18.0 <25"
+  },
+  "toolchain_verified": true,
+  "package_version": "0.6.0",
+  "proposed_target": "0.6.1",
+  "feature_implementation": "NOT_RUN",
+  "design_choice": "PENDING_NICK_REVIEW",
+  "checks": [
+    {
+      "command": "npm run deps:bootstrap",
+      "status": "PASS",
+      "cache": "isolated workspace cache",
+      "note": "First default-cache attempt failed; retry passed with unchanged lockfiles."
+    },
+    {
+      "command": "npm run build",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run build:test",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "dist/tests/commands/init.test.js",
+        "dist/tests/commands/init_manifest_ownership.test.js",
+        "dist/tests/commands/init_identity.test.js",
+        "dist/tests/commands/upgrade.test.js",
+        "dist/tests/commands/upgrade_safety.test.js",
+        "dist/tests/commands/upgrade_approval.test.js",
+        "dist/tests/commands/upgrade_identity.test.js",
+        "dist/tests/commands/skill_mirrors.test.js",
+        "dist/tests/commands/skill_git_metadata.test.js",
+        "dist/tests/commands/skill_resource_containment.test.js"
+      ],
+      "status": "PASS",
+      "env": {
+        "TMPDIR": "/dev/shm/mdkg-goal88-fixtures"
+      },
+      "additional_fs_grant": "owned fixture directory only",
+      "exit_code": 0,
+      "counts": {
+        "tests": 219.0,
+        "pass": 219.0,
+        "fail": 0.0,
+        "skipped": 0.0,
+        "cancelled": 0.0,
+        "duration_ms": 26317.949387
+      },
+      "log": ".mdkg/artifacts/goal-88/baseline-focused.tap.gz",
+      "uncompressed_log_sha256": "96a5599331f9c78d50f95e4da71f2544ce34c5a88a7f9c1de74c3a7591e76c02",
+      "log_sha256": "0241ff7f2a7fcd449ea7ecc168a79b30bef721618e7b943bff0be1f926101135"
+    },
+    {
+      "command": "node .mdkg/artifacts/goal-88/audit-init.cjs .mdkg/artifacts/goal-88/baseline-init.json",
+      "status": "PASS_BASELINE_AUDIT",
+      "invocations": 32,
+      "note": "Mirror nested/case admission gaps retained; these are not future feature passes."
+    },
+    {
+      "command": "npm run cli:check:built",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run cli:contract:built",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run ci:workflow:check",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run docs:check:built",
+      "status": "PASS",
+      "examples": 499,
+      "failures": 0
+    },
+    {
+      "command": "node dist/cli.js validate --summary --json --limit 20",
+      "status": "PASS",
+      "errors": 0,
+      "warnings": 0,
+      "note": "Generated index was refreshed by supported CLI; tracked cache excluded."
+    },
+    {
+      "command": "node dist/cli.js skill validate --json",
+      "status": "PASS",
+      "checked": 8,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "command": "npm view mdkg version --json",
+      "status": "PASS_READ_ONLY",
+      "result": "0.6.0"
+    },
+    {
+      "command": "node dist/cli.js index; node dist/cli.js validate --summary --json --limit 20; node dist/cli.js goal evaluate root:goal-88 --json",
+      "status": "PASS_GRAPH_AND_REPORT_ONLY_EVALUATION",
+      "errors": 0,
+      "warnings": 0,
+      "note": "Evaluation does not execute required scripts or establish completion. No goal done."
+    }
+  ],
+  "not_run": [
+    "Goal88 installed exact-byte 0.6.1 feature acceptance (test494)",
+    "full tests and coverage for an implemented Goal88 candidate",
+    "37 package smokes for an implemented candidate",
+    "complete package/security/platform release ladder",
+    "macOS and Linux ARM64/x86_64 min/current installed 0.6.1 qualification",
+    "Goal89",
+    "Goal90"
+  ],
+  "retained_baseline_limitations": {
+    "prior_ci_pass": 1385,
+    "prior_ci_fail": 1003,
+    "prior_ci_skip": 1,
+    "unclassified_failures": true,
+    "prior_coverage": [
+      79.87,
+      75.19,
+      87.11
+    ],
+    "unchanged_floors": [
+      89,
+      77,
+      96
+    ],
+    "planning_github_run": 36961910837,
+    "main_github_run": 36896537149,
+    "hosted_full_linux_test487": "unqualified stub",
+    "source": ".mdkg/artifacts/cloud-planning/checks.json"
+  },
+  "approvals": {
+    "implementation_stack_before_plan_merge": "authorized by current supplied Nick transcript",
+    "draft_pr_commit_push": "authorized on implementation branch only",
+    "compatibility_choice": "pending",
+    "merge_publish_tag_deploy_adoption": "not authorized"
+  },
+  "graph_identity": "legacy v1 unchanged; no new IDs allocated",
+  "selected_goal": "none; no selection mutation",
+  "planning_head_ci_current": {
+    "run_id": 36961910837,
+    "status": "completed",
+    "conclusion": "cancelled",
+    "source": "connected GitHub fetch_commit_workflow_runs",
+    "note": "Current overall run result; supplied delegation records both fast jobs timed out. No hosted pass."
+  },
+  "artifact_sha256": {
+    ".mdkg/artifacts/goal-88/audit-init.cjs": "9aaa3b72ca625467204d9990f3a706ee887abf280652cd6acb6279f77f53a4a5",
+    ".mdkg/artifacts/goal-88/baseline-init.json": "3ae9ff41e2110d120958dc06a9d2d51c6349ab919e255bbe740eaf0a994e0131",
+    ".mdkg/artifacts/goal-88/baseline-focused.tap.gz": "0241ff7f2a7fcd449ea7ecc168a79b30bef721618e7b943bff0be1f926101135"
+  },
+  "draft_pr": {
+    "url": "https://github.com/nickreames/mdkg/pull/11",
+    "number": 11,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "base": "docs/cloud-three-release-plan",
+    "base_sha": "ddafe0836fdc790cd36ba203afbcfc1878bbddd8",
+    "head": "cloud/goal88-minimal-init",
+    "creation_head_sha": "0a7ad4d87841adfe2c2decf8cec5e77fb096e87e",
+    "created_at": "2026-10-02T05:27:19Z",
+    "creation_changed_files": 9,
+    "source": "successful connected GitHub create_pull_request; duplicate search empty"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "base": "ddafe0836fdc790cd36ba203afbcfc1878bbddd8",
+  "candidate": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+  "failure": "hand-authored public examples includes forbidden text: --pack-profile concise",
+  "classification": "inherited identical failing assertion predicate",
+  "verification": "actual candidate smoke failed after successful site/docs build; read-only base/candidate assertion comparison, not a claimed full baseline smoke execution",
+  "rows": [
+    {
+      "path": "scripts/smoke-mdkg-dev-polish-pass5.js",
+      "base_sha256": "7b9d0a7f1b2ae7a0448d3d70c26dbb3ec3f8cea4d68af8ace8a9211842a0401e",
+      "candidate_sha256": "7b9d0a7f1b2ae7a0448d3d70c26dbb3ec3f8cea4d68af8ace8a9211842a0401e",
+      "identical": true,
+      "base_forbidden_lines": [
+        101
+      ],
+      "candidate_forbidden_lines": [
+        101
+      ]
+    },
+    {
+      "path": "scripts/mdkg-dev-smoke-utils.js",
+      "base_sha256": "b650fccc815df480ad9bd612679d8d20338fdfcc016693c803057d843fd2dde1",
+      "candidate_sha256": "b650fccc815df480ad9bd612679d8d20338fdfcc016693c803057d843fd2dde1",
+      "identical": true,
+      "base_forbidden_lines": [],
+      "candidate_forbidden_lines": []
+    },
+    {
+      "path": "docs/src/content/docs/start-here/quickstart.md",
+      "base_sha256": "3e900e421c6b8af0becac1fae39bdf804b81423d9d35cc4abe92d7810456ada3",
+      "candidate_sha256": "1abe528ee907bd8c471db1eb8e2010e7583dcfc53ba05ce9f76f5328678b91c8",
+      "identical": false,
+      "base_forbidden_lines": [
+        64
+      ],
+      "candidate_forbidden_lines": [
+        64
+      ]
+    },
+    {
+      "path": "docs/src/content/docs/advanced-alpha/demo-graphs.md",
+      "base_sha256": "8ef3b646e9438b96fe1fb05542ac677552785fe947b3a424363f31befbaac8a6",
+      "candidate_sha256": "8ef3b646e9438b96fe1fb05542ac677552785fe947b3a424363f31befbaac8a6",
+      "identical": true,
+      "base_forbidden_lines": [],
+      "candidate_forbidden_lines": []
+    }
+  ],
+  "minimal_remediation_proposal": "Owner review of existing quickstart command example: choose canonical --profile spelling supported by current pack CLI; do not relax smoke exclusion. No change applied under Goal88."
+}

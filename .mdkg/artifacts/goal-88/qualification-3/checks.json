@@ -1,0 +1,194 @@
+{
+  "kind": "goal88-linux-sites-and-hosted-classification",
+  "state": "NOT_READY",
+  "source_head": "17fe62e98a4cfbfb8fdad226a730709fa77ad9c7",
+  "runtime_source_head": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+  "package_source_changes": "none; q3 completed before independent review correction",
+  "artifact_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+  "package_inputs_sha256": "0a01d13d5f2d604da43ac30fac2c73e64d488a0ac180d6cf37ea46a1852a0a72",
+  "qualification_inputs_sha256": "ce6941464f3beccad986e1b0a5119c162e56cd0d648b36e1085cdabd677a06ba",
+  "site_checks": {
+    "declared": 9,
+    "passed": 8,
+    "failed": 1,
+    "not_run": 0,
+    "results": [
+      {
+        "id": "smoke:mdkg-dev",
+        "entrypoint": "scripts/smoke-mdkg-dev.js",
+        "exit": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 3399,
+        "log": "smoke-mdkg-dev.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-docs",
+        "entrypoint": "scripts/smoke-mdkg-dev-docs.js",
+        "exit": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 10127,
+        "log": "smoke-mdkg-dev-docs.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-seo",
+        "entrypoint": "scripts/smoke-mdkg-dev-seo.js",
+        "exit": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 5269,
+        "log": "smoke-mdkg-dev-seo.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-polish-pass2",
+        "entrypoint": "scripts/smoke-mdkg-dev-polish-pass2.js",
+        "exit": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 19533,
+        "log": "smoke-mdkg-dev-polish-pass2.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-polish-pass3",
+        "entrypoint": "scripts/smoke-mdkg-dev-polish-pass3.js",
+        "exit": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 793,
+        "log": "smoke-mdkg-dev-polish-pass3.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-polish-pass4",
+        "entrypoint": "scripts/smoke-mdkg-dev-polish-pass4.js",
+        "exit": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 989,
+        "log": "smoke-mdkg-dev-polish-pass4.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-polish-pass5",
+        "entrypoint": "scripts/smoke-mdkg-dev-polish-pass5.js",
+        "exit": 1,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 5690,
+        "log": "smoke-mdkg-dev-polish-pass5.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-a11y",
+        "entrypoint": "scripts/smoke-mdkg-dev-a11y.js",
+        "exit": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 6435,
+        "log": "smoke-mdkg-dev-a11y.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      },
+      {
+        "id": "smoke:mdkg-dev-perf",
+        "entrypoint": "scripts/smoke-mdkg-dev-perf.js",
+        "exit": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 745,
+        "log": "smoke-mdkg-dev-perf.log",
+        "artifact": {
+          "before_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "after_sha256": "479c2f92ac760e008d4e374aebc57243e3a07520c51b2f7e388353d109f78c9a",
+          "bytes": 548015,
+          "identity_preserved": true
+        }
+      }
+    ],
+    "setup_attempt": "first three failed before assertions because Astro attempted missing/unwritable home config; reran unchanged scripts with scoped XDG_CONFIG_HOME and ASTRO_TELEMETRY_DISABLED=1",
+    "remaining_failure": "pass5 inherited --pack-profile concise assertion; see exact base/candidate predicate proof"
+  },
+  "installed_minimum": {
+    "runtime": "24.18.0",
+    "platform": "native Linux x86_64",
+    "cases": 18,
+    "cli_invocations": 51,
+    "state": "PASS",
+    "receipt": "installed-minimum.json",
+    "runtime_receipt": "node-runtime.json",
+    "note": "same 18 unique cases as current-runtime receipt, not36 distinct cases"
+  },
+  "platforms": {
+    "Linux_x86_64_Node24_18_0": "bounded18case installed PASS; full portable filesystem qualification NOT_RUN",
+    "Linux_x86_64_Node24_19_0": "bounded18case installed PASS retained q2; full portable filesystem qualification NOT_RUN",
+    "Linux_ARM64": "NOT_RUN unsupported in this native x86_64 executor",
+    "macOS_ARM64": "NOT_RUN unavailable; do not access Mac",
+    "macOS_x86_64": "NOT_RUN unavailable; do not access Mac",
+    "Windows": "unqualified by planning contract; NOT_RUN"
+  },
+  "inherited_demo": {
+    "classification": "mode-dependent source seal; base/candidate103 identical rows all0600; in-memory0644 projection matches exact accepted seal",
+    "evidence": "demo-mode-diagnostic.json",
+    "changes_applied": false
+  },
+  "hosted": {
+    "run_id": 36972314303,
+    "commit": "c13c7adba673b0de79ad55e87e0519e54cce5b95",
+    "floating_job_id": 110728674611,
+    "floating": "coverage exit1 after876713ms timed_out=false; cause UNRESOLVED",
+    "minimum": "cancelled; no accepted coverage result",
+    "full_jobs": "skipped",
+    "artifact_id": 11211594942,
+    "archive_bytes": 482625436,
+    "archive_sha256": "4331b71b42c4825720707b413f3deda57bf78ba55499e749871992c6c7a3e8bc",
+    "read_only_connector_download": "success; authorized archive reference obtained",
+    "native_archive_transfer": "blocked curl56 CONNECT proxy403; no archive bytes obtained; signed reference discarded, not retained",
+    "small_file_tool_limit_bytes": 33554432,
+    "needed_step": "Owner extract logs/coverage.log and coverage/coverage-event.json plus available summary.json/manifest.json/receipt.json/progress.json from artifact11211594942 into an approved small evidence bundle, or restore authorized archive transfer. Do not rerun or bypass this denial."
+  },
+  "authority": "No Goal89, merge, publication, tag, deployment, baseline reseal, broad CI changes or platform substitution."
+}

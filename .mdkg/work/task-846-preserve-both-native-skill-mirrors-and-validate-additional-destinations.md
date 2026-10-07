@@ -2,10 +2,10 @@
 id: task-846
 type: task
 title: Preserve both native skill mirrors and validate additional destinations
-status: backlog
+status: progress
 priority: 1
 parent: goal-88
-tags: [cloud-planning, design-only]
+tags: [cloud-planning, cloud-implementation]
 owners: [mdkg-project-agent]
 links: []
 artifacts: []
@@ -35,8 +35,10 @@ delivered configurable-mirror capability or change unrelated runtime surfaces.
 # Implementation Notes
 
 Owned by goal-88; follow edd-83. Depends on task-845.
-This record is a future task, not execution authorization in this PR. Resolve
-the design decisions at the named design checkpoint before changing behavior.
+Nick expressly authorized the sequential cloud implementation before PR10 merge.
+The follow-up asks continued Goal88 work. Only the preservation-first slice is
+implemented: no new legacy retirement, compatibility expiry or approval is inferred.
+The named design checkpoint remains for review of any removal policy.
 
 # Acceptance Criteria
 
@@ -48,7 +50,11 @@ gates apply. No unrelated project/graph writes or publication authority.
 
 # Current State
 
-Backlog, unclaimed. Implementation and acceptance: NOT_RUN.
+Progress. Both native defaults and configured extras use the existing projection.
+The full target policy now refuses canonical/nested/case-alias/duplicate overlaps
+before effects; sync and authoring preflight late unmanaged collisions. Existing
+custom policy is preserved with visible missing-default guidance. Qualification
+and independent review remain pending.
 
 # Files Affected
 

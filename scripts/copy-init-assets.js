@@ -50,7 +50,6 @@ copyDir(publicCoreRoot, path.join(distRoot, "core"));
 copyDir(path.join(root, ".mdkg", "templates"), path.join(distRoot, "templates"));
 copyFile(path.join(root, "assets", "init", "README.md"), path.join(distRoot, "README.md"));
 copyFile(path.join(root, "assets", "init", "AGENTS.md"), path.join(distRoot, "AGENTS.md"));
-copyFile(path.join(root, "assets", "init", "CLAUDE.md"), path.join(distRoot, "CLAUDE.md"));
 copyFile(path.join(root, "assets", "init", "llms.txt"), path.join(distRoot, "llms.txt"));
 copyFile(path.join(root, "assets", "init", "AGENT_START.md"), path.join(distRoot, "AGENT_START.md"));
 copyFile(

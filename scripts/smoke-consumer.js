@@ -80,9 +80,10 @@ function runSmoke(env = process.env) {
       assertExists(path.join(repoDir, ".mdkg", "config.json"));
       assertExists(path.join(repoDir, ".mdkg", "README.md"));
       assertExists(path.join(repoDir, "AGENTS.md"));
-      assertExists(path.join(repoDir, "CLAUDE.md"));
+      if (fs.existsSync(path.join(repoDir, "CLAUDE.md"))) throw new Error("fresh init generated legacy CLAUDE.md");
       assertExists(path.join(repoDir, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md"));
       assertExists(path.join(repoDir, ".agents", "skills", "select-work-and-ground-context", "SKILL.md"));
+      assertExists(path.join(repoDir, ".claude", "skills", "select-work-and-ground-context", "SKILL.md"));
       if (!fs.readFileSync(path.join(repoDir, ".gitignore"), "utf8").includes(".mdkg/archive/**/source/")) {
         throw new Error(".gitignore missing archive raw source ignore entry");
       }

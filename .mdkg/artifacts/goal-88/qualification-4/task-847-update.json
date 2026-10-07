@@ -1,0 +1,12 @@
+{
+  "action": "updated",
+  "task": {
+    "workspace": "root",
+    "id": "task-847",
+    "qid": "root:task-847",
+    "path": ".mdkg/work/task-847-prepare-exact-candidate-minimal-init-prepublication-evidence.md",
+    "type": "task",
+    "status": "progress",
+    "priority": 1
+  }
+}

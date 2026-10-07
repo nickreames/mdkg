@@ -11,11 +11,20 @@ CHANGELOG.md
 
 This page gives a product-level summary of the public-alpha release line. Use the root changelog for exact dates and patch-level details.
 
-The 0.6.0 candidate is unpublished and still requires release qualification.
-It removes the Git mutation wrappers and consumer-specific validation profiles
+The earlier `0.6.0` line removes the Git mutation wrappers and consumer-specific validation profiles
 described in older entries. Use the current command reference and
 [native Git migration guide](/advanced-alpha/git-materialization/) for candidate
 behavior; no old command is restored by its appearance in release history.
+
+## `0.6.1` candidate
+
+Draft, unpublished and awaiting complete qualification and local owner review.
+Fresh initialization generates only root AGENTS.md, with canonical guidance
+under `.mdkg`. Existing legacy instructions are preserved; both native skill
+mirrors and configured extras remain supported. Unsafe overlapping, nested or
+case-alias mirror destinations refuse before effects. Legacy retirement awaits
+a separately reviewed migration. These notes describe candidate behavior and
+do not authorize publication or professional adoption.
 
 ## Historical version notes
 

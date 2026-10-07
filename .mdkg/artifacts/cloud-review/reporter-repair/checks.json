@@ -1,0 +1,154 @@
+{
+  "kind": "cloud-safe-assertion-detail-repair",
+  "state": "NOT_READY",
+  "tested_parent": "bb850f5be80562269064122aef2f59e356a5e7b4",
+  "scope": "CIreporter/collectordiagnostics only",
+  "policy": "omit-payloads-v1",
+  "record_limit_bytes": 4096,
+  "aggregate_tail_limit_bytes": 8192,
+  "focused": {
+    "parent": "bb850f5be80562269064122aef2f59e356a5e7b4",
+    "utc": "2026-10-03T04:56:27.344553+00:00",
+    "frozen_inputs": {
+      "package": "4949339295dc81d59355253d9f4de7b0149ddc0c27dac7e89935b45f2e86453d",
+      "qualification": "b384733836cffae67b2d70ff010ffcf5b3643ddab1f0eb97dff0c83446ce90e2"
+    },
+    "drift": false,
+    "runs": [
+      {
+        "label": "current",
+        "runtime": "v24.19.0",
+        "status": 0,
+        "command": [
+          "python3",
+          "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "--test",
+          "tests/ci-evidence.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "tests/qualification-smoke.test.mjs",
+          "tests/test-execution-environment.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js",
+          "dist/tests/test-built.test.js"
+        ],
+        "summary": [
+          "\u2139 tests 94",
+          "\u2139 pass 94",
+          "\u2139 fail 0",
+          "\u2139 skipped 0",
+          "\u2139 duration_ms 1953.298808",
+          "cloud runner: reaped 2 owned descendant(s); command exit 0"
+        ],
+        "log_sha256": "406b8bd8058621f7ae62eba22c2de0a9b7362c9c6bdbe6ee10447e61d31ccad0"
+      },
+      {
+        "label": "minimum",
+        "runtime": "v24.18.0",
+        "status": 0,
+        "command": [
+          "python3",
+          "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+          "/workspace/mdkg-cloud-goal88-cache/qualification-3/node-v24.18.0-linux-x64/bin/node",
+          "--test",
+          "tests/ci-evidence.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "tests/qualification-smoke.test.mjs",
+          "tests/test-execution-environment.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js",
+          "dist/tests/test-built.test.js"
+        ],
+        "summary": [
+          "\u2139 tests 94",
+          "\u2139 pass 94",
+          "\u2139 fail 0",
+          "\u2139 skipped 0",
+          "\u2139 duration_ms 1507.459752",
+          "cloud runner: reaped 2 owned descendant(s); command exit 0"
+        ],
+        "log_sha256": "637f3874fd555828673265d2dcf2aa4f4e4dd6bab248e2417a2927cc0628a57d"
+      },
+      {
+        "label": "floating",
+        "runtime": "v24.21.0",
+        "status": 0,
+        "command": [
+          "python3",
+          "/workspace/mdkg-cloud-goal88-cache/subreaper.py",
+          "/workspace/mdkg-cloud-review-cache/node-24.21.0/node-v24.21.0-linux-x64/bin/node",
+          "--test",
+          "tests/ci-evidence.test.mjs",
+          "tests/qualification-output.test.mjs",
+          "tests/qualification-smoke.test.mjs",
+          "tests/test-execution-environment.test.mjs",
+          "dist/tests/coverage-contract.test.js",
+          "dist/tests/ci-topology.test.js",
+          "dist/tests/release-ladder.test.js",
+          "dist/tests/test-built.test.js"
+        ],
+        "summary": [
+          "\u2139 tests 94",
+          "\u2139 pass 94",
+          "\u2139 fail 0",
+          "\u2139 skipped 0",
+          "\u2139 duration_ms 1514.375559",
+          "cloud runner: reaped 2 owned descendant(s); command exit 0"
+        ],
+        "log_sha256": "156f00b84bbccecde6a1a3f4e0b0260e2b07b4a40c5f76a7dff0295d9898a6f1"
+      }
+    ],
+    "scope": "CIreporter/collector/coverage-contract/output/smoke/topology/ladder/testworker controls; no full suite/build"
+  },
+  "source_files": {
+    "scripts/test-failure-detail.js": "c66aeeca7875907dd1490d79f34394626540948018d3b17b5c1294dbb3669ba5",
+    "scripts/coverage-reporter.js": "0e2188694e896904b720d3e0000b1534785301afc13b14c9d222434da884d5b7",
+    "scripts/collect-ci-evidence.js": "e758445acb383da6d8b2228e7978eb8506a4cf997061a5add3b5e7aa831f698d",
+    "tests/ci-evidence.test.mjs": "fc5e3b3799b984f09fb66bf9e8e5d444b2360166e1832f067c41a46a29134b39",
+    "docs/cloud-reporter-repair.md": "ae847a78bec8b48b0f77ff168895c85c4b4c38e2d3fcbfdcc53ae742ce64bc69"
+  },
+  "policy_digests": {
+    "scripts/coverage-contract.json": "0c4c5039f9e37cdd8cf87b8bade3de438aff3e6746d6b488064858a8de8137b1",
+    "scripts/smoke-manifest.json": "ef748ecd1185bb46c3d57717dcd3c6bfafc363abce48351809f8dabe4ee255e2",
+    ".github/workflows/release-readiness.yml": "14517de9b57c0c644dccb2286a9f133d80643251804a227de4971aef6c524d7e"
+  },
+  "initial_regression": "6pass1fail: nested standaloneNODE_TEST_CONTEXTchild-v8 exit0; correctedtestclearscontext; independentlyreproduced",
+  "static_checks": "workflow/plan/499commandexamples/diff PASS",
+  "product_package_changed": false,
+  "new_local_full_suite": "NOT_RUN",
+  "hosted_new_head": "PENDING automaticpushqualification",
+  "authority": "No lineage/productpolicy,0.6.2,merge/publish/deploy; independentreview/designapprovals pending",
+  "recorded_utc": "2026-10-03T04:59:09.735641+00:00",
+  "evidence_files": {
+    "reporter-repair-focused-current.log.gz": {
+      "bytes": 3771,
+      "sha256": "f13c0b590f17c2aebb717dbcf8a677029e766f37ee97d39ddba9070389283e3b",
+      "raw_sha256": "406b8bd8058621f7ae62eba22c2de0a9b7362c9c6bdbe6ee10447e61d31ccad0"
+    },
+    "reporter-repair-focused-minimum.log.gz": {
+      "bytes": 3766,
+      "sha256": "f37192bd06f63f189bcf2243ba5f8b1ae2d1acb1e46634316f2a677743930895",
+      "raw_sha256": "637f3874fd555828673265d2dcf2aa4f4e4dd6bab248e2417a2927cc0628a57d"
+    },
+    "reporter-repair-focused-floating.log.gz": {
+      "bytes": 3762,
+      "sha256": "a1f469c96145c8079cb1930354de66794969b3cb0a9ff0b3e1a709754a92a06a",
+      "raw_sha256": "156f00b84bbccecde6a1a3f4e0b0260e2b07b4a40c5f76a7dff0295d9898a6f1"
+    },
+    "reporter-repair-initial-fixed-test.log.gz": {
+      "bytes": 556,
+      "sha256": "7622b27ad14fe4356d010cc9aded369895bff1155637fba47d253e879a629f71",
+      "raw_sha256": "09ea6d67e4795e811ec2041601df896ac32ab69e51d09e3254e6ffc2199b17e5"
+    },
+    "reporter-repair-focused.json": {
+      "bytes": 3432,
+      "sha256": "94497fc482803a24f150936cfe85a88f29a6f2c5e44e301068190c7f6529b3fc"
+    },
+    "reporter-repair-context-control.json": {
+      "bytes": 375,
+      "sha256": "75950db06250080badaab7ca8f82c272bcbcd8ee75e7312e26f7db040252ad35"
+    }
+  }
+}

@@ -77,10 +77,14 @@ for (const args of [[], ["--agent"], ["--graph-only"]]) test(`documented init mo
   for (const name of ["AGENTS.md", "CLAUDE.md", "README.md", "LICENSE"]) fs.writeFileSync(path.join(root, name), authored);
   const result = cli(root, ["init", ...args]); assert.equal(result.status, 0, result.stderr);
   for (const name of ["README.md", "LICENSE"]) assert.equal(fs.readFileSync(path.join(root, name), "utf8"), authored);
-  for (const name of ["AGENTS.md", "CLAUDE.md"]) {
-    const content = fs.readFileSync(path.join(root, name), "utf8"); assert.ok(content.startsWith(authored));
-    assert.equal(content.includes(".mdkg/AGENT_START.md"), !args.includes("--graph-only"));
-  }
+  const agents = fs.readFileSync(path.join(root, "AGENTS.md"), "utf8");
+  assert.ok(agents.startsWith(authored));
+  assert.equal(agents.includes(".mdkg/AGENT_START.md"), !args.includes("--graph-only"));
+  assert.equal(fs.readFileSync(path.join(root, "CLAUDE.md"), "utf8"), authored,
+    "init must preserve user-authored legacy Claude instructions byte-for-byte");
+  const beforeRepeat = snapshot(root);
+  const repeated = cli(root, ["init", ...args]); assert.equal(repeated.status, 0, repeated.stderr);
+  assert.deepEqual(snapshot(root), beforeRepeat, "repeated init must preserve every generated and authored file");
 });
 
 test("missing-template create validate and doctor hints require reviewed upgrades", () => {

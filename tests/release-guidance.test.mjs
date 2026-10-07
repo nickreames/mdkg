@@ -101,13 +101,14 @@ test("both install guides show compact default init and a reviewed upgrade hash"
     assert.match(text, /mdkg init --graph-only/, path);
     assert.match(text, /mdkg init --agent/, path);
     assert.match(text, /mdkg upgrade --apply --plan-hash/, path);
-    assert.match(text, /unpublished 0\.6\.0 candidate/, path);
+    assert.ok(text.includes(`unpublished ${packageJson.version} candidate`), path);
   }
 });
 
 test("published changelog chronology is retained with an explicit candidate boundary", () => {
   const text = read("docs/src/content/docs/project/changelog.md");
-  assert.match(text, /0\.6\.0 candidate is unpublished/);
+  assert.ok(text.includes(`## \`${packageJson.version}\` candidate`));
+  assert.match(text, /Draft, unpublished and awaiting complete qualification/);
   assert.match(text, /Historical version notes/);
   assert.match(text, /## 0\.5\.2 details/);
   assert.match(text, /mdkg git materialize --request/);

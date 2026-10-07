@@ -106,8 +106,15 @@ establishes structural/local-evidence consistency, not external execution,
 payment, or attestation authenticity.
 
 Compact agent setup is the default for `mdkg init`; `--agent` remains a
-compatibility alias and `--graph-only` omits agent setup. Root AGENTS.md and
-CLAUDE.md contain bounded managed sections pointing to `.mdkg/AGENT_START.md`.
+compatibility alias and `--graph-only` omits agent setup. AGENTS.md is the only
+generated root instruction, with a bounded section pointing to `.mdkg/AGENT_START.md`.
+Existing CLAUDE.md and user-authored legacy instructions remain byte-for-byte
+preserved; upgrade does not recreate a missing CLAUDE.md. Both `.agents/skills/`
+and `.claude/skills/` remain default mirrors. Add extra destinations to
+`customization.skill_mirrors.targets` alongside those defaults. Upgrade preserves
+custom target lists and reports missing native defaults for explicit review.
+Targets must be distinct contained paths, separate from canonical graph storage
+and each other, including nested paths and portable case aliases.
 Read that router once; use focused skills and command help as needed. Details
 live under `.mdkg`, not in a mandatory universal root handbook. User-authored
 instructions, README/LICENSE/project docs, and public website discovery remain

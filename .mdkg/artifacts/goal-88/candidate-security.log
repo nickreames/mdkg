@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "release": "0.5.0",
+  "source_revision": "8ac683599cd2765e7f33fa93113dbace8ed77543",
+  "counts": {
+    "total": 51,
+    "high": 5,
+    "medium": 28,
+    "low": 18
+  },
+  "owners": [
+    "task-764",
+    "task-765",
+    "task-766",
+    "task-767",
+    "task-768",
+    "task-769",
+    "task-770",
+    "task-771",
+    "task-772",
+    "task-773"
+  ]
+}

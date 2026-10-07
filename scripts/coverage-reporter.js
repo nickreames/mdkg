@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const { failureDetail } = require("./test-failure-detail");
 
 module.exports = async function* coverageReporter(source) {
   const outputPath = process.env.MDKG_COVERAGE_EVENT_PATH;
@@ -19,6 +20,7 @@ module.exports = async function* coverageReporter(source) {
         yield `PASS ${event.data.name}\n`;
       } else if (event.type === "test:fail") {
         yield `FAIL ${event.data.name}\n`;
+        yield `FAIL_DETAIL ${JSON.stringify(failureDetail(event.data))}\n`;
       } else if (event.type === "test:diagnostic" && event.data.level !== "info") {
         yield `${event.data.level.toUpperCase()} ${event.data.message}\n`;
       } else if (event.type === "test:stderr" || event.type === "test:stdout") {

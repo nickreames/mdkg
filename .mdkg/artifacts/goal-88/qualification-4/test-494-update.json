@@ -1,0 +1,12 @@
+{
+  "action": "updated",
+  "task": {
+    "workspace": "root",
+    "id": "test-494",
+    "qid": "root:test-494",
+    "path": ".mdkg/work/test-494-qualify-minimal-init-behavior-with-synthetic-installed-fixtures.md",
+    "type": "test",
+    "status": "progress",
+    "priority": 1
+  }
+}

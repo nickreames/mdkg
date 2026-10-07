@@ -8,6 +8,25 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.6.1 - 2026-10-02
+
+### Qualification status
+
+- Draft candidate, not published or ready for professional adoption. Full
+  coverage/release/security/platform gates and local owner review remain required.
+  Legacy instruction retirement is deferred pending its explicit migration review.
+
+### Changed
+
+- Fresh default and explicit agent initialization generate only root AGENTS.md,
+  routing to canonical guidance under `.mdkg`. Existing CLAUDE.md and authored
+  legacy instructions remain preserved; upgrade does not recreate CLAUDE.md.
+- Both native skill mirrors remain defaults, with configurable extra destinations.
+  Canonical overlaps, nested targets and portable case aliases refuse before
+  effects. Mirror sync preflights all same-slug ownership conflicts before writes.
+- Upgrade preserves custom target policy and reports missing native defaults for
+  explicit review instead of silently changing the user's target list.
+
 ## 0.6.0 - 2026-09-17
 
 ### Qualification status

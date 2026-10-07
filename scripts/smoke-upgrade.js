@@ -120,7 +120,7 @@ function assertSpecCount(binPath, root, expected, label) {
 
 function assertNoPendingUpgrade(binPath, root) {
   const receipt = parseJson(mdkg(binPath, ["upgrade", "--json"], root).stdout);
-  if (!receipt.dry_run || receipt.changes.length !== 0) {
+  if (!receipt.dry_run || receipt.will_write_paths.length !== 0 || !receipt.safe_to_apply) {
     throw new Error(`expected no pending upgrade changes, got ${JSON.stringify(receipt, null, 2)}`);
   }
 }
@@ -155,7 +155,7 @@ function exerciseUpgrade(binPath, tempRoot) {
     throw new Error("upgrade --apply did not report init manifest side effect");
   }
   assertExists(path.join(root, "AGENTS.md"));
-  assertExists(path.join(root, "CLAUDE.md"));
+  if (fs.existsSync(path.join(root, "CLAUDE.md"))) throw new Error("upgrade recreated retired fresh CLAUDE wrapper");
   assertExists(path.join(root, ".mdkg", "init-manifest.json"));
   mdkg(binPath, ["validate"], root);
   assertNoPendingUpgrade(binPath, root);

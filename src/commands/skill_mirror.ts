@@ -13,6 +13,7 @@ import {
 import { buildSkillIndexEntryForWorkspace, buildSkillsIndex, resolveSkillsRoot, SKILL_SLUG_RE, SkillsIndex } from "../graph/skills_indexer";
 import { UsageError } from "../util/errors";
 import { assertNoGitMetadataDestinations } from "../util/git_metadata";
+import { normalizeContainedWorkspacePath, workspaceDocumentRootKey } from "../core/workspace_path";
 
 const MANIFEST_FILE = ".mdkg-managed.json";
 const MANAGED_ROOT_MARKERS = [
@@ -61,11 +62,29 @@ export type PreflightSkillMirrorTargetsOptions = {
 
 export function configuredSkillMirrorTargets(config?: Config): string[] {
   const configured = config?.customization.skill_mirrors.targets ?? defaultCustomizationConfig().skill_mirrors.targets;
-  return Array.from(new Set(configured.map((value) => value.trim().split(/[\\/]/).join("/")).filter(Boolean)));
+  return configured.map(value => {
+    const safe = normalizeContainedWorkspacePath(value, "skill mirror target");
+    return safe.split(/[\\/]+/).filter(part => part && part !== ".").join("/");
+  });
 }
 
 export function admitSkillMirrorTargets(root: string, config?: Config): string[] {
   const targets = configuredSkillMirrorTargets(config);
+  // Admit the entire policy before filesystem observations or writes. Fold
+  // component paths portably, including on case-sensitive Linux hosts.
+  const overlaps = (left: string, right: string): boolean => left === right ||
+    left.startsWith(`${right}/`) || right.startsWith(`${left}/`);
+  const canonicalRoots = [".mdkg", ...Object.values(config?.workspaces ?? {}).map(ws =>
+    workspaceDocumentRootKey(ws.path, ws.mdkg_dir))].map(value => value.toLowerCase());
+  for (const [index, target] of targets.entries()) {
+    const key = target.toLowerCase();
+    if (!key || canonicalRoots.some(canonical => overlaps(key, canonical))) {
+      throw new UsageError(`skill mirror target overlaps canonical graph storage: ${target || "."}`);
+    }
+    if (targets.slice(0, index).some(other => overlaps(key, other.toLowerCase()))) {
+      throw new UsageError(`skill mirror targets overlap or alias each other: ${target}`);
+    }
+  }
   assertNoGitMetadataDestinations(root, targets);
   let entries = 0;
   const maxEntries = config?.index.limits.max_files ?? 20000;
@@ -234,8 +253,9 @@ function loadCanonicalSources(root: string, config: Config, pending?: PendingSki
 
 // The authoring command will preserve resources and add required empty
 // directories. Admit that exact prospective source before any of those writes.
-export function preflightPendingSkillMirrors(root: string, config: Config, pending: PendingSkillSource): void {
-  loadCanonicalSources(root, config, pending);
+export function preflightPendingSkillMirrors(root: string, config: Config, pending: PendingSkillSource, force = false): void {
+  const sources = loadCanonicalSources(root, config, pending);
+  preflightSkillMirrorTargets({ root, config, slugs: sources.map(source => source.slug), force });
 }
 
 function materializeSkillMirror(root: string, source: SkillMirrorSource, destDir: string): void {
@@ -295,6 +315,8 @@ export function syncSkillMirrors(options: SyncSkillMirrorsOptions): SyncSkillMir
     createRoots || fs.existsSync(target.skillsRoot) || fs.existsSync(target.rootDir));
   if (targets.length === 0) return { synced: 0, pruned: 0, targets: 0 };
   const sources = loadCanonicalSources(options.root, options.config);
+  preflightSkillMirrorTargets({ root: options.root, config: options.config,
+    slugs: sources.map(source => source.slug), force });
   let synced = 0;
   let pruned = 0;
   let touchedTargets = 0;
