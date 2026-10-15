@@ -13,6 +13,7 @@ const packageJson = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const ladder = require(path.join(repoRoot, "scripts", "release-ladder.js")) as {
   validateManifest(candidate: unknown, packageJson: unknown): void;
+  releaseTimeoutMinutes(mode: string, candidate: unknown): number;
   canonicalEntries(
     candidate: unknown,
     mode: "ci" | "prepublish" | "full-prepare" | "full-shard",
@@ -99,6 +100,34 @@ test("accepted manifest topology has exact fast membership and five complete ful
   );
 });
 
+test("fast ladder and generated job use distinct bounded budgets with cleanup headroom", () => {
+  const candidate = cloneManifest();
+  candidate.ci_topology.fast.ladder_timeout_minutes = 20;
+  candidate.ci_topology.fast.timeout_minutes = 25;
+  assert.doesNotThrow(() => ladder.validateManifest(candidate, packageJson));
+  assert.equal(ladder.releaseTimeoutMinutes("ci", candidate), 20);
+  assert.match(generator.renderWorkflow(candidate.ci_topology), /timeout-minutes: 25/);
+  assert.equal(ladder.releaseTimeoutMinutes("prepublish", candidate), 60);
+  assert.equal(ladder.releaseTimeoutMinutes("full-prepare", candidate), 30);
+  assert.equal(ladder.releaseTimeoutMinutes("full-shard", candidate), 20);
+});
+
+test("fast budgets refuse absent, unbounded, fractional and insufficient-headroom values", () => {
+  for (const value of [undefined, 0, -1, 1.5, NaN, Infinity, 61]) {
+    expectInvalid(candidate => { candidate.ci_topology.fast.ladder_timeout_minutes = value; }, /fast ladder timeout/);
+  }
+  for (const value of [undefined, 0, -1, 1.5, NaN, Infinity, 71]) {
+    expectInvalid(candidate => { candidate.ci_topology.fast.timeout_minutes = value; }, /fast timeout/);
+  }
+  expectInvalid(candidate => {
+    candidate.ci_topology.fast.ladder_timeout_minutes = 20;
+    candidate.ci_topology.fast.timeout_minutes = 24;
+  }, /five minutes.*headroom/);
+  for (const mode of ["invalid", "constructor", "toString"]) {
+    assert.throws(() => ladder.releaseTimeoutMinutes(mode, manifest), /release mode/);
+  }
+});
+
 test("topology validation identifies runtime timeout membership partition and profile drift", () => {
   assert.throws(() => ladder.validateManifest(manifest, { ...packageJson, engines: { node: ">=24.15.0" } }), /package Node range/);
   expectInvalid(candidate => { candidate.ci_topology.runtime_decision_ref = "root:dec-91"; }, /runtime root:dec-98/);
@@ -166,7 +195,7 @@ test("generated workflow byte-matches source-owned topology and exposes the acce
     "Fast / ${{ matrix.id }} / Node ${{ matrix.node }}",
     'node: "24.18.0"',
     'node: "24.x"',
-    "timeout-minutes: 15",
+    `timeout-minutes: ${manifest.ci_topology.fast.timeout_minutes}`,
     "npm run deps:bootstrap",
     "npm run ci:release",
     "Preserve interrupted fixture evidence and report failed cases",
@@ -210,7 +239,7 @@ test("workflow projection check fails at the exact first removed topology contra
     bytes: Buffer.byteLength(expected),
   });
   for (const contract of [
-    "    timeout-minutes: 15\n",
+    `    timeout-minutes: ${manifest.ci_topology.fast.timeout_minutes}\n`,
     "        if: ${{ always() }}\n",
     "    needs: [full_prepare, full_smoke, full_linux_filesystem]\n",
     "          name: mdkg-full-context-${{ inputs.commit_sha }}\n",

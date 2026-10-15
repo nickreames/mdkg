@@ -31,7 +31,8 @@
         {"id": "minimum", "version": "24.18.0"},
         {"id": "floating", "version": "24.x"}
       ],
-      "timeout_minutes": 15,
+      "ladder_timeout_minutes": 30,
+      "timeout_minutes": 35,
       "artifact_retention_days": 14,
       "canonical": [
         "smoke:consumer",

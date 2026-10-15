@@ -184,7 +184,7 @@ test("unit evidence CLI propagates invalid-source failure as nonzero", () => {
 });
 
 
-test("collector exports matching synthetic fast evidence and preserves failure when a required file is absent", () => {
+test("collector preserves exact execution evidence after pack cleanup and rejects missing or mismatched evidence", () => {
   const fixture = createOwnedFixture({ prefix: "mdkg-unit-collector-" });
   try {
     const root = fixture.resolve("repo"), collection = fixture.resolve("collection"), matrix = fixture.resolve("matrix");
@@ -196,6 +196,7 @@ test("collector exports matching synthetic fast evidence and preserves failure w
     put(".mdkg/work/goal-73-make-the-docs-current-release-supplement-version-driven.md", "synthetic fixture\n");
     for (const file of ["package-lock.json", "docs/package-lock.json", "mdkg-dev/package-lock.json"]) put(file, "{}\n");
     put("scripts/coverage-contract.json", JSON.stringify(config));
+    put("scripts/clean-build-output.js", fs.readFileSync(path.resolve("scripts/clean-build-output.js")));
     put("tests/control.test.ts", "// synthetic source fixture\n");
     put("tests/control.test.mjs", "// synthetic source fixture\n");
     put("dist/tests/control.test.js", "// synthetic compiled fixture\n");
@@ -218,11 +219,26 @@ test("collector exports matching synthetic fast evidence and preserves failure w
       measured_paths: config.measured_paths, exclusions: config.exclusions });
     json("coverage/coverage-event.json", { test_summary: { success: true, counts: sample.counts }, test_skips: sample.skips });
     const log = path.join(run, "logs/coverage.log"); fs.writeFileSync(log, payload);
+    // Normal prepack runs the runtime build, whose cleanup removes dist/tests
+    // after coverage has already executed and sealed its complete manifest.
+    const cleanup = spawnSync(process.execPath, [path.join(root, "scripts/clean-build-output.js")],
+      { cwd: root, env: isolatedFixtureEnvironment(process.env), encoding: "utf8", timeout: 15000 });
+    assert.equal(cleanup.status, 0, cleanup.stderr);
+    assert.equal(fs.existsSync(path.join(root, "dist/tests")), false);
     for (const id of ["minimum", "floating"]) {
       const result = collect(sha, id, collection, path.join(matrix, id), root);
       assert.equal(result.ok, true, result.error); assert.deepEqual(result.test_files, expectedInputs.tests);
     }
     assert.equal(verifyCollection(matrix, expectedInputs).ok, true);
+    const manifestPath = path.join(run, "coverage/manifest.json");
+    const originalManifest = fs.readFileSync(manifestPath, "utf8");
+    const incompleteManifest = JSON.parse(originalManifest);
+    incompleteManifest.test_files.compiled_typescript = [];
+    fs.writeFileSync(manifestPath, JSON.stringify(incompleteManifest));
+    const incomplete = collect(sha, "minimum", collection, fixture.resolve("incomplete-export"), root);
+    assert.equal(incomplete.ok, false);
+    assert.match(incomplete.error, /complete unit source\/compiled discovery mismatch/);
+    fs.writeFileSync(manifestPath, originalManifest);
     const summaryPath = path.join(run, "coverage/summary.json"), eventPath = path.join(run, "coverage/coverage-event.json");
     const originalRead = fs.readFileSync, originalSummary = originalRead(summaryPath, "utf8");
     let changed = false;

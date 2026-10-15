@@ -7,7 +7,6 @@ const crypto = require("node:crypto");
 const { spawnSync } = require("node:child_process");
 const { isDeepStrictEqual } = require("node:util");
 const { captureTrackedBoundary } = require("./release-ladder");
-const { discoverTestContract } = require("./coverage-contract");
 const { readTopology, verifyExactSha } = require("./generate-ci-workflow");
 const { assertDirectoryChain, prepareEmptyDirectory, readRegularJsonFile, within } = require("./qualification-output");
 const { verifyArtifactFile, withVerifiedArtifact } = require("./qualification-artifact");
@@ -143,7 +142,9 @@ function collect(sha, id, collection, output, root = repoRoot) {
     // Derive the verdict from the retained verified copies, never from an
     // earlier parse of mutable source files that are reopened during export.
     const fields = fieldsFromEvidence(readEvidencePayloads(output, evidence), expected);
-    same(fields.test_files, discoverTestContract(root), "compiled unit parity changed after execution");
+    // Normal prepack rebuilds runtime output and removes dist/tests after the
+    // coverage run. fieldsFromEvidence already checks that run's retained
+    // complete manifest against the exact tracked source-derived inventory.
     const npm = spawnSync("npm", ["--version"], { encoding: "utf8" });
     requireThat(npm.status === 0, "npm runtime identity unavailable");
     record = {
