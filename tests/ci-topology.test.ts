@@ -169,6 +169,10 @@ test("generated workflow byte-matches source-owned topology and exposes the acce
     "timeout-minutes: 15",
     "npm run deps:bootstrap",
     "npm run ci:release",
+    "Preserve interrupted fixture evidence and report failed cases",
+    "node scripts/collect-ci-evidence.js",
+    "!${{ runner.temp }}/mdkg-fast/run-*/tmp/**",
+    "${{ runner.temp }}/mdkg-fast-fixtures",
     "full_prepare:",
     "full_smoke:",
     "needs: full_prepare",
@@ -305,4 +309,27 @@ test("full shards restore one hash-bound package and dist context and reject dri
     () => ladder.loadFullContext(contextDir, sourceHead, consumer),
     /package hash or size mismatch/,
   );
+});
+
+test("unit verdict reuses full fast coverage and requires both current-attempt artifacts on the PR head", () => {
+  const workflow = generator.renderWorkflow(generator.readTopology());
+  const fast = workflow.split("  fast:\n")[1].split("  unit_tests:\n")[0];
+  const verdict = workflow.split("  unit_tests:\n")[1].split("  full_prepare:\n")[0];
+  assert.ok(fast.includes("ref: ${{ github.event.pull_request.head.sha || github.sha }}"));
+  assert.ok(verdict.includes("ref: ${{ github.event.pull_request.head.sha || github.sha }}"));
+  assert.ok(fast.includes("persist-credentials: false"));
+  assert.ok(verdict.includes("persist-credentials: false"));
+  assert.ok(fast.includes('--verify-sha "$COMMIT_SHA"'));
+  assert.ok(fast.includes('node scripts/unit-ci-evidence.js collect'));
+  assert.ok(fast.includes("mdkg-unit-${{ matrix.id }}-${{ github.run_id }}-${{ github.run_attempt }}"));
+  assert.ok(verdict.includes("name: unit-tests / mdkg"));
+  assert.ok(verdict.includes("needs: fast"));
+  assert.ok(verdict.includes("always() &&"));
+  assert.ok(verdict.includes("${{ needs.fast.result }}"));
+  assert.ok(verdict.includes('run: test "$FAST_RESULT" = success'));
+  assert.ok(verdict.includes("pattern: mdkg-unit-*-${{ github.run_id }}-${{ github.run_attempt }}"));
+  assert.ok(verdict.includes('node scripts/unit-ci-evidence.js verify'));
+  assert.doesNotMatch(verdict, /npm (run|ci)|ci:release|ci:full|continue-on-error|pull_request_target/);
+  assert.equal((fast.match(/run: npm run ci:release/g) || []).length, 1);
+  assert.doesNotMatch(fast, /run: npm run test/);
 });
