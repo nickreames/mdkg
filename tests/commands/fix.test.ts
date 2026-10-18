@@ -6,6 +6,7 @@ import { spawnSync } from "child_process";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
+import { SNAPSHOT_DIAGNOSTIC_LIMIT, snapshotMismatchDiagnostic } from "../helpers/snapshot_diagnostics";
 
 const cliPath = process.env.MDKG_TEST_PACKAGE ? path.join(process.env.MDKG_TEST_PACKAGE, "dist/cli.js") : path.resolve(__dirname, "..", "..", "cli.js");
 
@@ -1024,6 +1025,55 @@ test("fix plan ids family supports target filtering and blocked target receipts"
   assert.equal(payload.risk_counts.blocked, 1);
 });
 
+test("snapshot mismatch diagnostics retain only bounded fixture metadata", () => {
+  const secret = "compared-content-must-not-be-logged";
+  const before = new Map([[".git/index", "a"], [".mdkg/removed.md", "☃"]]);
+  const after = new Map([[".git/index", secret], [".mdkg/new.md", ""]]);
+  const output = snapshotMismatchDiagnostic(before, after, "2.55.0");
+  const report = JSON.parse(output.slice("SNAPSHOT_MISMATCH ".length));
+  assert.equal(report.changed_files, 3);
+  assert.equal(report.before_files, 2);
+  assert.equal(report.after_files, 2);
+  assert.deepEqual(report.changes.map((entry: {path: string}) => entry.path), [".git/index", ".mdkg/new.md", ".mdkg/removed.md"]);
+  assert.equal(report.changes[0].before.utf8_bytes, 1);
+  assert.equal(report.changes[0].before.sha256, "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb");
+  assert.equal(report.changes[1].before, null);
+  assert.equal(report.changes[1].after.utf8_bytes, 0);
+  assert.equal(report.changes[2].after, null);
+  assert.equal(report.changes[2].before.utf8_bytes, 3);
+  assert.equal(output.includes(secret), false);
+  assert.equal(output.includes("☃"), false);
+  assert.equal(report.encoding, "snapshot-utf8-values");
+});
+
+test("snapshot mismatch diagnostics bound paths and entries without exposing outside payloads", () => {
+  const before = new Map<string, string>();
+  const after = new Map(Array.from({length: 20}, (_, index) => [`.mdkg/${String(index).padStart(2, "0")}-${"x".repeat(120)}.md`, "private-value"]));
+  for (const name of ["/outside/private", ".mdkg/../private", ".mdkg/control\nprivate", `.mdkg/${"x".repeat(200)}`]) after.set(name, "private-value");
+  const output = snapshotMismatchDiagnostic(before, after, "untrusted-version-payload");
+  const report = JSON.parse(output.slice("SNAPSHOT_MISMATCH ".length));
+  assert.ok(Buffer.byteLength(output) <= SNAPSHOT_DIAGNOSTIC_LIMIT);
+  assert.equal(report.changed_files, 24);
+  assert.equal(report.redacted_paths, 4);
+  assert.equal(report.changes.length, 8);
+  assert.equal(report.truncated, true);
+  assert.equal(report.runtime.git, null);
+  assert.equal(output.includes("private"), false);
+  assert.equal(output.includes("untrusted"), false);
+  assert.deepEqual(snapshotMismatchDiagnostic(before, after, null), snapshotMismatchDiagnostic(before, new Map([...after].reverse()), null));
+});
+
+test("snapshot mismatch diagnostics distinguish unchanged and empty snapshots", () => {
+  const same = new Map([[".git/index", "same"]]);
+  const report = JSON.parse(snapshotMismatchDiagnostic(same, same, null).slice("SNAPSHOT_MISMATCH ".length));
+  assert.equal(report.changed_files, 0);
+  assert.deepEqual(report.changes, []);
+  assert.equal(report.truncated, false);
+  const empty = JSON.parse(snapshotMismatchDiagnostic(new Map(), new Map(), null).slice("SNAPSHOT_MISMATCH ".length));
+  assert.equal(empty.before_files, 0);
+  assert.equal(empty.after_files, 0);
+});
+
 test("fix ids blocks criss-cross merges with multiple accepted ancestor candidates", () => {
   const root = createFixRepo("mdkg-fix-ambiguous-ancestor-");
   assertGit(root, ["init", "-q"]);
@@ -1054,7 +1104,19 @@ test("fix ids blocks criss-cross merges with multiple accepted ancestor candidat
   assert.equal(receipt.proposed_changes.length, 0);
   assert.equal(receipt.blocked_changes[0].reason, "git_ancestry_unproven");
   assert.match(receipt.blocked_changes[0].evidence.detail, /ambiguous common ancestor/);
-  assert.deepEqual(snapshotFiles(root), before);
+  const after = snapshotFiles(root);
+  try {
+    assert.deepEqual(after, before);
+  } catch (error) {
+    try {
+      const version = git(root, ["--version"]);
+      const gitVersion = version.status === 0 ? /^git version (\d+\.\d+\.\d+)/.exec(version.stdout)?.[1] ?? null : null;
+      process.stdout.write(snapshotMismatchDiagnostic(before, after, gitVersion));
+    } catch {
+      // Diagnostics must never replace or suppress the original assertion.
+    }
+    throw error;
+  }
 });
 
 test("fix ids leaves cleanly merged disjoint edits to one ancestor node as one node", () => {
