@@ -228,6 +228,26 @@ function canonicalEntryMap(manifest) {
   return grouped;
 }
 
+function fastTimeoutMinutes(fast) {
+  if (!Number.isInteger(fast?.ladder_timeout_minutes) || fast.ladder_timeout_minutes < 1 || fast.ladder_timeout_minutes > 60) {
+    throw new Error("smoke manifest fast ladder timeout must be an integer in 1..60 minutes");
+  }
+  if (!Number.isInteger(fast?.timeout_minutes) || fast.timeout_minutes < 1 || fast.timeout_minutes > 70) {
+    throw new Error("smoke manifest fast timeout must be an integer in 1..70 minutes");
+  }
+  if (fast.timeout_minutes < fast.ladder_timeout_minutes + 5) {
+    throw new Error("fast job requires at least five minutes of setup and artifact headroom beyond the ladder");
+  }
+  return fast.ladder_timeout_minutes;
+}
+
+function releaseTimeoutMinutes(mode, manifest) {
+  if (mode === "ci") return fastTimeoutMinutes(manifest?.ci_topology?.fast);
+  const minutes = { prepublish: 60, "full-prepare": 30, "full-shard": 20 }[mode];
+  if (!Number.isInteger(minutes)) throw new Error("unknown release mode");
+  return minutes;
+}
+
 function validateCiTopology(manifest, grouped) {
   const topology = manifest.ci_topology;
   if (!topology || topology.decision_ref !== "root:dec-91" || topology.runtime_decision_ref !== "root:dec-98") {
@@ -241,8 +261,8 @@ function validateCiTopology(manifest, grouped) {
   ) {
     throw new Error("fast CI runtime matrix must be Node 24.18.0 and 24.x");
   }
+  fastTimeoutMinutes(topology.fast);
   for (const [field, value] of [
-    ["fast timeout", topology.fast?.timeout_minutes],
     ["full prepare timeout", topology.full?.prepare_timeout_minutes],
     ["full shard timeout", topology.full?.shard_timeout_minutes],
     ["full aggregate timeout", topology.full?.aggregate_timeout_minutes],
@@ -616,6 +636,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
       duration_ms: Date.now() - started,
       timed_out: Boolean(result.error && result.error.code === "ETIMEDOUT"),
     };
+    if (result.status !== 0) receipt.failure_evidence = failureEvidence(result);
     writeLog(receiptDir, id, result);
     (options.smoke ? smokeReceipts : gateReceipts).push(receipt);
     writeProgress();
@@ -810,25 +831,37 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
   };
 }
 
+// Preserve the original failure/outcome and full log. A bounded excerpt in the
+// ordinary progress receipt makes CI diagnosis possible without a huge V8 ZIP.
+function failureEvidence(result, limit = 8192) {
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > 8192) throw new Error("failure excerpt limit must be 1..8192 bytes");
+  const capture = (raw) => {
+    const bytes = Buffer.from(String(raw ?? ""), "utf8");
+    let start = Math.max(0, bytes.length - limit);
+    while (start < bytes.length && (bytes[start] & 0xc0) === 0x80) start++;
+    return { bytes: bytes.length, sha256: crypto.createHash("sha256").update(bytes).digest("hex"),
+      truncated: start > 0, tail_utf8: bytes.subarray(start).toString("utf8") };
+  };
+  return { kind: "bounded-failure-output-excerpt", limit_bytes_per_stream: limit,
+    status: result.status, signal: result.signal ?? null, error_code: result.error?.code ?? null,
+    stdout: capture(result.stdout), stderr: capture(result.stderr) };
+}
+
 function main() {
   const mode = process.argv[2];
   if (!["ci", "prepublish", "full-prepare", "full-shard"].includes(mode)) {
     process.stderr.write("Usage: node scripts/release-ladder.js <ci|prepublish|full-prepare|full-shard>\n");
     return 2;
   }
+  let timeoutMinutes;
   try {
     releaseScope(); scopeForMode(mode);
     const retained = retainedOptions();
     if (retained && mode !== "prepublish") throw new Error("retained candidate inputs require local prepublish");
+    timeoutMinutes = releaseTimeoutMinutes(mode, JSON.parse(fs.readFileSync(manifestPath, "utf8")));
   }
   catch (error) { process.stderr.write(`${error.message}\n`); return 2; }
   const started = Date.now();
-  const timeoutMinutes = {
-    ci: 15,
-    prepublish: 60,
-    "full-prepare": 30,
-    "full-shard": 20,
-  }[mode];
   const timeoutMs = timeoutMinutes * 60 * 1000;
   const base = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
   let receiptDir;
@@ -893,8 +926,10 @@ module.exports = {
   hashDirectory,
   loadFullContext,
   main,
+  releaseTimeoutMinutes,
   summarizeTrackedBoundary,
   validateCiTopology,
   validateManifest,
+  failureEvidence,
   writeFullContext,
 };

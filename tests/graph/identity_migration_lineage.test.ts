@@ -17,8 +17,69 @@ const continueGraphTransaction=reviewedFixtureRecovery(transaction);
 const roots:string[]=[];
 const GRAPH="e7403372-f270-4cd7-902d-64b792c781df",ORIGIN="ddf626b6-073f-4f99-9d30-5e30912922fd";
 after(()=>{for(const root of roots)fs.rmSync(root,{recursive:true,force:true});});
-function git(root:string,args:string[]){const r=spawnSync("git",["-c","user.name=mdkg test","-c","user.email=mdkg-test@example.invalid",...args],{cwd:root,encoding:"utf8"});assert.equal(r.status,0,r.stderr+r.stdout);return r.stdout.trim();}
-function bytes(root:string){const files:Record<string,string>={};function visit(dir:string){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,e.name);if(e.isDirectory())visit(file);else if(e.isFile())files[path.relative(root,file)]=crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");}}visit(root);return files;}
+// Keep fixture commits from leaving automatic maintenance writers behind.
+function git(root:string,args:string[]){const r=spawnSync("git",["-c","user.name=mdkg test","-c","user.email=mdkg-test@example.invalid","-c","maintenance.auto=false","-c","gc.auto=0",...args],{cwd:root,encoding:"utf8"});assert.equal(r.status,0,r.stderr+r.stdout);return r.stdout.trim();}
+function bytes(root:string){
+ const files:Record<string,string>={};
+ function read<T>(operation:"readdirSync"|"readFileSync",file:string,action:()=>T):T{
+  try{return action();}catch(error){
+   // Report only the owned fixture-relative operation; never the error payload.
+   try{
+    const relative=path.relative(root,file),code=(error as NodeJS.ErrnoException)?.code;
+    const admitted=relative.length<=512&&!path.isAbsolute(relative)&&relative!==".."&&
+     !relative.startsWith(`..${path.sep}`)&&!/[\x00-\x1f\x7f]/.test(relative);
+    process.stderr.write(`LINEAGE_SNAPSHOT_FAILURE ${JSON.stringify({schema_version:1,operation,
+     code:typeof code==="string"&&/^[A-Z][A-Z0-9_]{0,31}$/.test(code)?code:null,
+     relative_path:admitted?(relative.split(path.sep).join("/")||"."):null})}\n`);
+   }catch{/* A failed diagnostic must not replace the original filesystem error. */}
+   throw error;
+  }
+ }
+ function visit(dir:string){
+  for(const e of read("readdirSync",dir,()=>fs.readdirSync(dir,{withFileTypes:true}))){
+   const file=path.join(dir,e.name);
+   if(e.isDirectory())visit(file);
+   else if(e.isFile())files[path.relative(root,file)]=crypto.createHash("sha256")
+    .update(read("readFileSync",file,()=>fs.readFileSync(file))).digest("hex");
+  }
+ }
+ visit(root);return files;
+}
+
+for(const operation of ["readdirSync","readFileSync"] as const){
+ test(`lineage snapshot diagnostic preserves ${operation} failure without error payloads`,t=>{
+  const root=makeTempDir("mdkg-legacy-lineage-");roots.push(root);
+  const directory=path.join(root,".git/objects"),file=path.join(directory,"snapshot-probe");
+  writeFile(file,"owned fixture bytes\n");
+  const target=operation==="readdirSync"?directory:file;
+  const failure=Object.assign(new Error(`private error payload ${target}`),{code:"ENOENT",path:target});
+  const original=fs[operation],messages:string[]=[];
+  t.mock.method(fs,operation,(...args:any[])=>{
+   if(args[0]===target)throw failure;
+   return (original as any)(...args);
+  });
+  t.mock.method(process.stderr,"write",(chunk:any)=>{messages.push(String(chunk));return true;});
+  assert.throws(()=>bytes(root),error=>error===failure,"the original error must propagate");
+  assert.equal(messages.length,1);
+  assert.match(messages[0],/^LINEAGE_SNAPSHOT_FAILURE /);
+  const diagnostic=JSON.parse(messages[0].slice("LINEAGE_SNAPSHOT_FAILURE ".length));
+  assert.deepEqual(diagnostic,{schema_version:1,operation,code:"ENOENT",
+   relative_path:path.relative(root,target).split(path.sep).join("/")});
+  assert.ok(!messages[0].includes(root));
+  assert.ok(!messages[0].includes("private error payload"));
+ });
+}
+
+test("lineage snapshot diagnostic write failure preserves the original filesystem error",t=>{
+ const root=makeTempDir("mdkg-legacy-lineage-");roots.push(root);
+ const file=path.join(root,"snapshot-probe");writeFile(file,"owned fixture bytes\n");
+ const failure=Object.assign(new Error("original filesystem failure"),{code:"ENOENT"});
+ const original=fs.readFileSync;
+ t.mock.method(fs,"readFileSync",(...args:any[])=>{if(args[0]===file)throw failure;return (original as any)(...args);});
+ t.mock.method(process.stderr,"write",()=>{throw new Error("diagnostic stream unavailable");});
+ assert.throws(()=>bytes(root),error=>error===failure);
+});
+
 function fixture(){const root=makeTempDir("mdkg-legacy-lineage-");roots.push(root);writeRootConfig(root);writeDefaultTemplates(root);writeFile(path.join(root,".mdkg/core/core.md"),"# core\n");
  const created=spawnSync(process.execPath,[path.join(runtime,"cli.js"),"new","task","Ancestor node","--json"],{cwd:root,encoding:"utf8"});assert.equal(created.status,0,created.stderr);
  const file=JSON.parse(created.stdout).node.path,original=fs.readFileSync(path.join(root,file),"utf8");git(root,["init","-qb","main"]);git(root,["add",".mdkg/config.json",".mdkg/templates",file]);git(root,["commit","-qm","accepted ancestor"]);const ancestor=git(root,["rev-parse","HEAD"]);
